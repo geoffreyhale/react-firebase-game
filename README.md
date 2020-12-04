@@ -1,3 +1,13 @@
+# React Firebase Game
+
+I began this project using the following site as a guide:
+
+https://css-tricks.com/intro-firebase-react/
+
+...is old and out-dated w some firebase config details but otherwise very helpful.
+
+The rest was created automatically in this README.md by `react-create-app`:
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
