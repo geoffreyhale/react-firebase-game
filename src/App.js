@@ -38,7 +38,7 @@ class App extends Component {
     e.preventDefault();
     const uid = this.state.user && this.state.user.uid;
     const userRef = firebase.database().ref('users/' + uid);
-    const user = userRef.update({ holes: this.state.holes });
+    userRef.update({ holes: this.state.holes });
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -73,7 +73,7 @@ class App extends Component {
         {this.state.user ? (
           <div>
             <div className="user-profile">
-              <img src={this.state.user.photoURL} />
+              <img src={this.state.user.photoURL} alt="user photo" />
             </div>
             {this.state.holes === null || <div>Holes: {this.state.holes}</div>}
             {this.state.holes === null || (
