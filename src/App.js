@@ -2,16 +2,30 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
-import Image from 'react-bootstrap/Image';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import firebase, { auth, provider } from './firebase.js';
+
+function DiggerCard() {
+  return (
+    <Card style={{ width: '8rem' }}>
+      <Card.Body>
+        <Card.Title>Digger</Card.Title>
+        <Card.Text>+1 hole per second</Card.Text>
+        <Card.Text>
+          <em>Yum, dirt!</em>
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  );
+}
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       user: null,
+      // diggers, null, //TODO
       dirt: null,
       holes: null,
       dirtMostRecentlySaved: null,
@@ -20,8 +34,10 @@ class App extends Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.digHole = this.digHole.bind(this);
+    this.runFieldStep = this.runFieldStep.bind(this);
     this.save = this.save.bind(this);
     this.autosaveTimer = 0;
+    this.fieldTimer = 0;
   }
   login() {
     auth.signInWithPopup(provider).then((result) => {
@@ -55,6 +71,11 @@ class App extends Component {
       holes: this.state.holes + 1,
     });
   }
+  runFieldStep() {
+    this.setState({
+      holes: this.state.holes + 1,
+    });
+  }
   save() {
     const holes = this.state.holes;
     const dirt = this.state.dirt;
@@ -76,16 +97,13 @@ class App extends Component {
           const userRef = firebase.database().ref('users/' + uid);
           userRef.on('value', (snapshot) => {
             let user = snapshot.val();
-            this.setState(
-              {
-                dirt: (user && user.dirt) || 0,
-                holes: (user && user.holes) || 0,
-              },
-              () => {
-                this.autosaveTimer = setInterval(this.save, 3000);
-              }
-            );
+            this.setState({
+              dirt: (user && user.dirt) || 0,
+              holes: (user && user.holes) || 0,
+            });
           });
+          this.autosaveTimer = setInterval(this.save, 3000);
+          this.fieldTimer = setInterval(this.runFieldStep, 1000);
         });
       }
     });
@@ -152,12 +170,24 @@ class App extends Component {
               </Card>
               <Card>
                 <Card.Body>
+                  <Card.Title>Field</Card.Title>
+                  <DiggerCard />
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Body>
                   <Card.Title>Actions</Card.Title>
                   {this.state.holes === null || (
                     <Button variant="primary" onClick={this.digHole}>
                       Dig
                     </Button>
                   )}
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Deck</Card.Title>
+                  <Card.Text>You have no cards in your deck.</Card.Text>
                 </Card.Body>
               </Card>
             </div>
