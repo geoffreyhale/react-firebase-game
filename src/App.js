@@ -50,7 +50,7 @@ class App extends Component {
             let user = snapshot.val();
             // console.log(user);
             this.setState({
-              holes: user && user.holes,
+              holes: (user && user.holes) || 0,
             });
           });
         });
