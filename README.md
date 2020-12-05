@@ -4,10 +4,18 @@ Dig holes and save progress.
 
 Built with React and Firebase.
 
+## Dev
+
+```
+yarn
+
+yarn start
+```
+
 ## Deploy
 
 ```
-npm run build
+yarn build
 
 firebase deploy
 ```

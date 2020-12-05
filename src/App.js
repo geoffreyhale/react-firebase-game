@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Image from 'react-bootstrap/Image';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import firebase, { auth, provider } from './firebase.js';
 
@@ -17,9 +21,20 @@ class App extends Component {
   login() {
     auth.signInWithPopup(provider).then((result) => {
       const user = result.user;
-      this.setState({
-        user,
-      });
+      this.setState(
+        {
+          user,
+        },
+        () => {
+          const uid = user.uid;
+          const userRef = firebase.database().ref('users/' + uid);
+          userRef.update({
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+          });
+        }
+      );
     });
   }
   logout() {
@@ -48,7 +63,6 @@ class App extends Component {
           const userRef = firebase.database().ref('users/' + uid);
           userRef.on('value', (snapshot) => {
             let user = snapshot.val();
-            // console.log(user);
             this.setState({
               holes: (user && user.holes) || 0,
             });
@@ -60,34 +74,46 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <header>
-          <div className="wrapper">
-            <h1>Game</h1>
-            {this.state.user ? (
-              <button onClick={this.logout}>Log Out</button>
-            ) : (
-              <button onClick={this.login}>Log In</button>
-            )}
-          </div>
-        </header>
-        {this.state.user ? (
-          <div>
-            <div className="user-profile">
-              <img src={this.state.user.photoURL} alt="user photo" />
+        <Container>
+          <header>
+            <div className="wrapper">
+              <h1>Game</h1>
+              {this.state.user ? (
+                <Button variant="danger" onClick={this.logout}>
+                  Log Out
+                </Button>
+              ) : (
+                <Button variant="primary" onClick={this.login}>
+                  Log In
+                </Button>
+              )}
             </div>
-            {this.state.holes === null || <div>Holes: {this.state.holes}</div>}
-            {this.state.holes === null || (
-              <button onClick={this.digHole}>Dig</button>
-            )}
-            <form onSubmit={this.handleSubmitSave}>
-              <button>Save</button>
-            </form>
-          </div>
-        ) : (
-          <div className="wrapper">
-            <p>You must be logged in to play this game.</p>
-          </div>
-        )}
+          </header>
+          {this.state.user ? (
+            <div>
+              <div className="user-profile">
+                <img src={this.state.user.photoURL} alt="user photo" />
+              </div>
+              {this.state.holes === null || (
+                <div>Holes: {this.state.holes}</div>
+              )}
+              {this.state.holes === null || (
+                <Button variant="primary" onClick={this.digHole}>
+                  Dig
+                </Button>
+              )}
+              <form onSubmit={this.handleSubmitSave}>
+                <Button variant="success" type="submit">
+                  Save
+                </Button>
+              </form>
+            </div>
+          ) : (
+            <div className="wrapper">
+              <p>You must be logged in to play this game.</p>
+            </div>
+          )}
+        </Container>
       </div>
     );
   }
