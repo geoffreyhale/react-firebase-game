@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Image from 'react-bootstrap/Image';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -76,42 +77,79 @@ class App extends Component {
       <div className="app">
         <Container>
           <header>
-            <div className="wrapper">
-              <h1>Game</h1>
-              {this.state.user ? (
-                <Button variant="danger" onClick={this.logout}>
-                  Log Out
-                </Button>
-              ) : (
-                <Button variant="primary" onClick={this.login}>
-                  Log In
-                </Button>
-              )}
-            </div>
+            <Card>
+              <Card.Body>
+                <h1 style={{ display: 'inline-block' }}>Game</h1>
+                <div style={{ float: 'right' }}>
+                  {this.state.user ? (
+                    <>
+                      <img
+                        src={this.state.user.photoURL}
+                        alt="user photo"
+                        style={{ height: 48 }}
+                      />
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={this.logout}
+                      >
+                        Log Out
+                      </Button>
+                    </>
+                  ) : (
+                    <Button variant="primary" onClick={this.login}>
+                      Log In
+                    </Button>
+                  )}
+                </div>
+              </Card.Body>
+            </Card>
           </header>
           {this.state.user ? (
             <div>
-              <div className="user-profile">
-                <img src={this.state.user.photoURL} alt="user photo" />
-              </div>
-              {this.state.holes === null || (
-                <div>Holes: {this.state.holes}</div>
-              )}
-              {this.state.holes === null || (
-                <Button variant="primary" onClick={this.digHole}>
-                  Dig
-                </Button>
-              )}
-              <form onSubmit={this.handleSubmitSave}>
-                <Button variant="success" type="submit">
-                  Save
-                </Button>
-              </form>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Inventory</Card.Title>
+                  {this.state.holes === null || (
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>
+                            <strong>Holes:</strong>
+                          </td>
+                          <td>{this.state.holes}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Actions</Card.Title>
+                  {this.state.holes === null || (
+                    <Button variant="primary" onClick={this.digHole}>
+                      Dig
+                    </Button>
+                  )}
+                </Card.Body>
+              </Card>
+              <Card>
+                <Card.Body>
+                  <form onSubmit={this.handleSubmitSave}>
+                    <Button variant="success" type="submit">
+                      Save
+                    </Button>
+                  </form>
+                </Card.Body>
+              </Card>
             </div>
           ) : (
-            <div className="wrapper">
-              <p>You must be logged in to play this game.</p>
-            </div>
+            <Card>
+              <Card.Body>
+                <p>You must be logged in to play this game.</p>
+              </Card.Body>
+            </Card>
           )}
         </Container>
       </div>
