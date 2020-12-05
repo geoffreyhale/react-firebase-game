@@ -190,6 +190,14 @@ class App extends Component {
                   <Card.Text>You have no cards in your deck.</Card.Text>
                 </Card.Body>
               </Card>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Store</Card.Title>
+                  <Card.Text>
+                    Sorry, we are temporarily closed. Come back soon!
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             </div>
           ) : (
             <Card>
