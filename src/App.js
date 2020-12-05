@@ -12,7 +12,9 @@ class App extends Component {
     super();
     this.state = {
       user: null,
+      dirt: null,
       holes: null,
+      dirtMostRecentlySaved: null,
       holesMostRecentlySaved: null,
     };
     this.login = this.login.bind(this);
@@ -49,17 +51,22 @@ class App extends Component {
   }
   digHole() {
     this.setState({
+      dirt: this.state.dirt + 1,
       holes: this.state.holes + 1,
     });
   }
   save() {
     const holes = this.state.holes;
-    if (holes === this.state.holesMostRecentlySaved) {
+    const dirt = this.state.dirt;
+    if (
+      holes === this.state.holesMostRecentlySaved &&
+      dirt === this.state.dirtMostRecentlySaved
+    ) {
       return;
     }
     const uid = this.state.user && this.state.user.uid;
     const userRef = firebase.database().ref('users/' + uid);
-    userRef.update({ holes: holes });
+    userRef.update({ dirt: dirt, holes: holes });
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -71,6 +78,7 @@ class App extends Component {
             let user = snapshot.val();
             this.setState(
               {
+                dirt: (user && user.dirt) || 0,
                 holes: (user && user.holes) || 0,
               },
               () => {
@@ -120,18 +128,26 @@ class App extends Component {
               <Card>
                 <Card.Body>
                   <Card.Title>Inventory</Card.Title>
-                  {this.state.holes === null || (
-                    <table>
-                      <tbody>
+                  <table>
+                    <tbody>
+                      {this.state.dirt === null || (
+                        <tr>
+                          <td>
+                            <strong>Dirt:</strong>
+                          </td>
+                          <td>{this.state.dirt}</td>
+                        </tr>
+                      )}
+                      {this.state.holes === null || (
                         <tr>
                           <td>
                             <strong>Holes:</strong>
                           </td>
                           <td>{this.state.holes}</td>
                         </tr>
-                      </tbody>
-                    </table>
-                  )}
+                      )}
+                    </tbody>
+                  </table>
                 </Card.Body>
               </Card>
               <Card>
