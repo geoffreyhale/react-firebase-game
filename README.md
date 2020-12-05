@@ -19,3 +19,9 @@ yarn build
 
 firebase deploy
 ```
+
+## TODO
+
+- add payment gateway
+- autosave, remove save button
+- split App.js monolith into components and files
