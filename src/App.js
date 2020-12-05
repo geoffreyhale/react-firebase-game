@@ -6,40 +6,13 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentItem: '',
-      username: '',
-      items: [],
       user: null,
+      holes: null,
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
-  }
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  }
-  handleSubmit(e) {
-    e.preventDefault();
-    const itemsRef = firebase.database().ref('items');
-    const item = {
-      title: this.state.currentItem,
-      user: this.state.user.displayName || this.state.user.email,
-    };
-    itemsRef.push(item);
-    this.setState({
-      currentItem: '',
-      username: '',
-    });
-  }
-  logout() {
-    auth.signOut().then(() => {
-      this.setState({
-        user: null,
-      });
-    });
+    this.digHole = this.digHole.bind(this);
+    this.handleSubmitSave = this.handleSubmitSave.bind(this);
   }
   login() {
     auth.signInWithPopup(provider).then((result) => {
@@ -49,39 +22,47 @@ class App extends Component {
       });
     });
   }
-  componentDidMount() {
-    const itemsRef = firebase.database().ref('items');
-    itemsRef.on('value', (snapshot) => {
-      let items = snapshot.val();
-      let newState = [];
-      for (let item in items) {
-        newState.push({
-          id: item,
-          title: items[item].title,
-          user: items[item].user,
-        });
-      }
+  logout() {
+    auth.signOut().then(() => {
       this.setState({
-        items: newState,
+        user: null,
       });
     });
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({ user });
-      }
+  }
+  digHole() {
+    this.setState({
+      holes: this.state.holes + 1,
     });
   }
-  removeItem(itemId) {
-    const itemRef = firebase.database().ref(`/items/${itemId}`);
-    itemRef.remove();
+  handleSubmitSave(e) {
+    e.preventDefault();
+    const uid = this.state.user && this.state.user.uid;
+    const userRef = firebase.database().ref('users/' + uid);
+    const user = userRef.update({ holes: this.state.holes });
+  }
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user }, () => {
+          const uid = this.state.user && this.state.user.uid;
+          const userRef = firebase.database().ref('users/' + uid);
+          userRef.on('value', (snapshot) => {
+            let user = snapshot.val();
+            // console.log(user);
+            this.setState({
+              holes: user && user.holes,
+            });
+          });
+        });
+      }
+    });
   }
   render() {
     return (
       <div className="app">
         <header>
           <div className="wrapper">
-            <h1>Fun Food Friends</h1>
+            <h1>Game</h1>
             {this.state.user ? (
               <button onClick={this.logout}>Log Out</button>
             ) : (
@@ -94,55 +75,17 @@ class App extends Component {
             <div className="user-profile">
               <img src={this.state.user.photoURL} />
             </div>
-            <div className="container">
-              <section className="add-item">
-                <form onSubmit={this.handleSubmit}>
-                  <input
-                    type="text"
-                    name="username"
-                    placeholder="What's your name?"
-                    value={this.state.user.displayName || this.state.user.email}
-                    readOnly
-                  />
-                  <input
-                    type="text"
-                    name="currentItem"
-                    placeholder="What are you bringing?"
-                    onChange={this.handleChange}
-                    value={this.state.currentItem}
-                  />
-                  <button>Add Item</button>
-                </form>
-              </section>
-              <section className="display-item">
-                <div className="wrapper">
-                  <ul>
-                    {this.state.items.map((item) => {
-                      return (
-                        <li key={item.id}>
-                          <h3>{item.title}</h3>
-                          <p>
-                            brought by: {item.user}
-                            {item.user === this.state.user.displayName ||
-                            item.user === this.state.user.email ? (
-                              <button onClick={() => this.removeItem(item.id)}>
-                                Remove Item
-                              </button>
-                            ) : null}
-                          </p>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </section>
-            </div>
+            {this.state.holes === null || <div>Holes: {this.state.holes}</div>}
+            {this.state.holes === null || (
+              <button onClick={this.digHole}>Dig</button>
+            )}
+            <form onSubmit={this.handleSubmitSave}>
+              <button>Save</button>
+            </form>
           </div>
         ) : (
           <div className="wrapper">
-            <p>
-              You must be logged in to see the potluck list and submit to it.
-            </p>
+            <p>You must be logged in to play this game.</p>
           </div>
         )}
       </div>
