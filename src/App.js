@@ -17,7 +17,8 @@ class App extends Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.digHole = this.digHole.bind(this);
-    this.handleSubmitSave = this.handleSubmitSave.bind(this);
+    this.save = this.save.bind(this);
+    this.autosaveTimer = 0;
   }
   login() {
     auth.signInWithPopup(provider).then((result) => {
@@ -50,8 +51,8 @@ class App extends Component {
       holes: this.state.holes + 1,
     });
   }
-  handleSubmitSave(e) {
-    e.preventDefault();
+  save() {
+    console.log('saving' + this.state.holes);
     const uid = this.state.user && this.state.user.uid;
     const userRef = firebase.database().ref('users/' + uid);
     userRef.update({ holes: this.state.holes });
@@ -64,9 +65,14 @@ class App extends Component {
           const userRef = firebase.database().ref('users/' + uid);
           userRef.on('value', (snapshot) => {
             let user = snapshot.val();
-            this.setState({
-              holes: (user && user.holes) || 0,
-            });
+            this.setState(
+              {
+                holes: (user && user.holes) || 0,
+              },
+              () => {
+                this.autosaveTimer = setInterval(this.save, 10000);
+              }
+            );
           });
         });
       }
@@ -132,15 +138,6 @@ class App extends Component {
                       Dig
                     </Button>
                   )}
-                </Card.Body>
-              </Card>
-              <Card>
-                <Card.Body>
-                  <form onSubmit={this.handleSubmitSave}>
-                    <Button variant="success" type="submit">
-                      Save
-                    </Button>
-                  </form>
                 </Card.Body>
               </Card>
             </div>
