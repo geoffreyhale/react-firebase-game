@@ -13,6 +13,7 @@ class App extends Component {
     this.state = {
       user: null,
       holes: null,
+      holesMostRecentlySaved: null,
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -52,10 +53,13 @@ class App extends Component {
     });
   }
   save() {
-    console.log('saving' + this.state.holes);
+    const holes = this.state.holes;
+    if (holes === this.state.holesMostRecentlySaved) {
+      return;
+    }
     const uid = this.state.user && this.state.user.uid;
     const userRef = firebase.database().ref('users/' + uid);
-    userRef.update({ holes: this.state.holes });
+    userRef.update({ holes: holes });
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -70,7 +74,7 @@ class App extends Component {
                 holes: (user && user.holes) || 0,
               },
               () => {
-                this.autosaveTimer = setInterval(this.save, 10000);
+                this.autosaveTimer = setInterval(this.save, 3000);
               }
             );
           });
