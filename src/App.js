@@ -7,6 +7,24 @@ import './App.css';
 import firebase, { auth, provider } from './firebase.js';
 import StripeElements from './components/StripeElements';
 
+function UserAuth({ user, login, logout }) {
+  if (user) {
+    return (
+      <>
+        <img src={user.photoURL} alt="user photo" style={{ height: 48 }} />
+        <Button variant="outline-danger" size="sm" onClick={logout}>
+          Log Out
+        </Button>
+      </>
+    );
+  }
+  return (
+    <Button variant="primary" onClick={login}>
+      Log In
+    </Button>
+  );
+}
+
 function DiggerCard() {
   return (
     <Card style={{ width: '8rem' }}>
@@ -118,26 +136,11 @@ class App extends Component {
               <Card.Body>
                 <h1 style={{ display: 'inline-block' }}>Game</h1>
                 <div style={{ float: 'right' }}>
-                  {this.state.user ? (
-                    <>
-                      <img
-                        src={this.state.user.photoURL}
-                        alt="user photo"
-                        style={{ height: 48 }}
-                      />
-                      <Button
-                        variant="outline-danger"
-                        size="sm"
-                        onClick={this.logout}
-                      >
-                        Log Out
-                      </Button>
-                    </>
-                  ) : (
-                    <Button variant="primary" onClick={this.login}>
-                      Log In
-                    </Button>
-                  )}
+                  <UserAuth
+                    user={this.state.user}
+                    login={this.login}
+                    logout={this.logout}
+                  />
                 </div>
               </Card.Body>
             </Card>
