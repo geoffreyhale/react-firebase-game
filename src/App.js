@@ -27,7 +27,7 @@ function UserAuth({ user, login, logout }) {
 
 function DiggerCard() {
   return (
-    <Card style={{ width: '8rem' }}>
+    <Card style={{ width: '8rem', display: 'inline-block' }}>
       <Card.Body>
         <Card.Title>Digger</Card.Title>
         <Card.Text>+1 hole per second</Card.Text>
@@ -44,7 +44,7 @@ class App extends Component {
     super();
     this.state = {
       user: null,
-      // diggers, null, //TODO
+      diggers: 2,
       dirt: null,
       holes: null,
       dirtMostRecentlySaved: null,
@@ -91,8 +91,10 @@ class App extends Component {
     });
   }
   runFieldStep() {
+    const diggerHoleDiggingRate = 1;
+    const newHolesFromDiggers = diggerHoleDiggingRate * this.state.diggers;
     this.setState({
-      holes: this.state.holes + 1,
+      holes: this.state.holes + newHolesFromDiggers,
     });
   }
   save() {
@@ -175,7 +177,9 @@ class App extends Component {
               <Card>
                 <Card.Body>
                   <Card.Title>Field</Card.Title>
-                  <DiggerCard />
+                  {[...Array(this.state.diggers)].map(() => {
+                    return <DiggerCard />;
+                  })}
                 </Card.Body>
               </Card>
               <Card>
