@@ -22,5 +22,5 @@ firebase deploy
 
 ## TODO
 
-- add payment gateway
+- add backend app to complete payment gateway
 - split App.js monolith into components and files
