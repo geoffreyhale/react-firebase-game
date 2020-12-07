@@ -25,7 +25,7 @@ function UserAuth({ user, login, logout }) {
   );
 }
 
-function DiggerCard() {
+function DiggerCard({ returnToDeck, returnToField }) {
   return (
     <Card style={{ width: '8rem', display: 'inline-block' }}>
       <Card.Body>
@@ -33,6 +33,18 @@ function DiggerCard() {
         <Card.Text>+1 hole per second</Card.Text>
         <Card.Text>
           <em>Yum, dirt!</em>
+        </Card.Text>
+        <Card.Text>
+          {returnToDeck && (
+            <Button variant="danger" onClick={returnToDeck}>
+              Deck
+            </Button>
+          )}
+          {returnToField && (
+            <Button variant="success" onClick={returnToField}>
+              Field
+            </Button>
+          )}
         </Card.Text>
       </Card.Body>
     </Card>
@@ -44,7 +56,12 @@ class App extends Component {
     super();
     this.state = {
       user: null,
-      diggers: 2,
+      deck: {
+        diggers: 1,
+      },
+      field: {
+        diggers: 1,
+      },
       dirt: null,
       holes: null,
       dirtMostRecentlySaved: null,
@@ -53,6 +70,8 @@ class App extends Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
     this.digHole = this.digHole.bind(this);
+    this.returnToDeck = this.returnToDeck.bind(this);
+    this.returnToField = this.returnToField.bind(this);
     this.runFieldStep = this.runFieldStep.bind(this);
     this.save = this.save.bind(this);
     this.autosaveTimer = 0;
@@ -92,7 +111,8 @@ class App extends Component {
   }
   runFieldStep() {
     const diggerHoleDiggingRate = 1;
-    const newHolesFromDiggers = diggerHoleDiggingRate * this.state.diggers;
+    const newHolesFromDiggers =
+      diggerHoleDiggingRate * this.state.field.diggers;
     this.setState({
       holes: this.state.holes + newHolesFromDiggers,
     });
@@ -109,6 +129,30 @@ class App extends Component {
     const uid = this.state.user && this.state.user.uid;
     const userRef = firebase.database().ref('users/' + uid);
     userRef.update({ dirt: dirt, holes: holes });
+  }
+  returnToDeck() {
+    if (this.state.field.diggers >= 1) {
+      const newField = this.state.field;
+      newField.diggers--;
+      const newDeck = this.state.deck;
+      newDeck.diggers++;
+      this.setState({
+        field: newField,
+        deck: newDeck,
+      });
+    }
+  }
+  returnToField() {
+    if (this.state.deck.diggers >= 1) {
+      const newDeck = this.state.deck;
+      newDeck.diggers--;
+      const newField = this.state.field;
+      newField.diggers++;
+      this.setState({
+        field: newField,
+        deck: newDeck,
+      });
+    }
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -177,8 +221,8 @@ class App extends Component {
               <Card>
                 <Card.Body>
                   <Card.Title>Field</Card.Title>
-                  {[...Array(this.state.diggers)].map(() => {
-                    return <DiggerCard />;
+                  {[...Array(this.state.field.diggers)].map(() => {
+                    return <DiggerCard returnToDeck={this.returnToDeck} />;
                   })}
                 </Card.Body>
               </Card>
@@ -195,7 +239,9 @@ class App extends Component {
               <Card>
                 <Card.Body>
                   <Card.Title>Deck</Card.Title>
-                  <Card.Text>You have no cards in your deck.</Card.Text>
+                  {[...Array(this.state.deck.diggers)].map(() => {
+                    return <DiggerCard returnToField={this.returnToField} />;
+                  })}
                 </Card.Body>
               </Card>
               <Card>
