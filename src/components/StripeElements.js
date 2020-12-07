@@ -1,5 +1,5 @@
 import React from 'react';
-import './stripe-demo.css';
+import './StripeElements.css';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { ElementsConsumer, CardElement } from '@stripe/react-stripe-js';

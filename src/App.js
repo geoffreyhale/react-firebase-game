@@ -199,7 +199,14 @@ class App extends Component {
                   </Card.Text>
                 </Card.Body>
               </Card>
-              <StripeElements />
+              <Card>
+                <Card.Body>
+                  <Card.Title>Stripe</Card.Title>
+                  <Card.Text>
+                    <StripeElements />
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             </div>
           ) : (
             <Card>
