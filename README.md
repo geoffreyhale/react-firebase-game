@@ -2,25 +2,24 @@
 
 Dig holes and save progress.
 
-Built with React and Firebase.
+Built with React, Firebase, Bootstrap, Stripe.
 
 ## Dev
 
 ```
-yarn
-
-yarn start
+yarn && yarn start
 ```
 
 ## Deploy
 
 ```
-yarn build
-
-firebase deploy
+yarn build && firebase deploy
 ```
 
 ## TODO
 
-- add backend app to complete payment gateway
-- split App.js monolith into components and files
+- add backend app to complete Stripe ayment gateway
+- save successful card info
+- add purchasables
+- make game fun
+- more protect from accidental overwrites to zero
