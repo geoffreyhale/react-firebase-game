@@ -5,51 +5,9 @@ import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import firebase, { auth, provider } from './firebase.js';
+import DiggerCard from './components/DiggerCard';
 import StripeElements from './components/StripeElements';
-
-function UserAuth({ user, login, logout }) {
-  if (user) {
-    return (
-      <>
-        <img src={user.photoURL} alt="user photo" style={{ height: 48 }} />
-        <Button variant="outline-danger" size="sm" onClick={logout}>
-          Log Out
-        </Button>
-      </>
-    );
-  }
-  return (
-    <Button variant="primary" onClick={login}>
-      Log In
-    </Button>
-  );
-}
-
-function DiggerCard({ returnToDeck, returnToField }) {
-  return (
-    <Card style={{ width: '8rem', display: 'inline-block' }}>
-      <Card.Body>
-        <Card.Title>Digger</Card.Title>
-        <Card.Text>+1 hole per second</Card.Text>
-        <Card.Text>
-          <em>Yum, dirt!</em>
-        </Card.Text>
-        <Card.Text>
-          {returnToDeck && (
-            <Button variant="danger" onClick={returnToDeck}>
-              Deck
-            </Button>
-          )}
-          {returnToField && (
-            <Button variant="success" onClick={returnToField}>
-              Field
-            </Button>
-          )}
-        </Card.Text>
-      </Card.Body>
-    </Card>
-  );
-}
+import UserAuth from './components/UserAuth';
 
 class App extends Component {
   constructor() {
