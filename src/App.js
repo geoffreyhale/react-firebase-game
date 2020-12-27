@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import firebase, { auth, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
-import Game from './components/Game';
+import Routes from './Routes';
 
 class App extends Component {
   constructor() {
@@ -73,11 +73,7 @@ class App extends Component {
             </Card>
           </header>
           {this.state.user ? (
-            <Switch>
-              <Route path="/game">
-                <Game />
-              </Route>
-            </Switch>
+            <Routes />
           ) : (
             <Card>
               <Card.Body>
