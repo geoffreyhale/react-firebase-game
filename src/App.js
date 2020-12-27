@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
+import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import firebase, { auth, provider } from './firebase.js';
@@ -46,6 +47,17 @@ class App extends Component {
     return (
       <div className="app">
         <Container>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <NavLink to="/game">Game</NavLink>
+            </li>
+            <li>
+              <NavLink to="/groups">Groups</NavLink>
+            </li>
+          </ul>
           <header>
             <Card>
               <Card.Body>
@@ -61,7 +73,11 @@ class App extends Component {
             </Card>
           </header>
           {this.state.user ? (
-            <Game />
+            <Switch>
+              <Route path="/game">
+                <Game />
+              </Route>
+            </Switch>
           ) : (
             <Card>
               <Card.Body>
