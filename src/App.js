@@ -5,8 +5,8 @@ import Container from 'react-bootstrap/Container';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import firebase, { auth, provider } from './firebase.js';
-import DiggerCard from './components/DiggerCard';
-import StripeElements from './components/StripeElements';
+import DiggerCard from './components/Game/DiggerCard';
+import StripeElements from './components/Game/StripeElements';
 import UserAuth from './components/UserAuth';
 
 class App extends Component {
