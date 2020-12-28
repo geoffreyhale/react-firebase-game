@@ -4,6 +4,23 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase, { auth } from '../../firebase.js';
+import format from 'date-fns/format';
+import intervalToDuration from 'date-fns/intervalToDuration';
+import formatDuration from 'date-fns/formatDuration';
+
+const friendlyTimestamp = (timestamp) => {
+  const timestampDate = new Date(timestamp);
+  const formattedTimestamp = format(
+    timestampDate,
+    "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
+  );
+  const duration = intervalToDuration({
+    start: timestampDate,
+    end: new Date(),
+  });
+  const formattedDuration = formatDuration(duration);
+  return `${formattedTimestamp} (${formattedDuration})`;
+};
 
 export default class Game extends Component {
   constructor() {
@@ -104,7 +121,9 @@ export default class Game extends Component {
                         <Card>
                           <Card.Body>
                             <Card.Title>{value.userId}</Card.Title>
-                            <div className="text-muted">{value.timestamp}</div>
+                            <div className="text-muted">
+                              {friendlyTimestamp(value.timestamp)}
+                            </div>
                             <div>{value.content}</div>
                           </Card.Body>
                         </Card>
