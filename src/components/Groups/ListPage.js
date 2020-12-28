@@ -20,7 +20,7 @@ export default class Groups extends Component {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user }, () => {
-          const uid = this.state.user && this.state.user.uid;
+          const uid = this.state.user && this.state.user.uid; //TODO
           const userRef = firebase.database().ref('users/' + uid);
           userRef.on('value', (snapshot) => {
             let user = snapshot.val();
