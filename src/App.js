@@ -51,7 +51,9 @@ class App extends Component {
           <header>
             <Card>
               <Card.Body>
-                <h1 style={{ display: 'inline-block' }}>&#127968;</h1>
+                <h1 style={{ display: 'inline-block' }}>
+                  &#127968; Better Together&#8482;
+                </h1>
                 <div style={{ float: 'right' }}>
                   <UserAuth
                     user={this.state.user}
