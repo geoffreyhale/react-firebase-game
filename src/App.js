@@ -105,17 +105,13 @@ class App extends Component {
                 </div>
               </Card.Body>
             </Card>
-            <AppNav />
           </header>
           {this.state.user ? (
-            <Routes />
-          ) : (
-            <Card>
-              <Card.Body>
-                <p>You must be logged in to play this game.</p>
-              </Card.Body>
-            </Card>
-          )}
+            <>
+              <AppNav />
+              <Routes />
+            </>
+          ) : null}
         </Container>
       </div>
     );
