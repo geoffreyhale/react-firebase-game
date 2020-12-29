@@ -22,6 +22,28 @@ const AppHeaderTitle = () => {
   );
 };
 
+const AppNav = () => {
+  return (
+    <Nav>
+      <Nav.Item>
+        <Nav.Link>
+          <Link to="/">Home</Link>
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link>
+          <NavLink to="/game">Game</NavLink>
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link>
+          <NavLink to="/groups">Groups</NavLink>
+        </Nav.Link>
+      </Nav.Item>
+    </Nav>
+  );
+};
+
 class App extends Component {
   constructor() {
     super();
@@ -83,23 +105,7 @@ class App extends Component {
                 </div>
               </Card.Body>
             </Card>
-            <Nav>
-              <Nav.Item>
-                <Nav.Link>
-                  <Link to="/">Home</Link>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link>
-                  <NavLink to="/game">Game</NavLink>
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link>
-                  <NavLink to="/groups">Groups</NavLink>
-                </Nav.Link>
-              </Nav.Item>
-            </Nav>
+            <AppNav />
           </header>
           {this.state.user ? (
             <Routes />
