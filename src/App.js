@@ -64,13 +64,22 @@ class App extends Component {
           <header>
             <Card>
               <Card.Body>
-                <AppHeaderTitle />
-                <div style={{ float: 'right' }}>
-                  <UserAuth
-                    user={this.state.user}
-                    login={this.login}
-                    logout={this.logout}
-                  />
+                <div>
+                  <AppHeaderTitle />
+                  <div style={{ float: 'right' }}>
+                    <UserAuth
+                      user={this.state.user}
+                      login={this.login}
+                      logout={this.logout}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <small className="text-muted">
+                    <em>
+                      New online community that will never sell your data!!
+                    </em>
+                  </small>
                 </div>
               </Card.Body>
             </Card>
