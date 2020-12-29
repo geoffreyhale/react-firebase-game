@@ -9,6 +9,19 @@ import firebase, { auth, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 
+const AppHeaderTitle = () => {
+  return (
+    <h1 style={{ display: 'inline-block' }}>
+      xbk.io{' '}
+      <span className="text-muted ml-1">
+        <small style={{ fontSize: '50%' }}>
+          <em>better together</em>
+        </small>
+      </span>
+    </h1>
+  );
+};
+
 class App extends Component {
   constructor() {
     super();
@@ -51,14 +64,7 @@ class App extends Component {
           <header>
             <Card>
               <Card.Body>
-                <h1 style={{ display: 'inline-block' }}>
-                  xbk.io{' '}
-                  <span className="text-muted ml-1">
-                    <small style={{ fontSize: '50%' }}>
-                      <em>better together</em>
-                    </small>
-                  </span>
-                </h1>
+                <AppHeaderTitle />
                 <div style={{ float: 'right' }}>
                   <UserAuth
                     user={this.state.user}
