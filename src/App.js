@@ -100,18 +100,21 @@ class App extends Component {
                         />
                       </div>
                     </div>
-                    <div>
-                      <small className="text-muted">
-                        <em>
-                          New online community that will never sell your data!!
-                        </em>
-                      </small>
-                    </div>
                     {this.state.user ? (
                       <>
                         <AppNav />
                       </>
-                    ) : null}
+                    ) : (
+                      <div>
+                        <small className="text-muted">
+                          <em>
+                            New online community that will never sell your data.
+                            <br />
+                            Join the discussion now for free.
+                          </em>
+                        </small>
+                      </div>
+                    )}
                   </Card.Body>
                 </Card>
               </header>
