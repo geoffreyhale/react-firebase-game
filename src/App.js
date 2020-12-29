@@ -52,7 +52,12 @@ class App extends Component {
             <Card>
               <Card.Body>
                 <h1 style={{ display: 'inline-block' }}>
-                  &#127968; Better Together&#8482;
+                  xbk.io{' '}
+                  <span className="text-muted ml-1">
+                    <small style={{ fontSize: '50%' }}>
+                      <em>better together</em>
+                    </small>
+                  </span>
                 </h1>
                 <div style={{ float: 'right' }}>
                   <UserAuth
