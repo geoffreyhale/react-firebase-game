@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
+import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import { Link, NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -82,36 +84,40 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <Container>
-          <header>
-            <Card>
-              <Card.Body>
-                <div>
-                  <AppHeaderTitle />
-                  <div style={{ float: 'right' }}>
-                    <UserAuth
-                      user={this.state.user}
-                      login={this.login}
-                      logout={this.logout}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <small className="text-muted">
-                    <em>
-                      New online community that will never sell your data!!
-                    </em>
-                  </small>
-                </div>
-              </Card.Body>
-            </Card>
-          </header>
-          {this.state.user ? (
-            <>
-              <AppNav />
-              <Routes />
-            </>
-          ) : null}
+        <Container fluid>
+          <Row>
+            <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
+              <header className="mb-4">
+                <Card>
+                  <Card.Body style={{ paddingBottom: '0.25rem' }}>
+                    <div>
+                      <AppHeaderTitle />
+                      <div style={{ float: 'right' }}>
+                        <UserAuth
+                          user={this.state.user}
+                          login={this.login}
+                          logout={this.logout}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <small className="text-muted">
+                        <em>
+                          New online community that will never sell your data!!
+                        </em>
+                      </small>
+                    </div>
+                    {this.state.user ? (
+                      <>
+                        <AppNav />
+                      </>
+                    ) : null}
+                  </Card.Body>
+                </Card>
+              </header>
+              {this.state.user ? <Routes /> : null}
+            </Col>
+          </Row>
         </Container>
       </div>
     );
