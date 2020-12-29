@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase, { auth } from '../../firebase.js';
 import format from 'date-fns/format';
@@ -84,58 +86,62 @@ export default class Game extends Component {
   }
   render() {
     return (
-      <>
-        <Card>
-          <Card.Body>
-            <Card.Title>Actions</Card.Title>
-            <div>
-              <Form onSubmit={this.createNewPost}>
-                <Form.Group controlId="newPostContent">
-                  <Form.Control
-                    type="text"
-                    placeholder="How are you?"
-                    value={this.state.newPostContent}
-                    onChange={this.handleChange}
-                  />
-                </Form.Group>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  disabled={this.state.newPostContent === ''}
-                >
-                  Create New Public Post
-                </Button>
-              </Form>
-            </div>
-          </Card.Body>
-        </Card>
-        <Card>
-          <Card.Body>
-            <Card.Title>Public Posts</Card.Title>
-            <table>
-              <tbody>
-                {Object.entries(this.state.posts).map(([key, value]) => {
-                  return (
-                    <tr>
-                      <td>
-                        <Card>
-                          <Card.Body>
-                            <Card.Title>{value.userId}</Card.Title>
-                            <div className="text-muted">
-                              {friendlyTimestamp(value.timestamp)}
-                            </div>
-                            <div>{value.content}</div>
-                          </Card.Body>
-                        </Card>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </Card.Body>
-        </Card>
-      </>
+      <Row>
+        <Col></Col>
+        <Col xs={8}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Actions</Card.Title>
+              <div>
+                <Form onSubmit={this.createNewPost}>
+                  <Form.Group controlId="newPostContent">
+                    <Form.Control
+                      type="text"
+                      placeholder="How are you?"
+                      value={this.state.newPostContent}
+                      onChange={this.handleChange}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    disabled={this.state.newPostContent === ''}
+                  >
+                    Create New Public Post
+                  </Button>
+                </Form>
+              </div>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>Public Posts</Card.Title>
+              <table>
+                <tbody>
+                  {Object.entries(this.state.posts).map(([key, value]) => {
+                    return (
+                      <tr>
+                        <td>
+                          <Card>
+                            <Card.Body>
+                              <Card.Title>{value.userId}</Card.Title>
+                              <div className="text-muted">
+                                {friendlyTimestamp(value.timestamp)}
+                              </div>
+                              <div>{value.content}</div>
+                            </Card.Body>
+                          </Card>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col></Col>
+      </Row>
     );
   }
 }
