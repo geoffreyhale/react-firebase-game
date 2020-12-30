@@ -20,8 +20,8 @@ yarn build && firebase deploy
 
 ### Tier 1
 
-- ensure clients cannot query arbitrary other user data
-- security: userIds
+- database security rules should prevent clients from reading any private data
+- are client-visible userIds a concern?
 - firebase security & permissions deep dive
 - more protect from accidental wipes, eg overwrites to zero in game
 
