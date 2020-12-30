@@ -164,9 +164,7 @@ export default class Game extends Component {
         <Card>
           <Card.Body>
             <Card.Title>Stripe</Card.Title>
-            <Card.Text>
-              <StripeElements />
-            </Card.Text>
+            <StripeElements />
           </Card.Body>
         </Card>
       </>
