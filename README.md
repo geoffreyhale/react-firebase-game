@@ -20,9 +20,10 @@ yarn build && firebase deploy
 
 ### Tier 1
 
+- ensure clients cannot query arbitrary other user data
 - security: userIds
 - firebase security & permissions deep dive
-- more protect from accidental overwrites to zero
+- more protect from accidental wipes, eg overwrites to zero in game
 
 ### Tier 2
 
