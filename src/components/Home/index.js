@@ -127,7 +127,7 @@ export default class Game extends Component {
             <tbody>
               {Object.entries(this.state.posts).map(([key, value]) => {
                 return (
-                  <tr>
+                  <tr key={key}>
                     <td>
                       <Card className="mb-2">
                         <Card.Body>
