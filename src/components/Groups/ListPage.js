@@ -59,7 +59,7 @@ export default class Groups extends Component {
               <tbody>
                 {Object.entries(this.state.groups).map(([key, value]) => {
                   return (
-                    <tr>
+                    <tr key={key}>
                       <td>
                         <Link to={'groups/' + key}>{value.name}</Link>
                       </td>
