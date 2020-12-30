@@ -99,6 +99,10 @@ export default class Game extends Component {
       }
     });
   }
+  componentWillUnmount() {
+    clearInterval(this.autosaveTimer);
+    clearInterval(this.fieldTimer);
+  }
   render() {
     return (
       <>
