@@ -89,9 +89,19 @@ export default class Game extends Component {
       <Row>
         <Col></Col>
         <Col xs={8}>
-          <Card>
+          <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Actions</Card.Title>
+              <Card.Title>
+                {this.state.user && this.state.user.photoURL ? (
+                  <img
+                    src={this.state.user.photoURL}
+                    alt="user"
+                    style={{ height: 48 }}
+                  />
+                ) : null}
+                {this.state.user && this.state.user.displayName}
+                <small className="text-muted ml-2">&#127757; Public</small>
+              </Card.Title>
               <div>
                 <Form onSubmit={this.createNewPost}>
                   <Form.Group controlId="newPostContent">
@@ -107,38 +117,33 @@ export default class Game extends Component {
                     type="submit"
                     disabled={this.state.newPostContent === ''}
                   >
-                    Create New Public Post
+                    Post
                   </Button>
                 </Form>
               </div>
             </Card.Body>
           </Card>
-          <Card>
-            <Card.Body>
-              <Card.Title>Public Posts</Card.Title>
-              <table>
-                <tbody>
-                  {Object.entries(this.state.posts).map(([key, value]) => {
-                    return (
-                      <tr>
-                        <td>
-                          <Card>
-                            <Card.Body>
-                              <Card.Title>{value.userId}</Card.Title>
-                              <div className="text-muted">
-                                {friendlyTimestamp(value.timestamp)}
-                              </div>
-                              <div>{value.content}</div>
-                            </Card.Body>
-                          </Card>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </Card.Body>
-          </Card>
+          <table>
+            <tbody>
+              {Object.entries(this.state.posts).map(([key, value]) => {
+                return (
+                  <tr>
+                    <td>
+                      <Card className="mb-2">
+                        <Card.Body>
+                          <Card.Title>{value.userId}</Card.Title>
+                          <div className="text-muted">
+                            {friendlyTimestamp(value.timestamp)}
+                          </div>
+                          <div>{value.content}</div>
+                        </Card.Body>
+                      </Card>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </Col>
         <Col></Col>
       </Row>

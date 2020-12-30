@@ -4,7 +4,7 @@ const UserAuth = ({ user, login, logout }) => {
   if (user) {
     return (
       <>
-        <img src={user.photoURL} alt="user photo" style={{ height: 48 }} />
+        <img src={user.photoURL} alt="user" style={{ height: 48 }} />
         <Button variant="outline-danger" size="sm" onClick={logout}>
           Log Out
         </Button>

@@ -33,6 +33,7 @@ yarn build && firebase deploy
 
 ### Tier 3
 
+- pics and display names for posts, cleaner timestamps
 - save successful card info (PCI compliance!?)
 - add purchasables
 - make game fun
