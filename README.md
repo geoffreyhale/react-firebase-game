@@ -29,7 +29,6 @@ yarn build && firebase deploy
 
 - fix use of user in subcomponents without passing
 - fix crash after log out
-- console warnings
 - add backend app to complete Stripe payment gateway
 
 ### Tier 3
