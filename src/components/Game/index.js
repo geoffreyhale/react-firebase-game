@@ -131,7 +131,12 @@ export default class Game extends Component {
           <Card.Body>
             <Card.Title>Field</Card.Title>
             {[...Array(this.state.field.diggers)].map(() => {
-              return <DiggerCard returnToDeck={this.returnToDeck} />;
+              return (
+                <DiggerCard
+                  key={Math.random()}
+                  returnToDeck={this.returnToDeck}
+                />
+              );
             })}
           </Card.Body>
         </Card>
@@ -149,7 +154,12 @@ export default class Game extends Component {
           <Card.Body>
             <Card.Title>Deck</Card.Title>
             {[...Array(this.state.deck.diggers)].map(() => {
-              return <DiggerCard returnToField={this.returnToField} />;
+              return (
+                <DiggerCard
+                  key={Math.random()}
+                  returnToField={this.returnToField}
+                />
+              );
             })}
           </Card.Body>
         </Card>
