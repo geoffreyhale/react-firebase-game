@@ -28,17 +28,17 @@ const AppNav = () => {
   return (
     <Nav>
       <Nav.Item>
-        <Nav.Link>
+        <Nav.Link as={'span'}>
           <Link to="/">Home</Link>
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link>
+        <Nav.Link as={'span'}>
           <NavLink to="/game">Game</NavLink>
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link>
+        <Nav.Link as={'span'}>
           <NavLink to="/groups">Groups</NavLink>
         </Nav.Link>
       </Nav.Item>
