@@ -27,13 +27,14 @@ yarn build && firebase deploy
 
 ### Tier 2
 
+- keep user logged in on refresh
 - fix use of user in subcomponents without passing
 - fix crash after log out
 - add backend app to complete Stripe payment gateway
 
 ### Tier 3
 
-- pics and display names for posts, cleaner timestamps
+- pics for posts, cleaner timestamps
 - save successful card info (PCI compliance!?)
 - add purchasables
 - make game fun

@@ -10,6 +10,7 @@ import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
 
+//TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
   const timestampDate = new Date(timestamp);
   const formattedTimestamp = format(
@@ -35,8 +36,16 @@ export default class Game extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.setPostsFromPostsSnapshot = this.setPostsFromPostsSnapshot.bind(this);
   }
-  setPostsFromPostsSnapshot(snapshot) {
-    let posts = snapshot.val();
+  setPostsFromPostsSnapshot(posts, users) {
+    //TODO write tests for this function
+    console.log('users:', users);
+    console.log('posts:', posts);
+
+    Object.keys(posts).forEach((k) => {
+      posts[k].userDisplayName =
+        (users[posts[k].userId] && users[posts[k].userId].displayName) ||
+        'USER NAME NOT FOUND';
+    });
     const postsByTimestamp = {};
     Object.keys(posts).forEach((k) => {
       postsByTimestamp[posts[k].timestamp] = posts[k];
@@ -57,7 +66,13 @@ export default class Game extends Component {
         this.setState({ user }, () => {
           const postsRef = firebase.database().ref('posts');
           postsRef.on('value', (snapshot) => {
-            this.setPostsFromPostsSnapshot(snapshot);
+            const usersRef = firebase.database().ref('users');
+            usersRef.once('value', (usersSnapshot) => {
+              this.setPostsFromPostsSnapshot(
+                snapshot.val(), //TODO bad javascript
+                usersSnapshot.val()
+              );
+            });
           });
         });
       }
@@ -68,7 +83,7 @@ export default class Game extends Component {
   }
   createNewPost(e) {
     e.preventDefault();
-    const uid = this.state.user && this.state.user.uid; //TODO
+    const uid = this.state.user && this.state.user.uid; //TODO wtf
     const postsRef = firebase.database().ref('posts');
     const key = postsRef.push().key;
     postsRef
@@ -80,7 +95,13 @@ export default class Game extends Component {
       })
       .then(() => {
         postsRef.once('value').then((snapshot) => {
-          this.setPostsFromPostsSnapshot(snapshot);
+          const usersRef = firebase.database().ref('users');
+          usersRef.once('value', (usersSnapshot) => {
+            this.setPostsFromPostsSnapshot(
+              snapshot.val(), //TODO bad javascript
+              usersSnapshot.val()
+            );
+          });
         });
       });
   }
@@ -131,7 +152,7 @@ export default class Game extends Component {
                     <td>
                       <Card className="mb-2">
                         <Card.Body>
-                          <Card.Title>{value.userId}</Card.Title>
+                          <Card.Title>{value.userDisplayName}</Card.Title>
                           <div className="text-muted">
                             {friendlyTimestamp(value.timestamp)}
                           </div>
