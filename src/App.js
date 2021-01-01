@@ -14,8 +14,16 @@ import Routes from './Routes';
 const AppHeaderTitle = () => {
   return (
     <h1 style={{ display: 'inline-block' }}>
-      xbk.io{' '}
-      <span className="text-muted ml-1">
+      <Link
+        to="/"
+        style={{
+          color: 'inherit',
+          textDecoration: 'inherit',
+        }}
+      >
+        xbk.io
+      </Link>
+      <span className="text-muted ml-2">
         <small style={{ fontSize: '50%' }}>
           <em>better together</em>
         </small>
