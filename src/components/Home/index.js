@@ -38,9 +38,6 @@ export default class Game extends Component {
   }
   setPostsFromPostsSnapshot(posts, users) {
     //TODO write tests for this function
-    console.log('users:', users);
-    console.log('posts:', posts);
-
     Object.keys(posts).forEach((k) => {
       posts[k].userDisplayName =
         (users[posts[k].userId] && users[posts[k].userId].displayName) ||
