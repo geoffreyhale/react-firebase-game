@@ -42,6 +42,11 @@ const AppNav = () => {
           <NavLink to="/groups">Groups</NavLink>
         </Nav.Link>
       </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={'span'}>
+          <NavLink to="/scorekeeper">Scorekeeper</NavLink>
+        </Nav.Link>
+      </Nav.Item>
     </Nav>
   );
 };
@@ -118,7 +123,7 @@ class App extends Component {
                   </Card.Body>
                 </Card>
               </header>
-              {this.state.user ? <Routes /> : null}
+              <Routes user={this.state.user} />
             </Col>
           </Row>
         </Container>
