@@ -25,7 +25,7 @@ const friendlyTimestamp = (timestamp) => {
   return `${formattedTimestamp} (${formattedDuration})`;
 };
 
-export default class Game extends Component {
+export default class Posts extends Component {
   constructor() {
     super();
     this.state = {
@@ -33,19 +33,20 @@ export default class Game extends Component {
       newPostContent: '',
     };
     this.createNewPost = this.createNewPost.bind(this);
+    this.deletePost = this.deletePost.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.setPostsFromPostsSnapshot = this.setPostsFromPostsSnapshot.bind(this);
   }
   setPostsFromPostsSnapshot(posts, users) {
     //TODO write tests for this function
-    Object.keys(posts).forEach((k) => {
-      posts[k].userDisplayName =
-        (users[posts[k].userId] && users[posts[k].userId].displayName) ||
-        'USER NAME NOT FOUND';
-    });
     const postsByTimestamp = {};
-    Object.keys(posts).forEach((k) => {
-      postsByTimestamp[posts[k].timestamp] = posts[k];
+    Object.keys(posts).forEach((postId) => {
+      const post = posts[postId];
+      post.id = postId;
+      post.userDisplayName =
+        (users[post.userId] && users[post.userId].displayName) ||
+        'USER NAME NOT FOUND';
+      postsByTimestamp[post.timestamp] = post;
     });
     const postsByTimestampOrdered = Object.keys(postsByTimestamp)
       .sort((a, b) => b - a)
@@ -80,7 +81,7 @@ export default class Game extends Component {
   }
   createNewPost(e) {
     e.preventDefault();
-    const uid = this.state.user && this.state.user.uid; //TODO wtf
+    const uid = this.props.user && this.props.user.uid;
     const postsRef = firebase.database().ref('posts');
     const key = postsRef.push().key;
     postsRef
@@ -102,6 +103,15 @@ export default class Game extends Component {
         });
       });
   }
+  deletePost(statePostsKey) {
+    const post = this.state.posts[statePostsKey];
+    const uid = this.props.user && this.props.user.uid;
+    if (post.userId === uid) {
+      const postsRef = firebase.database().ref('posts');
+      postsRef.child(post.id).remove();
+    }
+    //TODO: make sure security rules make it impossible for me/hackers to delete other users posts
+  }
   render() {
     return (
       <Row>
@@ -110,14 +120,14 @@ export default class Game extends Component {
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>
-                {this.state.user && this.state.user.photoURL ? (
+                {this.props.user && this.props.user.photoURL ? (
                   <img
-                    src={this.state.user.photoURL}
+                    src={this.props.user.photoURL}
                     alt="user"
                     style={{ height: 48 }}
                   />
                 ) : null}
-                {this.state.user && this.state.user.displayName}
+                {this.props.user && this.props.user.displayName}
                 <small className="text-muted ml-2">&#127757; Public</small>
               </Card.Title>
               <div>
@@ -155,6 +165,19 @@ export default class Game extends Component {
                           </div>
                           <div>{value.content}</div>
                         </Card.Body>
+                        <div style={{ width: '100%' }}>
+                          {this.props.user &&
+                          this.props.user.uid === value.userId ? (
+                            <Button
+                              variant="outline-danger"
+                              type="button"
+                              onClick={() => this.deletePost(key)}
+                              className="float-right"
+                            >
+                              Delete
+                            </Button>
+                          ) : null}
+                        </div>
                       </Card>
                     </td>
                   </tr>

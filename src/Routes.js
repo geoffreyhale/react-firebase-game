@@ -5,7 +5,7 @@ import './App.css';
 import Scorekeeper from './components/Scorekeeper';
 import Game from './components/Game';
 import Groups from './components/Groups';
-import Home from './components/Home';
+import Posts from './components/Home';
 
 const Routes = ({ user }) => {
   return (
@@ -13,7 +13,7 @@ const Routes = ({ user }) => {
       {user
         ? [
             <Route exact path="/" key="/">
-              <Home />
+              <Posts user={user} />
             </Route>,
             <Route path="/game" key="game">
               <Game />
