@@ -27,7 +27,6 @@ yarn build && firebase deploy
 
 ### Tier 2 (user convenience etc)
 
-- clear post form after submission
 - keep user logged in on refresh
 - fix use of user in subcomponents without passing
 - fix crash after log out

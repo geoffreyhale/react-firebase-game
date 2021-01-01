@@ -56,6 +56,7 @@ export default class Posts extends Component {
       }, {});
     this.setState({
       posts: postsByTimestampOrdered,
+      newPostContent: '',
     });
   }
   componentDidMount() {
