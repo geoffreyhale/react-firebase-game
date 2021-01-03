@@ -10,6 +10,12 @@ import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
 
+//adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
+const nest = (items, id = null, link = 'replyToId') =>
+  items
+    .filter((item) => item[link] === id)
+    .map((item) => ({ ...item, children: nest(items, item.id) }));
+
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
   const timestampDate = new Date(timestamp);
@@ -41,11 +47,11 @@ class NewPostForm extends React.Component {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(this.props.replyToMessageId);
+          console.log(this.props.replyToId);
           const successCallback = () => this.setState({ content: '' });
           this.props.onSubmit(
             this.state.content,
-            this.props.replyToMessageId || null,
+            this.props.replyToId || null,
             successCallback
           );
         }}
@@ -98,6 +104,8 @@ export default class Posts extends Component {
         result[key] = postsByTimestamp[key];
         return result;
       }, {});
+    const postsTreeWithReplies = {};
+
     this.setState({
       posts: postsByTimestampOrdered,
     });
@@ -121,7 +129,7 @@ export default class Posts extends Component {
       }
     });
   }
-  createNewPost(newPostContent, replyToMessageId, successCallback) {
+  createNewPost(newPostContent, replyToId, successCallback) {
     const uid = this.props.user && this.props.user.uid;
     const postsRef = firebase.database().ref('posts');
     const key = postsRef.push().key;
@@ -131,7 +139,7 @@ export default class Posts extends Component {
         content: newPostContent,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         userId: uid,
-        replyToMessageId: replyToMessageId,
+        replyToId: replyToId,
       })
       .then(() => {
         postsRef.once('value').then((snapshot) => {
@@ -201,7 +209,7 @@ export default class Posts extends Component {
                                 onSubmit={this.createNewPost}
                                 placeholder="Write a reply..."
                                 hideSubmitButton={true}
-                                replyToMessageId={value.id}
+                                replyToId={value.id}
                               />
                             )}
                           </div>
