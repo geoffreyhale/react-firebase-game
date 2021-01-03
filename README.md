@@ -20,6 +20,7 @@ yarn build && firebase deploy
 
 ### Tier 1 (security etc)
 
+- database security rules should prevent clients from deleting anyone else's data
 - database security rules should prevent clients from reading any private data
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
@@ -27,6 +28,8 @@ yarn build && firebase deploy
 
 ### Tier 2 (user convenience etc)
 
+- reactions on posts
+- replies to posts
 - keep user logged in on refresh
 - fix use of user in subcomponents without passing
 - fix crash after log out
@@ -42,7 +45,8 @@ yarn build && firebase deploy
 
 ## IDEAS
 
-- post feeds / chat rooms
+- groups -> rooms / post feeds / chat rooms
 - humans game modeling reality, eg mood meter
 - new names networking/contacts/friends utility
--
+- scorekeeper as part of rooms
+- demote games
