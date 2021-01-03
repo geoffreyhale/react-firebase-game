@@ -25,16 +25,54 @@ const friendlyTimestamp = (timestamp) => {
   return `${formattedTimestamp} (${formattedDuration})`;
 };
 
+class NewPostForm extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      content: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({ content: event.target.value });
+  }
+  render() {
+    return (
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const successCallback = () => this.setState({ content: '' });
+          this.props.onSubmit(this.state.content, successCallback);
+        }}
+      >
+        <Form.Group controlId="content">
+          <Form.Control
+            type="text"
+            placeholder="How are you?"
+            value={this.state.content}
+            onChange={this.handleChange}
+          />
+        </Form.Group>
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={this.state.content === ''}
+        >
+          Post
+        </Button>
+      </Form>
+    );
+  }
+}
+
 export default class Posts extends Component {
   constructor() {
     super();
     this.state = {
       posts: {},
-      newPostContent: '',
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.setPostsFromPostsSnapshot = this.setPostsFromPostsSnapshot.bind(this);
   }
   setPostsFromPostsSnapshot(posts, users) {
@@ -56,8 +94,8 @@ export default class Posts extends Component {
       }, {});
     this.setState({
       posts: postsByTimestampOrdered,
-      newPostContent: '',
     });
+    return true;
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -77,18 +115,14 @@ export default class Posts extends Component {
       }
     });
   }
-  handleChange(event) {
-    this.setState({ newPostContent: event.target.value });
-  }
-  createNewPost(e) {
-    e.preventDefault();
+  createNewPost(newPostContent, successCallback) {
     const uid = this.props.user && this.props.user.uid;
     const postsRef = firebase.database().ref('posts');
     const key = postsRef.push().key;
     postsRef
       .child(key)
       .update({
-        content: this.state.newPostContent,
+        content: newPostContent,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         userId: uid,
       })
@@ -102,7 +136,8 @@ export default class Posts extends Component {
             );
           });
         });
-      });
+      })
+      .then(successCallback());
   }
   deletePost(statePostsKey) {
     const post = this.state.posts[statePostsKey];
@@ -128,23 +163,7 @@ export default class Posts extends Component {
                 <small className="text-muted ml-2">&#127757; Public</small>
               </Card.Title>
               <div>
-                <Form onSubmit={this.createNewPost}>
-                  <Form.Group controlId="newPostContent">
-                    <Form.Control
-                      type="text"
-                      placeholder="How are you?"
-                      value={this.state.newPostContent}
-                      onChange={this.handleChange}
-                    />
-                  </Form.Group>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    disabled={this.state.newPostContent === ''}
-                  >
-                    Post
-                  </Button>
-                </Form>
+                <NewPostForm onSubmit={this.createNewPost} />
               </div>
             </Card.Body>
           </Card>
