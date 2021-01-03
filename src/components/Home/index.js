@@ -106,12 +106,8 @@ export default class Posts extends Component {
   }
   deletePost(statePostsKey) {
     const post = this.state.posts[statePostsKey];
-    const uid = this.props.user && this.props.user.uid;
-    if (post.userId === uid) {
-      const postsRef = firebase.database().ref('posts');
-      postsRef.child(post.id).remove();
-    }
-    //TODO: make sure security rules make it impossible for me/hackers to delete other users posts
+    const postsRef = firebase.database().ref('posts');
+    postsRef.child(post.id).remove();
   }
   render() {
     return (

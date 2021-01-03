@@ -20,7 +20,6 @@ yarn build && firebase deploy
 
 ### Tier 1 (security etc)
 
-- database security rules should prevent clients from deleting anyone else's data
 - database security rules should prevent clients from reading any private data
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
