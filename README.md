@@ -28,7 +28,7 @@ yarn build && firebase deploy
 ### Tier 2 (user convenience etc)
 
 - reactions on posts
-- replies to posts
+- display replies as replies
 - keep user logged in on refresh
 - fix use of user in subcomponents without passing
 - fix crash after log out
@@ -41,6 +41,7 @@ yarn build && firebase deploy
 - add purchasables
 - make game fun
 - make more useful/meaningful/valuable than game
+- better react props handling
 
 ## IDEAS
 

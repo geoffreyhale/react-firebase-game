@@ -41,25 +41,31 @@ class NewPostForm extends React.Component {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
+          console.log(this.props.replyToMessageId);
           const successCallback = () => this.setState({ content: '' });
-          this.props.onSubmit(this.state.content, successCallback);
+          this.props.onSubmit(
+            this.state.content,
+            this.props.replyToMessageId || null,
+            successCallback
+          );
         }}
       >
-        <Form.Group controlId="content">
-          <Form.Control
-            type="text"
-            placeholder="How are you?"
-            value={this.state.content}
-            onChange={this.handleChange}
-          />
-        </Form.Group>
-        <Button
-          variant="primary"
-          type="submit"
-          disabled={this.state.content === ''}
-        >
-          Post
-        </Button>
+        <Form.Control
+          type="text"
+          placeholder={this.props.placeholder || 'How are you?'}
+          value={this.state.content}
+          onChange={this.handleChange}
+        />
+        {!this.props.hideSubmitButton && (
+          <Button
+            className="mt-3"
+            variant="primary"
+            type="submit"
+            disabled={this.state.content === ''}
+          >
+            Post
+          </Button>
+        )}
       </Form>
     );
   }
@@ -115,7 +121,7 @@ export default class Posts extends Component {
       }
     });
   }
-  createNewPost(newPostContent, successCallback) {
+  createNewPost(newPostContent, replyToMessageId, successCallback) {
     const uid = this.props.user && this.props.user.uid;
     const postsRef = firebase.database().ref('posts');
     const key = postsRef.push().key;
@@ -125,6 +131,7 @@ export default class Posts extends Component {
         content: newPostContent,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
         userId: uid,
+        replyToMessageId: replyToMessageId,
       })
       .then(() => {
         postsRef.once('value').then((snapshot) => {
@@ -162,9 +169,7 @@ export default class Posts extends Component {
                 {this.props.user && this.props.user.displayName}
                 <small className="text-muted ml-2">&#127757; Public</small>
               </Card.Title>
-              <div>
-                <NewPostForm onSubmit={this.createNewPost} />
-              </div>
+              <NewPostForm onSubmit={this.createNewPost} />
             </Card.Body>
           </Card>
           <table>
@@ -180,20 +185,27 @@ export default class Posts extends Component {
                             {friendlyTimestamp(value.timestamp)}
                           </div>
                           <div>{value.content}</div>
+                          <div className="mt-3" style={{ width: '100%' }}>
+                            {this.props.user &&
+                            this.props.user.uid === value.userId ? (
+                              <Button
+                                variant="outline-danger"
+                                type="button"
+                                onClick={() => this.deletePost(key)}
+                                className="float-right"
+                              >
+                                Delete
+                              </Button>
+                            ) : (
+                              <NewPostForm
+                                onSubmit={this.createNewPost}
+                                placeholder="Write a reply..."
+                                hideSubmitButton={true}
+                                replyToMessageId={value.id}
+                              />
+                            )}
+                          </div>
                         </Card.Body>
-                        <div style={{ width: '100%' }}>
-                          {this.props.user &&
-                          this.props.user.uid === value.userId ? (
-                            <Button
-                              variant="outline-danger"
-                              type="button"
-                              onClick={() => this.deletePost(key)}
-                              className="float-right"
-                            >
-                              Delete
-                            </Button>
-                          ) : null}
-                        </div>
                       </Card>
                     </td>
                   </tr>
