@@ -121,6 +121,8 @@ const PostHeader = ({
   </div>
 );
 
+const PostContent = ({ children }) => <div className="mt-1">{children}</div>;
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -251,50 +253,33 @@ export default class Posts extends Component {
                             }
                             timestamp={value.timestamp}
                           />
-                          <div className="mt-1">{value.content}</div>
-                          <div className="mt-2">
+                          <PostContent>{value.content}</PostContent>
+                          <div className="mt-3">
                             {value &&
                               value.childNodes &&
                               value.childNodes.map((replyPost) => {
                                 return (
                                   <Card className="mt-1">
-                                    <Card.Body>
-                                      <Card.Title>
-                                        {replyPost.userDisplayName}
-                                        <div className="float-right">
-                                          {this.props.user &&
-                                          this.props.user.uid ===
-                                            replyPost.userId ? (
-                                            <PostActionsDropdown
-                                              deletePost={() =>
-                                                this.deletePost(replyPost.id)
-                                              }
-                                            />
-                                          ) : null}
-                                        </div>
-                                      </Card.Title>
-                                      <div className="text-muted">
-                                        {friendlyTimestamp(replyPost.timestamp)}
-                                      </div>
-                                      <div>{replyPost.content}</div>
-                                      <div
-                                        className="mt-3"
-                                        style={{ width: '100%' }}
-                                      >
-                                        {
+                                    <Card.Body style={{ padding: '0.75rem' }}>
+                                      <PostHeader
+                                        displayName={replyPost.userDisplayName}
+                                        showActions={
                                           this.props.user &&
                                           this.props.user.uid ===
                                             replyPost.userId
-                                            ? null
-                                            : null
-                                          // <NewPostForm
-                                          //   onSubmit={this.createNewPost}
-                                          //   placeholder="Write a reply..."
-                                          //   hideSubmitButton={true}
-                                          //   replyToId={replyPost.id}
-                                          // />
                                         }
-                                      </div>
+                                        postActionsDropdown={
+                                          <PostActionsDropdown
+                                            deletePost={() =>
+                                              this.deletePost(replyPost.id)
+                                            }
+                                          />
+                                        }
+                                        timestamp={replyPost.timestamp}
+                                      />
+                                      <PostContent>
+                                        {replyPost.content}
+                                      </PostContent>
                                     </Card.Body>
                                   </Card>
                                 );
