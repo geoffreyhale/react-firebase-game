@@ -104,6 +104,23 @@ const PostActionsDropdown = ({ deletePost }) => (
   </Dropdown>
 );
 
+const PostHeader = ({
+  displayName,
+  showActions,
+  postActionsDropdown,
+  timestamp,
+}) => (
+  <div>
+    <div>
+      <strong>{displayName}</strong>
+      <div className="float-right">
+        {showActions ? postActionsDropdown : null}
+      </div>
+    </div>
+    <div className="small text-muted">{friendlyTimestamp(timestamp)}</div>
+  </div>
+);
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -221,21 +238,20 @@ export default class Posts extends Component {
                     <td>
                       <Card className="mt-2">
                         <Card.Body>
-                          <Card.Title>
-                            {value.userDisplayName}
-                            <div className="float-right">
-                              {this.props.user &&
-                              this.props.user.uid === value.userId ? (
-                                <PostActionsDropdown
-                                  deletePost={() => this.deletePost(value.id)}
-                                />
-                              ) : null}
-                            </div>
-                          </Card.Title>
-                          <div className="text-muted">
-                            {friendlyTimestamp(value.timestamp)}
-                          </div>
-                          <div>{value.content}</div>
+                          <PostHeader
+                            displayName={value.userDisplayName}
+                            showActions={
+                              this.props.user &&
+                              this.props.user.uid === value.userId
+                            }
+                            postActionsDropdown={
+                              <PostActionsDropdown
+                                deletePost={() => this.deletePost(value.id)}
+                              />
+                            }
+                            timestamp={value.timestamp}
+                          />
+                          <div className="mt-1">{value.content}</div>
                           <div className="mt-2">
                             {value &&
                               value.childNodes &&
