@@ -68,6 +68,13 @@ class App extends Component {
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
   }
+  componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      }
+    });
+  }
   login() {
     auth.signInWithPopup(provider).then((result) => {
       const user = result.user;

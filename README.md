@@ -36,7 +36,6 @@ yarn build && firebase deploy
 
 - confirm prompt for delete post
 - ability to edit your existing posts
-- keep user logged in on refresh
 - add backend app to complete Stripe payment gateway
 
 ### Tier 3 (nice to have etc)
