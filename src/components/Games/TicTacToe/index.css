@@ -1,0 +1,9 @@
+#tictactoe table,
+#tictactoe td {
+  border: 1px grey solid;
+}
+
+#tictactoe td {
+  width: 48px;
+  height: 48px;
+}

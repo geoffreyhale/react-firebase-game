@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Scorekeeper from './components/Scorekeeper';
 import Game from './components/Games/Game';
+import TicTacToe from './components/Games/TicTacToe';
 import Groups from './components/Groups';
 import Posts from './components/Posts';
 
@@ -18,6 +19,9 @@ const Routes = ({ user }) => {
             </Route>,
             <Route path="/groups" key="groups">
               <Groups user={user} />
+            </Route>,
+            <Route path="/tictactoe" key="groups">
+              <TicTacToe user={user} />
             </Route>,
           ]
         : null}
