@@ -83,20 +83,16 @@ export default class Game extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        //TODO should not be setting user locally here
-        this.setState({ user }, () => {
-          const uid = this.props.user && this.props.user.uid;
-          const userRef = firebase.database().ref('users/' + uid);
-          userRef.on('value', (snapshot) => {
-            let user = snapshot.val();
-            this.setState({
-              dirt: (user && user.dirt) || 0,
-              holes: (user && user.holes) || 0,
-            });
+        const userRef = firebase.database().ref('users/' + user.uid);
+        userRef.on('value', (snapshot) => {
+          let user = snapshot.val();
+          this.setState({
+            dirt: (user && user.dirt) || 0,
+            holes: (user && user.holes) || 0,
           });
-          this.autosaveTimer = setInterval(this.save, 3000);
-          this.fieldTimer = setInterval(this.runFieldStep, 1000);
         });
+        this.autosaveTimer = setInterval(this.save, 3000);
+        this.fieldTimer = setInterval(this.runFieldStep, 1000);
       }
     });
   }

@@ -7,7 +7,6 @@
 - firebase security & permissions deep dive
 - more protect from accidental wipes, eg overwrites to zero in game
 - implement database backups
-- stop setting user to multiple subcomponent state
 
 ### Tier 2 (user convenience etc)
 

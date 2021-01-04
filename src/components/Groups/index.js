@@ -16,7 +16,7 @@ const GroupsRouter = ({ user }) => {
         <ListPage user={user} />
       </Route>
       <Route path={`${path}/:groupId`}>
-        <GroupPage />
+        <GroupPage user={user} />
       </Route>
     </Switch>
   );

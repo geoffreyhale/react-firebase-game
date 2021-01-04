@@ -19,15 +19,12 @@ export default class Groups extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        //TODO should not be setting user locally here
-        this.setState({ user }, () => {
-          const uid = this.props.user && this.props.user.uid; //TODO
-          const userRef = firebase.database().ref('users/' + uid);
-          userRef.on('value', (snapshot) => {
-            let user = snapshot.val();
-            this.setState({
-              groups: user && user.groups ? user.groups : {},
-            });
+        const uid = this.props.user && this.props.user.uid;
+        const userRef = firebase.database().ref('users/' + uid);
+        userRef.on('value', (snapshot) => {
+          let user = snapshot.val();
+          this.setState({
+            groups: user && user.groups ? user.groups : {},
           });
         });
       }

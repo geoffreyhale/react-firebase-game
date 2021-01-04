@@ -252,17 +252,14 @@ export default class Posts extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        //TODO should not be setting user locally here
-        this.setState({ user }, () => {
-          const postsRef = firebase.database().ref('posts');
-          postsRef.on('value', (snapshot) => {
-            const usersRef = firebase.database().ref('users');
-            usersRef.once('value', (usersSnapshot) => {
-              this.setPostsFromPostsSnapshot(
-                snapshot.val(), //TODO bad javascript
-                usersSnapshot.val()
-              );
-            });
+        const postsRef = firebase.database().ref('posts');
+        postsRef.on('value', (snapshot) => {
+          const usersRef = firebase.database().ref('users');
+          usersRef.once('value', (usersSnapshot) => {
+            this.setPostsFromPostsSnapshot(
+              snapshot.val(), //TODO bad javascript
+              usersSnapshot.val()
+            );
           });
         });
       }
