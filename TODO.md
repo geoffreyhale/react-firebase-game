@@ -2,7 +2,6 @@
 
 ## BUGS
 
-- reply-in-progress jumps to wrong post if new post comes in
 - fix use of user in subcomponents without passing
 
 ## FEATURES

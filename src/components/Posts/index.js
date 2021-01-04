@@ -336,7 +336,7 @@ export default class Posts extends Component {
             <tbody>
               {Object.entries(this.state.postsTree).map(([key, value]) => {
                 return (
-                  <tr key={key}>
+                  <tr key={value.id}>
                     <td>
                       <Card className="mt-2">
                         <Card.Body>
