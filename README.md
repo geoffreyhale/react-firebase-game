@@ -31,7 +31,6 @@ yarn build && firebase deploy
 - reply-in-progress jumps to wrong post if new post comes in
 - ability to edit your existing posts
 - reactions on posts
-- chronological order for replies (like a conversation)
 - keep user logged in on refresh
 - fix use of user in subcomponents without passing
 - fix crash after log out

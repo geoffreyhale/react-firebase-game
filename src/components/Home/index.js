@@ -126,18 +126,21 @@ export default class Posts extends Component {
         'USER NAME NOT FOUND';
       postsByTimestamp[post.timestamp] = post;
     });
-    const postsByTimestampOrdered = Object.keys(postsByTimestamp)
-      .sort((a, b) => b - a)
+    const postsChronological = Object.keys(postsByTimestamp)
+      .sort((a, b) => a - b)
       .reduce((result, key) => {
         result[key] = postsByTimestamp[key];
         return result;
       }, {});
     const postsTreeWithReplies = createDataTree(
-      Object.values(postsByTimestampOrdered)
+      Object.values(postsChronological)
+    );
+    const postsTreeReverseChronological = postsTreeWithReplies.sort(
+      (a, b) => b.timestamp - a.timestamp
     );
     this.setState({
       rawPosts: rawPosts,
-      postsTree: postsTreeWithReplies, //TODO make this functional down in view components
+      postsTree: postsTreeReverseChronological, //TODO make this functional down in view components
     });
     return true;
   }
