@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -89,14 +90,18 @@ class NewPostForm extends React.Component {
 }
 
 const DeletePostButton = ({ onClick }) => (
-  <Button
-    variant="outline-danger"
-    type="button"
-    onClick={onClick}
-    className="float-right"
-  >
-    Delete
-  </Button>
+  <Dropdown>
+    <Dropdown.Toggle
+      size="sm"
+      style={{ backgroundColor: 'inherit', border: 'none', color: 'grey' }}
+    ></Dropdown.Toggle>
+
+    <Dropdown.Menu>
+      <Dropdown.Item as="button" onClick={onClick}>
+        Delete
+      </Dropdown.Item>
+    </Dropdown.Menu>
+  </Dropdown>
 );
 
 export default class Posts extends Component {
@@ -213,18 +218,22 @@ export default class Posts extends Component {
                     <td>
                       <Card className="mt-2">
                         <Card.Body>
-                          <Card.Title>{value.userDisplayName}</Card.Title>
+                          <Card.Title>
+                            {value.userDisplayName}
+                            <div className="float-right">
+                              {this.props.user &&
+                              this.props.user.uid === value.userId ? (
+                                <DeletePostButton
+                                  onClick={() => this.deletePost(value.id)}
+                                />
+                              ) : null}
+                            </div>
+                          </Card.Title>
                           <div className="text-muted">
                             {friendlyTimestamp(value.timestamp)}
                           </div>
                           <div>{value.content}</div>
                           <div className="mt-3" style={{ width: '100%' }}>
-                            {this.props.user &&
-                            this.props.user.uid === value.userId ? (
-                              <DeletePostButton
-                                onClick={() => this.deletePost(value.id)}
-                              />
-                            ) : null}
                             <NewPostForm
                               onSubmit={this.createNewPost}
                               placeholder="Write a reply..."
@@ -240,6 +249,17 @@ export default class Posts extends Component {
                                   <Card.Body>
                                     <Card.Title>
                                       {replyPost.userDisplayName}
+                                      <div className="float-right">
+                                        {this.props.user &&
+                                        this.props.user.uid ===
+                                          replyPost.userId ? (
+                                          <DeletePostButton
+                                            onClick={() =>
+                                              this.deletePost(replyPost.id)
+                                            }
+                                          />
+                                        ) : null}
+                                      </div>
                                     </Card.Title>
                                     <div className="text-muted">
                                       {friendlyTimestamp(replyPost.timestamp)}
@@ -251,14 +271,9 @@ export default class Posts extends Component {
                                     >
                                       {
                                         this.props.user &&
-                                        this.props.user.uid ===
-                                          replyPost.userId ? (
-                                          <DeletePostButton
-                                            onClick={() =>
-                                              this.deletePost(replyPost.id)
-                                            }
-                                          />
-                                        ) : null
+                                        this.props.user.uid === replyPost.userId
+                                          ? null
+                                          : null
                                         // <NewPostForm
                                         //   onSubmit={this.createNewPost}
                                         //   placeholder="Write a reply..."

@@ -29,6 +29,7 @@ yarn build && firebase deploy
 ### Tier 2 (user convenience etc)
 
 - reply-in-progress jumps to wrong post if new post comes in
+- ability to edit your existing posts
 - reactions on posts
 - display replies as replies
 - keep user logged in on refresh
