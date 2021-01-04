@@ -39,6 +39,10 @@ const AppHeaderTitle = () => {
   );
 };
 
+const UnderConstruction = () => [
+  <span title="Under Construction">Under Construction &#128679;</span>,
+];
+
 const AppNav = () => {
   return (
     <Nav className="justify-content-center">
@@ -47,20 +51,20 @@ const AppNav = () => {
           <Link to="/">Home</Link>
         </Nav.Link>
       </Nav.Item>
-      <NavDropdown title="&#8943;" id="nav-dropdown">
+      <NavDropdown title={<span title="Under Construction">&#8943;</span>}>
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/game">Game</NavLink> &#128679;
+            <NavLink to="/groups">Groups</NavLink> <UnderConstruction />
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/groups">Groups</NavLink> &#128679;
+            <NavLink to="/game">Digger</NavLink> <UnderConstruction />
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/scorekeeper">Scorekeeper</NavLink>
+            <NavLink to="/scorekeeper">Scorekeeper </NavLink> (Calculator)
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>
