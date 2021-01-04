@@ -21,7 +21,6 @@ yarn build && firebase deploy
 ### BUGS
 
 - reply-in-progress jumps to wrong post if new post comes in
-- fix crash after log out
 - fix use of user in subcomponents without passing
 
 ### Tier 1 (security etc)
@@ -37,21 +36,36 @@ yarn build && firebase deploy
 - confirm prompt for delete post
 - ability to edit your existing posts
 - ability to share pictures
-- add backend app to complete Stripe payment gateway
-
-### Tier 3 (nice to have etc)
-
 - better handling for orphan posts
-- add purchasables
-- make game fun
-- make more useful/meaningful/valuable than game
 - better react props handling
+
+## NEW USERS AND PARTICIPATION
+
+- invite codes and family-tree displays and stats for top inviters
+- stats for top posters, repliers, tag givers and getters and by tag type
+
+## MONETIZATION
+
+- add backend app to complete Stripe payment gateway
+- add purchasables
 
 ## IDEAS
 
+- private rooms like worlds w game-ified invites / vote-off-island / scores etc
+- auto-curated feed universal and personal, eg most active recent posts
+- view posts feed by filters: user, tag
+- who's online now
+- notifications / cool stuff you might care to see since you last logged in
 - groups -> rooms / post feeds / chat rooms
-- humans game modeling reality, eg mood meter
+- save successful card info (PCI compliance!?)
+
+## UTILITIES
+
+- movies seen w ratings and reviews; books, etc
 - new names networking/contacts/friends utility
 - scorekeeper as part of rooms
-- demote games
-- save successful card info (PCI compliance!?)
+
+## GAMES
+
+- humans game modeling reality, eg mood meter
+- make game fun
