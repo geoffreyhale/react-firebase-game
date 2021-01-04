@@ -388,13 +388,34 @@ export default class Posts extends Component {
                                 );
                               }, this)}
                           </div>
-                          <div className="mt-3" style={{ width: '100%' }}>
-                            <NewPostForm
-                              onSubmit={this.createNewPost}
-                              placeholder="Write a reply..."
-                              hideSubmitButton={true}
-                              replyToId={value.id}
-                            />
+                          <div
+                            className="mt-3"
+                            style={{
+                              width: '100%',
+                              display: 'flex',
+                              flexDirection: 'row',
+                            }}
+                          >
+                            <div
+                              className={'mr-2'}
+                              style={{ alignSelf: 'flex-start' }}
+                            >
+                              {this.props.user && this.props.user.photoURL ? (
+                                <img
+                                  src={this.props.user.photoURL}
+                                  alt="user"
+                                  style={{ height: 38 }}
+                                />
+                              ) : null}
+                            </div>
+                            <div style={{ flexGrow: 1 }}>
+                              <NewPostForm
+                                onSubmit={this.createNewPost}
+                                placeholder="Write a reply..."
+                                hideSubmitButton={true}
+                                replyToId={value.id}
+                              />
+                            </div>
                           </div>
                         </Card.Body>
                       </Card>
