@@ -18,6 +18,12 @@ yarn build && firebase deploy
 
 ## TODO
 
+### BUGS
+
+- reply-in-progress jumps to wrong post if new post comes in
+- fix crash after log out
+- fix use of user in subcomponents without passing
+
 ### Tier 1 (security etc)
 
 - database security rules should prevent clients from reading any private data
@@ -28,19 +34,16 @@ yarn build && firebase deploy
 
 ### Tier 2 (user convenience etc)
 
-- reply-in-progress jumps to wrong post if new post comes in
+- confirm prompt for delete post
 - ability to edit your existing posts
 - reactions on posts
 - keep user logged in on refresh
-- fix use of user in subcomponents without passing
-- fix crash after log out
 - add backend app to complete Stripe payment gateway
-- better handling for orphan posts
 
 ### Tier 3 (nice to have etc)
 
+- better handling for orphan posts
 - pics for posts
-- save successful card info (PCI compliance!?)
 - add purchasables
 - make game fun
 - make more useful/meaningful/valuable than game
@@ -53,3 +56,4 @@ yarn build && firebase deploy
 - new names networking/contacts/friends utility
 - scorekeeper as part of rooms
 - demote games
+- save successful card info (PCI compliance!?)
