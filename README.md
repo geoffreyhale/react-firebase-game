@@ -28,7 +28,7 @@ yarn build && firebase deploy
 
 ### Tier 2 (user convenience etc)
 
-- fix for if parent post is deleted
+- better handling for orphan posts
 - reactions on posts
 - display replies as replies
 - keep user logged in on refresh

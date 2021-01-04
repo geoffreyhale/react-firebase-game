@@ -19,9 +19,11 @@ const createDataTree = (dataset) => {
   );
   const dataTree = [];
   dataset.forEach((aData) => {
-    if (aData.replyToId)
+    if (aData.replyToId && hashTable[aData.replyToId]) {
       hashTable[aData.replyToId].childNodes.push(hashTable[aData.id]);
-    else dataTree.push(hashTable[aData.id]);
+    } else {
+      dataTree.push(hashTable[aData.id]);
+    }
   });
   return dataTree;
 };
