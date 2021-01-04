@@ -39,7 +39,7 @@ yarn build && firebase deploy
 
 ### Tier 3 (nice to have etc)
 
-- pics for posts, cleaner timestamps
+- pics for posts
 - save successful card info (PCI compliance!?)
 - add purchasables
 - make game fun

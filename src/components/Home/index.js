@@ -32,16 +32,27 @@ const createDataTree = (dataset) => {
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
   const timestampDate = new Date(timestamp);
-  const formattedTimestamp = format(
-    timestampDate,
-    "yyyy-MM-dd'T'HH:mm:ss.SSSxxx"
-  );
+  const formattedTimestamp = format(timestampDate, "MMMM d, yyyy 'at' hh:mm b");
   const duration = intervalToDuration({
     start: timestampDate,
     end: new Date(),
   });
-  const formattedDuration = formatDuration(duration);
-  return `${formattedTimestamp} (${formattedDuration})`;
+  if (duration.years || duration.months || duration.days > 3) {
+    return `${formattedTimestamp}`;
+  }
+  if (duration.days) {
+    return `${duration.days}d`;
+  }
+  if (duration.hours) {
+    return `${duration.hours}h`;
+  }
+  if (duration.minutes) {
+    return `${duration.minutes}m`;
+  }
+  if (duration.seconds) {
+    return `${duration.seconds}s`;
+  }
+  return `${formattedTimestamp} (${formatDuration(duration)})`;
 };
 
 class NewPostForm extends React.Component {
