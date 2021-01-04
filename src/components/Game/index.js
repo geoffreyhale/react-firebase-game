@@ -105,6 +105,16 @@ export default class Game extends Component {
       <>
         <Card>
           <Card.Body>
+            <h2 style={{ marginBottom: 0 }}>
+              Digger{' '}
+              <small className="text-muted">
+                (Idle-Clicker Card-Collector Game)
+              </small>
+            </h2>
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
             <Card.Title>Inventory</Card.Title>
             <table>
               <tbody>

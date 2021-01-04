@@ -16,6 +16,7 @@
 - better handling for orphan posts
 - better react props handling
 - elevate user to global
+- move game data out of user objects
 
 ### NEW USERS AND PARTICIPATION
 

@@ -40,7 +40,7 @@ const AppHeaderTitle = () => {
 };
 
 const UnderConstruction = () => [
-  <span title="Under Construction">Under Construction &#128679;</span>,
+  <span title="Under Construction">(&#128679; under construction)</span>,
 ];
 
 const AppNav = () => {
@@ -51,20 +51,25 @@ const AppNav = () => {
           <Link to="/">Home</Link>
         </Nav.Link>
       </Nav.Item>
-      <NavDropdown title={<span title="Under Construction">&#8943;</span>}>
+      <NavDropdown title="Groups">
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/groups">Groups</NavLink> <UnderConstruction />
+            <NavLink to="/groups">My Unlisted Groups</NavLink>{' '}
+            <UnderConstruction />
           </Nav.Link>
         </NavDropdown.Item>
+      </NavDropdown>
+      <NavDropdown title="Games">
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/game">Digger</NavLink> <UnderConstruction />
+            <NavLink to="/game">Digger (&#128679; work in progress)</NavLink>
           </Nav.Link>
         </NavDropdown.Item>
+      </NavDropdown>
+      <NavDropdown title="&#8943;">
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/scorekeeper">Scorekeeper </NavLink> (Calculator)
+            <NavLink to="/scorekeeper">Scorekeeper </NavLink>
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>

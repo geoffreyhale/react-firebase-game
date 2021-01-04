@@ -49,8 +49,25 @@ export default class Scorekeeper extends React.Component {
         <Col xs={8}>
           <Card>
             <Card.Body>
-              <Card.Title>Build Your Scorekeeper</Card.Title>
-              <h5>Presets</h5>
+              <h2 style={{ marginBottom: 0 }}>
+                Scorekeeper{' '}
+                <small className="text-muted">(Calculator for Games IRL)</small>
+              </h2>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>How To Use</Card.Title>
+              <ol>
+                <li>Add buttons or choose a preset in Build Scorekeeper.</li>
+                <li>Play game irl and use Score Card to keep score.</li>
+              </ol>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
+              <Card.Title>Build Scorekeeper</Card.Title>
+              <h6>Presets</h6>
               <Button
                 key="dominoes"
                 variant="link"
@@ -73,7 +90,7 @@ export default class Scorekeeper extends React.Component {
                 Spades
               </Button>
               <br />
-              <h5>Add Buttons</h5>
+              <h6>Add Buttons</h6>
               {[10, 5, 1, -1].map((amount) => (
                 <Button
                   key={amount}
@@ -100,7 +117,7 @@ export default class Scorekeeper extends React.Component {
           </Card>
           <Card>
             <Card.Body>
-              <Card.Title>Score</Card.Title>
+              <Card.Title>Score Card</Card.Title>
               <Table style={{ fontSize: '300%' }}>
                 <tbody>
                   <tr>

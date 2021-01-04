@@ -52,7 +52,7 @@ export default class Groups extends Component {
       <>
         <Card>
           <Card.Body>
-            <Card.Title>Groups</Card.Title>
+            <Card.Title>Unlisted Groups You've Created</Card.Title>
             <table>
               <tbody>
                 {Object.entries(this.state.groups).map(([key, value]) => {
@@ -86,7 +86,7 @@ export default class Groups extends Component {
                   type="submit"
                   disabled={this.state.newGroupName === ''}
                 >
-                  Create New Group
+                  Create New Unlisted Group
                 </Button>
               </Form>
             </div>
