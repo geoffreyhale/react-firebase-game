@@ -62,7 +62,12 @@ const AppNav = () => {
       <NavDropdown title="Games">
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/game">Digger (&#128679; work in progress)</NavLink>
+            <NavLink to="/game">Digger</NavLink>
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link as={'span'}>
+            <NavLink to="/tictactoe">Tic-tac-toe</NavLink>
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>
