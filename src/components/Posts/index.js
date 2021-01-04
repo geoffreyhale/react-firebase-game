@@ -190,6 +190,23 @@ const PostTags = ({ tags, myUserId, addTag }) => {
   );
 };
 
+const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title>
+          {photoURL ? (
+            <img src={photoURL} alt="user" style={{ height: 48 }} />
+          ) : null}
+          {displayName}
+          <small className="text-muted ml-2">&#127757; Public</small>
+        </Card.Title>
+        <NewPostForm onSubmit={createNewPost} />
+      </Card.Body>
+    </Card>
+  );
+};
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -310,22 +327,11 @@ export default class Posts extends Component {
       <Row>
         <Col></Col>
         <Col sm={8} bsClass="col-posts">
-          <Card>
-            <Card.Body>
-              <Card.Title>
-                {this.props.user && this.props.user.photoURL ? (
-                  <img
-                    src={this.props.user.photoURL}
-                    alt="user"
-                    style={{ height: 48 }}
-                  />
-                ) : null}
-                {this.props.user && this.props.user.displayName}
-                <small className="text-muted ml-2">&#127757; Public</small>
-              </Card.Title>
-              <NewPostForm onSubmit={this.createNewPost} />
-            </Card.Body>
-          </Card>
+          <NewPostCard
+            photoURL={this.props.user && this.props.user.photoURL}
+            displayName={this.props.user && this.props.user.displayName}
+            createNewPost={this.createNewPost}
+          />
           <table>
             <tbody>
               {Object.entries(this.state.postsTree).map(([key, value]) => {
