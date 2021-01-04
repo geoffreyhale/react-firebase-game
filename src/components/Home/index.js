@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -84,6 +85,7 @@ class NewPostForm extends React.Component {
           placeholder={this.props.placeholder || 'How are you?'}
           value={this.state.content}
           onChange={this.handleChange}
+          size={this.props.size}
         />
         {!this.props.hideSubmitButton && (
           <Button
@@ -133,6 +135,49 @@ const PostHeader = ({
 );
 
 const PostContent = ({ children }) => <div className="mt-1">{children}</div>;
+
+const Tag = ({ type, variant }) => {
+  // if (type === 'productive') {
+  //   return (
+  //     <Badge
+  //       pill
+  //       variant="dark"
+  //       style={{ backgroundColor: 'lightbrown !important' }}
+  //     >
+  //       {type}
+  //     </Badge>
+  //   );
+  // }
+  return (
+    <Badge pill variant={variant || 'secondary'}>
+      {type}
+    </Badge>
+  );
+};
+
+const PostTags = ({ tags, myUserId, addTag }) => {
+  return (
+    <div>
+      {tags &&
+        Object.values(tags).map((tag) => {
+          if (tag.userId === myUserId) {
+            return <Tag type={tag.type} variant="info" />;
+          }
+          return <Tag type={tag.type} />;
+        })}
+      <div className={'mt-1'}>
+        <NewPostForm
+          onSubmit={(content, replyToId, successCallback) => {
+            addTag(content, successCallback);
+          }}
+          placeholder="tag"
+          hideSubmitButton={true}
+          size={'sm'}
+        />
+      </div>
+    </div>
+  );
+};
 
 export default class Posts extends Component {
   constructor() {
@@ -222,6 +267,31 @@ export default class Posts extends Component {
     const postsRef = firebase.database().ref('posts');
     postsRef.child(post.id).remove();
   }
+  addTag(postId, tagContent, successCallback) {
+    const uid = this.props.user && this.props.user.uid;
+    const postRef = firebase.database().ref('posts/' + postId);
+    const key = postRef.child('tags').push().key;
+    postRef
+      .child('tags')
+      .child(key)
+      .update({
+        type: tagContent,
+        userId: uid,
+      })
+      .then(() => {
+        const postsRef = firebase.database().ref('posts');
+        postsRef.once('value').then((snapshot) => {
+          const usersRef = firebase.database().ref('users');
+          usersRef.once('value', (usersSnapshot) => {
+            this.setPostsFromPostsSnapshot(
+              snapshot.val(), //TODO bad javascript
+              usersSnapshot.val()
+            );
+          });
+        });
+      })
+      .then(successCallback());
+  }
   render() {
     return (
       <Row>
@@ -265,6 +335,15 @@ export default class Posts extends Component {
                             timestamp={value.timestamp}
                           />
                           <PostContent>{value.content}</PostContent>
+                          <div className="mt-2">
+                            <PostTags
+                              tags={value.tags}
+                              myUserId={this.props.user && this.props.user.uid}
+                              addTag={(content, successCallback) =>
+                                this.addTag(value.id, content, successCallback)
+                              }
+                            />
+                          </div>
                           <div className="mt-3">
                             {value &&
                               value.childNodes &&
