@@ -123,11 +123,12 @@ const PostHeader = ({
   postActionsDropdown,
   timestamp,
   photoURL,
+  small,
 }) => (
-  <>
+  <div style={{ fontSize: small ? '85%' : null }}>
     <div className="float-left mr-2">
       {photoURL ? (
-        <img src={photoURL} alt="user" style={{ height: 48 }} />
+        <img src={photoURL} alt="user" style={{ height: small ? 38 : 48 }} />
       ) : null}
     </div>
     <>
@@ -140,10 +141,14 @@ const PostHeader = ({
       <div className="small text-muted">{friendlyTimestamp(timestamp)}</div>
     </>
     <div style={{ clear: 'both' }}></div>
-  </>
+  </div>
 );
 
-const PostContent = ({ children }) => <div className="mt-1">{children}</div>;
+const PostContent = ({ children, small }) => (
+  <div className="mt-1" style={{ fontSize: small ? '85%' : null }}>
+    {children}
+  </div>
+);
 
 const Tag = ({ type, variant }) => {
   // if (type === 'productive') {
@@ -379,6 +384,7 @@ export default class Posts extends Component {
                                         }
                                         timestamp={replyPost.timestamp}
                                         photoURL={replyPost.userPhotoURL}
+                                        small={true}
                                       />
                                       <PostContent>
                                         {replyPost.content}
