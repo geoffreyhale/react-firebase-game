@@ -88,6 +88,17 @@ class NewPostForm extends React.Component {
   }
 }
 
+const DeletePostButton = ({ onClick }) => (
+  <Button
+    variant="outline-danger"
+    type="button"
+    onClick={onClick}
+    className="float-right"
+  >
+    Delete
+  </Button>
+);
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -167,7 +178,7 @@ export default class Posts extends Component {
       .then(successCallback());
   }
   deletePost(statePostsKey) {
-    const post = this.state.posts[statePostsKey];
+    const post = this.state.posts.find((post) => post.id === statePostsKey);
     const postsRef = firebase.database().ref('posts');
     postsRef.child(post.id).remove();
   }
@@ -206,17 +217,12 @@ export default class Posts extends Component {
                           </div>
                           <div>{value.content}</div>
                           <div className="mt-3" style={{ width: '100%' }}>
-                            {/* {this.props.user &&
+                            {this.props.user &&
                             this.props.user.uid === value.userId ? (
-                              <Button
-                                variant="outline-danger"
-                                type="button"
+                              <DeletePostButton
                                 onClick={() => this.deletePost(value.id)}
-                                className="float-right"
-                              >
-                                Delete
-                              </Button>
-                            ) : null} */}
+                              />
+                            ) : null}
                             <NewPostForm
                               onSubmit={this.createNewPost}
                               placeholder="Write a reply..."
