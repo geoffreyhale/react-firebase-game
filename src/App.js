@@ -100,7 +100,7 @@ class App extends Component {
         <Container fluid>
           <Row>
             <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
-              <header className="mb-4">
+              <header>
                 <Card>
                   <Card.Body style={{ paddingBottom: '0.25rem' }}>
                     <div>

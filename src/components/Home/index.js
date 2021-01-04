@@ -10,11 +10,21 @@ import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
 
+//TODO write tests for this function
 //adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
-const nest = (items, id = null, link = 'replyToId') =>
-  items
-    .filter((item) => item[link] === id)
-    .map((item) => ({ ...item, children: nest(items, item.id) }));
+const createDataTree = (dataset) => {
+  const hashTable = Object.create(null);
+  dataset.forEach(
+    (aData) => (hashTable[aData.id] = { ...aData, childNodes: [] })
+  );
+  const dataTree = [];
+  dataset.forEach((aData) => {
+    if (aData.replyToId)
+      hashTable[aData.replyToId].childNodes.push(hashTable[aData.id]);
+    else dataTree.push(hashTable[aData.id]);
+  });
+  return dataTree;
+};
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
@@ -47,7 +57,6 @@ class NewPostForm extends React.Component {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(this.props.replyToId);
           const successCallback = () => this.setState({ content: '' });
           this.props.onSubmit(
             this.state.content,
@@ -104,10 +113,11 @@ export default class Posts extends Component {
         result[key] = postsByTimestamp[key];
         return result;
       }, {});
-    const postsTreeWithReplies = {};
-
+    const postsTreeWithReplies = createDataTree(
+      Object.values(postsByTimestampOrdered)
+    );
     this.setState({
-      posts: postsByTimestampOrdered,
+      posts: postsTreeWithReplies,
     });
     return true;
   }
@@ -164,7 +174,7 @@ export default class Posts extends Component {
       <Row>
         <Col></Col>
         <Col xs={8}>
-          <Card className="mb-3">
+          <Card className="mt-3">
             <Card.Body>
               <Card.Title>
                 {this.props.user && this.props.user.photoURL ? (
@@ -186,7 +196,7 @@ export default class Posts extends Component {
                 return (
                   <tr key={key}>
                     <td>
-                      <Card className="mb-2">
+                      <Card className="mt-2">
                         <Card.Body>
                           <Card.Title>{value.userDisplayName}</Card.Title>
                           <div className="text-muted">
@@ -194,25 +204,69 @@ export default class Posts extends Component {
                           </div>
                           <div>{value.content}</div>
                           <div className="mt-3" style={{ width: '100%' }}>
-                            {this.props.user &&
+                            {/* {this.props.user &&
                             this.props.user.uid === value.userId ? (
                               <Button
                                 variant="outline-danger"
                                 type="button"
-                                onClick={() => this.deletePost(key)}
+                                onClick={() => this.deletePost(value.id)}
                                 className="float-right"
                               >
                                 Delete
                               </Button>
-                            ) : (
-                              <NewPostForm
-                                onSubmit={this.createNewPost}
-                                placeholder="Write a reply..."
-                                hideSubmitButton={true}
-                                replyToId={value.id}
-                              />
-                            )}
+                            ) : null} */}
+                            <NewPostForm
+                              onSubmit={this.createNewPost}
+                              placeholder="Write a reply..."
+                              hideSubmitButton={true}
+                              replyToId={value.id}
+                            />
                           </div>
+                          {value &&
+                            value.childNodes &&
+                            value.childNodes.map((replyPost) => {
+                              console.log('replyPost.id:', replyPost.id);
+                              return (
+                                <Card>
+                                  <Card.Body>
+                                    <Card.Title>
+                                      {replyPost.userDisplayName}
+                                    </Card.Title>
+                                    <div className="text-muted">
+                                      {friendlyTimestamp(replyPost.timestamp)}
+                                    </div>
+                                    <div>{replyPost.content}</div>
+                                    <div
+                                      className="mt-3"
+                                      style={{ width: '100%' }}
+                                    >
+                                      {/* {
+                                        this.props.user &&
+                                        this.props.user.uid ===
+                                          replyPost.userId ? (
+                                          <Button
+                                            variant="outline-danger"
+                                            type="button"
+                                            onClick={() =>
+                                              this.deletePost(replyPost.id)
+                                            }
+                                            className="float-right"
+                                          >
+                                            Delete
+                                          </Button>
+                                        ) : null
+                                        // <NewPostForm
+                                        //   onSubmit={this.createNewPost}
+                                        //   placeholder="Write a reply..."
+                                        //   hideSubmitButton={true}
+                                        //   replyToId={replyPost.id}
+                                        // />
+                                      } */}
+                                    </div>
+                                  </Card.Body>
+                                </Card>
+                              );
+                            }, this)}
                         </Card.Body>
                       </Card>
                     </td>

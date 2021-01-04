@@ -24,9 +24,11 @@ yarn build && firebase deploy
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
 - more protect from accidental wipes, eg overwrites to zero in game
+- implement database backups
 
 ### Tier 2 (user convenience etc)
 
+- fix for if parent post is deleted
 - reactions on posts
 - display replies as replies
 - keep user logged in on refresh
