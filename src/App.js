@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 import { Link, NavLink } from 'react-router-dom';
@@ -46,21 +47,23 @@ const AppNav = () => {
           <Link to="/">Home</Link>
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
-        <Nav.Link as={'span'}>
-          <NavLink to="/game">Game</NavLink>
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link as={'span'}>
-          <NavLink to="/groups">Groups</NavLink>
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link as={'span'}>
-          <NavLink to="/scorekeeper">Scorekeeper</NavLink>
-        </Nav.Link>
-      </Nav.Item>
+      <NavDropdown title="&#8943;" id="nav-dropdown">
+        <NavDropdown.Item>
+          <Nav.Link as={'span'}>
+            <NavLink to="/game">Game</NavLink> &#128679;
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link as={'span'}>
+            <NavLink to="/groups">Groups</NavLink> &#128679;
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link as={'span'}>
+            <NavLink to="/scorekeeper">Scorekeeper</NavLink>
+          </Nav.Link>
+        </NavDropdown.Item>
+      </NavDropdown>
     </Nav>
   );
 };
