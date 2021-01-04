@@ -21,11 +21,17 @@ const AppHeaderTitle = () => {
           textDecoration: 'inherit',
         }}
       >
-        xbk.io
+        <img
+          src="logo192.png"
+          alt="xbook logo"
+          style={{ verticalAlign: 'bottom', height: '3rem' }}
+        />
+        &#128216;
+        <span className="ml-2">X Book</span>
       </Link>
       <span className="text-muted ml-2">
         <small style={{ fontSize: '50%' }}>
-          <em>better together</em>
+          <em>better together &#128149;</em>
         </small>
       </span>
     </h1>
