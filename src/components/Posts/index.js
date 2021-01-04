@@ -334,40 +334,40 @@ export default class Posts extends Component {
           />
           <table>
             <tbody>
-              {Object.entries(this.state.postsTree).map(([key, value]) => {
+              {Object.entries(this.state.postsTree).map(([key, post]) => {
                 return (
-                  <tr key={value.id}>
+                  <tr key={post.id}>
                     <td>
                       <Card className="mt-2">
                         <Card.Body>
                           <PostHeader
-                            displayName={value.userDisplayName}
+                            displayName={post.userDisplayName}
                             showActions={
                               this.props.user &&
-                              this.props.user.uid === value.userId
+                              this.props.user.uid === post.userId
                             }
                             postActionsDropdown={
                               <PostActionsDropdown
-                                deletePost={() => this.deletePost(value.id)}
+                                deletePost={() => this.deletePost(post.id)}
                               />
                             }
-                            timestamp={value.timestamp}
-                            photoURL={value.userPhotoURL}
+                            timestamp={post.timestamp}
+                            photoURL={post.userPhotoURL}
                           />
-                          <PostContent>{value.content}</PostContent>
+                          <PostContent>{post.content}</PostContent>
                           <div className="mt-2">
                             <PostTags
-                              tags={value.tags}
+                              tags={post.tags}
                               myUserId={this.props.user && this.props.user.uid}
                               addTag={(content, successCallback) =>
-                                this.addTag(value.id, content, successCallback)
+                                this.addTag(post.id, content, successCallback)
                               }
                             />
                           </div>
                           <div className="mt-3">
-                            {value &&
-                              value.childNodes &&
-                              value.childNodes.map((replyPost) => {
+                            {post &&
+                              post.childNodes &&
+                              post.childNodes.map((replyPost) => {
                                 return (
                                   <Card className="mt-1">
                                     <Card.Body style={{ padding: '0.75rem' }}>
@@ -422,7 +422,7 @@ export default class Posts extends Component {
                                 onSubmit={this.createNewPost}
                                 placeholder="Write a reply..."
                                 hideSubmitButton={true}
-                                replyToId={value.id}
+                                replyToId={post.id}
                               />
                             </div>
                           </div>
