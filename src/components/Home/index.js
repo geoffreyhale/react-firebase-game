@@ -11,6 +11,7 @@ import firebase, { auth } from '../../firebase.js';
 import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
+import MyDropdownToggle from '../shared/MyDropdownToggle';
 
 //TODO write tests for this function
 //adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
@@ -104,11 +105,7 @@ class NewPostForm extends React.Component {
 
 const PostActionsDropdown = ({ deletePost }) => (
   <Dropdown>
-    <Dropdown.Toggle
-      size="sm"
-      style={{ backgroundColor: 'inherit', border: 'none', color: 'grey' }}
-    ></Dropdown.Toggle>
-
+    <MyDropdownToggle />
     <Dropdown.Menu>
       <Dropdown.Item as="button" onClick={deletePost}>
         Delete
