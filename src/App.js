@@ -75,6 +75,7 @@ class App extends Component {
       }
     });
   }
+  //TODO move to UserAuth
   login() {
     auth.signInWithPopup(provider).then((result) => {
       const user = result.user;
@@ -94,6 +95,7 @@ class App extends Component {
       );
     });
   }
+  //TODO move to UserAuth
   logout() {
     auth.signOut().then(() => {
       this.setState({
