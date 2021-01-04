@@ -233,6 +233,54 @@ export default class Posts extends Component {
                             {friendlyTimestamp(value.timestamp)}
                           </div>
                           <div>{value.content}</div>
+                          <div className="mt-2">
+                            {value &&
+                              value.childNodes &&
+                              value.childNodes.map((replyPost) => {
+                                return (
+                                  <Card className="mt-1">
+                                    <Card.Body>
+                                      <Card.Title>
+                                        {replyPost.userDisplayName}
+                                        <div className="float-right">
+                                          {this.props.user &&
+                                          this.props.user.uid ===
+                                            replyPost.userId ? (
+                                            <PostActionsDropdown
+                                              deletePost={() =>
+                                                this.deletePost(replyPost.id)
+                                              }
+                                            />
+                                          ) : null}
+                                        </div>
+                                      </Card.Title>
+                                      <div className="text-muted">
+                                        {friendlyTimestamp(replyPost.timestamp)}
+                                      </div>
+                                      <div>{replyPost.content}</div>
+                                      <div
+                                        className="mt-3"
+                                        style={{ width: '100%' }}
+                                      >
+                                        {
+                                          this.props.user &&
+                                          this.props.user.uid ===
+                                            replyPost.userId
+                                            ? null
+                                            : null
+                                          // <NewPostForm
+                                          //   onSubmit={this.createNewPost}
+                                          //   placeholder="Write a reply..."
+                                          //   hideSubmitButton={true}
+                                          //   replyToId={replyPost.id}
+                                          // />
+                                        }
+                                      </div>
+                                    </Card.Body>
+                                  </Card>
+                                );
+                              }, this)}
+                          </div>
                           <div className="mt-3" style={{ width: '100%' }}>
                             <NewPostForm
                               onSubmit={this.createNewPost}
@@ -241,51 +289,6 @@ export default class Posts extends Component {
                               replyToId={value.id}
                             />
                           </div>
-                          {value &&
-                            value.childNodes &&
-                            value.childNodes.map((replyPost) => {
-                              return (
-                                <Card>
-                                  <Card.Body>
-                                    <Card.Title>
-                                      {replyPost.userDisplayName}
-                                      <div className="float-right">
-                                        {this.props.user &&
-                                        this.props.user.uid ===
-                                          replyPost.userId ? (
-                                          <PostActionsDropdown
-                                            deletePost={() =>
-                                              this.deletePost(replyPost.id)
-                                            }
-                                          />
-                                        ) : null}
-                                      </div>
-                                    </Card.Title>
-                                    <div className="text-muted">
-                                      {friendlyTimestamp(replyPost.timestamp)}
-                                    </div>
-                                    <div>{replyPost.content}</div>
-                                    <div
-                                      className="mt-3"
-                                      style={{ width: '100%' }}
-                                    >
-                                      {
-                                        this.props.user &&
-                                        this.props.user.uid === replyPost.userId
-                                          ? null
-                                          : null
-                                        // <NewPostForm
-                                        //   onSubmit={this.createNewPost}
-                                        //   placeholder="Write a reply..."
-                                        //   hideSubmitButton={true}
-                                        //   replyToId={replyPost.id}
-                                        // />
-                                      }
-                                    </div>
-                                  </Card.Body>
-                                </Card>
-                              );
-                            }, this)}
                         </Card.Body>
                       </Card>
                     </td>
