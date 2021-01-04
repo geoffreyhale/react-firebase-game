@@ -122,16 +122,25 @@ const PostHeader = ({
   showActions,
   postActionsDropdown,
   timestamp,
+  photoURL,
 }) => (
-  <div>
-    <div>
-      <strong>{displayName}</strong>
-      <div className="float-right">
-        {showActions ? postActionsDropdown : null}
-      </div>
+  <>
+    <div className="float-left mr-2">
+      {photoURL ? (
+        <img src={photoURL} alt="user" style={{ height: 48 }} />
+      ) : null}
     </div>
-    <div className="small text-muted">{friendlyTimestamp(timestamp)}</div>
-  </div>
+    <>
+      <div>
+        <strong>{displayName}</strong>
+        <div className="float-right">
+          {showActions ? postActionsDropdown : null}
+        </div>
+      </div>
+      <div className="small text-muted">{friendlyTimestamp(timestamp)}</div>
+    </>
+    <div style={{ clear: 'both' }}></div>
+  </>
 );
 
 const PostContent = ({ children }) => <div className="mt-1">{children}</div>;
@@ -199,6 +208,8 @@ export default class Posts extends Component {
       post.userDisplayName =
         (users[post.userId] && users[post.userId].displayName) ||
         'USER NAME NOT FOUND';
+      post.userPhotoURL =
+        (users[post.userId] && users[post.userId].photoURL) || null;
       postsByTimestamp[post.timestamp] = post;
     });
     const postsChronological = Object.keys(postsByTimestamp)
@@ -333,6 +344,7 @@ export default class Posts extends Component {
                               />
                             }
                             timestamp={value.timestamp}
+                            photoURL={value.userPhotoURL}
                           />
                           <PostContent>{value.content}</PostContent>
                           <div className="mt-2">
@@ -366,6 +378,7 @@ export default class Posts extends Component {
                                           />
                                         }
                                         timestamp={replyPost.timestamp}
+                                        photoURL={replyPost.userPhotoURL}
                                       />
                                       <PostContent>
                                         {replyPost.content}

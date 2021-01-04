@@ -36,12 +36,12 @@ yarn build && firebase deploy
 
 - confirm prompt for delete post
 - ability to edit your existing posts
+- ability to share pictures
 - add backend app to complete Stripe payment gateway
 
 ### Tier 3 (nice to have etc)
 
 - better handling for orphan posts
-- pics for posts
 - add purchasables
 - make game fun
 - make more useful/meaningful/valuable than game
