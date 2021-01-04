@@ -89,7 +89,7 @@ class NewPostForm extends React.Component {
   }
 }
 
-const DeletePostButton = ({ onClick }) => (
+const PostActionsDropdown = ({ deletePost }) => (
   <Dropdown>
     <Dropdown.Toggle
       size="sm"
@@ -97,7 +97,7 @@ const DeletePostButton = ({ onClick }) => (
     ></Dropdown.Toggle>
 
     <Dropdown.Menu>
-      <Dropdown.Item as="button" onClick={onClick}>
+      <Dropdown.Item as="button" onClick={deletePost}>
         Delete
       </Dropdown.Item>
     </Dropdown.Menu>
@@ -223,8 +223,8 @@ export default class Posts extends Component {
                             <div className="float-right">
                               {this.props.user &&
                               this.props.user.uid === value.userId ? (
-                                <DeletePostButton
-                                  onClick={() => this.deletePost(value.id)}
+                                <PostActionsDropdown
+                                  deletePost={() => this.deletePost(value.id)}
                                 />
                               ) : null}
                             </div>
@@ -253,8 +253,8 @@ export default class Posts extends Component {
                                         {this.props.user &&
                                         this.props.user.uid ===
                                           replyPost.userId ? (
-                                          <DeletePostButton
-                                            onClick={() =>
+                                          <PostActionsDropdown
+                                            deletePost={() =>
                                               this.deletePost(replyPost.id)
                                             }
                                           />
