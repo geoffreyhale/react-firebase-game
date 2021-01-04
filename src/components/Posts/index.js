@@ -309,7 +309,7 @@ export default class Posts extends Component {
     return (
       <Row>
         <Col></Col>
-        <Col sm={8}>
+        <Col sm={8} bsClass="col-posts">
           <Card>
             <Card.Body>
               <Card.Title>
