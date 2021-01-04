@@ -103,17 +103,18 @@ export default class Posts extends Component {
   constructor() {
     super();
     this.state = {
-      posts: {},
+      rawPosts: {},
+      postsTree: [],
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
     this.setPostsFromPostsSnapshot = this.setPostsFromPostsSnapshot.bind(this);
   }
-  setPostsFromPostsSnapshot(posts, users) {
+  setPostsFromPostsSnapshot(rawPosts, users) {
     //TODO write tests for this function
     const postsByTimestamp = {};
-    Object.keys(posts).forEach((postId) => {
-      const post = posts[postId];
+    Object.keys(rawPosts).forEach((postId) => {
+      const post = rawPosts[postId];
       post.id = postId;
       post.userDisplayName =
         (users[post.userId] && users[post.userId].displayName) ||
@@ -130,7 +131,8 @@ export default class Posts extends Component {
       Object.values(postsByTimestampOrdered)
     );
     this.setState({
-      posts: postsTreeWithReplies,
+      rawPosts: rawPosts,
+      postsTree: postsTreeWithReplies, //TODO make this functional down in view components
     });
     return true;
   }
@@ -178,7 +180,7 @@ export default class Posts extends Component {
       .then(successCallback());
   }
   deletePost(statePostsKey) {
-    const post = this.state.posts.find((post) => post.id === statePostsKey);
+    const post = this.state.rawPosts[statePostsKey];
     const postsRef = firebase.database().ref('posts');
     postsRef.child(post.id).remove();
   }
@@ -205,7 +207,7 @@ export default class Posts extends Component {
           </Card>
           <table>
             <tbody>
-              {Object.entries(this.state.posts).map(([key, value]) => {
+              {Object.entries(this.state.postsTree).map(([key, value]) => {
                 return (
                   <tr key={key}>
                     <td>
@@ -233,7 +235,6 @@ export default class Posts extends Component {
                           {value &&
                             value.childNodes &&
                             value.childNodes.map((replyPost) => {
-                              console.log('replyPost.id:', replyPost.id);
                               return (
                                 <Card>
                                   <Card.Body>
@@ -248,20 +249,15 @@ export default class Posts extends Component {
                                       className="mt-3"
                                       style={{ width: '100%' }}
                                     >
-                                      {/* {
+                                      {
                                         this.props.user &&
                                         this.props.user.uid ===
                                           replyPost.userId ? (
-                                          <Button
-                                            variant="outline-danger"
-                                            type="button"
+                                          <DeletePostButton
                                             onClick={() =>
                                               this.deletePost(replyPost.id)
                                             }
-                                            className="float-right"
-                                          >
-                                            Delete
-                                          </Button>
+                                          />
                                         ) : null
                                         // <NewPostForm
                                         //   onSubmit={this.createNewPost}
@@ -269,7 +265,7 @@ export default class Posts extends Component {
                                         //   hideSubmitButton={true}
                                         //   replyToId={replyPost.id}
                                         // />
-                                      } */}
+                                      }
                                     </div>
                                   </Card.Body>
                                 </Card>

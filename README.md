@@ -28,13 +28,13 @@ yarn build && firebase deploy
 
 ### Tier 2 (user convenience etc)
 
-- better handling for orphan posts
 - reactions on posts
 - display replies as replies
 - keep user logged in on refresh
 - fix use of user in subcomponents without passing
 - fix crash after log out
 - add backend app to complete Stripe payment gateway
+- better handling for orphan posts
 
 ### Tier 3 (nice to have etc)
 
