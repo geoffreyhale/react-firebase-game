@@ -6,7 +6,6 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import firebase, { auth } from '../../firebase.js';
 import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import firebase, { auth } from '../../firebase.js';
+import firebase, { auth } from '../../../firebase.js';
 import DiggerCard from './DiggerCard';
 import StripeElements from './StripeElements';
 

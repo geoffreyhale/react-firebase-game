@@ -1,5 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import ListPage from './ListPage';
 import GroupPage from './GroupPage';

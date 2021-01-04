@@ -1,9 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 import Scorekeeper from './components/Scorekeeper';
-import Game from './components/Game';
+import Game from './components/Games/Game';
 import Groups from './components/Groups';
 import Posts from './components/Posts';
 
