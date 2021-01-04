@@ -1,11 +1,5 @@
 # TODO
 
-## BUGS
-
-- fix use of user in subcomponents without passing
-
-## FEATURES
-
 ### Tier 1 (security etc)
 
 - database security rules should prevent clients from reading any private data
@@ -13,6 +7,7 @@
 - firebase security & permissions deep dive
 - more protect from accidental wipes, eg overwrites to zero in game
 - implement database backups
+- stop setting user to multiple subcomponent state
 
 ### Tier 2 (user convenience etc)
 
@@ -21,6 +16,7 @@
 - ability to share pictures
 - better handling for orphan posts
 - better react props handling
+- elevate user to global
 
 ### NEW USERS AND PARTICIPATION
 

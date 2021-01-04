@@ -52,7 +52,7 @@ export default class Game extends Component {
     ) {
       return;
     }
-    const uid = this.state.user && this.state.user.uid;
+    const uid = this.props.user && this.props.user.uid;
     const userRef = firebase.database().ref('users/' + uid);
     userRef.update({ dirt: dirt, holes: holes });
   }
@@ -83,8 +83,9 @@ export default class Game extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        //TODO should not be setting user locally here
         this.setState({ user }, () => {
-          const uid = this.state.user && this.state.user.uid;
+          const uid = this.props.user && this.props.user.uid;
           const userRef = firebase.database().ref('users/' + uid);
           userRef.on('value', (snapshot) => {
             let user = snapshot.val();

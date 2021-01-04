@@ -16,10 +16,10 @@ const Routes = ({ user }) => {
               <Posts user={user} />
             </Route>,
             <Route path="/game" key="game">
-              <Game />
+              <Game user={user} />
             </Route>,
             <Route path="/groups" key="groups">
-              <Groups />
+              <Groups user={user} />
             </Route>,
           ]
         : null}
