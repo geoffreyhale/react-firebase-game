@@ -310,7 +310,7 @@ export default class Posts extends Component {
       <Row>
         <Col></Col>
         <Col xs={8}>
-          <Card className="mt-3">
+          <Card>
             <Card.Body>
               <Card.Title>
                 {this.props.user && this.props.user.photoURL ? (

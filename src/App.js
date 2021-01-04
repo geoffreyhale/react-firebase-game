@@ -13,7 +13,7 @@ import Routes from './Routes';
 
 const AppHeaderTitle = () => {
   return (
-    <h1 style={{ display: 'inline-block' }}>
+    <h1 style={{ display: 'inline-block', marginBottom: 0 }}>
       <Link
         to="/"
         style={{
@@ -40,7 +40,7 @@ const AppHeaderTitle = () => {
 
 const AppNav = () => {
   return (
-    <Nav>
+    <Nav className="justify-content-center">
       <Nav.Item>
         <Nav.Link as={'span'}>
           <Link to="/">Home</Link>
@@ -117,17 +117,21 @@ class App extends Component {
             <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
               <header>
                 <Card>
-                  <Card.Body style={{ paddingBottom: '0.25rem' }}>
-                    <div>
-                      <AppHeaderTitle />
-                      <div style={{ float: 'right' }}>
-                        <UserAuth
-                          user={this.state.user}
-                          login={this.login}
-                          logout={this.logout}
-                        />
-                      </div>
+                  <Card.Body>
+                    <AppHeaderTitle />
+                    <div style={{ float: 'right' }}>
+                      <UserAuth
+                        user={this.state.user}
+                        login={this.login}
+                        logout={this.logout}
+                      />
                     </div>
+                  </Card.Body>
+                </Card>
+                <Card className="mt-1">
+                  <Card.Body
+                    style={{ paddingBottom: '0.25rem', paddingTop: '0.25rem' }}
+                  >
                     {this.state.user ? (
                       <>
                         <AppNav />
@@ -146,7 +150,9 @@ class App extends Component {
                   </Card.Body>
                 </Card>
               </header>
-              <Routes user={this.state.user} />
+              <div className="mt-3">
+                <Routes user={this.state.user} />
+              </div>
             </Col>
           </Row>
         </Container>
