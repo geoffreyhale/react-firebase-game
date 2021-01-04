@@ -1,8 +1,8 @@
-# React Firebase Game
+# xbk.io
 
-Dig holes and save progress.
+Like Facebook, but better.
 
-Built with React, Firebase, Bootstrap, Stripe.
+Built with React, Firebase, Bootstrap.
 
 ## Dev
 
