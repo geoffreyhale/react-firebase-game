@@ -6,12 +6,12 @@ import firebase, { auth } from '../../../firebase.js';
 
 import './index.css';
 
-const BoardButtons = ({ tictactoe, expandBoard, reduceBoard }) => (
+const BoardButtons = ({ board, expandBoard, reduceBoard }) => (
   <div style={{ display: 'inline-block' }}>
     <Button
       style={{ borderRadius: '2rem' }}
       onClick={expandBoard}
-      disabled={tictactoe.length >= 19 && true}
+      disabled={board.length >= 19 && true}
     >
       +
     </Button>
@@ -19,7 +19,7 @@ const BoardButtons = ({ tictactoe, expandBoard, reduceBoard }) => (
       style={{ borderRadius: '2rem' }}
       onClick={reduceBoard}
       variant="danger"
-      disabled={tictactoe.length <= 3 && true}
+      disabled={board.length <= 3 && true}
     >
       -
     </Button>
@@ -39,7 +39,7 @@ const count = (tictactoe) => {
 export default class TicTacToe extends Component {
   constructor() {
     super();
-    this.state = { tictactoe: [], users: {} };
+    this.state = { board: [], users: {} };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
     this.resetGame = this.resetGame.bind(this);
@@ -52,7 +52,7 @@ export default class TicTacToe extends Component {
         tictactoeRef.on('value', (snapshot) => {
           let tictactoe = snapshot.val();
           this.setState({
-            tictactoe: tictactoe,
+            board: tictactoe.board,
           });
         });
         const usersRef = firebase.database().ref('users');
@@ -65,59 +65,59 @@ export default class TicTacToe extends Component {
     });
   }
   handleClickCell(i, j) {
-    const tictactoeCellRef = firebase
+    const tictactoeBoardCellRef = firebase
       .database()
-      .ref(`games/tictactoe/${i}/${j}`);
-    tictactoeCellRef.once('value', (snapshot) => {
+      .ref(`games/tictactoe/board/${i}/${j}`);
+    tictactoeBoardCellRef.once('value', (snapshot) => {
       const cell = snapshot.val();
       if (cell && cell.userId && cell.userId !== this.props.user.uid) {
         return;
       } else if (cell && cell.userId === this.props.user.uid) {
-        tictactoeCellRef.set('');
+        tictactoeBoardCellRef.set('');
       } else {
-        tictactoeCellRef.set({
+        tictactoeBoardCellRef.set({
           userId: this.props.user.uid,
           photoURL: this.props.user.photoURL,
         });
       }
     });
   }
-  save(tictactoe) {
-    const tictactoeRef = firebase.database().ref(`games/tictactoe`);
-    tictactoeRef.update(tictactoe);
+  save(board) {
+    const tictactoeBoardRef = firebase.database().ref(`games/tictactoe/board`);
+    tictactoeBoardRef.update(board);
   }
   expandBoard() {
-    const tictactoe = this.state.tictactoe;
-    if (tictactoe.length >= 19) {
+    const board = this.state.board;
+    if (board.length >= 19) {
       return;
     }
     // add cell to end of each row
-    tictactoe.forEach((row, i) => {
-      tictactoe[i].push('');
+    board.forEach((row, i) => {
+      board[i].push('');
     });
     // add new row
-    tictactoe.push(new Array(this.state.tictactoe[0].length).fill(''));
-    this.save(tictactoe);
+    board.push(new Array(this.state.board[0].length).fill(''));
+    this.save(board);
   }
   reduceBoard() {
-    const tictactoe = this.state.tictactoe;
-    if (tictactoe.length <= 3) {
+    const board = this.state.board;
+    if (board.length <= 3) {
       return;
     }
     // remove last row
-    tictactoe[tictactoe.length - 1].fill(null);
+    board[board.length - 1].fill(null);
     // remove cell from end of each row
-    tictactoe.forEach((row, i) => {
-      tictactoe[i].pop();
+    board.forEach((row, i) => {
+      board[i].pop();
     });
-    this.save(tictactoe);
+    this.save(board);
   }
   resetGame() {
-    const tictactoe = this.state.tictactoe;
-    for (let i = 0; i < tictactoe.length; i++) {
-      tictactoe[i].fill('');
+    const board = this.state.board;
+    for (let i = 0; i < board.length; i++) {
+      board[i].fill('');
     }
-    this.save(tictactoe);
+    this.save(board);
   }
   render() {
     return (
@@ -132,10 +132,10 @@ export default class TicTacToe extends Component {
         </Card>
         <Card>
           <Card.Body>
-            {` Size: ${this.state.tictactoe.length} x ${this.state.tictactoe.length}`}
+            {` Size: ${this.state.board.length} x ${this.state.board.length}`}
             <div className="ml-2">
               <BoardButtons
-                tictactoe={this.state.tictactoe}
+                board={this.state.board}
                 expandBoard={this.expandBoard}
                 reduceBoard={this.reduceBoard}
               />
@@ -146,7 +146,7 @@ export default class TicTacToe extends Component {
           <Card.Body>
             <table id="tictactoe">
               <tbody>
-                {this.state.tictactoe.map((row, i) => {
+                {this.state.board.map((row, i) => {
                   const emptyFixedRow = Array.from(row, (item) =>
                     typeof item === 'undefined' ? '' : item
                   );
@@ -180,7 +180,7 @@ export default class TicTacToe extends Component {
             <Card.Title>Count</Card.Title>
             <Table>
               <tbody>
-                {Object.entries(count(this.state.tictactoe))
+                {Object.entries(count(this.state.board))
                   .sort((a, b) => b[1] - a[1])
                   .map((count, index) => {
                     const userId = count[0];
