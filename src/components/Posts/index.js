@@ -323,7 +323,7 @@ export default class Posts extends Component {
     return (
       <Row>
         <Col></Col>
-        <Col sm={8} bsClass="col-posts">
+        <Col sm={8} className="col-posts">
           <NewPostCard
             photoURL={this.props.user && this.props.user.photoURL}
             displayName={this.props.user && this.props.user.displayName}
