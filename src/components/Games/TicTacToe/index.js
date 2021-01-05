@@ -31,6 +31,7 @@ export default class TicTacToe extends Component {
     this.state = { tictactoe: [], users: {} };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
+    this.save = this.save.bind(this);
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -60,6 +61,10 @@ export default class TicTacToe extends Component {
       photoURL: this.props.user.photoURL,
     });
   }
+  save(tictactoe) {
+    const tictactoeRef = firebase.database().ref(`games/tictactoe`);
+    tictactoeRef.update(tictactoe);
+  }
   expandBoard() {
     const tictactoe = this.state.tictactoe;
     if (tictactoe.length >= 19) {
@@ -71,9 +76,7 @@ export default class TicTacToe extends Component {
     });
     // add new row
     tictactoe.push(new Array(this.state.tictactoe[0].length).fill(''));
-
-    const tictactoeRef = firebase.database().ref(`games/tictactoe`);
-    tictactoeRef.update(tictactoe);
+    this.save(tictactoe);
   }
   reduceBoard() {
     const tictactoe = this.state.tictactoe;
@@ -86,8 +89,7 @@ export default class TicTacToe extends Component {
     tictactoe.forEach((row, i) => {
       tictactoe[i].pop();
     });
-    const tictactoeRef = firebase.database().ref(`games/tictactoe`);
-    tictactoeRef.update(tictactoe);
+    this.save(tictactoe);
   }
   render() {
     return (
