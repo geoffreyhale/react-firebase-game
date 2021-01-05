@@ -56,9 +56,18 @@ export default class TicTacToe extends Component {
     const tictactoeCellRef = firebase
       .database()
       .ref(`games/tictactoe/${i}/${j}`);
-    tictactoeCellRef.set({
-      userId: this.props.user.uid,
-      photoURL: this.props.user.photoURL,
+    tictactoeCellRef.once('value', (snapshot) => {
+      const cell = snapshot.val();
+      if (cell && cell.userId && cell.userId !== this.props.user.uid) {
+        return;
+      } else if (cell && cell.userId === this.props.user.uid) {
+        tictactoeCellRef.set('');
+      } else {
+        tictactoeCellRef.set({
+          userId: this.props.user.uid,
+          photoURL: this.props.user.photoURL,
+        });
+      }
     });
   }
   save(tictactoe) {
@@ -147,6 +156,11 @@ export default class TicTacToe extends Component {
             </table>
           </Card.Body>
         </Card>
+        {/* <div className="mt-5 float-right">
+          <Button onClick={this.resetGame} variant="danger" size="sm">
+            Reset Game
+          </Button>
+        </div> */}
       </>
     );
   }
