@@ -36,6 +36,15 @@ const count = (tictactoe) => {
   return count;
 };
 
+const MostRecent = ({ mostRecent }) => (
+  <div>
+    Most Recent Move By:{' '}
+    {mostRecent && mostRecent.photoURL ? (
+      <img src={mostRecent.photoURL} alt="user" style={{ height: 45 }} />
+    ) : null}
+  </div>
+);
+
 export default class TicTacToe extends Component {
   constructor() {
     super();
@@ -53,6 +62,7 @@ export default class TicTacToe extends Component {
           let tictactoe = snapshot.val();
           this.setState({
             board: tictactoe.board,
+            mostRecent: tictactoe.mostRecent,
           });
         });
         const usersRef = firebase.database().ref('users');
@@ -72,13 +82,18 @@ export default class TicTacToe extends Component {
       const cell = snapshot.val();
       if (cell && cell.userId && cell.userId !== this.props.user.uid) {
         return;
-      } else if (cell && cell.userId === this.props.user.uid) {
-        tictactoeBoardCellRef.set('');
+        // } else if (cell && cell.userId === this.props.user.uid) {
+        //   tictactoeBoardCellRef.set('');
       } else {
-        tictactoeBoardCellRef.set({
+        const cell = {
           userId: this.props.user.uid,
           photoURL: this.props.user.photoURL,
-        });
+        };
+        tictactoeBoardCellRef.set(cell);
+        const mostRecentRef = firebase
+          .database()
+          .ref(`games/tictactoe/mostRecent`);
+        mostRecentRef.set(cell);
       }
     });
   }
@@ -177,6 +192,7 @@ export default class TicTacToe extends Component {
         </Card>
         <Card>
           <Card.Body>
+            <MostRecent mostRecent={this.state.mostRecent} />
             <Card.Title>Count</Card.Title>
             <Table>
               <tbody>
