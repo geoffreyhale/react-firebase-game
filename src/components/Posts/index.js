@@ -368,7 +368,7 @@ export default class Posts extends Component {
                               post.childNodes &&
                               post.childNodes.map((replyPost) => {
                                 return (
-                                  <Card className="mt-1">
+                                  <Card className="mt-1" key={replyPost.id}>
                                     <Card.Body style={{ padding: '0.75rem' }}>
                                       <PostHeader
                                         displayName={replyPost.userDisplayName}
