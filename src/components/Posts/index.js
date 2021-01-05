@@ -165,15 +165,16 @@ const Tag = ({ type, variant }) => {
   );
 };
 
-const PostTags = ({ tags, myUserId, addTag }) => {
+const PostTags = ({ tags, myUserId, addTag, postId }) => {
   return (
     <div>
       {tags &&
         Object.values(tags).map((tag) => {
+          const tagUniqueKey = postId + tag.userId + tag.type + Math.random();
           if (tag.userId === myUserId) {
-            return <Tag type={tag.type} variant="info" />;
+            return <Tag type={tag.type} variant="info" key={tagUniqueKey} />;
           }
-          return <Tag type={tag.type} />;
+          return <Tag type={tag.type} key={tagUniqueKey} />;
         })}
       <div className={'mt-1'}>
         <NewPostForm
@@ -359,6 +360,7 @@ export default class Posts extends Component {
                               addTag={(content, successCallback) =>
                                 this.addTag(post.id, content, successCallback)
                               }
+                              postId={post.id}
                             />
                           </div>
                           <div className="mt-3">
