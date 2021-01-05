@@ -212,7 +212,7 @@ const ReplyCard = ({
   showActions,
   postActionsDropdown,
   timestamp,
-  photoURL,
+  userPhotoURL,
   content,
 }) => {
   return (
@@ -223,7 +223,7 @@ const ReplyCard = ({
           showActions={showActions}
           postActionsDropdown={postActionsDropdown}
           timestamp={timestamp}
-          photoURL={photoURL}
+          photoURL={userPhotoURL}
           small={true}
         />
         <PostContent>{content}</PostContent>
@@ -392,23 +392,24 @@ export default class Posts extends Component {
                             {post &&
                               post.childNodes &&
                               post.childNodes.map((replyPost) => {
+                                const showActions =
+                                  this.props.user &&
+                                  this.props.user.uid === replyPost.userId;
+                                const postActionsDropdown = (
+                                  <PostActionsDropdown
+                                    deletePost={() =>
+                                      this.deletePost(replyPost.id)
+                                    }
+                                  />
+                                );
                                 return (
                                   <ReplyCard
                                     key={replyPost.id}
                                     userDisplayName={replyPost.userDisplayName}
-                                    showActions={
-                                      this.props.user &&
-                                      this.props.user.uid === replyPost.userId
-                                    }
-                                    postActionsDropdown={
-                                      <PostActionsDropdown
-                                        deletePost={() =>
-                                          this.deletePost(replyPost.id)
-                                        }
-                                      />
-                                    }
+                                    showActions={showActions}
+                                    postActionsDropdown={postActionsDropdown}
                                     timestamp={replyPost.timestamp}
-                                    photoURL={replyPost.userPhotoURL}
+                                    userPhotoURL={replyPost.userPhotoURL}
                                     content={replyPost.content}
                                   />
                                 );
