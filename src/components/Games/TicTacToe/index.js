@@ -81,9 +81,7 @@ export default class TicTacToe extends Component {
       return;
     }
     // remove last row
-    tictactoe[tictactoe.length - 1].forEach((cell, i) => {
-      tictactoe[tictactoe.length - 1][i] = null;
-    });
+    tictactoe[tictactoe.length - 1].fill(null);
     // remove cell from end of each row
     tictactoe.forEach((row, i) => {
       tictactoe[i].pop();
@@ -104,16 +102,19 @@ export default class TicTacToe extends Component {
         </Card>
         <Card>
           <Card.Body>
-            <BoardButtons
-              tictactoe={this.state.tictactoe}
-              expandBoard={this.expandBoard}
-              reduceBoard={this.reduceBoard}
-            />
+            {` Size: ${this.state.tictactoe.length} x ${this.state.tictactoe.length}`}
+            <div className="ml-2">
+              <BoardButtons
+                tictactoe={this.state.tictactoe}
+                expandBoard={this.expandBoard}
+                reduceBoard={this.reduceBoard}
+              />
+            </div>
           </Card.Body>
         </Card>
         <Card>
           <Card.Body>
-            <table id="tictactoe" style={{ display: 'inline-block' }}>
+            <table id="tictactoe">
               <tbody>
                 {this.state.tictactoe.map((row, i) => {
                   const emptyFixedRow = Array.from(row, (item) =>
@@ -142,11 +143,6 @@ export default class TicTacToe extends Component {
                 })}
               </tbody>
             </table>
-            <BoardButtons
-              tictactoe={this.state.tictactoe}
-              expandBoard={this.expandBoard}
-              reduceBoard={this.reduceBoard}
-            />
           </Card.Body>
         </Card>
       </>
