@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Table from 'react-bootstrap/Table';
 import firebase, { auth } from '../../../firebase.js';
 
 import './index.css';
@@ -24,6 +25,16 @@ const BoardButtons = ({ tictactoe, expandBoard, reduceBoard }) => (
     </Button>
   </div>
 );
+
+const count = (tictactoe) => {
+  const count = {};
+  tictactoe.forEach((row, i) => {
+    tictactoe[i].forEach((cell, j) => {
+      count[cell.userId] ? (count[cell.userId] += 1) : (count[cell.userId] = 1);
+    });
+  });
+  return count;
+};
 
 export default class TicTacToe extends Component {
   constructor() {
@@ -154,6 +165,37 @@ export default class TicTacToe extends Component {
                 })}
               </tbody>
             </table>
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
+            <Card.Title>Count</Card.Title>
+            <Table>
+              <tbody>
+                {Object.entries(count(this.state.tictactoe))
+                  .sort((a, b) => b[1] - a[1])
+                  .map((count, index) => {
+                    const userId = count[0];
+                    const amount = count[1];
+                    return (
+                      <tr>
+                        <td>
+                          {userId &&
+                          this.state.users[userId] &&
+                          this.state.users[userId].photoURL ? (
+                            <img
+                              src={this.state.users[userId].photoURL}
+                              alt="user"
+                              style={{ height: 48 }}
+                            />
+                          ) : null}
+                        </td>
+                        <td>{amount}</td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </Table>
           </Card.Body>
         </Card>
         {/* <div className="mt-5 float-right">
