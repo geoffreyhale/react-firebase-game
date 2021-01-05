@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import firebase, { auth } from '../../../firebase.js';
 
@@ -8,11 +9,8 @@ export default class TicTacToe extends Component {
   constructor() {
     super();
     this.state = { tictactoe: [], users: {} };
-    this.save = this.save.bind(this);
-  }
-  save() {
-    const tictactoeRef = firebase.database().ref('games/tictactoe');
-    tictactoeRef.update(this.state.tictactoe);
+    this.expandBoard = this.expandBoard.bind(this);
+    this.reduceBoard = this.reduceBoard.bind(this);
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -42,6 +40,37 @@ export default class TicTacToe extends Component {
       photoURL: this.props.user.photoURL,
     });
   }
+  expandBoard() {
+    const tictactoe = this.state.tictactoe;
+    if (tictactoe.length >= 19) {
+      return;
+    }
+    // add cell to end of each row
+    tictactoe.forEach((row, i) => {
+      tictactoe[i].push('');
+    });
+    // add new row
+    tictactoe.push(new Array(this.state.tictactoe[0].length).fill(''));
+
+    const tictactoeRef = firebase.database().ref(`games/tictactoe`);
+    tictactoeRef.update(tictactoe);
+  }
+  reduceBoard() {
+    const tictactoe = this.state.tictactoe;
+    if (tictactoe.length <= 3) {
+      return;
+    }
+    // remove last row
+    tictactoe[tictactoe.length - 1].forEach((cell, i) => {
+      tictactoe[tictactoe.length - 1][i] = null;
+    });
+    // remove cell from end of each row
+    tictactoe.forEach((row, i) => {
+      tictactoe[i].pop();
+    });
+    const tictactoeRef = firebase.database().ref(`games/tictactoe`);
+    tictactoeRef.update(tictactoe);
+  }
   render() {
     return (
       <>
@@ -55,7 +84,7 @@ export default class TicTacToe extends Component {
         </Card>
         <Card>
           <Card.Body>
-            <table id="tictactoe">
+            <table id="tictactoe" style={{ display: 'inline-block' }}>
               <tbody>
                 {this.state.tictactoe.map((row, i) => {
                   const emptyFixedRow = Array.from(row, (item) =>
@@ -84,6 +113,25 @@ export default class TicTacToe extends Component {
                 })}
               </tbody>
             </table>
+            <div style={{ display: 'inline-block' }}>
+              {this.state.tictactoe.length < 19 ? (
+                <Button
+                  style={{ borderRadius: '2rem' }}
+                  onClick={this.expandBoard}
+                >
+                  +
+                </Button>
+              ) : null}
+              {this.state.tictactoe.length > 3 ? (
+                <Button
+                  style={{ borderRadius: '2rem' }}
+                  onClick={this.reduceBoard}
+                  variant="danger"
+                >
+                  -
+                </Button>
+              ) : null}
+            </div>
           </Card.Body>
         </Card>
       </>
