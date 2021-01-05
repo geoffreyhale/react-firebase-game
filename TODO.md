@@ -28,16 +28,16 @@
 
 - add backend app to complete Stripe payment gateway
 - add purchasables
+- save successful card info (PCI compliance!?)
 
 ### IDEAS
 
+- notifications / cool stuff you might care to see since you last logged in
+- who's online now
 - private rooms like worlds w game-ified invites / vote-off-island / scores etc
 - auto-curated feed universal and personal, eg most active recent posts
 - view posts feed by filters: user, tag
-- who's online now
-- notifications / cool stuff you might care to see since you last logged in
 - groups -> rooms / post feeds / chat rooms
-- save successful card info (PCI compliance!?)
 
 ### UTILITIES
 
