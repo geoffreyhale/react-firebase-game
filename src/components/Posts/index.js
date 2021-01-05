@@ -207,6 +207,31 @@ const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
   );
 };
 
+const ReplyCard = ({
+  userDisplayName,
+  showActions,
+  postActionsDropdown,
+  timestamp,
+  photoURL,
+  content,
+}) => {
+  return (
+    <Card className="mt-1">
+      <Card.Body style={{ padding: '0.75rem' }}>
+        <PostHeader
+          displayName={userDisplayName}
+          showActions={showActions}
+          postActionsDropdown={postActionsDropdown}
+          timestamp={timestamp}
+          photoURL={photoURL}
+          small={true}
+        />
+        <PostContent>{content}</PostContent>
+      </Card.Body>
+    </Card>
+  );
+};
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -368,31 +393,24 @@ export default class Posts extends Component {
                               post.childNodes &&
                               post.childNodes.map((replyPost) => {
                                 return (
-                                  <Card className="mt-1" key={replyPost.id}>
-                                    <Card.Body style={{ padding: '0.75rem' }}>
-                                      <PostHeader
-                                        displayName={replyPost.userDisplayName}
-                                        showActions={
-                                          this.props.user &&
-                                          this.props.user.uid ===
-                                            replyPost.userId
+                                  <ReplyCard
+                                    key={replyPost.id}
+                                    userDisplayName={replyPost.userDisplayName}
+                                    showActions={
+                                      this.props.user &&
+                                      this.props.user.uid === replyPost.userId
+                                    }
+                                    postActionsDropdown={
+                                      <PostActionsDropdown
+                                        deletePost={() =>
+                                          this.deletePost(replyPost.id)
                                         }
-                                        postActionsDropdown={
-                                          <PostActionsDropdown
-                                            deletePost={() =>
-                                              this.deletePost(replyPost.id)
-                                            }
-                                          />
-                                        }
-                                        timestamp={replyPost.timestamp}
-                                        photoURL={replyPost.userPhotoURL}
-                                        small={true}
                                       />
-                                      <PostContent>
-                                        {replyPost.content}
-                                      </PostContent>
-                                    </Card.Body>
-                                  </Card>
+                                    }
+                                    timestamp={replyPost.timestamp}
+                                    photoURL={replyPost.userPhotoURL}
+                                    content={replyPost.content}
+                                  />
                                 );
                               }, this)}
                           </div>
