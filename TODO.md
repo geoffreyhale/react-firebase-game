@@ -17,6 +17,7 @@
 - better react props handling
 - elevate user to global
 - move game data out of user objects
+- direct links to posts
 
 ### NEW USERS AND PARTICIPATION
 

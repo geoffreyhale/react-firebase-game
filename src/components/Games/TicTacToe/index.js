@@ -42,6 +42,7 @@ export default class TicTacToe extends Component {
     this.state = { tictactoe: [], users: {} };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
+    this.resetGame = this.resetGame.bind(this);
     this.save = this.save.bind(this);
   }
   componentDidMount() {
@@ -109,6 +110,13 @@ export default class TicTacToe extends Component {
     tictactoe.forEach((row, i) => {
       tictactoe[i].pop();
     });
+    this.save(tictactoe);
+  }
+  resetGame() {
+    const tictactoe = this.state.tictactoe;
+    for (let i = 0; i < tictactoe.length; i++) {
+      tictactoe[i].fill('');
+    }
     this.save(tictactoe);
   }
   render() {
@@ -198,11 +206,11 @@ export default class TicTacToe extends Component {
             </Table>
           </Card.Body>
         </Card>
-        {/* <div className="mt-5 float-right">
+        <div className="mt-5 float-right">
           <Button onClick={this.resetGame} variant="danger" size="sm">
             Reset Game
           </Button>
-        </div> */}
+        </div>
       </>
     );
   }
