@@ -5,6 +5,26 @@ import firebase, { auth } from '../../../firebase.js';
 
 import './index.css';
 
+const BoardButtons = ({ tictactoe, expandBoard, reduceBoard }) => (
+  <div style={{ display: 'inline-block' }}>
+    <Button
+      style={{ borderRadius: '2rem' }}
+      onClick={expandBoard}
+      disabled={tictactoe.length >= 19 && true}
+    >
+      +
+    </Button>
+    <Button
+      style={{ borderRadius: '2rem' }}
+      onClick={reduceBoard}
+      variant="danger"
+      disabled={tictactoe.length <= 3 && true}
+    >
+      -
+    </Button>
+  </div>
+);
+
 export default class TicTacToe extends Component {
   constructor() {
     super();
@@ -84,6 +104,15 @@ export default class TicTacToe extends Component {
         </Card>
         <Card>
           <Card.Body>
+            <BoardButtons
+              tictactoe={this.state.tictactoe}
+              expandBoard={this.expandBoard}
+              reduceBoard={this.reduceBoard}
+            />
+          </Card.Body>
+        </Card>
+        <Card>
+          <Card.Body>
             <table id="tictactoe" style={{ display: 'inline-block' }}>
               <tbody>
                 {this.state.tictactoe.map((row, i) => {
@@ -113,25 +142,11 @@ export default class TicTacToe extends Component {
                 })}
               </tbody>
             </table>
-            <div style={{ display: 'inline-block' }}>
-              {this.state.tictactoe.length < 19 ? (
-                <Button
-                  style={{ borderRadius: '2rem' }}
-                  onClick={this.expandBoard}
-                >
-                  +
-                </Button>
-              ) : null}
-              {this.state.tictactoe.length > 3 ? (
-                <Button
-                  style={{ borderRadius: '2rem' }}
-                  onClick={this.reduceBoard}
-                  variant="danger"
-                >
-                  -
-                </Button>
-              ) : null}
-            </div>
+            <BoardButtons
+              tictactoe={this.state.tictactoe}
+              expandBoard={this.expandBoard}
+              reduceBoard={this.reduceBoard}
+            />
           </Card.Body>
         </Card>
       </>
