@@ -35,27 +35,53 @@ const StatsTable = ({ title, statsByUser, statKey }) => (
   </Card>
 );
 
-const Stats = ({ posts }) => {
+const Stats = ({ posts, users }) => {
+  //TODO add tests
   const statsByUser = Object.keys(posts).reduce((result, key) => {
     const post = posts[key];
     const userId = post && post.userId;
     if (!result[userId]) {
       result[userId] = {
-        userPhotoURL: post.userPhotoURL,
+        userId: userId,
         postCount: 0,
         replyCount: 0,
+        tags: 0,
       };
     }
     const userStats = result[userId];
 
+    // Posts (includes Replies)
     userStats.postCount++;
 
+    // Replies
     if (post.replyToId) {
       userStats.replyCount++;
     }
 
+    // Tags
+    if (post.tags) {
+      Object.values(post.tags).forEach((tag) => {
+        if (!tag || !tag.userId) {
+          return;
+        }
+        if (tag.userId && !result[tag.userId]) {
+          result[tag.userId] = {
+            userId: tag.userId,
+            postCount: 0,
+            replyCount: 0,
+            tags: 0,
+          };
+        }
+        result[tag.userId].tags++;
+      });
+    }
+
     return result;
   }, {});
+
+  Object.keys(statsByUser).forEach((key) => {
+    statsByUser[key].userPhotoURL = users[statsByUser[key].userId].photoURL;
+  });
 
   return (
     <>
@@ -68,6 +94,11 @@ const Stats = ({ posts }) => {
         title={'Top Posters'}
         statsByUser={statsByUser}
         statKey={'postCount'}
+      />
+      <StatsTable
+        title={'Top Taggers'}
+        statsByUser={statsByUser}
+        statKey={'tags'}
       />
     </>
   );

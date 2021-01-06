@@ -299,6 +299,7 @@ export default class Posts extends Component {
     this.setState({
       rawPosts: rawPosts,
       postsTree: postsTreeReverseChronological, //TODO make this functional down in view components
+      users: users,
     });
     return true;
   }
@@ -461,7 +462,7 @@ export default class Posts extends Component {
         </Col>
         <Col>
           <div id="post-stats">
-            <Stats posts={this.state.rawPosts} />
+            <Stats posts={this.state.rawPosts} users={this.state.users} />
           </div>
         </Col>
       </Row>

@@ -22,7 +22,7 @@
 ### NEW USERS AND PARTICIPATION
 
 - invite codes and family-tree displays and stats for top inviters
-- stats for top tag givers and getters and by tag type
+- stats for top post, reply, tag getters and by tag type
 - clarify top posts: include replies or not in count
 
 ### MONETIZATION
