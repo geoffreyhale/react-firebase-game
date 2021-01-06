@@ -6,14 +6,16 @@ const Stats = ({ posts }) => {
   const statsByUser = Object.keys(posts).reduce((result, key) => {
     const post = posts[key];
     const userId = post && post.userId;
-    const userStats = result[userId];
-    if (userStats && userStats.postCount) {
-      userStats.postCount++;
-    } else {
+    if (!result[userId]) {
       result[userId] = {
-        postCount: 1,
         userPhotoURL: post.userPhotoURL,
       };
+    }
+    const userStats = result[userId];
+    if (userStats.hasOwnProperty('postCount')) {
+      userStats.postCount++;
+    } else {
+      userStats.postCount = 1;
     }
     return result;
   }, {});
@@ -25,8 +27,8 @@ const Stats = ({ posts }) => {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Posts</Card.Title>
-        <Table borderless size="sm">
+        <Card.Title>Top Posters</Card.Title>
+        <Table borderless size="sm" style={{ fontSize: 24 }}>
           {/* <thead>
             <tr>
               <td></td>
@@ -47,7 +49,7 @@ const Stats = ({ posts }) => {
                       />
                     ) : null}
                   </td>
-                  <td style={{ fontSize: 24 }}>{user.postCount}</td>
+                  <td>{user.postCount}</td>
                 </tr>
               );
             })}
