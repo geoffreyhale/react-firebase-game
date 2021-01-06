@@ -23,6 +23,7 @@
 
 - invite codes and family-tree displays and stats for top inviters
 - stats for top tag givers and getters and by tag type
+- clarify top posts: include replies or not in count
 
 ### MONETIZATION
 
@@ -49,3 +50,9 @@
 
 - humans game modeling reality, eg mood meter
 - make game fun
+
+### DEV
+
+- add tests
+- abstract posts' and collections' functions into models and utils etc
+- cleanup this TODO doc
