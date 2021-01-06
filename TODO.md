@@ -1,12 +1,20 @@
 # TODO
 
-### Tier 1 (security etc)
+- Long tags break UI
+- Ability to delete your own tags
 
+### SECURITY & DEV
+
+- implement database backups
 - database security rules should prevent clients from reading any private data
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
 - more protect from accidental wipes, eg overwrites to zero in game
-- implement database backups
+- add tests
+- abstract posts' and collections' functions into models and utils etc
+- better react props handling
+- elevate user to global
+- move game data out of user objects
 
 ### Tier 2 (user convenience etc)
 
@@ -14,16 +22,15 @@
 - ability to edit your existing posts
 - ability to share pictures
 - better handling for orphan posts
-- better react props handling
-- elevate user to global
-- move game data out of user objects
 - direct links to posts
 
 ### NEW USERS AND PARTICIPATION
 
-- invite codes and family-tree displays and stats for top inviters
-- stats for top post, reply, tag getters and by tag type
-- clarify top posts: include replies or not in count
+- stats for top tags
+- stats for top reply getters, tag getters and by tag type
+  - clarify top posts: include replies or not in count
+  - order of stats tables is good as is?
+- invite codes and family-tree displays and stats for top inviters ?
 
 ### MONETIZATION
 
@@ -50,9 +57,3 @@
 
 - humans game modeling reality, eg mood meter
 - make game fun
-
-### DEV
-
-- add tests
-- abstract posts' and collections' functions into models and utils etc
-- cleanup this TODO doc

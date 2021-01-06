@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
 const StatsTable = ({ title, statsByUser, statKey }) => (
-  <Card>
+  <Card className="mb-2">
     <Card.Body>
       <Card.Title>{title}</Card.Title>
       <Table borderless size="sm" style={{ fontSize: 24 }}>
@@ -89,16 +89,19 @@ const Stats = ({ posts, users }) => {
         title={'Top Repliers'}
         statsByUser={statsByUser}
         statKey={'replyCount'}
+        key={'replyCount'}
       />
       <StatsTable
         title={'Top Posters'}
         statsByUser={statsByUser}
         statKey={'postCount'}
+        key={'postCount'}
       />
       <StatsTable
         title={'Top Taggers'}
         statsByUser={statsByUser}
         statKey={'tags'}
+        key={'tags'}
       />
     </>
   );
