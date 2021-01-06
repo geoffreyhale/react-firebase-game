@@ -11,6 +11,7 @@ import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
+import Stats from './Stats';
 
 //TODO write tests for this function
 //adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
@@ -458,7 +459,11 @@ export default class Posts extends Component {
             </tbody>
           </table>
         </Col>
-        <Col></Col>
+        <Col>
+          <div id="post-stats">
+            <Stats posts={this.state.rawPosts} />
+          </div>
+        </Col>
       </Row>
     );
   }

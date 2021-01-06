@@ -1,3 +1,7 @@
 .col-posts {
   max-width: 600px;
 }
+
+#post-stats {
+  max-width: 200px;
+}
