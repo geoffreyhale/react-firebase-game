@@ -232,6 +232,33 @@ const ReplyCard = ({
   );
 };
 
+const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
+  return (
+    <div
+      className="mt-3"
+      style={{
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+      }}
+    >
+      <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
+        {userPhotoURL ? (
+          <img src={userPhotoURL} alt="user" style={{ height: 38 }} />
+        ) : null}
+      </div>
+      <div style={{ flexGrow: 1 }}>
+        <NewPostForm
+          onSubmit={createNewPost}
+          placeholder="Write a reply..."
+          hideSubmitButton={true}
+          replyToId={replyToPostId}
+        />
+      </div>
+    </div>
+  );
+};
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -415,35 +442,13 @@ export default class Posts extends Component {
                                 );
                               }, this)}
                           </div>
-                          <div
-                            className="mt-3"
-                            style={{
-                              width: '100%',
-                              display: 'flex',
-                              flexDirection: 'row',
-                            }}
-                          >
-                            <div
-                              className={'mr-2'}
-                              style={{ alignSelf: 'flex-start' }}
-                            >
-                              {this.props.user && this.props.user.photoURL ? (
-                                <img
-                                  src={this.props.user.photoURL}
-                                  alt="user"
-                                  style={{ height: 38 }}
-                                />
-                              ) : null}
-                            </div>
-                            <div style={{ flexGrow: 1 }}>
-                              <NewPostForm
-                                onSubmit={this.createNewPost}
-                                placeholder="Write a reply..."
-                                hideSubmitButton={true}
-                                replyToId={post.id}
-                              />
-                            </div>
-                          </div>
+                          <ReplyForm
+                            userPhotoURL={
+                              this.props.user && this.props.user.photoURL
+                            }
+                            createNewPost={this.createNewPost}
+                            replyToPostId={post.id}
+                          />
                         </Card.Body>
                       </Card>
                     </td>
