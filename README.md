@@ -7,11 +7,11 @@ Built with React, Firebase, Bootstrap.
 ## Dev
 
 ```
-yarn && yarn start
+yarn start
 ```
 
 ## Deploy
 
 ```
-yarn build && firebase deploy
+yarn deploy
 ```
