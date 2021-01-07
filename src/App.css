@@ -2,6 +2,9 @@
   max-width: 600px;
 }
 
-#post-stats {
+.user-stats {
   max-width: 200px;
+}
+.tag-stats {
+  max-width: 300px;
 }

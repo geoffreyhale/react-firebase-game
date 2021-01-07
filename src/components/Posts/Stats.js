@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
+import Tag from './Tag';
 
 export const statsFromPostsAndUsers = ({ posts, users }) => {
   const result = { users: {}, tags: {} };
@@ -71,7 +72,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
 };
 
 const TagStatsTable = ({ title, subtitle, statsByTag }) => (
-  <Card className="mb-2">
+  <Card className="mb-2 tag-stats">
     <Card.Body>
       <Card.Title>
         {title}
@@ -91,7 +92,9 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
             .map((tag) => {
               return (
                 <tr>
-                  <td>{tag.type}</td>
+                  <td>
+                    <Tag>{tag.type}</Tag>
+                  </td>
                   <td>{tag.count}</td>
                 </tr>
               );
@@ -103,7 +106,7 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
 );
 
 const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
-  <Card className="mb-2">
+  <Card className="mb-2 user-stats">
     <Card.Body>
       <Card.Title>
         {title}
