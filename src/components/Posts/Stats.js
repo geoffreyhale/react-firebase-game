@@ -2,8 +2,19 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
-export const statsByUserFromPosts = (posts) =>
-  Object.keys(posts).reduce((result, key) => {
+export const statsByUserFromPosts = ({ posts, users }) => {
+  const usersObject = {};
+  users &&
+    Object.entries(users).forEach(([i, user]) => {
+      usersObject[i] = {
+        userId: i,
+        postCount: 0,
+        replyCount: 0,
+        tags: 0,
+      };
+    });
+
+  return Object.keys(posts).reduce((result, key) => {
     const post = posts[key];
     const userId = post && post.userId;
     if (!result[userId]) {
@@ -43,7 +54,8 @@ export const statsByUserFromPosts = (posts) =>
     }
 
     return result;
-  }, {});
+  }, usersObject);
+};
 
 const StatsTable = ({ title, statsByUser, statKey }) => (
   <Card className="mb-2">
@@ -79,7 +91,7 @@ const StatsTable = ({ title, statsByUser, statKey }) => (
 );
 
 const Stats = ({ posts, users }) => {
-  const statsByUser = statsByUserFromPosts(posts);
+  const statsByUser = statsByUserFromPosts({ posts, users });
 
   Object.keys(statsByUser).forEach((key) => {
     statsByUser[key].userPhotoURL = users[statsByUser[key].userId].photoURL;
