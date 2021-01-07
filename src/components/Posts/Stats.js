@@ -105,7 +105,7 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
             )
             .map((tag) => {
               return (
-                <tr>
+                <tr key={tag.type}>
                   <td>
                     <Tag>{tag.type}</Tag>
                   </td>
@@ -140,7 +140,7 @@ const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
             .map((user) => {
               const userPhotoURL = user.userPhotoURL;
               return (
-                <tr>
+                <tr key={Math.random()}>
                   <td>
                     {userPhotoURL ? (
                       <img
