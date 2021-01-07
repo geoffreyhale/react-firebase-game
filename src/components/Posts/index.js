@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -12,6 +11,7 @@ import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import Stats from './Stats';
+import Tag from './Tag';
 
 //TODO write tests for this function
 //adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
@@ -146,25 +146,6 @@ const PostContent = ({ children, small }) => (
     {children}
   </div>
 );
-
-const Tag = ({ type, variant }) => {
-  // if (type === 'productive') {
-  //   return (
-  //     <Badge
-  //       pill
-  //       variant="dark"
-  //       style={{ backgroundColor: 'lightbrown !important' }}
-  //     >
-  //       {type}
-  //     </Badge>
-  //   );
-  // }
-  return (
-    <Badge pill variant={variant || 'secondary'}>
-      {type}
-    </Badge>
-  );
-};
 
 const PostTags = ({ tags, myUserId, addTag, postId }) => {
   return (
