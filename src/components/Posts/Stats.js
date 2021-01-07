@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Tag from './Tag';
 
+// TODO refactor: build stats.users etc object first, then iterate posts
 export const statsFromPostsAndUsers = ({ posts, users }) => {
   const result = { users: {}, tags: {} };
 
@@ -11,6 +12,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
       result.users[i] = {
         userId: i,
         postCount: 0,
+        repliesReceivedNotSelf: 0,
         replyCount: 0,
         tags: 0,
       };
@@ -24,6 +26,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
       result.users[userId] = {
         userId: userId,
         postCount: 0,
+        repliesReceivedNotSelf: 0,
         replyCount: 0,
         tags: 0,
       };
@@ -35,6 +38,11 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
     // Replies
     if (post.replyToId) {
       result.users[userId].replyCount++;
+
+      const parentPostUserId = posts[post.replyToId].userId;
+      if (parentPostUserId !== userId) {
+        result.users[parentPostUserId].repliesReceivedNotSelf++;
+      }
     }
 
     // Tags
@@ -57,6 +65,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
               result.users[tag.userId] = {
                 userId: tag.userId,
                 postCount: 0,
+                repliesReceivedNotSelf: 0,
                 replyCount: 0,
                 tags: 0,
               };
@@ -166,6 +175,14 @@ const Stats = ({ posts, users }) => {
 
   return (
     <>
+      <StatsTable
+        title={'Most Replies Received'}
+        subtitle={'Conversation Starters'}
+        statsByUser={statsByUser}
+        statKey={'repliesReceivedNotSelf'}
+        key={'top-replies-received'}
+      />
+      {/* TODO "First Responders" */}
       <StatsTable
         title={'Top Repliers'}
         subtitle={'Conversationalists'}

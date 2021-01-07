@@ -36,18 +36,21 @@ describe('statsByUserFromPosts', () => {
       users: {
         12345678: {
           postCount: 2,
+          repliesReceivedNotSelf: 1,
           replyCount: 1,
           tags: 1,
           userId: '12345678',
         },
         23456789: {
           postCount: 1,
+          repliesReceivedNotSelf: 0,
           replyCount: 1,
           tags: 1,
           userId: '23456789',
         },
         '0987654321zyx': {
           postCount: 0,
+          repliesReceivedNotSelf: 0,
           replyCount: 0,
           tags: 0,
           userId: '0987654321zyx',
