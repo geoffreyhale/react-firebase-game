@@ -37,6 +37,7 @@ describe('statsByUserFromPosts', () => {
         12345678: {
           postCount: 2,
           repliesReceivedNotSelf: 1,
+          repliesSentNotSelf: 0,
           replyCount: 1,
           tags: 1,
           userId: '12345678',
@@ -44,6 +45,7 @@ describe('statsByUserFromPosts', () => {
         23456789: {
           postCount: 1,
           repliesReceivedNotSelf: 0,
+          repliesSentNotSelf: 1,
           replyCount: 1,
           tags: 1,
           userId: '23456789',
@@ -51,6 +53,7 @@ describe('statsByUserFromPosts', () => {
         '0987654321zyx': {
           postCount: 0,
           repliesReceivedNotSelf: 0,
+          repliesSentNotSelf: 0,
           replyCount: 0,
           tags: 0,
           userId: '0987654321zyx',

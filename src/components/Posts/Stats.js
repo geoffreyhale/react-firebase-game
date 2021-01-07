@@ -13,6 +13,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
         userId: i,
         postCount: 0,
         repliesReceivedNotSelf: 0,
+        repliesSentNotSelf: 0,
         replyCount: 0,
         tags: 0,
       };
@@ -27,6 +28,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
         userId: userId,
         postCount: 0,
         repliesReceivedNotSelf: 0,
+        repliesSentNotSelf: 0,
         replyCount: 0,
         tags: 0,
       };
@@ -39,8 +41,10 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
     if (post.replyToId) {
       result.users[userId].replyCount++;
 
+      // reply not to self
       const parentPostUserId = posts[post.replyToId].userId;
       if (parentPostUserId !== userId) {
+        result.users[userId].repliesSentNotSelf++;
         result.users[parentPostUserId].repliesReceivedNotSelf++;
       }
     }
@@ -66,6 +70,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
                 userId: tag.userId,
                 postCount: 0,
                 repliesReceivedNotSelf: 0,
+                repliesSentNotSelf: 0,
                 replyCount: 0,
                 tags: 0,
               };
@@ -190,9 +195,9 @@ const Stats = ({ posts, users }) => {
         title={'Top Repliers'}
         subtitle={'Conversationalists'}
         statsByUser={statsByUser}
-        statKey={'replyCount'}
+        statKey={'repliesSentNotSelf'}
         key={'top-repliers'}
-        footer={'Includes replies to your own posts.'}
+        footer={'Does not include replies to your own posts.'}
       />
       <StatsTable
         title={'Top Posters'}
