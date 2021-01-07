@@ -82,8 +82,12 @@ export default class TicTacToe extends Component {
       const cell = snapshot.val();
       if (cell && cell.userId && cell.userId !== this.props.user.uid) {
         return;
-        // } else if (cell && cell.userId === this.props.user.uid) {
-        //   tictactoeBoardCellRef.set('');
+      } else if (cell && cell.userId === this.props.user.uid) {
+        tictactoeBoardCellRef.set('');
+        const mostRecentRef = firebase
+          .database()
+          .ref(`games/tictactoe/mostRecent`);
+        mostRecentRef.set(cell);
       } else {
         const cell = {
           userId: this.props.user.uid,
