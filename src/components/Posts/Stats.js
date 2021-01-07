@@ -42,9 +42,12 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
         if (tag) {
           // if tag is not yet in results, add it
           if (!result.tags[tag.type]) {
-            result.tags[tag.type] = 1;
+            result.tags[tag.type] = {
+              type: tag.type,
+              count: 1,
+            };
           } else {
-            result.tags[tag.type]++;
+            result.tags[tag.type].count++;
           }
 
           if (tag.userId) {
@@ -66,6 +69,38 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
 
   return result;
 };
+
+const TagStatsTable = ({ title, subtitle, statsByTag }) => (
+  <Card className="mb-2">
+    <Card.Body>
+      <Card.Title>
+        {title}
+        {subtitle && (
+          <>
+            <br />
+            <small className="text-muted">{subtitle}</small>
+          </>
+        )}
+      </Card.Title>
+      <Table borderless size="sm">
+        <tbody>
+          {Object.values(statsByTag)
+            .sort(
+              (a, b) => b.count - a.count //descending
+            )
+            .map((tag) => {
+              return (
+                <tr>
+                  <td>{tag.type}</td>
+                  <td>{tag.count}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
+    </Card.Body>
+  </Card>
+);
 
 const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
   <Card className="mb-2">
@@ -115,6 +150,7 @@ const Stats = ({ posts, users }) => {
 
   const stats = statsFromPostsAndUsers({ posts, users });
   const statsByUser = stats.users;
+  const statsByTag = stats.tags;
 
   Object.keys(statsByUser).forEach((key) => {
     statsByUser[key].userPhotoURL = users[statsByUser[key].userId].photoURL;
@@ -127,20 +163,21 @@ const Stats = ({ posts, users }) => {
         subtitle={'Conversationalists'}
         statsByUser={statsByUser}
         statKey={'replyCount'}
-        key={'replyCount'}
+        key={'top-repliers'}
       />
       <StatsTable
         title={'Top Posters'}
         statsByUser={statsByUser}
         statKey={'postCount'}
-        key={'postCount'}
+        key={'top-posters'}
       />
       <StatsTable
         title={'Top Taggers'}
         statsByUser={statsByUser}
         statKey={'tags'}
-        key={'tags'}
+        key={'top-taggers'}
       />
+      <TagStatsTable title={'Top Tags'} statsByTag={statsByTag} key={'tags'} />
     </>
   );
 };

@@ -54,8 +54,8 @@ describe('statsByUserFromPosts', () => {
         },
       },
       tags: {
-        abc: 1,
-        asdf: 1,
+        abc: { type: 'abc', count: 1 },
+        asdf: { type: 'asdf', count: 1 },
       },
     });
   });
