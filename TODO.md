@@ -1,5 +1,23 @@
+# FOCUS
+
+- manifest a handful of regular active users
+- build for constructive conversation
+- healthy relating, productivity, health
+
 # TODO
 
+- security, seriously
+- backups
+- filter posts feeds
+- phone users may be confused about no submit buttons for replies/tags/etc
+- allow like or heart or read or something on replies or all posts
+- show top tags
+- show users with most received replies
+- chess+
+- optional display names?
+- private rooms for conversations, games, etc?
+- user profiles
+- picture handling
 - Long tags break UI
 - Ability to delete your own tags
 
