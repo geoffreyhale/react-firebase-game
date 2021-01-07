@@ -1,10 +1,13 @@
-import { statsByUserFromPosts } from './Stats';
+import { statsFromPostsAndUsers } from './Stats';
 
 describe('statsByUserFromPosts', () => {
   it('handles empty objects', () => {
     const posts = {};
     const users = {};
-    expect(statsByUserFromPosts({ posts, users })).toEqual({});
+    expect(statsFromPostsAndUsers({ posts, users })).toEqual({
+      users: {},
+      tags: {},
+    });
   });
   it('works', () => {
     const posts = {
@@ -29,24 +32,30 @@ describe('statsByUserFromPosts', () => {
         displayName: 'user with no posts or anything',
       },
     };
-    expect(statsByUserFromPosts({ posts, users })).toEqual({
-      12345678: {
-        postCount: 2,
-        replyCount: 1,
-        tags: 1,
-        userId: '12345678',
+    expect(statsFromPostsAndUsers({ posts, users })).toEqual({
+      users: {
+        12345678: {
+          postCount: 2,
+          replyCount: 1,
+          tags: 1,
+          userId: '12345678',
+        },
+        23456789: {
+          postCount: 1,
+          replyCount: 1,
+          tags: 1,
+          userId: '23456789',
+        },
+        '0987654321zyx': {
+          postCount: 0,
+          replyCount: 0,
+          tags: 0,
+          userId: '0987654321zyx',
+        },
       },
-      23456789: {
-        postCount: 1,
-        replyCount: 1,
-        tags: 1,
-        userId: '23456789',
-      },
-      '0987654321zyx': {
-        postCount: 0,
-        replyCount: 0,
-        tags: 0,
-        userId: '0987654321zyx',
+      tags: {
+        abc: 1,
+        asdf: 1,
       },
     });
   });

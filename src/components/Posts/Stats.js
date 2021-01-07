@@ -2,11 +2,12 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
-export const statsByUserFromPosts = ({ posts, users }) => {
-  const usersObject = {};
+export const statsFromPostsAndUsers = ({ posts, users }) => {
+  const result = { users: {}, tags: {} };
+
   users &&
     Object.entries(users).forEach(([i, user]) => {
-      usersObject[i] = {
+      result.users[i] = {
         userId: i,
         postCount: 0,
         replyCount: 0,
@@ -14,47 +15,56 @@ export const statsByUserFromPosts = ({ posts, users }) => {
       };
     });
 
-  return Object.keys(posts).reduce((result, key) => {
-    const post = posts[key];
+  Object.values(posts).forEach((post) => {
     const userId = post && post.userId;
-    if (!result[userId]) {
-      result[userId] = {
+
+    // if user missing from users! add user for stats
+    if (!result.users[userId]) {
+      result.users[userId] = {
         userId: userId,
         postCount: 0,
         replyCount: 0,
         tags: 0,
       };
     }
-    const userStats = result[userId];
 
     // Posts (includes Replies)
-    userStats.postCount++;
+    result.users[userId].postCount++;
 
     // Replies
     if (post.replyToId) {
-      userStats.replyCount++;
+      result.users[userId].replyCount++;
     }
 
     // Tags
     if (post.tags) {
       Object.values(post.tags).forEach((tag) => {
-        if (!tag || !tag.userId) {
-          return;
+        if (tag) {
+          // if tag is not yet in results, add it
+          if (!result.tags[tag.type]) {
+            result.tags[tag.type] = 1;
+          } else {
+            result.tags[tag.type]++;
+          }
+
+          if (tag.userId) {
+            // if user missing from users! add user for stats
+            if (tag.userId && !result.users[tag.userId]) {
+              result.users[tag.userId] = {
+                userId: tag.userId,
+                postCount: 0,
+                replyCount: 0,
+                tags: 0,
+              };
+            }
+            result.users[tag.userId].tags++;
+          }
         }
-        if (tag.userId && !result[tag.userId]) {
-          result[tag.userId] = {
-            userId: tag.userId,
-            postCount: 0,
-            replyCount: 0,
-            tags: 0,
-          };
-        }
-        result[tag.userId].tags++;
       });
     }
+  });
 
-    return result;
-  }, usersObject);
+  return result;
 };
 
 const StatsTable = ({ title, statsByUser, statKey }) => (
@@ -91,7 +101,12 @@ const StatsTable = ({ title, statsByUser, statKey }) => (
 );
 
 const Stats = ({ posts, users }) => {
-  const statsByUser = statsByUserFromPosts({ posts, users });
+  if (!posts || !users) {
+    return null;
+  }
+
+  const stats = statsFromPostsAndUsers({ posts, users });
+  const statsByUser = stats.users;
 
   Object.keys(statsByUser).forEach((key) => {
     statsByUser[key].userPhotoURL = users[statsByUser[key].userId].photoURL;
