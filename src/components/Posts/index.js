@@ -12,24 +12,7 @@ import formatDuration from 'date-fns/formatDuration';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import Stats from './Stats';
 import Tag from './Tag';
-
-//TODO write tests for this function
-//adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
-const createDataTree = (dataset) => {
-  const hashTable = Object.create(null);
-  dataset.forEach(
-    (aData) => (hashTable[aData.id] = { ...aData, childNodes: [] })
-  );
-  const dataTree = [];
-  dataset.forEach((aData) => {
-    if (aData.replyToId && hashTable[aData.replyToId]) {
-      hashTable[aData.replyToId].childNodes.push(hashTable[aData.id]);
-    } else {
-      dataTree.push(hashTable[aData.id]);
-    }
-  });
-  return dataTree;
-};
+import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
@@ -245,34 +228,6 @@ const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
   );
 };
 
-//TODO write tests for this function
-const postsTreeFromRawPosts = ({ rawPosts, users }) => {
-  const postsByTimestamp = {};
-  Object.keys(rawPosts).forEach((postId) => {
-    const post = rawPosts[postId];
-    post.id = postId;
-    post.userDisplayName =
-      (users[post.userId] && users[post.userId].displayName) ||
-      'USER NAME NOT FOUND';
-    post.userPhotoURL =
-      (users[post.userId] && users[post.userId].photoURL) || null;
-    postsByTimestamp[post.timestamp] = post;
-  });
-  const postsChronological = Object.keys(postsByTimestamp)
-    .sort((a, b) => a - b)
-    .reduce((result, key) => {
-      result[key] = postsByTimestamp[key];
-      return result;
-    }, {});
-  const postsTreeWithReplies = createDataTree(
-    Object.values(postsChronological)
-  );
-  const postsTreeReverseChronological = postsTreeWithReplies.sort(
-    (a, b) => b.timestamp - a.timestamp
-  );
-  return postsTreeReverseChronological;
-};
-
 export default class Posts extends Component {
   constructor() {
     super();
@@ -287,7 +242,7 @@ export default class Posts extends Component {
   setPostsFromPostsSnapshot(rawPosts, users) {
     this.setState({
       rawPosts: rawPosts,
-      postsTree: postsTreeFromRawPosts({ rawPosts, users }), //TODO make this functional down in view components
+      postsTree: postsTreeFromRawPosts({ posts: rawPosts, users }), //TODO make this functional down in view components
       users: users,
     });
     return true;
