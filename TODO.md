@@ -11,7 +11,6 @@
 - filter posts feeds
 - phone users may be confused about no submit buttons for replies/tags/etc
 - allow like or heart or read or something on replies or all posts
-- show users with most received replies
 - chess+
 - optional display names?
 - private rooms for conversations, games, etc?
@@ -19,6 +18,8 @@
 - picture handling
 - Long tags break UI
 - Ability to delete your own tags
+- can't see stats tables on phones very well; they're at bottom of post feed
+- tags on replies?
 
 ### SECURITY & DEV
 
@@ -42,9 +43,8 @@
 
 ### NEW USERS AND PARTICIPATION
 
-- stats for top reply getters, tag getters and by tag type
-  - clarify top posts: include replies or not in count
-  - order of stats tables is good as is?
+- stats for top tag getters and by tag type
+- order of stats tables is good as is?
 - invite codes and family-tree displays and stats for top inviters ?
 
 ### MONETIZATION
