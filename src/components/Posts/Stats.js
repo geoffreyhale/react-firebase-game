@@ -67,10 +67,18 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
   return result;
 };
 
-const StatsTable = ({ title, statsByUser, statKey }) => (
+const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
   <Card className="mb-2">
     <Card.Body>
-      <Card.Title>{title}</Card.Title>
+      <Card.Title>
+        {title}
+        {subtitle && (
+          <>
+            <br />
+            <small className="text-muted">{subtitle}</small>
+          </>
+        )}
+      </Card.Title>
       <Table borderless size="sm" style={{ fontSize: 24 }}>
         <tbody>
           {Object.values(statsByUser)
@@ -116,6 +124,7 @@ const Stats = ({ posts, users }) => {
     <>
       <StatsTable
         title={'Top Repliers'}
+        subtitle={'Conversationalists'}
         statsByUser={statsByUser}
         statKey={'replyCount'}
         key={'replyCount'}
