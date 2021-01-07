@@ -87,7 +87,12 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
         <tbody>
           {Object.values(statsByTag)
             .sort(
-              (a, b) => b.count - a.count //descending
+              //descending by count then alphabetical
+              (a, b) => {
+                return b.count === a.count
+                  ? a.type.localeCompare(b.type)
+                  : b.count - a.count;
+              }
             )
             .map((tag) => {
               return (

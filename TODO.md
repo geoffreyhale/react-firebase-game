@@ -11,7 +11,6 @@
 - filter posts feeds
 - phone users may be confused about no submit buttons for replies/tags/etc
 - allow like or heart or read or something on replies or all posts
-- show top tags
 - show users with most received replies
 - chess+
 - optional display names?
@@ -43,7 +42,6 @@
 
 ### NEW USERS AND PARTICIPATION
 
-- stats for top tags
 - stats for top reply getters, tag getters and by tag type
   - clarify top posts: include replies or not in count
   - order of stats tables is good as is?
