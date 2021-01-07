@@ -119,7 +119,7 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
   </Card>
 );
 
-const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
+const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
   <Card className="mb-2 user-stats">
     <Card.Body>
       <Card.Title>
@@ -157,6 +157,7 @@ const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
             })}
         </tbody>
       </Table>
+      {footer ? <small className="text-muted">{footer}</small> : null}
     </Card.Body>
   </Card>
 );
@@ -182,6 +183,7 @@ const Stats = ({ posts, users }) => {
         statsByUser={statsByUser}
         statKey={'repliesReceivedNotSelf'}
         key={'top-replies-received'}
+        footer={'Does not include replies to your own posts.'}
       />
       {/* TODO "First Responders" */}
       <StatsTable
@@ -190,18 +192,21 @@ const Stats = ({ posts, users }) => {
         statsByUser={statsByUser}
         statKey={'replyCount'}
         key={'top-repliers'}
+        footer={'Includes replies to your own posts.'}
       />
       <StatsTable
         title={'Top Posters'}
         statsByUser={statsByUser}
         statKey={'postCount'}
         key={'top-posters'}
+        footer={'Includes posts and replies.'}
       />
       <StatsTable
         title={'Top Taggers'}
         statsByUser={statsByUser}
         statKey={'tags'}
         key={'top-taggers'}
+        footer={'Includes tags on your own posts.'}
       />
       <TagStatsTable title={'Top Tags'} statsByTag={statsByTag} key={'tags'} />
     </>
