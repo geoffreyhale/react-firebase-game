@@ -2,42 +2,8 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 
-const StatsTable = ({ title, statsByUser, statKey }) => (
-  <Card className="mb-2">
-    <Card.Body>
-      <Card.Title>{title}</Card.Title>
-      <Table borderless size="sm" style={{ fontSize: 24 }}>
-        <tbody>
-          {Object.values(statsByUser)
-            .sort(
-              (a, b) => b[statKey] - a[statKey] //descending
-            )
-            .map((user) => {
-              const userPhotoURL = user.userPhotoURL;
-              return (
-                <tr>
-                  <td>
-                    {userPhotoURL ? (
-                      <img
-                        src={userPhotoURL}
-                        alt="user"
-                        style={{ height: 38 }}
-                      />
-                    ) : null}
-                  </td>
-                  <td>{user[statKey]}</td>
-                </tr>
-              );
-            })}
-        </tbody>
-      </Table>
-    </Card.Body>
-  </Card>
-);
-
-const Stats = ({ posts, users }) => {
-  //TODO add tests
-  const statsByUser = Object.keys(posts).reduce((result, key) => {
+export const statsByUserFromPosts = (posts) =>
+  Object.keys(posts).reduce((result, key) => {
     const post = posts[key];
     const userId = post && post.userId;
     if (!result[userId]) {
@@ -78,6 +44,42 @@ const Stats = ({ posts, users }) => {
 
     return result;
   }, {});
+
+const StatsTable = ({ title, statsByUser, statKey }) => (
+  <Card className="mb-2">
+    <Card.Body>
+      <Card.Title>{title}</Card.Title>
+      <Table borderless size="sm" style={{ fontSize: 24 }}>
+        <tbody>
+          {Object.values(statsByUser)
+            .sort(
+              (a, b) => b[statKey] - a[statKey] //descending
+            )
+            .map((user) => {
+              const userPhotoURL = user.userPhotoURL;
+              return (
+                <tr>
+                  <td>
+                    {userPhotoURL ? (
+                      <img
+                        src={userPhotoURL}
+                        alt="user"
+                        style={{ height: 38 }}
+                      />
+                    ) : null}
+                  </td>
+                  <td>{user[statKey]}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </Table>
+    </Card.Body>
+  </Card>
+);
+
+const Stats = ({ posts, users }) => {
+  const statsByUser = statsByUserFromPosts(posts);
 
   Object.keys(statsByUser).forEach((key) => {
     statsByUser[key].userPhotoURL = users[statsByUser[key].userId].photoURL;

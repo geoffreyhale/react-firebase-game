@@ -28,7 +28,6 @@
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
 - more protect from accidental wipes, eg overwrites to zero in game
-- add tests
 - abstract posts' and collections' functions into models and utils etc
 - better react props handling
 - elevate user to global
