@@ -11,6 +11,7 @@ import './App.css';
 import firebase, { auth, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
+import { BrowserRouter } from 'react-router-dom';
 
 const AppHeaderTitle = () => {
   return (
@@ -128,52 +129,58 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="app">
-        <Container fluid>
-          <Row>
-            <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
-              <header>
-                <Card>
-                  <Card.Body>
-                    <AppHeaderTitle />
-                    <div style={{ float: 'right' }}>
-                      <UserAuth
-                        user={this.state.user}
-                        login={this.login}
-                        logout={this.logout}
-                      />
-                    </div>
-                  </Card.Body>
-                </Card>
-                <Card className="mt-1">
-                  <Card.Body
-                    style={{ paddingBottom: '0.25rem', paddingTop: '0.25rem' }}
-                  >
-                    {this.state.user ? (
-                      <>
-                        <AppNav />
-                      </>
-                    ) : (
-                      <div>
-                        <small className="text-muted">
-                          <em>
-                            New online community that will never sell your data.
-                            <br />
-                            Join the discussion now for free.
-                          </em>
-                        </small>
+      <BrowserRouter>
+        <div className="app">
+          <Container fluid>
+            <Row>
+              <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
+                <header>
+                  <Card>
+                    <Card.Body>
+                      <AppHeaderTitle />
+                      <div style={{ float: 'right' }}>
+                        <UserAuth
+                          user={this.state.user}
+                          login={this.login}
+                          logout={this.logout}
+                        />
                       </div>
-                    )}
-                  </Card.Body>
-                </Card>
-              </header>
-              <div className="mt-3">
-                <Routes user={this.state.user} />
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                    </Card.Body>
+                  </Card>
+                  <Card className="mt-1">
+                    <Card.Body
+                      style={{
+                        paddingBottom: '0.25rem',
+                        paddingTop: '0.25rem',
+                      }}
+                    >
+                      {this.state.user ? (
+                        <>
+                          <AppNav />
+                        </>
+                      ) : (
+                        <div>
+                          <small className="text-muted">
+                            <em>
+                              New online community that will never sell your
+                              data.
+                              <br />
+                              Join the discussion now for free.
+                            </em>
+                          </small>
+                        </div>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </header>
+                <div className="mt-3">
+                  <Routes user={this.state.user} />
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </BrowserRouter>
     );
   }
 }
