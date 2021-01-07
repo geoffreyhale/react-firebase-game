@@ -134,6 +134,7 @@ const StatsTable = ({ title, subtitle, statsByUser, statKey }) => (
       <Table borderless size="sm" style={{ fontSize: 24 }}>
         <tbody>
           {Object.values(statsByUser)
+            .filter((user) => user[statKey] > 0)
             .sort(
               (a, b) => b[statKey] - a[statKey] //descending
             )
