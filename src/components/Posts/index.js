@@ -154,9 +154,13 @@ const PostTags = ({ tags, myUserId, addTag, postId }) => {
         Object.values(tags).map((tag) => {
           const tagUniqueKey = postId + tag.userId + tag.type + Math.random();
           if (tag.userId === myUserId) {
-            return <Tag type={tag.type} variant="info" key={tagUniqueKey} />;
+            return (
+              <Tag variant="info" key={tagUniqueKey}>
+                {tag.type}
+              </Tag>
+            );
           }
-          return <Tag type={tag.type} key={tagUniqueKey} />;
+          return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
         })}
       <div className={'mt-1'}>
         <NewPostForm
