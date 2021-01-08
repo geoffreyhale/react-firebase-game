@@ -50,9 +50,9 @@ export default class Mosaic extends Component {
       <Card>
         <Card.Body>
           <Card.Title>Community Mosaic</Card.Title>
-          {Object.values(this.state.users).map((photoURL) =>
+          {Object.values(this.state.users).map((photoURL, i) =>
             photoURL ? (
-              <img src={photoURL} alt="user" style={{ height: 48 }} />
+              <img src={photoURL} alt="user" style={{ height: 48 }} key={i} />
             ) : null
           )}
         </Card.Body>
