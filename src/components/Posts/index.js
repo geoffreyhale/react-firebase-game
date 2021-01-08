@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
@@ -15,6 +13,7 @@ import Stats from './Stats';
 import Tag from './Tag';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Mosaic from './mosaic';
+import NewPostForm from './NewPostForm';
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
@@ -41,52 +40,6 @@ const friendlyTimestamp = (timestamp) => {
   }
   return `${formattedTimestamp} (${formatDuration(duration)})`;
 };
-
-class NewPostForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      content: '',
-    };
-    this.handleChange = this.handleChange.bind(this);
-  }
-  handleChange(event) {
-    this.setState({ content: event.target.value });
-  }
-  render() {
-    return (
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          const successCallback = () => this.setState({ content: '' });
-          this.props.onSubmit(
-            this.state.content,
-            this.props.replyToId || null,
-            successCallback
-          );
-        }}
-      >
-        <Form.Control
-          type="text"
-          placeholder={this.props.placeholder || 'How are you?'}
-          value={this.state.content}
-          onChange={this.handleChange}
-          size={this.props.size}
-        />
-        {!this.props.hideSubmitButton && (
-          <Button
-            className="mt-3"
-            variant="primary"
-            type="submit"
-            disabled={this.state.content === ''}
-          >
-            Post
-          </Button>
-        )}
-      </Form>
-    );
-  }
-}
 
 const PostActionsDropdown = ({ deletePost }) => (
   <Dropdown>
@@ -154,7 +107,7 @@ const PostTags = ({ tags, myUserId, addTag, postId }) => {
           }}
           placeholder="tag"
           hideSubmitButton={true}
-          size={'sm'}
+          small={true}
         />
       </div>
     </div>
