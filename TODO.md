@@ -6,13 +6,17 @@
 
 # TODO
 
+- backups
+- NOTIFICATIONS - cool stuff you might care to see since you last logged in
+- user join timestamp
+- security, seriously
+- bug: after log out, PERMISSION DENIED errors
+
+- motivate user to put it on their phone home screen
 - do not return all posts; chunks please
 - move junk data out of db users
 - fix the smart feed active indicator, differently weird on desktop and phone
-- user join timestamp
 - user most recent login/action/active timestamp
-- security, seriously
-- backups
 - phone users may be confused about no submit buttons for replies/tags/etc
 - allow like or heart or read or something on replies or all posts
 - chess+
@@ -59,12 +63,12 @@
 
 ### IDEAS
 
-- notifications / cool stuff you might care to see since you last logged in
 - who's online now
 - private rooms like worlds w game-ified invites / vote-off-island / scores etc
 - auto-curated feed universal and personal, eg most active recent posts
 - view posts feed by filters: user, tag
 - groups -> rooms / post feeds / chat rooms
+- healthy intimacy dating called Tender XD
 
 ### UTILITIES
 
