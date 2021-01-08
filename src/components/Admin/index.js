@@ -9,6 +9,7 @@ export default class Admin extends React.Component {
     this.state = {
       users: {},
       user: {},
+      sortPropertyname: null,
     };
   }
   componentDidMount() {
@@ -40,6 +41,11 @@ export default class Admin extends React.Component {
       }
     });
   }
+  sort(propertyName) {
+    this.setState({
+      sortKey: propertyName,
+    });
+  }
   render() {
     const propertyNames = [
       'displayName',
@@ -49,6 +55,23 @@ export default class Admin extends React.Component {
       'lastLogin',
       'lastOnline',
     ];
+
+    const sortKey = this.state.sortKey;
+    const users = Object.entries(this.state.users).sort((a, b) => {
+      if (!a[1][sortKey]) {
+        return -1;
+      }
+      if (!b[1][sortKey]) {
+        return 1;
+      }
+      if (typeof a[1][sortKey] === 'string') {
+        return a[1][sortKey].localeCompare(b[1][sortKey]);
+      }
+      if (typeof a[1][sortKey] === 'number') {
+        return a[1][sortKey] - b[1][sortKey];
+      }
+    });
+
     return this.state.user.admin ? (
       <Card>
         <Card.Body>
@@ -57,21 +80,24 @@ export default class Admin extends React.Component {
               <tr>
                 <td key="userId"></td>
                 {propertyNames.map((propertyName) => (
-                  <td key={propertyName}>{propertyName}</td>
+                  <td
+                    key={propertyName}
+                    onClick={() => this.sort(propertyName)}
+                  >
+                    {propertyName}
+                  </td>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {Object.entries(this.state.users)
-                // .sort((a, b) => a[0] - b[0])
-                .map(([userId, user]) => (
-                  <tr key={userId}>
-                    <td key="userId">{userId}</td>
-                    {propertyNames.map((propertyName) => (
-                      <td key={propertyName}>{user[propertyName]}</td>
-                    ))}
-                  </tr>
-                ))}
+              {users.map(([userId, user]) => (
+                <tr key={userId}>
+                  <td key="userId">{userId}</td>
+                  {propertyNames.map((propertyName) => (
+                    <td key={propertyName}>{user[propertyName]}</td>
+                  ))}
+                </tr>
+              ))}
             </tbody>
           </Table>
         </Card.Body>
