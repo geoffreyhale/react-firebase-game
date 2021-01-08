@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
 import firebase, { auth } from '../../firebase.js';
 
@@ -49,7 +50,25 @@ export default class Mosaic extends Component {
     return (
       <Card>
         <Card.Body>
-          <Card.Title>Community Mosaic</Card.Title>
+          <Card.Title>
+            Community Mosaic
+            {/* {' '}<Badge variant="secondary">
+              {Object.keys(this.state.users).length}
+            </Badge> */}
+          </Card.Title>
+          <div
+            style={{
+              display: 'inline-block',
+              height: 48,
+              width: 48,
+              verticalAlign: 'middle',
+              backgroundColor: 'grey',
+              color: 'whitesmoke',
+              fontWeight: 900,
+            }}
+          >
+            {Object.keys(this.state.users).length}
+          </div>
           {Object.values(this.state.users).map((photoURL, i) =>
             photoURL ? (
               <img src={photoURL} alt="user" style={{ height: 48 }} key={i} />
