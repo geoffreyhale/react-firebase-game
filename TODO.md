@@ -6,9 +6,11 @@
 
 # TODO
 
+- mosaic of user photos
+- user join timestamp
+- user most recent login/action/active timestamp
 - security, seriously
 - backups
-- filter posts feeds
 - phone users may be confused about no submit buttons for replies/tags/etc
 - allow like or heart or read or something on replies or all posts
 - chess+
