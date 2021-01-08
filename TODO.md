@@ -6,7 +6,6 @@
 
 # TODO
 
-- mosaic of user photos
 - user join timestamp
 - user most recent login/action/active timestamp
 - security, seriously

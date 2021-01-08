@@ -14,6 +14,7 @@ import MyDropdownToggle from '../shared/MyDropdownToggle';
 import Stats from './Stats';
 import Tag from './Tag';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
+import Mosaic from './mosaic';
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
@@ -326,7 +327,9 @@ export default class Posts extends Component {
   render() {
     return (
       <Row>
-        <Col></Col>
+        <Col>
+          <Mosaic />
+        </Col>
         <Col sm={8} className="col-posts">
           <NewPostCard
             photoURL={this.props.user && this.props.user.photoURL}
