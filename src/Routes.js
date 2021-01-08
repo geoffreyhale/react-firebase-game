@@ -5,6 +5,7 @@ import Game from './components/Games/Game';
 import TicTacToe from './components/Games/TicTacToe';
 import Groups from './components/Groups';
 import Posts from './components/Posts';
+import Admin from './components/Admin';
 
 const Routes = ({ user }) => {
   return (
@@ -14,19 +15,22 @@ const Routes = ({ user }) => {
             <Route exact path="/" key="/">
               <Posts user={user} />
             </Route>,
-            <Route path="/game" key="game">
+            <Route path="/game" key="/game">
               <Game user={user} />
             </Route>,
-            <Route path="/groups" key="groups">
+            <Route path="/groups" key="/groups">
               <Groups user={user} />
             </Route>,
-            <Route path="/tictactoe" key="groups">
+            <Route path="/tictactoe" key="/tictactoe">
               <TicTacToe user={user} />
+            </Route>,
+            <Route path="/admin" key="/admin">
+              <Admin user={user} />
             </Route>,
           ]
         : null}
       [
-      <Route path="/scorekeeper" key="scorekeeper">
+      <Route path="/scorekeeper" key="/scorekeeper">
         <Scorekeeper />
       </Route>
       ]

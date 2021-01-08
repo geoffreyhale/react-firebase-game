@@ -8,7 +8,6 @@
 
 - backups
 - NOTIFICATIONS - cool stuff you might care to see since you last logged in
-- user join timestamp
 - security, seriously
 - bug: after log out, PERMISSION DENIED errors
 
@@ -28,6 +27,7 @@
 - Ability to delete your own tags
 - can't see stats tables on phones very well; they're at bottom of post feed
 - tags on replies?
+- firebase nodes have metadata with creationTime and lastSignInTime; do we need my janky `joined` or `lastLogin` ?
 
 ### SECURITY & DEV
 

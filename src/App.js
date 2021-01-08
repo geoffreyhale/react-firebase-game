@@ -123,6 +123,11 @@ class App extends Component {
             photoURL: user.photoURL,
             lastLogin: firebase.database.ServerValue.TIMESTAMP,
           });
+          if (!user.joined) {
+            userRef.update({
+              joined: firebase.database.ServerValue.TIMESTAMP,
+            });
+          }
         }
       );
     });
