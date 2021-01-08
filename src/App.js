@@ -114,6 +114,7 @@ class App extends Component {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
+            lastLogin: firebase.database.ServerValue.TIMESTAMP,
           });
         }
       );
