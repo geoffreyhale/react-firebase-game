@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
+import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
 import format from 'date-fns/format';
@@ -235,6 +236,7 @@ export default class Posts extends Component {
       rawPosts: {},
       postsTree: [],
       countLowPriorityPosts: 0,
+      smartFeed: true,
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
@@ -331,17 +333,37 @@ export default class Posts extends Component {
             displayName={this.props.user && this.props.user.displayName}
             createNewPost={this.createNewPost}
           />
+
+          <Nav className="justify-content-center">
+            <Nav.Item>
+              <Nav.Link
+                active={this.state.smartFeed}
+                onClick={() => this.setState({ smartFeed: true })}
+              >
+                Smart Feed
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link
+                active={!this.state.smartFeed}
+                onClick={() => this.setState({ smartFeed: false })}
+              >
+                All Posts
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+
           <table>
             <tbody>
               {Object.entries(this.state.postsTree).map(([key, post]) => {
-                // if (post.lowPriority) {
-                //   return null;
-                // }
+                if (this.state.smartFeed && post.lowPriority) {
+                  return null;
+                }
 
                 return (
                   <tr key={post.id}>
                     <td>
-                      <Card className="mt-2">
+                      <Card className={key !== '0' ? 'mt-2' : null}>
                         <Card.Body>
                           <PostHeader
                             displayName={post.userDisplayName}
@@ -408,16 +430,18 @@ export default class Posts extends Component {
                   </tr>
                 );
               })}
-              {/* <tr key={'countLowPriorityPosts'}>
-                <td>
-                  <Card className="mt-2">
-                    <Card.Body>
-                      {this.state.countLowPriorityPosts} posts were hidden
-                      because they were determined to be old.
-                    </Card.Body>
-                  </Card>
-                </td>
-              </tr> */}
+              {this.state.smartFeed ? (
+                <tr key={'countLowPriorityPosts'}>
+                  <td>
+                    <Card className="mt-2">
+                      <Card.Body>
+                        {this.state.countLowPriorityPosts} posts were hidden
+                        because they were determined to be old.
+                      </Card.Body>
+                    </Card>
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         </Col>
