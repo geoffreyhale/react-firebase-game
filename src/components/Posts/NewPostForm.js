@@ -26,13 +26,23 @@ export default class NewPostForm extends React.Component {
           );
         }}
       >
-        <Form.Control
-          type="text"
-          placeholder={this.props.placeholder || 'How are you?'}
-          value={this.state.content}
-          onChange={this.handleChange}
-          size={this.props.small ? 'sm' : null}
-        />
+        {this.props.multiline ? (
+          <Form.Control
+            as="textarea"
+            rows={3}
+            placeholder={this.props.placeholder || 'How are you?'}
+            value={this.state.content}
+            onChange={this.handleChange}
+          />
+        ) : (
+          <Form.Control
+            type="text"
+            placeholder={this.props.placeholder || 'How are you?'}
+            value={this.state.content}
+            onChange={this.handleChange}
+            size={this.props.small ? 'sm' : null}
+          />
+        )}
         {!this.props.hideSubmitButton && (
           <Button
             className="mt-3"

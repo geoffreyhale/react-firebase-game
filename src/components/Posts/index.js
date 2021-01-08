@@ -80,7 +80,10 @@ const PostHeader = ({
 );
 
 const PostContent = ({ children, small }) => (
-  <div className="mt-1" style={{ fontSize: small ? '85%' : null }}>
+  <div
+    className="mt-1"
+    style={{ whiteSpace: 'break-spaces', fontSize: small ? '85%' : null }}
+  >
     {children}
   </div>
 );
@@ -125,7 +128,7 @@ const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
           {displayName}
           <small className="text-muted ml-2">&#127757; Public</small>
         </Card.Title>
-        <NewPostForm onSubmit={createNewPost} />
+        <NewPostForm onSubmit={createNewPost} multiline={true} />
       </Card.Body>
     </Card>
   );
