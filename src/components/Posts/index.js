@@ -234,15 +234,18 @@ export default class Posts extends Component {
     this.state = {
       rawPosts: {},
       postsTree: [],
+      countLowPriorityPosts: 0,
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
     this.setPostsFromPostsSnapshot = this.setPostsFromPostsSnapshot.bind(this);
   }
   setPostsFromPostsSnapshot(rawPosts, users) {
+    const postsTree = postsTreeFromRawPosts({ posts: rawPosts, users });
     this.setState({
       rawPosts: rawPosts,
-      postsTree: postsTreeFromRawPosts({ posts: rawPosts, users }), //TODO make this functional down in view components
+      postsTree: postsTree.posts,
+      countLowPriorityPosts: postsTree.data.countLowPriorityPosts,
       users: users,
     });
     return true;
@@ -331,6 +334,10 @@ export default class Posts extends Component {
           <table>
             <tbody>
               {Object.entries(this.state.postsTree).map(([key, post]) => {
+                // if (post.lowPriority) {
+                //   return null;
+                // }
+
                 return (
                   <tr key={post.id}>
                     <td>
@@ -401,6 +408,16 @@ export default class Posts extends Component {
                   </tr>
                 );
               })}
+              {/* <tr key={'countLowPriorityPosts'}>
+                <td>
+                  <Card className="mt-2">
+                    <Card.Body>
+                      {this.state.countLowPriorityPosts} posts were hidden
+                      because they were determined to be old.
+                    </Card.Body>
+                  </Card>
+                </td>
+              </tr> */}
             </tbody>
           </table>
         </Col>

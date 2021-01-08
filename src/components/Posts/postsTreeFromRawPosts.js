@@ -1,3 +1,5 @@
+import intervalToDuration from 'date-fns/intervalToDuration';
+
 //TODO write tests for this function
 //adapted from https://stackoverflow.com/questions/18017869/build-tree-array-from-flat-array-in-javascript
 export const createDataTree = (dataset) => {
@@ -16,9 +18,26 @@ export const createDataTree = (dataset) => {
   return dataTree;
 };
 
+const shouldLowPriority = (post) => {
+  // is old
+  const duration = intervalToDuration({
+    start: new Date(post.timestamp),
+    end: new Date(),
+  });
+
+  const isOld = duration.years || duration.months || duration.days > 7;
+  if (isOld) {
+    return true;
+  }
+
+  return false;
+};
+
 //TODO write tests for this function
 const postsTreeFromRawPosts = ({ posts, users }) => {
   const postsByTimestamp = {};
+  let countLowPriorityPosts = 0;
+
   Object.keys(posts).forEach((postId) => {
     const post = posts[postId];
     post.id = postId;
@@ -27,21 +46,32 @@ const postsTreeFromRawPosts = ({ posts, users }) => {
       'USER NAME NOT FOUND';
     post.userPhotoURL =
       (users[post.userId] && users[post.userId].photoURL) || null;
+    if (shouldLowPriority(post)) {
+      post.lowPriority = true;
+      countLowPriorityPosts++;
+    }
+
     postsByTimestamp[post.timestamp] = post;
   });
+
   const postsChronological = Object.keys(postsByTimestamp)
     .sort((a, b) => a - b)
     .reduce((result, key) => {
       result[key] = postsByTimestamp[key];
       return result;
     }, {});
+
   const postsTreeWithReplies = createDataTree(
     Object.values(postsChronological)
   );
   const postsTreeReverseChronological = postsTreeWithReplies.sort(
     (a, b) => b.timestamp - a.timestamp
   );
-  return postsTreeReverseChronological;
+
+  return {
+    posts: postsTreeReverseChronological,
+    data: { countLowPriorityPosts },
+  };
 };
 
 export default postsTreeFromRawPosts;
