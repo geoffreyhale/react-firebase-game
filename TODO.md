@@ -6,6 +6,9 @@
 
 # TODO
 
+- do not return all posts; chunks please
+- move junk data out of db users
+- fix the smart feed active indicator, differently weird on desktop and phone
 - user join timestamp
 - user most recent login/action/active timestamp
 - security, seriously
@@ -72,4 +75,3 @@
 ### GAMES
 
 - humans game modeling reality, eg mood meter
-- make game fun
