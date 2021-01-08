@@ -95,6 +95,13 @@ class App extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        // TODO does this ever work?
+        var userLastOnlineRef = firebase
+          .database()
+          .ref('users/' + user.uid + '/lastOnline');
+        userLastOnlineRef
+          .onDisconnect()
+          .set(firebase.database.ServerValue.TIMESTAMP);
         this.setState({ user });
       }
     });
