@@ -7,6 +7,7 @@
 # TODO
 
 - backups
+- posts feed slowness
 - NOTIFICATIONS - cool stuff you might care to see since you last logged in
 - security, seriously
 - bug: after log out, PERMISSION DENIED errors
