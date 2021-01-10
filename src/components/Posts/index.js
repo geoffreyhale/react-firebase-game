@@ -236,21 +236,27 @@ export default class Posts extends Component {
         return post;
       }
     );
-    const filteredPosts =
-      flatPostsArray && this.state.feed === 'feature request'
-        ? flatPostsArray.filter((post) => {
-            return (
-              post.tags &&
-              Object.values(post.tags).some(
-                (tag) => tag.type === 'feature request'
-              ) &&
-              Object.values(post.tags).every(
-                (tag) =>
-                  tag.type !== 'done' || tag.userId !== this.props.user.uid
-              )
-            );
-          })
-        : flatPostsArray;
+
+    let filteredPosts = flatPostsArray;
+    switch (this.state.feed) {
+      case 'feature request':
+        filteredPosts = flatPostsArray
+          ? flatPostsArray.filter((post) => {
+              return (
+                post.tags &&
+                Object.values(post.tags).some(
+                  (tag) => tag.type === 'feature request'
+                ) &&
+                Object.values(post.tags).every(
+                  (tag) =>
+                    tag.type !== 'done' || tag.userId !== this.props.user.uid
+                )
+              );
+            })
+          : flatPostsArray;
+        break;
+    }
+
     const postsTree = postsTreeFromRawPosts({
       flatPostsArray: filteredPosts,
       users: this.state.users,
@@ -271,6 +277,14 @@ export default class Posts extends Component {
           />
 
           <Nav className="justify-content-center">
+            {/* <Nav.Item>
+              <Nav.Link
+                active={this.state.feed === 'notifications'}
+                onClick={() => this.setState({ feed: 'notifications' })}
+              >
+                Notifications
+              </Nav.Link>
+            </Nav.Item> */}
             <Nav.Item>
               <Nav.Link
                 active={this.state.feed === 'smart'}
