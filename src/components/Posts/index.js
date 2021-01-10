@@ -230,6 +230,7 @@ export default class Posts extends Component {
       .then(successCallback());
   }
   render() {
+    let feedSubtext = null;
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
       ([id, post]) => {
         post.id = id;
@@ -240,6 +241,7 @@ export default class Posts extends Component {
     let filteredPosts = flatPostsArray;
     switch (this.state.feed) {
       case 'feature request':
+        // TODO tests for this
         filteredPosts = flatPostsArray
           ? flatPostsArray.filter((post) => {
               return (
@@ -253,7 +255,7 @@ export default class Posts extends Component {
                 )
               );
             })
-          : flatPostsArray;
+          : null;
         break;
     }
 
@@ -261,8 +263,30 @@ export default class Posts extends Component {
       flatPostsArray: filteredPosts,
       users: this.state.users,
     });
-    const posts = postsTree.posts;
+    let posts = postsTree.posts;
     const countLowPriorityPosts = postsTree.data.countLowPriorityPosts;
+
+    if (this.state.feed === 'notifications') {
+      // TODO tests for this
+      const topLevelPostIdsToAllow =
+        flatPostsArray &&
+        flatPostsArray
+          .filter((post) => {
+            const topLevel = !post.replyToId;
+            const notYours = post.userId !== this.props.user.uid;
+            const youNeverReplied = flatPostsArray.every((p) => {
+              return (
+                p.userId !== this.props.user.uid || p.replyToId !== post.id
+              );
+            });
+
+            return topLevel && notYours && youNeverReplied;
+          })
+          .map((post) => post.id);
+      posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
+      feedSubtext =
+        "Other users' top level posts that you have never replied to:";
+    }
 
     return (
       <Row>
@@ -277,14 +301,14 @@ export default class Posts extends Component {
           />
 
           <Nav className="justify-content-center">
-            {/* <Nav.Item>
+            <Nav.Item>
               <Nav.Link
                 active={this.state.feed === 'notifications'}
                 onClick={() => this.setState({ feed: 'notifications' })}
               >
                 Notifications
               </Nav.Link>
-            </Nav.Item> */}
+            </Nav.Item>
             <Nav.Item>
               <Nav.Link
                 active={this.state.feed === 'smart'}
@@ -310,6 +334,10 @@ export default class Posts extends Component {
               </Nav.Link>
             </Nav.Item>
           </Nav>
+
+          {feedSubtext ? (
+            <small className="text-muted">{feedSubtext}</small>
+          ) : null}
 
           <table>
             <tbody>
