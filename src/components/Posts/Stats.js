@@ -42,10 +42,12 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
       result.users[userId].replyCount++;
 
       // reply not to self
-      const parentPostUserId = posts[post.replyToId].userId;
+      const parentPostUserId =
+        posts[post.replyToId] && posts[post.replyToId].userId;
       if (parentPostUserId !== userId) {
         result.users[userId].repliesSentNotSelf++;
-        result.users[parentPostUserId].repliesReceivedNotSelf++;
+        parentPostUserId && // TODO when would parentPostUserId be unknown? clean this up
+          result.users[parentPostUserId].repliesReceivedNotSelf++;
       }
     }
 
