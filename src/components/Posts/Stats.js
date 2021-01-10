@@ -177,7 +177,8 @@ const Stats = ({ posts, users }) => {
   const statsByTag = stats.tags;
 
   Object.keys(statsByUser).forEach((key) => {
-    statsByUser[key].userPhotoURL = users[statsByUser[key].userId].photoURL;
+    statsByUser[key].userPhotoURL =
+      users[statsByUser[key].userId] && users[statsByUser[key].userId].photoURL;
   });
 
   return (

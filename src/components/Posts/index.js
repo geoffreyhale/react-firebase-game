@@ -176,35 +176,22 @@ export default class Posts extends Component {
     super();
     this.state = {
       rawPosts: {},
-      postsTree: [],
       countLowPriorityPosts: 0,
       feed: 'smart',
+      users: {},
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
-    this.setPostsFromPostsSnapshot = this.setPostsFromPostsSnapshot.bind(this);
-  }
-  setPostsFromPostsSnapshot(rawPosts, users) {
-    const postsTree = postsTreeFromRawPosts({ posts: rawPosts, users });
-    this.setState({
-      rawPosts: rawPosts,
-      postsTree: postsTree.posts,
-      countLowPriorityPosts: postsTree.data.countLowPriorityPosts,
-      users: users,
-    });
-    return true;
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         const postsRef = firebase.database().ref('posts');
         postsRef.on('value', (snapshot) => {
+          this.setState({ rawPosts: snapshot.val() });
           const usersRef = firebase.database().ref('users');
           usersRef.once('value', (usersSnapshot) => {
-            this.setPostsFromPostsSnapshot(
-              snapshot.val(), //TODO bad javascript
-              usersSnapshot.val()
-            );
+            this.setState({ users: usersSnapshot.val() });
           });
         });
       }
@@ -222,17 +209,6 @@ export default class Posts extends Component {
         userId: uid,
         replyToId: replyToId,
       })
-      // .then(() => {
-      //   postsRef.once('value').then((snapshot) => {
-      //     const usersRef = firebase.database().ref('users');
-      //     usersRef.once('value', (usersSnapshot) => {
-      //       this.setPostsFromPostsSnapshot(
-      //         snapshot.val(), //TODO bad javascript
-      //         usersSnapshot.val()
-      //       );
-      //     });
-      //   });
-      // })
       .then(successCallback());
   }
   deletePost(statePostsKey) {
@@ -251,21 +227,33 @@ export default class Posts extends Component {
         type: tagContent,
         userId: uid,
       })
-      // .then(() => {
-      //   const postsRef = firebase.database().ref('posts');
-      //   postsRef.once('value').then((snapshot) => {
-      //     const usersRef = firebase.database().ref('users');
-      //     usersRef.once('value', (usersSnapshot) => {
-      //       this.setPostsFromPostsSnapshot(
-      //         snapshot.val(), //TODO bad javascript
-      //         usersSnapshot.val()
-      //       );
-      //     });
-      //   });
-      // })
       .then(successCallback());
   }
   render() {
+    const flatPostsArray = Object.entries(this.state.rawPosts).map(
+      ([id, post]) => {
+        post.id = id;
+        return post;
+      }
+    );
+    const filteredPosts =
+      flatPostsArray && this.state.feed === 'feature request'
+        ? flatPostsArray.filter((post) => {
+            return (
+              post.tags &&
+              Object.values(post.tags).some(
+                (tag) => tag.type === 'feature request'
+              )
+            );
+          })
+        : flatPostsArray;
+    const postsTree = postsTreeFromRawPosts({
+      flatPostsArray: filteredPosts,
+      users: this.state.users,
+    });
+    const posts = postsTree.posts;
+    const countLowPriorityPosts = postsTree.data.countLowPriorityPosts;
+
     return (
       <Row>
         <Col>
@@ -295,19 +283,19 @@ export default class Posts extends Component {
                 All Posts
               </Nav.Link>
             </Nav.Item>
-            {/* <Nav.Item>
+            <Nav.Item>
               <Nav.Link
-                active={!this.state.feed === 'feature request'}
+                active={this.state.feed === 'feature request'}
                 onClick={() => this.setState({ feed: 'feature request' })}
               >
-                Feature Requests 
+                Feature Requests
               </Nav.Link>
-            </Nav.Item> */}
+            </Nav.Item>
           </Nav>
 
           <table>
             <tbody>
-              {Object.entries(this.state.postsTree).map(([key, post]) => {
+              {Object.entries(posts).map(([key, post]) => {
                 if (this.state.feed === 'smart' && post.lowPriority) {
                   return null;
                 }
@@ -380,13 +368,18 @@ export default class Posts extends Component {
                                 );
                               }, this)}
                           </div>
-                          <ReplyForm
-                            userPhotoURL={
-                              this.props.user && this.props.user.photoURL
-                            }
-                            createNewPost={this.createNewPost}
-                            replyToPostId={post.id}
-                          />
+                          {
+                            // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
+                            post.replyToId ? null : (
+                              <ReplyForm
+                                userPhotoURL={
+                                  this.props.user && this.props.user.photoURL
+                                }
+                                createNewPost={this.createNewPost}
+                                replyToPostId={post.id}
+                              />
+                            )
+                          }
                         </Card.Body>
                       </Card>
                     </td>
@@ -398,8 +391,8 @@ export default class Posts extends Component {
                   <td>
                     <Card className="mt-2">
                       <Card.Body>
-                        {this.state.countLowPriorityPosts} posts were hidden
-                        because they were determined to be old.
+                        {countLowPriorityPosts} posts were hidden because they
+                        were determined to be old.
                       </Card.Body>
                     </Card>
                   </td>

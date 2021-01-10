@@ -34,13 +34,11 @@ const shouldLowPriority = (post) => {
 };
 
 //TODO write tests for this function
-const postsTreeFromRawPosts = ({ posts, users }) => {
+const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
   const postsByTimestamp = {};
   let countLowPriorityPosts = 0;
 
-  Object.keys(posts).forEach((postId) => {
-    const post = posts[postId];
-    post.id = postId;
+  flatPostsArray.forEach((post) => {
     post.userDisplayName =
       (users[post.userId] && users[post.userId].displayName) ||
       'USER NAME NOT FOUND';
