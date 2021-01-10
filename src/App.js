@@ -137,11 +137,15 @@ class App extends Component {
             photoURL: user.photoURL,
             lastLogin: firebase.database.ServerValue.TIMESTAMP,
           });
-          if (!user.joined) {
-            userRef.update({
-              joined: firebase.database.ServerValue.TIMESTAMP,
-            });
-          }
+          const userIsAdmin = firebase
+            .database()
+            .ref('users/' + uid + '/joined');
+          userIsAdmin.once('value', (snapshot) => {
+            const joined = snapshot.val();
+            if (!joined) {
+              userIsAdmin.set(firebase.database.ServerValue.TIMESTAMP);
+            }
+          });
         }
       );
     });
