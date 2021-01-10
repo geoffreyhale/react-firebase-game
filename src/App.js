@@ -44,7 +44,7 @@ const UnderConstruction = () => [
   <span title="Under Construction">(&#128679; under construction)</span>,
 ];
 
-const AppNav = () => {
+const AppNav = ({ admin }) => {
   return (
     <Nav className="justify-content-center">
       <Nav.Item>
@@ -79,6 +79,13 @@ const AppNav = () => {
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>
+      {admin && (
+        <Nav.Item>
+          <Nav.Link as={'span'}>
+            <Link to="/admin">Admin</Link>
+          </Nav.Link>
+        </Nav.Item>
+      )}
     </Nav>
   );
 };
@@ -88,6 +95,7 @@ class App extends Component {
     super();
     this.state = {
       user: null,
+      userIsAdmin: false,
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -95,14 +103,20 @@ class App extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        this.setState({ user: user });
+        const userIsAdmin = firebase
+          .database()
+          .ref('users/' + user.uid + '/admin');
+        userIsAdmin.once('value', (snapshot) => {
+          this.setState({ userIsAdmin: snapshot.val() });
+        });
         // TODO does this ever work?
-        var userLastOnlineRef = firebase
+        const userLastOnlineRef = firebase
           .database()
           .ref('users/' + user.uid + '/lastOnline');
         userLastOnlineRef
           .onDisconnect()
           .set(firebase.database.ServerValue.TIMESTAMP);
-        this.setState({ user });
       }
     });
   }
@@ -169,7 +183,7 @@ class App extends Component {
                     >
                       {this.state.user ? (
                         <>
-                          <AppNav />
+                          <AppNav admin={this.state.userIsAdmin} />
                         </>
                       ) : (
                         <div>
