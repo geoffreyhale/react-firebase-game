@@ -11,7 +11,14 @@ export default class NewPostForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange(event) {
-    this.setState({ content: event.target.value });
+    const newValue = event.target.value;
+    if (
+      this.props.characterLimit &&
+      newValue.length > this.props.characterLimit
+    ) {
+      return;
+    }
+    this.setState({ content: newValue });
   }
   render() {
     return (

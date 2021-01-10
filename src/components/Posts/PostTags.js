@@ -3,6 +3,11 @@ import NewPostForm from './NewPostForm';
 import Tag from './Tag';
 
 const PostTags = ({ tags, myUserId, addTag, postId }) => {
+  const placeholder =
+    tags && Object.keys(tags).length > 0
+      ? 'add tag'
+      : 'this post needs tags help add tags';
+
   return (
     <div>
       {tags &&
@@ -22,9 +27,10 @@ const PostTags = ({ tags, myUserId, addTag, postId }) => {
           onSubmit={(content, replyToId, successCallback) => {
             addTag(content, successCallback);
           }}
-          placeholder="tag"
+          placeholder={placeholder}
           hideSubmitButton={true}
           small={true}
+          characterLimit={25}
         />
       </div>
     </div>
