@@ -178,7 +178,7 @@ export default class Posts extends Component {
       rawPosts: {},
       postsTree: [],
       countLowPriorityPosts: 0,
-      smartFeed: true,
+      feed: 'smart',
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
@@ -281,26 +281,34 @@ export default class Posts extends Component {
           <Nav className="justify-content-center">
             <Nav.Item>
               <Nav.Link
-                active={this.state.smartFeed}
-                onClick={() => this.setState({ smartFeed: true })}
+                active={this.state.feed === 'smart'}
+                onClick={() => this.setState({ feed: 'smart' })}
               >
                 Smart Feed
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link
-                active={!this.state.smartFeed}
-                onClick={() => this.setState({ smartFeed: false })}
+                active={this.state.feed === 'all'}
+                onClick={() => this.setState({ feed: 'all' })}
               >
                 All Posts
               </Nav.Link>
             </Nav.Item>
+            {/* <Nav.Item>
+              <Nav.Link
+                active={!this.state.feed === 'feature request'}
+                onClick={() => this.setState({ feed: 'feature request' })}
+              >
+                Feature Requests 
+              </Nav.Link>
+            </Nav.Item> */}
           </Nav>
 
           <table>
             <tbody>
               {Object.entries(this.state.postsTree).map(([key, post]) => {
-                if (this.state.smartFeed && post.lowPriority) {
+                if (this.state.feed === 'smart' && post.lowPriority) {
                   return null;
                 }
 
@@ -385,7 +393,7 @@ export default class Posts extends Component {
                   </tr>
                 );
               })}
-              {this.state.smartFeed ? (
+              {this.state.feed === 'smart' ? (
                 <tr key={'countLowPriorityPosts'}>
                   <td>
                     <Card className="mt-2">
