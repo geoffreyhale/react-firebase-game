@@ -117,6 +117,81 @@ const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
   );
 };
 
+const Post = ({
+  post,
+  myUserId,
+  myPhotoURL,
+  createNewPost,
+  deletePost,
+  addTag,
+}) => {
+  const isMyPost = myUserId === post.userId;
+  return (
+    <Card>
+      <Card.Body>
+        <PostHeader
+          displayName={post.userDisplayName}
+          showActions={isMyPost}
+          postActionsDropdown={
+            <PostActionsDropdown deletePost={() => deletePost(post.id)} />
+          }
+          timestamp={post.timestamp}
+          photoURL={post.userPhotoURL}
+          postId={post.id}
+        />
+        <PostContent>{post.content}</PostContent>
+        <div className="mt-2">
+          <PostTags
+            tags={post.tags}
+            myUserId={myUserId}
+            addTag={(content, successCallback) =>
+              addTag(post.id, content, successCallback, myUserId)
+            }
+            postId={post.id}
+          />
+        </div>
+        <div className="mt-3">
+          {post &&
+            post.childNodes &&
+            post.childNodes.map((replyPost) => {
+              const isMyPost = myUserId === replyPost.userId;
+              const postActionsDropdown = (
+                <PostActionsDropdown
+                  deletePost={() => deletePost(replyPost.id)}
+                />
+              );
+              return (
+                <ReplyPostCard
+                  key={replyPost.id}
+                  userDisplayName={replyPost.userDisplayName}
+                  showActions={isMyPost}
+                  postActionsDropdown={postActionsDropdown}
+                  timestamp={replyPost.timestamp}
+                  userPhotoURL={replyPost.userPhotoURL}
+                  content={replyPost.content}
+                  postTags={replyPost.tags}
+                  myUserId={myUserId}
+                  thisPostId={replyPost.id}
+                  addTag={addTag}
+                />
+              );
+            }, this)}
+        </div>
+        {
+          // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
+          post.replyToId ? null : (
+            <ReplyForm
+              userPhotoURL={myPhotoURL}
+              createNewPost={createNewPost}
+              replyToPostId={post.id}
+            />
+          )
+        }
+      </Card.Body>
+    </Card>
+  );
+};
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -313,86 +388,14 @@ export default class Posts extends Component {
                 return (
                   <tr key={post.id}>
                     <td>
-                      <Card className={key !== '0' ? 'mt-2' : null}>
-                        <Card.Body>
-                          <PostHeader
-                            displayName={post.userDisplayName}
-                            showActions={
-                              this.props.user &&
-                              this.props.user.uid === post.userId
-                            }
-                            postActionsDropdown={
-                              <PostActionsDropdown
-                                deletePost={() => this.deletePost(post.id)}
-                              />
-                            }
-                            timestamp={post.timestamp}
-                            photoURL={post.userPhotoURL}
-                            postId={post.id}
-                          />
-                          <PostContent>{post.content}</PostContent>
-                          <div className="mt-2">
-                            <PostTags
-                              tags={post.tags}
-                              myUserId={this.props.user && this.props.user.uid}
-                              addTag={(content, successCallback) =>
-                                this.addTag(
-                                  post.id,
-                                  content,
-                                  successCallback,
-                                  this.props.user && this.props.user.uid
-                                )
-                              }
-                              postId={post.id}
-                            />
-                          </div>
-                          <div className="mt-3">
-                            {post &&
-                              post.childNodes &&
-                              post.childNodes.map((replyPost) => {
-                                const showActions =
-                                  this.props.user &&
-                                  this.props.user.uid === replyPost.userId;
-                                const postActionsDropdown = (
-                                  <PostActionsDropdown
-                                    deletePost={() =>
-                                      this.deletePost(replyPost.id)
-                                    }
-                                  />
-                                );
-                                return (
-                                  <ReplyPostCard
-                                    key={replyPost.id}
-                                    userDisplayName={replyPost.userDisplayName}
-                                    showActions={showActions}
-                                    postActionsDropdown={postActionsDropdown}
-                                    timestamp={replyPost.timestamp}
-                                    userPhotoURL={replyPost.userPhotoURL}
-                                    content={replyPost.content}
-                                    postTags={replyPost.tags}
-                                    myUserId={
-                                      this.props.user && this.props.user.uid
-                                    }
-                                    thisPostId={replyPost.id}
-                                    addTag={this.addTag}
-                                  />
-                                );
-                              }, this)}
-                          </div>
-                          {
-                            // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
-                            post.replyToId ? null : (
-                              <ReplyForm
-                                userPhotoURL={
-                                  this.props.user && this.props.user.photoURL
-                                }
-                                createNewPost={this.createNewPost}
-                                replyToPostId={post.id}
-                              />
-                            )
-                          }
-                        </Card.Body>
-                      </Card>
+                      <Post
+                        post={post}
+                        myUserId={this.props.user && this.props.user.uid}
+                        myPhotoURL={this.props.user && this.props.user.photoURL}
+                        createNewPost={this.createNewPost}
+                        deletePost={this.deletePost}
+                        addTag={this.addTag}
+                      />
                     </td>
                   </tr>
                 );
