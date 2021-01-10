@@ -1,37 +1,14 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
-import MyDropdownToggle from '../shared/MyDropdownToggle';
-import Stats from './Stats';
-import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Mosaic from './mosaic';
 import NewPostForm from './NewPostForm';
-import PostTags from './PostTags';
-import { PostHeader } from './Post';
-
-const PostActionsDropdown = ({ deletePost }) => (
-  <Dropdown>
-    <MyDropdownToggle />
-    <Dropdown.Menu>
-      <Dropdown.Item as="button" onClick={deletePost}>
-        Delete
-      </Dropdown.Item>
-    </Dropdown.Menu>
-  </Dropdown>
-);
-
-const PostContent = ({ children, small }) => (
-  <div
-    className="mt-1"
-    style={{ whiteSpace: 'break-spaces', fontSize: small ? '85%' : null }}
-  >
-    {children}
-  </div>
-);
+import Post from './Post';
+import postsTreeFromRawPosts from './postsTreeFromRawPosts';
+import Stats from './Stats';
 
 const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
   return (
@@ -45,148 +22,6 @@ const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
           <small className="text-muted ml-2">&#127757; Public</small>
         </Card.Title>
         <NewPostForm onSubmit={createNewPost} multiline={true} />
-      </Card.Body>
-    </Card>
-  );
-};
-
-const ReplyPostCard = ({
-  userDisplayName,
-  showActions,
-  postActionsDropdown,
-  timestamp,
-  userPhotoURL,
-  content,
-  postTags,
-  myUserId,
-  thisPostId,
-  addTag,
-}) => {
-  return (
-    <Card className="mt-1">
-      <Card.Body style={{ padding: '0.75rem' }}>
-        <PostHeader
-          displayName={userDisplayName}
-          showActions={showActions}
-          postActionsDropdown={postActionsDropdown}
-          timestamp={timestamp}
-          photoURL={userPhotoURL}
-          small={true}
-          postId={thisPostId}
-        />
-        <PostContent>{content}</PostContent>
-        <div className="mt-2">
-          <PostTags
-            tags={postTags}
-            myUserId={myUserId}
-            addTag={(content, successCallback) =>
-              addTag(thisPostId, content, successCallback, myUserId)
-            }
-            postId={thisPostId}
-          />
-        </div>
-      </Card.Body>
-    </Card>
-  );
-};
-
-const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
-  return (
-    <div
-      className="mt-3"
-      style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-      }}
-    >
-      <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
-        {userPhotoURL ? (
-          <img src={userPhotoURL} alt="user" style={{ height: 38 }} />
-        ) : null}
-      </div>
-      <div style={{ flexGrow: 1 }}>
-        <NewPostForm
-          onSubmit={createNewPost}
-          placeholder="Write a reply..."
-          hideSubmitButton={true}
-          replyToId={replyToPostId}
-        />
-      </div>
-    </div>
-  );
-};
-
-const Post = ({
-  post,
-  myUserId,
-  myPhotoURL,
-  createNewPost,
-  deletePost,
-  addTag,
-}) => {
-  const isMyPost = myUserId === post.userId;
-  return (
-    <Card>
-      <Card.Body>
-        <PostHeader
-          displayName={post.userDisplayName}
-          showActions={isMyPost}
-          postActionsDropdown={
-            <PostActionsDropdown deletePost={() => deletePost(post.id)} />
-          }
-          timestamp={post.timestamp}
-          photoURL={post.userPhotoURL}
-          postId={post.id}
-        />
-        <PostContent>{post.content}</PostContent>
-        <div className="mt-2">
-          <PostTags
-            tags={post.tags}
-            myUserId={myUserId}
-            addTag={(content, successCallback) =>
-              addTag(post.id, content, successCallback, myUserId)
-            }
-            postId={post.id}
-          />
-        </div>
-        <div className="mt-3">
-          {post &&
-            post.childNodes &&
-            post.childNodes.map((replyPost) => {
-              const isMyPost = myUserId === replyPost.userId;
-              const postActionsDropdown = (
-                <PostActionsDropdown
-                  deletePost={() => deletePost(replyPost.id)}
-                />
-              );
-              return (
-                <ReplyPostCard
-                  key={replyPost.id}
-                  userDisplayName={replyPost.userDisplayName}
-                  showActions={isMyPost}
-                  postActionsDropdown={postActionsDropdown}
-                  timestamp={replyPost.timestamp}
-                  userPhotoURL={replyPost.userPhotoURL}
-                  content={replyPost.content}
-                  postTags={replyPost.tags}
-                  myUserId={myUserId}
-                  thisPostId={replyPost.id}
-                  addTag={addTag}
-                />
-              );
-            }, this)}
-        </div>
-        {
-          // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
-          post.replyToId ? null : (
-            <ReplyForm
-              userPhotoURL={myPhotoURL}
-              createNewPost={createNewPost}
-              replyToPostId={post.id}
-            />
-          )
-        }
       </Card.Body>
     </Card>
   );
