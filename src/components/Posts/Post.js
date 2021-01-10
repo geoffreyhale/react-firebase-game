@@ -6,6 +6,7 @@ import friendlyTimestamp from '../shared/friendlyTimestamp';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import PostTags from './PostTags';
+import MarkAsSeenButton from './MarkAsSeenButton';
 
 const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
   return (
@@ -200,11 +201,14 @@ const Post = ({
           post.replyToId
             ? null
             : createNewPost && (
-                <ReplyForm
-                  userPhotoURL={myPhotoURL}
-                  createNewPost={createNewPost}
-                  replyToPostId={post.id}
-                />
+                <>
+                  <ReplyForm
+                    userPhotoURL={myPhotoURL}
+                    createNewPost={createNewPost}
+                    replyToPostId={post.id}
+                  />
+                  <MarkAsSeenButton postId={post.id} userId={myUserId} />
+                </>
               )
         }
       </Card.Body>
