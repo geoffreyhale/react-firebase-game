@@ -263,7 +263,7 @@ export default class Posts extends Component {
         <Col>
           <Mosaic />
         </Col>
-        <Col sm={8} className="col-posts">
+        <Col sm={8} className="col-posts mt-3">
           <NewPostCard
             photoURL={this.props.user && this.props.user.photoURL}
             displayName={this.props.user && this.props.user.displayName}
