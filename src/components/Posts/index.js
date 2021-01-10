@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
+import { Link } from 'react-router-dom';
 import firebase, { auth } from '../../firebase.js';
 import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
@@ -59,6 +60,7 @@ const PostHeader = ({
   timestamp,
   photoURL,
   small,
+  postId,
 }) => (
   <div style={{ fontSize: small ? '85%' : null }}>
     <div className="float-left mr-2">
@@ -73,7 +75,9 @@ const PostHeader = ({
           {showActions ? postActionsDropdown : null}
         </div>
       </div>
-      <div className="small text-muted">{friendlyTimestamp(timestamp)}</div>
+      <div className="small text-muted">
+        <Link to={'post/' + postId}>{friendlyTimestamp(timestamp)}</Link>
+      </div>
     </>
     <div style={{ clear: 'both' }}></div>
   </div>
@@ -127,6 +131,7 @@ const ReplyPostCard = ({
           timestamp={timestamp}
           photoURL={userPhotoURL}
           small={true}
+          postId={thisPostId}
         />
         <PostContent>{content}</PostContent>
         <div className="mt-2">
@@ -382,6 +387,7 @@ export default class Posts extends Component {
                             }
                             timestamp={post.timestamp}
                             photoURL={post.userPhotoURL}
+                            postId={post.id}
                           />
                           <PostContent>{post.content}</PostContent>
                           <div className="mt-2">

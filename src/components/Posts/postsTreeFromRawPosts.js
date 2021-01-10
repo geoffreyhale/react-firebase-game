@@ -40,8 +40,7 @@ const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
 
   flatPostsArray.forEach((post) => {
     post.userDisplayName =
-      (users[post.userId] && users[post.userId].displayName) ||
-      'USER NAME NOT FOUND';
+      (users[post.userId] && users[post.userId].displayName) || 'Loading...';
     post.userPhotoURL =
       (users[post.userId] && users[post.userId].photoURL) || null;
     if (shouldLowPriority(post)) {
