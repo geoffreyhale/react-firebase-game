@@ -163,9 +163,7 @@ export default class Posts extends Component {
             const mostRecentPostInThreadIsNotYours =
               mostRecentPostInThread.userId !== myUserId;
             // and is more recent than your mark as seen
-            const yourMarkAsSeenTimestamp =
-              mostRecentPostInThread.seen &&
-              mostRecentPostInThread.seen[myUserId];
+            const yourMarkAsSeenTimestamp = post.seen && post.seen[myUserId];
             const seenMostRecent =
               yourMarkAsSeenTimestamp > mostRecentPostInThread.timestamp;
 
