@@ -48,7 +48,6 @@
 - ability to edit your existing posts
 - ability to share pictures
 - better handling for orphan posts
-- direct links to posts
 
 ### NEW USERS AND PARTICIPATION
 
