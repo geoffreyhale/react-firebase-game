@@ -273,25 +273,37 @@ export default class Posts extends Component {
         flatPostsArray
           .filter((post) => {
             const topLevel = !post.replyToId;
-            const notYours = post.userId !== this.props.user.uid;
-            const youNeverReplied = flatPostsArray.every((p) => {
-              return (
-                p.userId !== this.props.user.uid || p.replyToId !== post.id
-              );
-            });
+            if (!topLevel) {
+              return false;
+            }
+            // const notYours = post.userId !== this.props.user.uid;
+            // const youNeverReplied = flatPostsArray.every((p) => {
+            //   return (
+            //     p.userId !== this.props.user.uid || p.replyToId !== post.id
+            //   );
+            // });
             // const youNeverTagged =
             //   !post.tags ||
             //   Object.values(post.tags).every(
             //     (tag) => tag.userId !== this.props.user.uid
             //   );
+            let mostRecentReply = null;
+            flatPostsArray.forEach((p) => {
+              if (
+                p.replyToId &&
+                p.replyToId === post.id &&
+                (!mostRecentReply || p.timestamp > mostRecentReply.timestamp)
+              )
+                mostRecentReply = p;
+            });
+            const youAreNotMostRecentReplier =
+              mostRecentReply && mostRecentReply.userId !== this.props.user.uid;
 
-            return topLevel && notYours && youNeverReplied;
-            //  && youNeverTagged;
+            return youAreNotMostRecentReplier;
           })
           .map((post) => post.id);
       posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
-      feedSubtext =
-        "Other users' top level posts that you have not replied to:";
+      feedSubtext = 'Posts to which you did not post the most recent reply:';
     }
 
     return (
