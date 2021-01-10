@@ -2,6 +2,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import firebase, { auth } from '../../firebase.js';
+import friendlyTimestamp from '../shared/friendlyTimestamp';
 
 export default class Admin extends React.Component {
   constructor() {
@@ -47,13 +48,13 @@ export default class Admin extends React.Component {
     });
   }
   render() {
-    const propertyNames = [
-      'displayName',
-      'email',
-      // 'photoURL',
-      'joined',
-      'lastLogin',
-      'lastOnline',
+    const properties = [
+      { name: 'displayName' },
+      { name: 'email' },
+      // { name: 'photoURL' },
+      { name: 'joined', display: 'friendlyTimestamp' },
+      { name: 'lastLogin', display: 'friendlyTimestamp' },
+      { name: 'lastOnline', display: 'friendlyTimestamp' },
     ];
 
     const sortKey = this.state.sortKey;
@@ -79,12 +80,12 @@ export default class Admin extends React.Component {
             <thead>
               <tr>
                 <td key="userId"></td>
-                {propertyNames.map((propertyName) => (
+                {properties.map((property) => (
                   <td
-                    key={propertyName}
-                    onClick={() => this.sort(propertyName)}
+                    key={property.name}
+                    onClick={() => this.sort(property.name)}
                   >
-                    {propertyName}
+                    {property.name}
                   </td>
                 ))}
               </tr>
@@ -93,8 +94,12 @@ export default class Admin extends React.Component {
               {users.map(([userId, user]) => (
                 <tr key={userId}>
                   <td key="userId">{userId}</td>
-                  {propertyNames.map((propertyName) => (
-                    <td key={propertyName}>{user[propertyName]}</td>
+                  {properties.map((property) => (
+                    <td key={property.name}>
+                      {property.display === 'friendlyTimestamp'
+                        ? friendlyTimestamp(user[property.name])
+                        : user[property.name]}
+                    </td>
                   ))}
                 </tr>
               ))}
