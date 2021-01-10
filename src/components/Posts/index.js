@@ -112,6 +112,8 @@ export default class Posts extends Component {
               );
             })
           : null;
+        feedSubtext =
+          'Posts tagged `feature request` that viewer did not tag `done` (for dev use):';
         break;
     }
 
