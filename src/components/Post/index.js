@@ -1,7 +1,10 @@
 import React from 'react';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
+import Post from '../Posts/Post';
 
-export default class Post extends React.Component {
+export default class PostPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -15,12 +18,42 @@ export default class Post extends React.Component {
           .database()
           .ref('posts/' + this.props.match.params.postId);
         postRef.once('value', (snapshot) => {
-          this.setState({ post: snapshot.val() });
+          const post = snapshot.val();
+          this.setState({ post: post }, () => {
+            const postUserRef = firebase.database().ref('users/' + post.userId);
+            postUserRef.once('value', (snapshot) => {
+              const postUser = snapshot.val();
+              const post = this.state.post;
+              post.userDisplayName = postUser.displayName;
+              post.userPhotoURL = postUser.photoURL;
+              this.setState({ post: post });
+            });
+          });
         });
       }
     });
   }
   render() {
-    return <>{this.state.post && this.state.post.content}</>;
+    const { post } = this.state;
+    const { user } = this.props;
+    return (
+      <Row>
+        <Col></Col>
+        <Col sm={8} className="col-posts mt-3">
+          <Post
+            post={post}
+            myUserId={user && user.uid}
+            myPhotoURL={user && user.photoURL}
+            // createNewPost={this.createNewPost}
+            // deletePost={this.deletePost}
+            // addTag={this.addTag}
+          />
+          <small className="text-muted">
+            Limited functionality and reply posts not shown.
+          </small>
+        </Col>
+        <Col></Col>
+      </Row>
+    );
   }
 }

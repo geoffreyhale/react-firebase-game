@@ -49,6 +49,9 @@ const PostActionsDropdown = ({ deletePost }) => (
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
+  if (!timestamp) {
+    return;
+  }
   const timestampDate = new Date(timestamp);
   const formattedTimestamp = format(timestampDate, "MMMM d, yyyy 'at' hh:mm b");
   const duration = intervalToDuration({
@@ -168,29 +171,33 @@ const Post = ({
           displayName={post.userDisplayName}
           showActions={isMyPost}
           postActionsDropdown={
-            <PostActionsDropdown deletePost={() => deletePost(post.id)} />
+            deletePost && (
+              <PostActionsDropdown deletePost={() => deletePost(post.id)} />
+            )
           }
           timestamp={post.timestamp}
           photoURL={post.userPhotoURL}
           postId={post.id}
         />
         <PostContent>{post.content}</PostContent>
-        <div className="mt-2">
-          <PostTags
-            tags={post.tags}
-            myUserId={myUserId}
-            addTag={(content, successCallback) =>
-              addTag(post.id, content, successCallback, myUserId)
-            }
-            postId={post.id}
-          />
-        </div>
+        {addTag && (
+          <div className="mt-2">
+            <PostTags
+              tags={post.tags}
+              myUserId={myUserId}
+              addTag={(content, successCallback) =>
+                addTag(post.id, content, successCallback, myUserId)
+              }
+              postId={post.id}
+            />
+          </div>
+        )}
         <div className="mt-3">
           {post &&
             post.childNodes &&
             post.childNodes.map((replyPost) => {
               const isMyPost = myUserId === replyPost.userId;
-              const postActionsDropdown = (
+              const postActionsDropdown = deletePost && (
                 <PostActionsDropdown
                   deletePost={() => deletePost(replyPost.id)}
                 />
@@ -207,20 +214,22 @@ const Post = ({
                   postTags={replyPost.tags}
                   myUserId={myUserId}
                   thisPostId={replyPost.id}
-                  addTag={addTag}
+                  addTag={addTag && addTag}
                 />
               );
             }, this)}
         </div>
         {
           // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
-          post.replyToId ? null : (
-            <ReplyForm
-              userPhotoURL={myPhotoURL}
-              createNewPost={createNewPost}
-              replyToPostId={post.id}
-            />
-          )
+          post.replyToId
+            ? null
+            : createNewPost && (
+                <ReplyForm
+                  userPhotoURL={myPhotoURL}
+                  createNewPost={createNewPost}
+                  replyToPostId={post.id}
+                />
+              )
         }
       </Card.Body>
     </Card>
