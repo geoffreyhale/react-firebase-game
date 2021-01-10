@@ -69,7 +69,7 @@ export default class Admin extends React.Component {
         return a[1][sortKey].localeCompare(b[1][sortKey]);
       }
       if (typeof a[1][sortKey] === 'number') {
-        return a[1][sortKey] - b[1][sortKey];
+        return b[1][sortKey] - a[1][sortKey];
       }
     });
 
