@@ -84,6 +84,7 @@ export const PostHeader = ({
   photoURL,
   small,
   postId,
+  hackDoNotAddPostToMessageLinks,
 }) => (
   <div style={{ fontSize: small ? '85%' : null }}>
     <div className="float-left mr-2">
@@ -99,7 +100,9 @@ export const PostHeader = ({
         </div>
       </div>
       <div className="small text-muted">
-        <Link to={'post/' + postId}>{friendlyTimestamp(timestamp)}</Link>
+        <Link to={hackDoNotAddPostToMessageLinks ? postId : 'post/' + postId}>
+          {friendlyTimestamp(timestamp)}
+        </Link>
       </div>
     </>
     <div style={{ clear: 'both' }}></div>
@@ -140,16 +143,18 @@ const ReplyPostCard = ({
           postId={thisPostId}
         />
         <PostContent>{content}</PostContent>
-        <div className="mt-2">
-          <PostTags
-            tags={postTags}
-            myUserId={myUserId}
-            addTag={(content, successCallback) =>
-              addTag(thisPostId, content, successCallback, myUserId)
-            }
-            postId={thisPostId}
-          />
-        </div>
+        {addTag && (
+          <div className="mt-2">
+            <PostTags
+              tags={postTags}
+              myUserId={myUserId}
+              addTag={(content, successCallback) =>
+                addTag(thisPostId, content, successCallback, myUserId)
+              }
+              postId={thisPostId}
+            />
+          </div>
+        )}
       </Card.Body>
     </Card>
   );
@@ -162,6 +167,7 @@ const Post = ({
   createNewPost,
   deletePost,
   addTag,
+  hackDoNotAddPostToMessageLinks,
 }) => {
   const isMyPost = myUserId === post.userId;
   return (
@@ -178,6 +184,7 @@ const Post = ({
           timestamp={post.timestamp}
           photoURL={post.userPhotoURL}
           postId={post.id}
+          hackDoNotAddPostToMessageLinks={hackDoNotAddPostToMessageLinks}
         />
         <PostContent>{post.content}</PostContent>
         {addTag && (
@@ -214,7 +221,7 @@ const Post = ({
                   postTags={replyPost.tags}
                   myUserId={myUserId}
                   thisPostId={replyPost.id}
-                  addTag={addTag && addTag}
+                  addTag={addTag}
                 />
               );
             }, this)}
