@@ -130,8 +130,8 @@ export default class Posts extends Component {
         flatPostsArray &&
         flatPostsArray
           .filter((post) => {
-            const topLevel = !post.replyToId;
-            if (!topLevel) {
+            const isTopLevelPost = !post.replyToId;
+            if (!isTopLevelPost) {
               return false;
             }
             // const notYours = post.userId !== this.props.user.uid;
@@ -154,10 +154,15 @@ export default class Posts extends Component {
               )
                 mostRecentReply = p;
             });
-            const youAreNotMostRecentReplier =
-              mostRecentReply && mostRecentReply.userId !== this.props.user.uid;
 
-            return youAreNotMostRecentReplier;
+            // mostRecentPost in thread (topLevel or reply)
+            const mostRecentPostInThread = mostRecentReply || post;
+            // is not yours
+            const mostRecentPostInThreadIsNotYours =
+              mostRecentPostInThread.userId !== this.props.user.uid;
+            // TODO and is more recent than your mark as seen
+
+            return mostRecentPostInThreadIsNotYours;
           })
           .map((post) => post.id);
       posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
