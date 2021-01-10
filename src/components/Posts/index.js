@@ -33,7 +33,7 @@ export default class Posts extends Component {
     this.state = {
       rawPosts: {},
       countLowPriorityPosts: 0,
-      feed: 'smart',
+      feed: 'notifications',
       users: {},
     };
     this.createNewPost = this.createNewPost.bind(this);
