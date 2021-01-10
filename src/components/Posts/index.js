@@ -134,16 +134,18 @@ export default class Posts extends Component {
             if (!isTopLevelPost) {
               return false;
             }
-            // const notYours = post.userId !== this.props.user.uid;
+            const myUserId = this.props.user.uid;
+
+            // const notYours = post.userId !== myUserId;
             // const youNeverReplied = flatPostsArray.every((p) => {
             //   return (
-            //     p.userId !== this.props.user.uid || p.replyToId !== post.id
+            //     p.userId !== myUserId || p.replyToId !== post.id
             //   );
             // });
             // const youNeverTagged =
             //   !post.tags ||
             //   Object.values(post.tags).every(
-            //     (tag) => tag.userId !== this.props.user.uid
+            //     (tag) => tag.userId !== myUserId
             //   );
             let mostRecentReply = null;
             flatPostsArray.forEach((p) => {
@@ -159,14 +161,20 @@ export default class Posts extends Component {
             const mostRecentPostInThread = mostRecentReply || post;
             // is not yours
             const mostRecentPostInThreadIsNotYours =
-              mostRecentPostInThread.userId !== this.props.user.uid;
-            // TODO and is more recent than your mark as seen
+              mostRecentPostInThread.userId !== myUserId;
+            // and is more recent than your mark as seen
+            const yourMarkAsSeenTimestamp =
+              mostRecentPostInThread.seen &&
+              mostRecentPostInThread.seen[myUserId];
+            const seenMostRecent =
+              yourMarkAsSeenTimestamp > mostRecentPostInThread.timestamp;
 
-            return mostRecentPostInThreadIsNotYours;
+            return mostRecentPostInThreadIsNotYours && !seenMostRecent;
           })
           .map((post) => post.id);
       posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
-      feedSubtext = 'Posts to which you did not post the most recent reply:';
+      feedSubtext =
+        'Threads in which the most recent post is not yours and is more recent than your most recent mark as seen.  To clear a thread from this notifications feed, please write a reply or click mark as seen button.';
     }
 
     return (
