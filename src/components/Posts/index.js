@@ -279,13 +279,19 @@ export default class Posts extends Component {
                 p.userId !== this.props.user.uid || p.replyToId !== post.id
               );
             });
+            // const youNeverTagged =
+            //   !post.tags ||
+            //   Object.values(post.tags).every(
+            //     (tag) => tag.userId !== this.props.user.uid
+            //   );
 
             return topLevel && notYours && youNeverReplied;
+            //  && youNeverTagged;
           })
           .map((post) => post.id);
       posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
       feedSubtext =
-        "Other users' top level posts that you have never replied to:";
+        "Other users' top level posts that you have not replied to:";
     }
 
     return (
