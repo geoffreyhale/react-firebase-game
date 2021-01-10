@@ -105,13 +105,17 @@ const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
   );
 };
 
-const ReplyCard = ({
+const ReplyPostCard = ({
   userDisplayName,
   showActions,
   postActionsDropdown,
   timestamp,
   userPhotoURL,
   content,
+  postTags,
+  myUserId,
+  thisPostId,
+  addTag,
 }) => {
   return (
     <Card className="mt-1">
@@ -125,6 +129,16 @@ const ReplyCard = ({
           small={true}
         />
         <PostContent>{content}</PostContent>
+        <div className="mt-2">
+          <PostTags
+            tags={postTags}
+            myUserId={myUserId}
+            addTag={(content, successCallback) =>
+              addTag(thisPostId, content, successCallback, myUserId)
+            }
+            postId={thisPostId}
+          />
+        </div>
       </Card.Body>
     </Card>
   );
@@ -208,17 +222,17 @@ export default class Posts extends Component {
         userId: uid,
         replyToId: replyToId,
       })
-      .then(() => {
-        postsRef.once('value').then((snapshot) => {
-          const usersRef = firebase.database().ref('users');
-          usersRef.once('value', (usersSnapshot) => {
-            this.setPostsFromPostsSnapshot(
-              snapshot.val(), //TODO bad javascript
-              usersSnapshot.val()
-            );
-          });
-        });
-      })
+      // .then(() => {
+      //   postsRef.once('value').then((snapshot) => {
+      //     const usersRef = firebase.database().ref('users');
+      //     usersRef.once('value', (usersSnapshot) => {
+      //       this.setPostsFromPostsSnapshot(
+      //         snapshot.val(), //TODO bad javascript
+      //         usersSnapshot.val()
+      //       );
+      //     });
+      //   });
+      // })
       .then(successCallback());
   }
   deletePost(statePostsKey) {
@@ -226,8 +240,8 @@ export default class Posts extends Component {
     const postsRef = firebase.database().ref('posts');
     postsRef.child(post.id).remove();
   }
-  addTag(postId, tagContent, successCallback) {
-    const uid = this.props.user && this.props.user.uid;
+  addTag(postId, tagContent, successCallback, myUserId) {
+    const uid = myUserId; // TODO is this safe to do?
     const postRef = firebase.database().ref('posts/' + postId);
     const key = postRef.child('tags').push().key;
     postRef
@@ -237,18 +251,18 @@ export default class Posts extends Component {
         type: tagContent,
         userId: uid,
       })
-      .then(() => {
-        const postsRef = firebase.database().ref('posts');
-        postsRef.once('value').then((snapshot) => {
-          const usersRef = firebase.database().ref('users');
-          usersRef.once('value', (usersSnapshot) => {
-            this.setPostsFromPostsSnapshot(
-              snapshot.val(), //TODO bad javascript
-              usersSnapshot.val()
-            );
-          });
-        });
-      })
+      // .then(() => {
+      //   const postsRef = firebase.database().ref('posts');
+      //   postsRef.once('value').then((snapshot) => {
+      //     const usersRef = firebase.database().ref('users');
+      //     usersRef.once('value', (usersSnapshot) => {
+      //       this.setPostsFromPostsSnapshot(
+      //         snapshot.val(), //TODO bad javascript
+      //         usersSnapshot.val()
+      //       );
+      //     });
+      //   });
+      // })
       .then(successCallback());
   }
   render() {
@@ -315,7 +329,12 @@ export default class Posts extends Component {
                               tags={post.tags}
                               myUserId={this.props.user && this.props.user.uid}
                               addTag={(content, successCallback) =>
-                                this.addTag(post.id, content, successCallback)
+                                this.addTag(
+                                  post.id,
+                                  content,
+                                  successCallback,
+                                  this.props.user && this.props.user.uid
+                                )
                               }
                               postId={post.id}
                             />
@@ -335,7 +354,7 @@ export default class Posts extends Component {
                                   />
                                 );
                                 return (
-                                  <ReplyCard
+                                  <ReplyPostCard
                                     key={replyPost.id}
                                     userDisplayName={replyPost.userDisplayName}
                                     showActions={showActions}
@@ -343,6 +362,12 @@ export default class Posts extends Component {
                                     timestamp={replyPost.timestamp}
                                     userPhotoURL={replyPost.userPhotoURL}
                                     content={replyPost.content}
+                                    postTags={replyPost.tags}
+                                    myUserId={
+                                      this.props.user && this.props.user.uid
+                                    }
+                                    thisPostId={replyPost.id}
+                                    addTag={this.addTag}
                                   />
                                 );
                               }, this)}
