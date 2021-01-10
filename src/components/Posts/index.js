@@ -243,6 +243,10 @@ export default class Posts extends Component {
               post.tags &&
               Object.values(post.tags).some(
                 (tag) => tag.type === 'feature request'
+              ) &&
+              Object.values(post.tags).every(
+                (tag) =>
+                  tag.type !== 'done' || tag.userId !== this.props.user.uid
               )
             );
           })
