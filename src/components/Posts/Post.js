@@ -1,10 +1,8 @@
-import format from 'date-fns/format';
-import formatDuration from 'date-fns/formatDuration';
-import intervalToDuration from 'date-fns/intervalToDuration';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
+import friendlyTimestamp from '../shared/friendlyTimestamp';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import PostTags from './PostTags';
@@ -46,35 +44,6 @@ const PostActionsDropdown = ({ deletePost }) => (
     </Dropdown.Menu>
   </Dropdown>
 );
-
-//TODO write tests for this function
-const friendlyTimestamp = (timestamp) => {
-  if (!timestamp) {
-    return;
-  }
-  const timestampDate = new Date(timestamp);
-  const formattedTimestamp = format(timestampDate, "MMMM d, yyyy 'at' hh:mm b");
-  const duration = intervalToDuration({
-    start: timestampDate,
-    end: new Date(),
-  });
-  if (duration.years || duration.months || duration.days > 3) {
-    return `${formattedTimestamp}`;
-  }
-  if (duration.days) {
-    return `${duration.days}d`;
-  }
-  if (duration.hours) {
-    return `${duration.hours}h`;
-  }
-  if (duration.minutes) {
-    return `${duration.minutes}m`;
-  }
-  if (duration.seconds) {
-    return `${duration.seconds}s`;
-  }
-  return `${formattedTimestamp} (${formatDuration(duration)})`;
-};
 
 export const PostHeader = ({
   displayName,
