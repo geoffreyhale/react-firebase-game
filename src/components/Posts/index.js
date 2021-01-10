@@ -10,10 +10,10 @@ import intervalToDuration from 'date-fns/intervalToDuration';
 import formatDuration from 'date-fns/formatDuration';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import Stats from './Stats';
-import Tag from './Tag';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Mosaic from './mosaic';
 import NewPostForm from './NewPostForm';
+import PostTags from './PostTags';
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp) => {
@@ -87,35 +87,6 @@ const PostContent = ({ children, small }) => (
     {children}
   </div>
 );
-
-const PostTags = ({ tags, myUserId, addTag, postId }) => {
-  return (
-    <div>
-      {tags &&
-        Object.values(tags).map((tag) => {
-          const tagUniqueKey = postId + tag.userId + tag.type + Math.random();
-          if (tag.userId === myUserId) {
-            return (
-              <Tag variant="info" key={tagUniqueKey}>
-                {tag.type}
-              </Tag>
-            );
-          }
-          return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
-        })}
-      <div className={'mt-1'}>
-        <NewPostForm
-          onSubmit={(content, replyToId, successCallback) => {
-            addTag(content, successCallback);
-          }}
-          placeholder="tag"
-          hideSubmitButton={true}
-          small={true}
-        />
-      </div>
-    </div>
-  );
-};
 
 const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
   return (
