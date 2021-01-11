@@ -210,14 +210,14 @@ const Post = ({
               )
         }
       </Card.Body>
-      {post.replyToId && hackShowSeenButton ? null : (
+      {hackShowSeenButton ? (
         <Card.Footer>
           <div className="mt-2 float-right">
             <MarkAsSeenButton postId={post.id} userId={myUserId} />
           </div>
           <div style={{ clear: 'both' }}></div>
         </Card.Footer>
-      )}
+      ) : null}
     </Card>
   );
 };
