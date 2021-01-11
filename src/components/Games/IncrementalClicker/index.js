@@ -52,17 +52,8 @@ export default class IncrementalClickerGame extends Component {
     });
   }
   save() {
+    const { holes, dirt } = this.state;
     const userId = this.props.user && this.props.user.uid;
-
-    const holes = this.state.holes;
-    const dirt = this.state.dirt;
-    if (
-      holes === this.state.holesMostRecentlySaved &&
-      dirt === this.state.dirtMostRecentlySaved
-    ) {
-      return;
-    }
-
     const userGameRef = firebase
       .database()
       .ref('games/incremental-clicker/' + userId);
