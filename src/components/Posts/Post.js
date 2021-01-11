@@ -213,7 +213,7 @@ const Post = ({
       {hackShowSeenButton ? (
         <Card.Footer>
           <div className="float-right">
-            <MarkAsSeenButton postId={post.id} userId={myUserId} />
+            <MarkAsSeenButton postId={post.id} />
           </div>
           <div style={{ clear: 'both' }}></div>
         </Card.Footer>
