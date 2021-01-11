@@ -33,7 +33,7 @@ export default class Posts extends Component {
     this.state = {
       rawPosts: {},
       countLowPriorityPosts: 0,
-      feed: 'notifications',
+      feed: 'unseen',
       users: {},
     };
     this.createNewPost = this.createNewPost.bind(this);
@@ -125,7 +125,7 @@ export default class Posts extends Component {
     let posts = postsTree.posts;
     const countLowPriorityPosts = postsTree.data.countLowPriorityPosts;
 
-    if (this.state.feed === 'notifications') {
+    if (this.state.feed === 'unseen') {
       // TODO tests for this
       const topLevelPostIdsToAllow =
         flatPostsArray &&
@@ -202,10 +202,10 @@ export default class Posts extends Component {
           <Nav className="justify-content-center">
             <Nav.Item>
               <Nav.Link
-                active={this.state.feed === 'notifications'}
-                onClick={() => this.setState({ feed: 'notifications' })}
+                active={this.state.feed === 'unseen'}
+                onClick={() => this.setState({ feed: 'unseen' })}
               >
-                Notifications
+                Unseen
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -255,7 +255,7 @@ export default class Posts extends Component {
                         createNewPost={this.createNewPost}
                         deletePost={this.deletePost}
                         addTag={this.addTag}
-                        hackShowSeenButton={this.state.feed === 'notifications'}
+                        hackShowSeenButton={this.state.feed === 'unseen'}
                       />
                     </td>
                   </tr>
