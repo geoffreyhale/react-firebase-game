@@ -9,6 +9,7 @@ import NewPostForm from './NewPostForm';
 import Post from './Post';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Stats from './Stats';
+import Tag from './Tag';
 
 const NewTopLevelPostCard = ({ photoURL, displayName, createNewPost }) => {
   return (
@@ -35,6 +36,10 @@ export default class Posts extends Component {
       countLowPriorityPosts: 0,
       feed: 'unseen',
       users: {},
+      postsFilter: {
+        requiredTags: [],
+        forbiddenTagsByMe: [],
+      },
     };
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
@@ -97,24 +102,64 @@ export default class Posts extends Component {
 
     let filteredPosts = flatPostsArray;
     switch (this.state.feed) {
-      case 'feature request':
+      case 'postsFilterByTags':
+        const { postsFilter } = this.state;
         // TODO tests for this
         filteredPosts = flatPostsArray
           ? flatPostsArray.filter((post) => {
-              return (
-                post.tags &&
-                Object.values(post.tags).some(
-                  (tag) => tag.type === 'feature request'
-                ) &&
-                Object.values(post.tags).every(
-                  (tag) =>
-                    tag.type !== 'done' || tag.userId !== this.props.user.uid
-                )
-              );
+              const hasTags = !!post.tags;
+              if (hasTags) {
+                const hasTagsRequiredByFilter = postsFilter.requiredTags.every(
+                  (requiredTag) => {
+                    return Object.values(post.tags).some(
+                      (tag) => tag.type === requiredTag
+                    );
+                  }
+                );
+                // const hasForbiddenTags = postsFilter.forbiddenTags.some(
+                //   (forbiddenTag) => {
+                //     return Object.values(post.tags).some(
+                //       (tag) => tag.type === forbiddenTag
+                //     );
+                //   }
+                // );
+                const hasForbiddenTagsByMe = postsFilter.forbiddenTagsByMe.some(
+                  (forbiddenTag) => {
+                    return Object.values(post.tags).some(
+                      (tag) =>
+                        tag.type === forbiddenTag &&
+                        tag.userId === this.props.user.uid
+                    );
+                  }
+                );
+                return hasTagsRequiredByFilter && !hasForbiddenTagsByMe;
+              }
+              return false;
             })
           : null;
-        feedSubtext =
-          'Posts tagged `feature request` that viewer did not tag `done` (for dev use):';
+        feedSubtext = (
+          <>
+            <div>Pre-programmed Tag Filter:</div>
+            <div>
+              Required:{' '}
+              {postsFilter.requiredTags.map((requiredTag) => (
+                <>
+                  <Tag>{requiredTag}</Tag>
+                  {' or '}
+                  <Tag variant="info">{requiredTag}</Tag>
+                </>
+              ))}
+            </div>
+            <div>
+              Forbidden:{' '}
+              {postsFilter.forbiddenTagsByMe.map((forbiddenTagByMe) => (
+                <Tag variant="info">{forbiddenTagByMe}</Tag>
+              ))}
+            </div>
+            'Posts tagged `feature request` that viewer did not tag `done` (for
+            dev use):'
+          </>
+        );
         break;
     }
 
@@ -203,7 +248,15 @@ export default class Posts extends Component {
             <Nav.Item>
               <Nav.Link
                 active={this.state.feed === 'unseen'}
-                onClick={() => this.setState({ feed: 'unseen' })}
+                onClick={() =>
+                  this.setState({
+                    feed: 'unseen',
+                    postsFilter: {
+                      requiredTags: [],
+                      forbiddenTagsByMe: [],
+                    },
+                  })
+                }
               >
                 Unseen
               </Nav.Link>
@@ -211,7 +264,15 @@ export default class Posts extends Component {
             <Nav.Item>
               <Nav.Link
                 active={this.state.feed === 'smart'}
-                onClick={() => this.setState({ feed: 'smart' })}
+                onClick={() =>
+                  this.setState({
+                    feed: 'smart',
+                    postsFilter: {
+                      requiredTags: [],
+                      forbiddenTagsByMe: [],
+                    },
+                  })
+                }
               >
                 Smart Feed
               </Nav.Link>
@@ -219,15 +280,31 @@ export default class Posts extends Component {
             <Nav.Item>
               <Nav.Link
                 active={this.state.feed === 'all'}
-                onClick={() => this.setState({ feed: 'all' })}
+                onClick={() =>
+                  this.setState({
+                    feed: 'all',
+                    postsFilter: {
+                      requiredTags: [],
+                      forbiddenTagsByMe: [],
+                    },
+                  })
+                }
               >
                 All Posts
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link
-                active={this.state.feed === 'feature request'}
-                onClick={() => this.setState({ feed: 'feature request' })}
+                active={this.state.feed === 'postsFilterByTags'}
+                onClick={() =>
+                  this.setState({
+                    feed: 'postsFilterByTags',
+                    postsFilter: {
+                      requiredTags: ['feature request'],
+                      forbiddenTagsByMe: ['done'],
+                    },
+                  })
+                }
               >
                 Feature Requests
               </Nav.Link>
