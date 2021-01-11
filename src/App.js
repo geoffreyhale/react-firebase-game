@@ -40,10 +40,6 @@ const AppHeaderTitle = () => {
   );
 };
 
-const UnderConstruction = () => [
-  <span title="Under Construction">(&#128679; under construction)</span>,
-];
-
 const AppNav = ({ admin }) => {
   return (
     <Nav className="justify-content-center">
@@ -52,18 +48,11 @@ const AppNav = ({ admin }) => {
           <Link to="/">Home</Link>
         </Nav.Link>
       </Nav.Item>
-      <NavDropdown title="Groups">
+      <NavDropdown title="&#8943;">
+        <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/groups">My Unlisted Groups</NavLink>{' '}
-            <UnderConstruction />
-          </Nav.Link>
-        </NavDropdown.Item>
-      </NavDropdown>
-      <NavDropdown title="Games">
-        <NavDropdown.Item>
-          <Nav.Link as={'span'}>
-            <NavLink to="/tictactoe">Tic-tac-toe</NavLink>
+            <NavLink to="/groups">Groups</NavLink>
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
@@ -73,11 +62,14 @@ const AppNav = ({ admin }) => {
             </NavLink>
           </Nav.Link>
         </NavDropdown.Item>
-      </NavDropdown>
-      <NavDropdown title="&#8943;">
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
             <NavLink to="/scorekeeper">Scorekeeper </NavLink>
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link as={'span'}>
+            <NavLink to="/tictactoe">Tic-tac-toe</NavLink>
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>
