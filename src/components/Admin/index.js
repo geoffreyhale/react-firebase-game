@@ -16,10 +16,9 @@ export default class Admin extends React.Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const uid = this.props.user && this.props.user.uid;
         firebase
           .database()
-          .ref('users/' + uid)
+          .ref('users/' + user.uid)
           .on('value', (snapshot) => {
             this.setState(
               {

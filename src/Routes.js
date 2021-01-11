@@ -29,7 +29,7 @@ const Routes = ({ user }) => {
               <TicTacToe user={user} />
             </Route>,
             <Route path="/admin" key="/admin">
-              <Admin user={user} />
+              <Admin />
             </Route>,
             // https://ui.dev/react-router-v4-pass-props-to-components/
             <Route
