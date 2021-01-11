@@ -39,7 +39,6 @@
 - more protect from accidental wipes, eg overwrites to zero in game
 - abstract posts' and collections' functions into models and utils etc
 - better react props handling
-- elevate user to global
 
 ### Tier 2 (user convenience etc)
 
