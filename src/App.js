@@ -14,6 +14,12 @@ import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 
 const AppHeaderTitle = () => {
+  const taglines = [
+    <em>better together &#128149;</em>,
+    <em>healthy relating &#128149;</em>,
+  ];
+  const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
+
   return (
     <h1 style={{ display: 'inline-block', marginBottom: 0 }}>
       <Link
@@ -33,9 +39,7 @@ const AppHeaderTitle = () => {
         </span>
       </Link>
       <span className="text-muted ml-2">
-        <small style={{ fontSize: '50%' }}>
-          <em>better together &#128149;</em>
-        </small>
+        <small style={{ fontSize: '50%' }}>{randomTagline}</small>
       </span>
     </h1>
   );
