@@ -44,39 +44,37 @@ const AppNav = ({ admin }) => {
   return (
     <Nav className="justify-content-center">
       <Nav.Item>
-        <Nav.Link as={'span'}>
-          <Link to="/">Home</Link>
+        <Nav.Link as={NavLink} to="/" exact>
+          Home
         </Nav.Link>
       </Nav.Item>
       <NavDropdown title="&#8943;">
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
-          <Nav.Link as={'span'}>
-            <NavLink to="/groups">Groups</NavLink>
+          <Nav.Link as={NavLink} to="/groups">
+            Groups
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
-          <Nav.Link as={'span'}>
-            <NavLink to="/incremental-clicker-game">
-              Incremental Clicker
-            </NavLink>
+          <Nav.Link as={NavLink} to="/incremental-clicker-game">
+            Incremental Clicker
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
-          <Nav.Link as={'span'}>
-            <NavLink to="/scorekeeper">Scorekeeper </NavLink>
+          <Nav.Link as={NavLink} to="/scorekeeper">
+            Scorekeeper
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
-          <Nav.Link as={'span'}>
-            <NavLink to="/tictactoe">Tic-tac-toe</NavLink>
+          <Nav.Link as={NavLink} to="/tictactoe">
+            Tic-tac-toe
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>
       {admin && (
         <Nav.Item>
-          <Nav.Link as={'span'}>
-            <Link to="/admin">Admin</Link>
+          <Nav.Link as={NavLink} to="/admin">
+            Admin
           </Nav.Link>
         </Nav.Item>
       )}
