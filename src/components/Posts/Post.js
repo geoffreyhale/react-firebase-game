@@ -138,6 +138,7 @@ const Post = ({
   deletePost,
   addTag,
   hackDoNotAddPostToMessageLinks,
+  hackShowSeenButton,
 }) => {
   const isMyPost = myUserId === post.userId;
   return (
@@ -207,7 +208,9 @@ const Post = ({
                     createNewPost={createNewPost}
                     replyToPostId={post.id}
                   />
-                  <MarkAsSeenButton postId={post.id} userId={myUserId} />
+                  {hackShowSeenButton && (
+                    <MarkAsSeenButton postId={post.id} userId={myUserId} />
+                  )}
                 </>
               )
         }

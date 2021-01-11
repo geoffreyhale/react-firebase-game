@@ -243,6 +243,7 @@ export default class Posts extends Component {
                         createNewPost={this.createNewPost}
                         deletePost={this.deletePost}
                         addTag={this.addTag}
+                        hackShowSeenButton={this.state.feed === 'notifications'}
                       />
                     </td>
                   </tr>
