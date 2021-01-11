@@ -142,7 +142,7 @@ const Post = ({
 }) => {
   const isMyPost = myUserId === post.userId;
   return (
-    <Card>
+    <Card className="mt-4">
       <Card.Body>
         <PostHeader
           displayName={post.userDisplayName}
@@ -212,7 +212,7 @@ const Post = ({
       </Card.Body>
       {hackShowSeenButton ? (
         <Card.Footer>
-          <div className="mt-2 float-right">
+          <div className="float-right">
             <MarkAsSeenButton postId={post.id} userId={myUserId} />
           </div>
           <div style={{ clear: 'both' }}></div>
