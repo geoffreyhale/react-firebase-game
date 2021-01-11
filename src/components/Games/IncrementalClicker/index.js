@@ -5,7 +5,7 @@ import firebase, { auth } from '../../../firebase.js';
 import DiggerCard from './DiggerCard';
 import StripeElements from './StripeElements';
 
-export default class Game extends Component {
+export default class IncrementalClickerGame extends Component {
   constructor() {
     super();
     this.state = {

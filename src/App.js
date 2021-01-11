@@ -63,12 +63,14 @@ const AppNav = ({ admin }) => {
       <NavDropdown title="Games">
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/game">Digger</NavLink>
+            <NavLink to="/tictactoe">Tic-tac-toe</NavLink>
           </Nav.Link>
         </NavDropdown.Item>
         <NavDropdown.Item>
           <Nav.Link as={'span'}>
-            <NavLink to="/tictactoe">Tic-tac-toe</NavLink>
+            <NavLink to="/incremental-clicker-game">
+              Incremental Clicker
+            </NavLink>
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Scorekeeper from './components/Scorekeeper';
-import Game from './components/Games/Game';
+import IncrementalClickerGame from './components/Games/IncrementalClicker';
 import TicTacToe from './components/Games/TicTacToe';
 import Groups from './components/Groups';
 import Post from './components/Post';
@@ -16,8 +16,11 @@ const Routes = ({ user }) => {
             <Route exact path="/" key="/">
               <Posts user={user} />
             </Route>,
-            <Route path="/game" key="/game">
-              <Game user={user} />
+            <Route
+              path="/incremental-clicker-game"
+              key="/incremental-clicker-game"
+            >
+              <IncrementalClickerGame user={user} />
             </Route>,
             <Route path="/groups" key="/groups">
               <Groups user={user} />
