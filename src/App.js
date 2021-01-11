@@ -100,6 +100,10 @@ class App extends Component {
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
+      // TODO this user MAY NOT be my database user object!!
+      // ^ this could have drastic consequences if trying to add more than the one Google authorization method
+      // ^ this user object may just be the Google auth results atm
+      // ^ add another way of authenticating if you wanna keep this fun and doubly productive
       if (user) {
         this.setState({ user: user });
         const userIsAdmin = firebase
