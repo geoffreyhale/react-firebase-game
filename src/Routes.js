@@ -20,7 +20,7 @@ const Routes = ({ user }) => {
               path="/incremental-clicker-game"
               key="/incremental-clicker-game"
             >
-              <IncrementalClickerGame user={user} />
+              <IncrementalClickerGame />
             </Route>,
             <Route path="/groups" key="/groups">
               <Groups />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { AppContext } from '../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
 import DiggerCard from './DiggerCard';
 import StripeElements from './StripeElements';
@@ -33,9 +34,13 @@ export default class IncrementalClickerGame extends Component {
     this.autosaveTimer = 0;
     this.fieldTimer = 0;
   }
+
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   db = () => firebase.database();
   userGameRef = () =>
-    this.db().ref('games/incremental-clicker/' + this.props.user.uid);
+    this.db().ref('games/incremental-clicker/' + this.user().uid);
 
   digHole() {
     this.setState({
