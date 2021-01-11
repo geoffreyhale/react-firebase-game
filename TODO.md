@@ -40,7 +40,6 @@
 - abstract posts' and collections' functions into models and utils etc
 - better react props handling
 - elevate user to global
-- move game data out of user objects
 
 ### Tier 2 (user convenience etc)
 

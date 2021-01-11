@@ -9,6 +9,7 @@ export default class IncrementalClickerGame extends Component {
   constructor() {
     super();
     this.state = {
+      loaded: false,
       deck: {
         diggers: 1,
       },
@@ -43,6 +44,8 @@ export default class IncrementalClickerGame extends Component {
     });
   }
   save() {
+    const userId = this.props.user && this.props.user.uid;
+
     const holes = this.state.holes;
     const dirt = this.state.dirt;
     if (
@@ -51,9 +54,11 @@ export default class IncrementalClickerGame extends Component {
     ) {
       return;
     }
-    const uid = this.props.user && this.props.user.uid;
-    const userRef = firebase.database().ref('users/' + uid);
-    userRef.update({ dirt: dirt, holes: holes });
+
+    const userGameRef = firebase
+      .database()
+      .ref('games/incremental-clicker/' + userId);
+    userGameRef.update({ dirt: dirt, holes: holes });
   }
   returnToDeck() {
     if (this.state.field.diggers >= 1) {
@@ -82,14 +87,23 @@ export default class IncrementalClickerGame extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const userRef = firebase.database().ref('users/' + user.uid);
-        userRef.on('value', (snapshot) => {
-          let user = snapshot.val();
-          this.setState({
-            dirt: (user && user.dirt) || 0,
-            holes: (user && user.holes) || 0,
-          });
+        const userGameRef = firebase
+          .database()
+          .ref('games/incremental-clicker/' + user.uid);
+        userGameRef.on('value', (snapshot) => {
+          let userGame = snapshot.val();
+          if (userGame) {
+            const { dirt, holes } = userGame;
+            this.setState({
+              loaded: true,
+              dirt: dirt || null,
+              holes: holes || null,
+            });
+          } else {
+            userGameRef.set({ dirt: 0, holes: 0 });
+          }
         });
+
         this.autosaveTimer = setInterval(this.save, 3000);
         this.fieldTimer = setInterval(this.runFieldStep, 1000);
       }
@@ -100,6 +114,10 @@ export default class IncrementalClickerGame extends Component {
     clearInterval(this.fieldTimer);
   }
   render() {
+    if (!this.state.loaded) {
+      return 'Loading...';
+    }
+
     return (
       <>
         <Card>
