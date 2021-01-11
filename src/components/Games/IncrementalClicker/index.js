@@ -5,6 +5,14 @@ import firebase, { auth } from '../../../firebase.js';
 import DiggerCard from './DiggerCard';
 import StripeElements from './StripeElements';
 
+// TODO block hacking
+// TODO add anti-exploits text
+// TODO report exploits functionality
+
+// TODO add high scores table
+// TODO save field to database
+// TODO add offline gains
+
 export default class IncrementalClickerGame extends Component {
   constructor() {
     super();
