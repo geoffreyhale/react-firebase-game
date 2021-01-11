@@ -104,12 +104,7 @@ export default class IncrementalClickerGame extends Component {
       <>
         <Card>
           <Card.Body>
-            <h2 style={{ marginBottom: 0 }}>
-              Digger{' '}
-              <small className="text-muted">
-                (Idle-Clicker Card-Collector Game)
-              </small>
-            </h2>
+            <h2 style={{ marginBottom: 0 }}>Incremental Clicker</h2>
           </Card.Body>
         </Card>
         <Card>
@@ -139,7 +134,10 @@ export default class IncrementalClickerGame extends Component {
         </Card>
         <Card>
           <Card.Body>
-            <Card.Title>Field</Card.Title>
+            <Card.Title>
+              Field{' '}
+              <small className="text-muted">(working for you currently)</small>
+            </Card.Title>
             {[...Array(this.state.field.diggers)].map(() => {
               return (
                 <DiggerCard
@@ -152,7 +150,9 @@ export default class IncrementalClickerGame extends Component {
         </Card>
         <Card>
           <Card.Body>
-            <Card.Title>Actions</Card.Title>
+            <Card.Title>
+              Actions <small className="text-muted">(manual labor)</small>
+            </Card.Title>
             {this.state.holes === null || (
               <Button variant="primary" onClick={this.digHole}>
                 Dig
@@ -162,7 +162,9 @@ export default class IncrementalClickerGame extends Component {
         </Card>
         <Card>
           <Card.Body>
-            <Card.Title>Deck</Card.Title>
+            <Card.Title>
+              Deck <small className="text-muted">(not doing anything)</small>
+            </Card.Title>
             {[...Array(this.state.deck.diggers)].map(() => {
               return (
                 <DiggerCard
@@ -173,7 +175,7 @@ export default class IncrementalClickerGame extends Component {
             })}
           </Card.Body>
         </Card>
-        <Card>
+        {/* <Card>
           <Card.Body>
             <Card.Title>Store</Card.Title>
             <Card.Text>
@@ -186,7 +188,7 @@ export default class IncrementalClickerGame extends Component {
             <Card.Title>Stripe</Card.Title>
             <StripeElements />
           </Card.Body>
-        </Card>
+        </Card> */}
       </>
     );
   }
