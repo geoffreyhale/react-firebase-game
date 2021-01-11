@@ -10,20 +10,16 @@ import StripeElements from './StripeElements';
 // TODO report exploits functionality
 
 // TODO add high scores table
-// TODO save field to database
 // TODO add offline gains
+// TODO db game data in state.data
 
 export default class IncrementalClickerGame extends Component {
   constructor() {
     super();
     this.state = {
       loaded: false,
-      deck: {
-        diggers: 1,
-      },
-      field: {
-        diggers: 1,
-      },
+      deck: {},
+      field: {},
       dirt: null,
       holes: null,
       dirtMostRecentlySaved: null,
@@ -56,32 +52,45 @@ export default class IncrementalClickerGame extends Component {
     });
   }
   save() {
-    const { holes, dirt } = this.state;
-    this.userGameRef().update({ dirt: dirt, holes: holes });
+    const { holes, dirt, loaded } = this.state;
+    if (!loaded) {
+      return;
+    }
+    if (holes || dirt) {
+      this.userGameRef().update({ dirt: dirt, holes: holes });
+    }
   }
   returnToDeck() {
-    if (this.state.field.diggers >= 1) {
-      const newField = this.state.field;
-      newField.diggers--;
-      const newDeck = this.state.deck;
-      newDeck.diggers++;
-      this.setState({
-        field: newField,
-        deck: newDeck,
-      });
-    }
+    const deckDiggersRef = this.userGameRef().child('deck/diggers');
+    const fieldDiggersRef = this.userGameRef().child('field/diggers');
+
+    fieldDiggersRef.once('value', (snapshot) => {
+      const fieldDiggers = snapshot.val();
+      if (fieldDiggers >= 1) {
+        deckDiggersRef.once('value', (snapshot) => {
+          const deckDiggers = snapshot.val();
+
+          fieldDiggersRef.set(fieldDiggers - 1);
+          deckDiggersRef.set(deckDiggers + 1);
+        });
+      }
+    });
   }
   returnToField() {
-    if (this.state.deck.diggers >= 1) {
-      const newDeck = this.state.deck;
-      newDeck.diggers--;
-      const newField = this.state.field;
-      newField.diggers++;
-      this.setState({
-        field: newField,
-        deck: newDeck,
-      });
-    }
+    const deckDiggersRef = this.userGameRef().child('deck/diggers');
+    const fieldDiggersRef = this.userGameRef().child('field/diggers');
+
+    deckDiggersRef.once('value', (snapshot) => {
+      const deckDiggers = snapshot.val();
+      if (deckDiggers >= 1) {
+        fieldDiggersRef.once('value', (snapshot) => {
+          const fieldDiggers = snapshot.val();
+
+          fieldDiggersRef.set(fieldDiggers + 1);
+          deckDiggersRef.set(deckDiggers - 1);
+        });
+      }
+    });
   }
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
@@ -89,27 +98,50 @@ export default class IncrementalClickerGame extends Component {
         const userGameRef = this.userGameRef();
         userGameRef.on('value', (snapshot) => {
           let userGame = snapshot.val();
-          if (userGame) {
-            const { dirt, holes } = userGame;
-            this.setState({
-              loaded: true,
-              dirt: dirt || null,
-              holes: holes || null,
-            });
+
+          if (!userGame) {
+            const newGameState = {
+              deck: { diggers: 2 },
+              dirt: 0,
+              field: { diggers: 0 },
+              holes: 0,
+            };
+            userGameRef.set(newGameState);
+
+            this.setState(newGameState);
+            this.setState({ loaded: true });
           } else {
-            userGameRef.set({ dirt: 0, holes: 0 });
+            const { deck, dirt, field, holes } = userGame;
+
+            let deckIfNoDeck = { diggers: 0 };
+            let fieldIfNoField = { diggers: 0 };
+            if (!deck && !field) {
+              deckIfNoDeck = { diggers: 2 };
+            }
+
+            const newGameState = {
+              deck: deck || deckIfNoDeck,
+              dirt: dirt || 0,
+              field: field || fieldIfNoField,
+              holes: holes || 0,
+            };
+            userGameRef.set(newGameState);
+
+            this.setState(newGameState);
+            this.setState({ loaded: true });
           }
         });
-
-        this.autosaveTimer = setInterval(this.save, 3000);
-        this.fieldTimer = setInterval(this.runFieldStep, 1000);
       }
     });
+
+    this.autosaveTimer = setInterval(this.save, 3000);
+    this.fieldTimer = setInterval(this.runFieldStep, 1000);
   }
   componentWillUnmount() {
     clearInterval(this.autosaveTimer);
     clearInterval(this.fieldTimer);
   }
+
   render() {
     if (!this.state.loaded) {
       return 'Loading...';
@@ -153,14 +185,16 @@ export default class IncrementalClickerGame extends Component {
               Field{' '}
               <small className="text-muted">(working for you currently)</small>
             </Card.Title>
-            {[...Array(this.state.field.diggers)].map(() => {
-              return (
-                <DiggerCard
-                  key={Math.random()}
-                  returnToDeck={this.returnToDeck}
-                />
-              );
-            })}
+            {this.state.field.diggers
+              ? [...Array(this.state.field.diggers)].map(() => {
+                  return (
+                    <DiggerCard
+                      key={Math.random()}
+                      returnToDeck={this.returnToDeck}
+                    />
+                  );
+                })
+              : null}
           </Card.Body>
         </Card>
         <Card>
@@ -168,11 +202,9 @@ export default class IncrementalClickerGame extends Component {
             <Card.Title>
               Actions <small className="text-muted">(manual labor)</small>
             </Card.Title>
-            {this.state.holes === null || (
-              <Button variant="primary" onClick={this.digHole}>
-                Dig
-              </Button>
-            )}
+            <Button variant="primary" onClick={this.digHole}>
+              Dig
+            </Button>
           </Card.Body>
         </Card>
         <Card>
@@ -180,14 +212,16 @@ export default class IncrementalClickerGame extends Component {
             <Card.Title>
               Deck <small className="text-muted">(not doing anything)</small>
             </Card.Title>
-            {[...Array(this.state.deck.diggers)].map(() => {
-              return (
-                <DiggerCard
-                  key={Math.random()}
-                  returnToField={this.returnToField}
-                />
-              );
-            })}
+            {this.state.deck.diggers
+              ? [...Array(this.state.deck.diggers)].map(() => {
+                  return (
+                    <DiggerCard
+                      key={Math.random()}
+                      returnToField={this.returnToField}
+                    />
+                  );
+                })
+              : null}
           </Card.Body>
         </Card>
         {/* <Card>
