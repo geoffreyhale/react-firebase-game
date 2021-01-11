@@ -185,8 +185,7 @@ export default class Posts extends Component {
             }
 
             let mostRecentPostInThread = post;
-            let mostRecentPostBySomeoneElse =
-              post.userId !== this.user().uid ? post : null;
+            let topLevelPostOrMostRecentPostBySomeoneElse = post;
             flatPostsArray.forEach((p) => {
               const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
               if (isReplyToThisPost) {
@@ -196,7 +195,7 @@ export default class Posts extends Component {
                 ) {
                   mostRecentPostInThread = p;
                   if (p.userId !== this.user().uid) {
-                    mostRecentPostBySomeoneElse = p;
+                    topLevelPostOrMostRecentPostBySomeoneElse = p;
                   }
                 }
               }
@@ -204,8 +203,9 @@ export default class Posts extends Component {
 
             const yourMarkAsSeenTimestamp =
               post.seen && post.seen[this.user().uid];
-            const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = mostRecentPostBySomeoneElse
-              ? yourMarkAsSeenTimestamp > mostRecentPostBySomeoneElse.timestamp
+            const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = topLevelPostOrMostRecentPostBySomeoneElse
+              ? yourMarkAsSeenTimestamp >
+                topLevelPostOrMostRecentPostBySomeoneElse.timestamp
               : true;
 
             return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
