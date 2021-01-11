@@ -148,31 +148,42 @@ export default class Posts extends Component {
             //     (tag) => tag.userId !== myUserId
             //   );
             let mostRecentReply = null;
+            let mostRecentPostBySomeoneElse = null;
             flatPostsArray.forEach((p) => {
-              if (
-                p.replyToId &&
-                p.replyToId === post.id &&
-                (!mostRecentReply || p.timestamp > mostRecentReply.timestamp)
-              )
-                mostRecentReply = p;
+              const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
+              if (isReplyToThisPost) {
+                if (
+                  !mostRecentReply ||
+                  p.timestamp > mostRecentReply.timestamp
+                ) {
+                  mostRecentReply = p;
+                  if (p.userId !== myUserId) {
+                    mostRecentPostBySomeoneElse = p;
+                  }
+                }
+              }
             });
 
             // mostRecentPost in thread (topLevel or reply)
             const mostRecentPostInThread = mostRecentReply || post;
             // is not yours
-            const mostRecentPostInThreadIsNotYours =
-              mostRecentPostInThread.userId !== myUserId;
+            // const mostRecentPostInThreadIsNotYours =
+            //   mostRecentPostInThread.userId !== myUserId;
+
             // and is more recent than your mark as seen
             const yourMarkAsSeenTimestamp = post.seen && post.seen[myUserId];
-            const seenMostRecent =
+            const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostInThread =
               yourMarkAsSeenTimestamp > mostRecentPostInThread.timestamp;
+            const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = mostRecentPostBySomeoneElse
+              ? yourMarkAsSeenTimestamp > mostRecentPostBySomeoneElse.timestamp
+              : true;
 
-            return mostRecentPostInThreadIsNotYours && !seenMostRecent;
+            return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
           })
           .map((post) => post.id);
       posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
       feedSubtext =
-        'Threads in which the most recent post is not yours and is more recent than your most recent mark as seen.  To clear a thread from this notifications feed, please write a reply or click mark as seen button.';
+        'Threads in which someone else posted since you clicked the `mark thread as seen` button.  Click `mark thread as seen button` to temporarily hide a thread from this feed until someone else posts something new.';
     }
 
     return (
