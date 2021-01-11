@@ -37,6 +37,10 @@ export default class IncrementalClickerGame extends Component {
     this.autosaveTimer = 0;
     this.fieldTimer = 0;
   }
+  db = () => firebase.database();
+  userGameRef = () =>
+    this.db().ref('games/incremental-clicker/' + this.props.user.uid);
+
   digHole() {
     this.setState({
       dirt: this.state.dirt + 1,
@@ -53,11 +57,7 @@ export default class IncrementalClickerGame extends Component {
   }
   save() {
     const { holes, dirt } = this.state;
-    const userId = this.props.user && this.props.user.uid;
-    const userGameRef = firebase
-      .database()
-      .ref('games/incremental-clicker/' + userId);
-    userGameRef.update({ dirt: dirt, holes: holes });
+    this.userGameRef().update({ dirt: dirt, holes: holes });
   }
   returnToDeck() {
     if (this.state.field.diggers >= 1) {
@@ -86,9 +86,7 @@ export default class IncrementalClickerGame extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const userGameRef = firebase
-          .database()
-          .ref('games/incremental-clicker/' + user.uid);
+        const userGameRef = this.userGameRef();
         userGameRef.on('value', (snapshot) => {
           let userGame = snapshot.val();
           if (userGame) {
