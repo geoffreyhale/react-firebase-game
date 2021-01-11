@@ -102,7 +102,7 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
       <Table borderless size="sm">
         <tbody>
           {Object.values(statsByTag)
-            .filter((tag) => tag.count >= 2)
+            .filter((tag) => tag.count >= 3)
             .sort(
               //descending by count then alphabetical
               (a, b) => {
@@ -124,7 +124,7 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
         </tbody>
       </Table>
       <small className="text-muted">
-        Showing tags that appear 2 or more times.
+        Showing tags that appear 3 or more times.
       </small>
     </Card.Body>
   </Card>
