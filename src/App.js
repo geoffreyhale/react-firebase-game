@@ -12,7 +12,7 @@ import firebase, { auth, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
-import UserProvider from './components/UserProvider';
+import AppProvider from './components/AppProvider';
 
 const AppHeaderTitle = () => {
   const taglines = [
@@ -158,7 +158,7 @@ class App extends Component {
   }
   render() {
     return (
-      <UserProvider user={this.state.user}>
+      <AppProvider user={this.state.user}>
         <BrowserRouter>
           <div className="app">
             <Container fluid>
@@ -211,7 +211,7 @@ class App extends Component {
             </Container>
           </div>
         </BrowserRouter>
-      </UserProvider>
+      </AppProvider>
     );
   }
 }
