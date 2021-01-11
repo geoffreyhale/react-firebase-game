@@ -182,19 +182,6 @@ export default class Posts extends Component {
             }
             const myUserId = this.props.user.uid;
 
-            // const notYours = post.userId !== myUserId;
-            // const youNeverReplied = flatPostsArray.every((p) => {
-            //   return (
-            //     p.userId !== myUserId || p.replyToId !== post.id
-            //   );
-            // });
-            // const youNeverTagged =
-            //   !post.tags ||
-            //   Object.values(post.tags).every(
-            //     (tag) => tag.userId !== myUserId
-            //   );
-
-            // mostRecentPost in thread (topLevel or reply)
             let mostRecentPostInThread = post;
             let mostRecentPostBySomeoneElse =
               post.userId !== myUserId ? post : null;
@@ -213,14 +200,7 @@ export default class Posts extends Component {
               }
             });
 
-            // is not yours
-            // const mostRecentPostInThreadIsNotYours =
-            //   mostRecentPostInThread.userId !== myUserId;
-
-            // and is more recent than your mark as seen
             const yourMarkAsSeenTimestamp = post.seen && post.seen[myUserId];
-            // const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostInThread =
-            //   yourMarkAsSeenTimestamp > mostRecentPostInThread.timestamp;
             const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = mostRecentPostBySomeoneElse
               ? yourMarkAsSeenTimestamp > mostRecentPostBySomeoneElse.timestamp
               : true;
@@ -228,6 +208,7 @@ export default class Posts extends Component {
             return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
           })
           .map((post) => post.id);
+
       posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
       feedSubtext =
         'Threads in which someone else posted since you last clicked the yellow `mark thread as seen` button.  Click the `mark thread as seen` button to temporarily hide a thread from this feed until someone else posts something new.';
