@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Scorekeeper from './components/Scorekeeper';
 import IncrementalClickerGame from './components/Games/IncrementalClicker';
@@ -7,8 +7,10 @@ import Groups from './components/Groups';
 import Post from './components/Post';
 import Posts from './components/Posts';
 import Admin from './components/Admin';
+import { AppContext } from './components/AppProvider';
 
-const Routes = ({ user }) => {
+const Routes = () => {
+  const { user } = useContext(AppContext);
   return (
     <Switch>
       {user

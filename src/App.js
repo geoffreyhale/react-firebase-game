@@ -208,7 +208,7 @@ class App extends Component {
                     </Card>
                   </header>
                   <div className="mt-3">
-                    <Routes user={this.state.user} />
+                    <Routes />
                   </div>
                 </Col>
               </Row>
