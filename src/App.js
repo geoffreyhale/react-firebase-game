@@ -23,13 +23,14 @@ const AppHeaderTitle = () => {
           textDecoration: 'inherit',
         }}
       >
-        <img
-          src="logo192.png"
-          alt="xbook logo"
-          style={{ verticalAlign: 'bottom', height: '3rem' }}
-        />
-        &#128216;
-        <span className="ml-2">X Book</span>
+        <span title="X Book">
+          <img
+            src="logo192.png"
+            alt="xbook logo"
+            style={{ verticalAlign: 'bottom', height: '3rem' }}
+          />
+          <span className="ml-2">Book</span>
+        </span>
       </Link>
       <span className="text-muted ml-2">
         <small style={{ fontSize: '50%' }}>
