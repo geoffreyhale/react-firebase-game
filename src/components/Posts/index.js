@@ -10,7 +10,7 @@ import Post from './Post';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Stats from './Stats';
 
-const NewPostCard = ({ photoURL, displayName, createNewPost }) => {
+const NewTopLevelPostCard = ({ photoURL, displayName, createNewPost }) => {
   return (
     <Card>
       <Card.Body>
@@ -172,8 +172,8 @@ export default class Posts extends Component {
 
             // and is more recent than your mark as seen
             const yourMarkAsSeenTimestamp = post.seen && post.seen[myUserId];
-            const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostInThread =
-              yourMarkAsSeenTimestamp > mostRecentPostInThread.timestamp;
+            // const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostInThread =
+            //   yourMarkAsSeenTimestamp > mostRecentPostInThread.timestamp;
             const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = mostRecentPostBySomeoneElse
               ? yourMarkAsSeenTimestamp > mostRecentPostBySomeoneElse.timestamp
               : true;
@@ -192,7 +192,7 @@ export default class Posts extends Component {
           <Mosaic />
         </Col>
         <Col sm={8} className="col-posts mt-3">
-          <NewPostCard
+          <NewTopLevelPostCard
             photoURL={this.props.user && this.props.user.photoURL}
             displayName={this.props.user && this.props.user.displayName}
             createNewPost={this.createNewPost}
