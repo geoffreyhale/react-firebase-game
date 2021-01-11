@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
+import { AppContext } from '../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
 
 import './index.css';
@@ -54,6 +55,10 @@ export default class TicTacToe extends Component {
     this.resetGame = this.resetGame.bind(this);
     this.save = this.save.bind(this);
   }
+
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -80,9 +85,9 @@ export default class TicTacToe extends Component {
       .ref(`games/tictactoe/board/${i}/${j}`);
     tictactoeBoardCellRef.once('value', (snapshot) => {
       const cell = snapshot.val();
-      if (cell && cell.userId && cell.userId !== this.props.user.uid) {
+      if (cell && cell.userId && cell.userId !== this.user().uid) {
         return;
-      } else if (cell && cell.userId === this.props.user.uid) {
+      } else if (cell && cell.userId === this.user().uid) {
         tictactoeBoardCellRef.set('');
         const mostRecentRef = firebase
           .database()
@@ -90,8 +95,8 @@ export default class TicTacToe extends Component {
         mostRecentRef.set(cell);
       } else {
         const cell = {
-          userId: this.props.user.uid,
-          photoURL: this.props.user.photoURL,
+          userId: this.user().uid,
+          photoURL: this.user().photoURL,
         };
         tictactoeBoardCellRef.set(cell);
         const mostRecentRef = firebase

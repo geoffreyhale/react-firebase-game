@@ -26,7 +26,7 @@ const Routes = ({ user }) => {
               <Groups user={user} />
             </Route>,
             <Route path="/tictactoe" key="/tictactoe">
-              <TicTacToe user={user} />
+              <TicTacToe />
             </Route>,
             <Route path="/admin" key="/admin">
               <Admin />
