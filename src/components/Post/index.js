@@ -2,6 +2,7 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
+import { AppContext } from '../AppProvider';
 import Post from '../Posts/Post';
 import postsTreeFromRawPosts from '../Posts/postsTreeFromRawPosts';
 
@@ -14,6 +15,10 @@ export default class PostPage extends React.Component {
       users: null,
     };
   }
+
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       const postId = this.props.match.params.postId;
@@ -60,7 +65,7 @@ export default class PostPage extends React.Component {
 
   render() {
     const { post, posts, users } = this.state;
-    const { user } = this.props;
+    const user = this.user();
 
     if (!post || !users) {
       return <>Loading</>;

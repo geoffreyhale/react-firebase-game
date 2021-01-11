@@ -35,7 +35,7 @@ const Routes = ({ user }) => {
             <Route
               path="/post/:postId"
               key="/post"
-              render={(props) => <Post {...props} user={user} />}
+              render={(props) => <Post {...props} />}
             />,
           ]
         : null}
