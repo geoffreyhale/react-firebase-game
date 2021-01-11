@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
+import { AppContext } from '../AppProvider';
 import Mosaic from './mosaic';
 import NewPostForm from './NewPostForm';
 import Post from './Post';
@@ -45,6 +46,9 @@ export default class Posts extends Component {
     this.deletePost = this.deletePost.bind(this);
   }
 
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
 
@@ -62,14 +66,13 @@ export default class Posts extends Component {
     });
   }
   createNewPost(newPostContent, replyToId, successCallback) {
-    const uid = this.props.user && this.props.user.uid;
     const key = this.postsRef().push().key;
     this.postsRef()
       .child(key)
       .update({
         content: newPostContent,
         timestamp: firebase.database.ServerValue.TIMESTAMP,
-        userId: uid,
+        userId: this.user().uid,
         replyToId: replyToId,
       })
       .then(successCallback());
@@ -128,7 +131,7 @@ export default class Posts extends Component {
                     return Object.values(post.tags).some(
                       (tag) =>
                         tag.type === forbiddenTag &&
-                        tag.userId === this.props.user.uid
+                        tag.userId === this.user().uid
                     );
                   }
                 );
@@ -180,11 +183,10 @@ export default class Posts extends Component {
             if (!isTopLevelPost) {
               return false;
             }
-            const myUserId = this.props.user.uid;
 
             let mostRecentPostInThread = post;
             let mostRecentPostBySomeoneElse =
-              post.userId !== myUserId ? post : null;
+              post.userId !== this.user().uid ? post : null;
             flatPostsArray.forEach((p) => {
               const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
               if (isReplyToThisPost) {
@@ -193,14 +195,15 @@ export default class Posts extends Component {
                   p.timestamp > mostRecentPostInThread.timestamp
                 ) {
                   mostRecentPostInThread = p;
-                  if (p.userId !== myUserId) {
+                  if (p.userId !== this.user().uid) {
                     mostRecentPostBySomeoneElse = p;
                   }
                 }
               }
             });
 
-            const yourMarkAsSeenTimestamp = post.seen && post.seen[myUserId];
+            const yourMarkAsSeenTimestamp =
+              post.seen && post.seen[this.user().uid];
             const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = mostRecentPostBySomeoneElse
               ? yourMarkAsSeenTimestamp > mostRecentPostBySomeoneElse.timestamp
               : true;
@@ -221,8 +224,8 @@ export default class Posts extends Component {
         </Col>
         <Col sm={8} className="col-posts mt-3">
           <NewTopLevelPostCard
-            photoURL={this.props.user && this.props.user.photoURL}
-            displayName={this.props.user && this.props.user.displayName}
+            photoURL={this.user().photoURL}
+            displayName={this.user().displayName}
             createNewPost={this.createNewPost}
           />
 
@@ -309,8 +312,8 @@ export default class Posts extends Component {
                     <td>
                       <Post
                         post={post}
-                        myUserId={this.props.user && this.props.user.uid}
-                        myPhotoURL={this.props.user && this.props.user.photoURL}
+                        myUserId={this.user().uid}
+                        myPhotoURL={this.user().photoURL}
                         createNewPost={this.createNewPost}
                         deletePost={this.deletePost}
                         addTag={this.addTag}

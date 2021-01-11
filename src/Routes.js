@@ -14,7 +14,7 @@ const Routes = ({ user }) => {
       {user
         ? [
             <Route exact path="/" key="/">
-              <Posts user={user} />
+              <Posts />
             </Route>,
             <Route
               path="/incremental-clicker-game"
