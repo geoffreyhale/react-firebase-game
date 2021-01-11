@@ -27,8 +27,8 @@ const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
         <NewPostForm
           onSubmit={createNewPost}
           placeholder="Write a reply..."
-          hideSubmitButton={true}
           replyToId={replyToPostId}
+          multiline={true}
         />
       </div>
     </div>
