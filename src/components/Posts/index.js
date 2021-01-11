@@ -39,11 +39,14 @@ export default class Posts extends Component {
     this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
   }
+
+  db = () => firebase.database();
+  postsRef = () => this.db().ref('posts');
+
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const postsRef = firebase.database().ref('posts');
-        postsRef.on('value', (snapshot) => {
+        this.postsRef().on('value', (snapshot) => {
           this.setState({ rawPosts: snapshot.val() });
           const usersRef = firebase.database().ref('users');
           usersRef.once('value', (usersSnapshot) => {
@@ -55,9 +58,8 @@ export default class Posts extends Component {
   }
   createNewPost(newPostContent, replyToId, successCallback) {
     const uid = this.props.user && this.props.user.uid;
-    const postsRef = firebase.database().ref('posts');
-    const key = postsRef.push().key;
-    postsRef
+    const key = this.postsRef().push().key;
+    this.postsRef()
       .child(key)
       .update({
         content: newPostContent,
@@ -69,8 +71,7 @@ export default class Posts extends Component {
   }
   deletePost(statePostsKey) {
     const post = this.state.rawPosts[statePostsKey];
-    const postsRef = firebase.database().ref('posts');
-    postsRef.child(post.id).remove();
+    this.postsRef().child(post.id).remove();
   }
   addTag(postId, tagContent, successCallback, myUserId) {
     const uid = myUserId; // TODO is this safe to do?
