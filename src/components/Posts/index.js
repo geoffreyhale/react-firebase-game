@@ -196,7 +196,8 @@ export default class Posts extends Component {
 
             // mostRecentPost in thread (topLevel or reply)
             let mostRecentPostInThread = post;
-            let mostRecentPostBySomeoneElse = null;
+            let mostRecentPostBySomeoneElse =
+              post.userId !== myUserId ? post : null;
             flatPostsArray.forEach((p) => {
               const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
               if (isReplyToThisPost) {
