@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import { AppContext } from '../AppProvider';
 import firebase, { auth } from '../../firebase.js';
 import { Link } from 'react-router-dom';
 
@@ -15,11 +16,14 @@ export default class Groups extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.createNewGroup = this.createNewGroup.bind(this);
   }
+
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const uid = this.props.user && this.props.user.uid;
-        const userRef = firebase.database().ref('users/' + uid);
+        const userRef = firebase.database().ref('users/' + this.user().uid);
         userRef.on('value', (snapshot) => {
           let user = snapshot.val();
           this.setState({
@@ -34,8 +38,7 @@ export default class Groups extends Component {
   }
   createNewGroup(e) {
     e.preventDefault();
-    const uid = this.props.user && this.props.user.uid;
-    const userRef = firebase.database().ref('users/' + uid);
+    const userRef = firebase.database().ref('users/' + this.user().uid);
     const key = userRef.child('groups').push().key;
     userRef
       .child('groups/' + key)

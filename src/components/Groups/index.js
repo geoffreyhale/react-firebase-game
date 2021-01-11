@@ -12,10 +12,10 @@ const GroupsRouter = ({ user }) => {
   return (
     <Switch>
       <Route exact path={path}>
-        <ListPage user={user} />
+        <ListPage />
       </Route>
       <Route path={`${path}/:groupId`}>
-        <GroupPage user={user} />
+        <GroupPage />
       </Route>
     </Switch>
   );

@@ -23,7 +23,7 @@ const Routes = ({ user }) => {
               <IncrementalClickerGame user={user} />
             </Route>,
             <Route path="/groups" key="/groups">
-              <Groups user={user} />
+              <Groups />
             </Route>,
             <Route path="/tictactoe" key="/tictactoe">
               <TicTacToe />
