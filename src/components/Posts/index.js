@@ -193,16 +193,18 @@ export default class Posts extends Component {
             //   Object.values(post.tags).every(
             //     (tag) => tag.userId !== myUserId
             //   );
-            let mostRecentReply = null;
+
+            // mostRecentPost in thread (topLevel or reply)
+            let mostRecentPostInThread = post;
             let mostRecentPostBySomeoneElse = null;
             flatPostsArray.forEach((p) => {
               const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
               if (isReplyToThisPost) {
                 if (
-                  !mostRecentReply ||
-                  p.timestamp > mostRecentReply.timestamp
+                  !mostRecentPostInThread ||
+                  p.timestamp > mostRecentPostInThread.timestamp
                 ) {
-                  mostRecentReply = p;
+                  mostRecentPostInThread = p;
                   if (p.userId !== myUserId) {
                     mostRecentPostBySomeoneElse = p;
                   }
@@ -210,8 +212,6 @@ export default class Posts extends Component {
               }
             });
 
-            // mostRecentPost in thread (topLevel or reply)
-            const mostRecentPostInThread = mostRecentReply || post;
             // is not yours
             // const mostRecentPostInThreadIsNotYours =
             //   mostRecentPostInThread.userId !== myUserId;
