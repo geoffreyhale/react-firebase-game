@@ -202,19 +202,22 @@ const Post = ({
           post.replyToId
             ? null
             : createNewPost && (
-                <>
-                  <ReplyForm
-                    userPhotoURL={myPhotoURL}
-                    createNewPost={createNewPost}
-                    replyToPostId={post.id}
-                  />
-                  {hackShowSeenButton && (
-                    <MarkAsSeenButton postId={post.id} userId={myUserId} />
-                  )}
-                </>
+                <ReplyForm
+                  userPhotoURL={myPhotoURL}
+                  createNewPost={createNewPost}
+                  replyToPostId={post.id}
+                />
               )
         }
       </Card.Body>
+      {post.replyToId && hackShowSeenButton ? null : (
+        <Card.Footer>
+          <div className="mt-2 float-right">
+            <MarkAsSeenButton postId={post.id} userId={myUserId} />
+          </div>
+          <div style={{ clear: 'both' }}></div>
+        </Card.Footer>
+      )}
     </Card>
   );
 };

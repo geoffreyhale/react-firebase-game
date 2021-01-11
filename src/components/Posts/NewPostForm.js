@@ -25,6 +25,9 @@ export default class NewPostForm extends React.Component {
       <Form
         onSubmit={(e) => {
           e.preventDefault();
+          if (this.state.content === '') {
+            return;
+          }
           const successCallback = () => this.setState({ content: '' });
           this.props.onSubmit(
             this.state.content,
@@ -52,10 +55,10 @@ export default class NewPostForm extends React.Component {
         )}
         {!this.props.hideSubmitButton && (
           <Button
-            className="mt-3"
+            className="mt-1"
             variant="primary"
             type="submit"
-            disabled={this.state.content === ''}
+            // disabled={this.state.content === ''}
           >
             Post
           </Button>
