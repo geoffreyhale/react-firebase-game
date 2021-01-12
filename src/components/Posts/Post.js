@@ -11,7 +11,6 @@ import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 
 const addTag = (postId, tagContent, successCallback, myUserId) => {
-  const uid = myUserId; // TODO is this safe to do?
   const postRef = firebase.database().ref('posts/' + postId);
   const key = postRef.child('tags').push().key;
   postRef
@@ -19,7 +18,7 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
     .child(key)
     .update({
       type: tagContent,
-      userId: uid,
+      userId: myUserId,
     })
     .then(successCallback());
 };
