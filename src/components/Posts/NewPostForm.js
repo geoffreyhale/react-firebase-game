@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { AppContext } from '../AppProvider';
 
 export default class NewPostForm extends React.Component {
   constructor() {
@@ -10,6 +11,10 @@ export default class NewPostForm extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
   }
+
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   handleChange(event) {
     const newValue = event.target.value;
     if (
@@ -32,7 +37,8 @@ export default class NewPostForm extends React.Component {
           this.props.onSubmit(
             this.state.content,
             this.props.replyToId || null,
-            successCallback
+            successCallback,
+            this.user().uid
           );
         }}
       >

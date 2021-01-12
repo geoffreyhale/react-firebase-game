@@ -25,7 +25,6 @@ export default class Posts extends Component {
         forbiddenTagsByMe: [],
       },
     };
-    this.createNewPost = this.createNewPost.bind(this);
     this.deletePost = this.deletePost.bind(this);
   }
 
@@ -47,18 +46,6 @@ export default class Posts extends Component {
         });
       }
     });
-  }
-  createNewPost(newPostContent, replyToId, successCallback) {
-    const key = this.postsRef().push().key;
-    this.postsRef()
-      .child(key)
-      .update({
-        content: newPostContent,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
-        userId: this.user().uid,
-        replyToId: replyToId,
-      })
-      .then(successCallback());
   }
   deletePost(statePostsKey) {
     const post = this.state.rawPosts[statePostsKey];
@@ -193,7 +180,7 @@ export default class Posts extends Component {
           <Mosaic />
         </Col>
         <Col sm={8} className="col-posts mt-3">
-          <NewTopLevelPostCard createNewPost={this.createNewPost} />
+          <NewTopLevelPostCard />
 
           <Nav className="justify-content-center">
             <Nav.Item>
@@ -279,7 +266,6 @@ export default class Posts extends Component {
                       <Post
                         post={post}
                         myPhotoURL={this.user().photoURL}
-                        createNewPost={this.createNewPost}
                         deletePost={this.deletePost}
                         hackShowSeenButton={this.state.feed === 'unseen'}
                       />

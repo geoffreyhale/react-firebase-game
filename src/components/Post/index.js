@@ -87,7 +87,6 @@ export default class PostPage extends React.Component {
           <Post
             post={postTree[0]}
             myPhotoURL={user && user.photoURL}
-            // createNewPost={this.createNewPost}
             // deletePost={this.deletePost}
             // addTag={this.addTag}
             hackDoNotAddPostToMessageLinks={true}

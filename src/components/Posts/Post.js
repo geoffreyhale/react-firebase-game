@@ -10,6 +10,26 @@ import MarkAsSeenButton from './MarkAsSeenButton';
 import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 
+const postsRef = () => firebase.database().ref('posts');
+
+export const createNewPost = (
+  newPostContent,
+  replyToId,
+  successCallback,
+  myUserId
+) => {
+  const key = postsRef().push().key;
+  postsRef()
+    .child(key)
+    .update({
+      content: newPostContent,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+      userId: myUserId,
+      replyToId: replyToId,
+    })
+    .then(successCallback());
+};
+
 const addTag = (postId, tagContent, successCallback, myUserId) => {
   const postRef = firebase.database().ref('posts/' + postId);
   const key = postRef.child('tags').push().key;
@@ -23,7 +43,7 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
     .then(successCallback());
 };
 
-const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
+const ReplyForm = ({ userPhotoURL, replyToPostId }) => {
   return (
     <div
       className="mt-3"
@@ -145,7 +165,6 @@ const ReplyPostCard = ({
 const Post = ({
   post,
   myPhotoURL,
-  createNewPost,
   deletePost,
   hackDoNotAddPostToMessageLinks,
   hackShowSeenButton,
@@ -208,15 +227,9 @@ const Post = ({
         </div>
         {
           // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
-          post.replyToId
-            ? null
-            : createNewPost && (
-                <ReplyForm
-                  userPhotoURL={myPhotoURL}
-                  createNewPost={createNewPost}
-                  replyToPostId={post.id}
-                />
-              )
+          post.replyToId ? null : (
+            <ReplyForm userPhotoURL={myPhotoURL} replyToPostId={post.id} />
+          )
         }
       </Card.Body>
       {hackShowSeenButton ? (
