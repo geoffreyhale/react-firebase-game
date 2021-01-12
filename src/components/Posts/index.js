@@ -87,13 +87,36 @@ export default class Posts extends Component {
     usersRef.once('value', (usersSnapshot) => {
       this.setState({ users: usersSnapshot.val() });
 
-      this.postsRef().on('value', (postsSnapshot) => {
-        this.setState({ rawPosts: postsSnapshot.val() });
-      });
+      /**
+       * TODO
+       *
+       * What I actually want here is speed and relevancy
+       *
+       * Relevant Posts
+       * - not filtered by the user, eg seen (applicable to "unseen" feed)
+       * - preferred (not yet implemented)
+       *
+       * Steps:
+       * 1. quickly query some minimum necessary posts basis
+       * 2. get other necessary posts and data, eg top level posts and info about other replies
+       * 3. process as necessary, filter as necessary
+       * 4. build for view (eg tree)
+       * 5. (tree-based processing and filtering?)
+       *
+       * ...!?
+       */
+      this.postsRef()
+        // .orderByChild('timestamp') // Ascending
+        // .limitToLast(100) // Most recent
+        .on('value', (postsSnapshot) => {
+          this.setState({ rawPosts: postsSnapshot.val() });
+        });
     });
   }
+
   render() {
     let feedSubtext = null;
+
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
       ([id, post]) => {
         post.id = id;
