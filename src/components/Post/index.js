@@ -86,7 +86,6 @@ export default class PostPage extends React.Component {
         <Col sm={8} className="col-posts mt-3">
           <Post
             post={postTree[0]}
-            myUserId={user && user.uid}
             myPhotoURL={user && user.photoURL}
             // createNewPost={this.createNewPost}
             // deletePost={this.deletePost}

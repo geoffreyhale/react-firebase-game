@@ -312,7 +312,6 @@ export default class Posts extends Component {
                     <td>
                       <Post
                         post={post}
-                        myUserId={this.user().uid}
                         myPhotoURL={this.user().photoURL}
                         createNewPost={this.createNewPost}
                         deletePost={this.deletePost}

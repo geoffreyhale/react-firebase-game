@@ -11,6 +11,7 @@
 - cleanup instances of myUserId
 - clean out Posts index
 - do not query all posts
+- change context user to currentUser?
 
 - backups
 - posts feed slowness

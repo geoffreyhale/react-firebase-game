@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -7,6 +7,7 @@ import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import PostTags from './PostTags';
 import MarkAsSeenButton from './MarkAsSeenButton';
+import { AppContext } from '../AppProvider';
 
 const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
   return (
@@ -132,7 +133,6 @@ const ReplyPostCard = ({
 
 const Post = ({
   post,
-  myUserId,
   myPhotoURL,
   createNewPost,
   deletePost,
@@ -140,6 +140,8 @@ const Post = ({
   hackDoNotAddPostToMessageLinks,
   hackShowSeenButton,
 }) => {
+  const { user } = useContext(AppContext);
+  const myUserId = user.uid;
   const isMyPost = myUserId === post.userId;
   return (
     <Card className="mt-4">
