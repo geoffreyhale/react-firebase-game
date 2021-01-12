@@ -12,6 +12,55 @@ import Stats from './Stats';
 import Tag from './Tag';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 
+const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
+  <Nav className="justify-content-center">
+    <Nav.Item>
+      <Nav.Link
+        active={currentFeed === 'unseen'}
+        onClick={() => {
+          setFeed('unseen');
+          setPostsFilter([], []);
+        }}
+      >
+        Unseen
+      </Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link
+        active={currentFeed === 'smart'}
+        onClick={() => {
+          setFeed('smart');
+          setPostsFilter([], []);
+        }}
+      >
+        Smart Feed
+      </Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link
+        active={currentFeed === 'all'}
+        onClick={() => {
+          setFeed('all');
+          setPostsFilter([], []);
+        }}
+      >
+        All Posts
+      </Nav.Link>
+    </Nav.Item>
+    <Nav.Item>
+      <Nav.Link
+        active={currentFeed === 'postsFilterByTags'}
+        onClick={() => {
+          setFeed('postsFilterByTags');
+          setPostsFilter(['feature request'], ['done']);
+        }}
+      >
+        Feature Requests
+      </Nav.Link>
+    </Nav.Item>
+  </Nav>
+);
+
 export default class Posts extends Component {
   constructor() {
     super();
@@ -182,72 +231,18 @@ export default class Posts extends Component {
         <Col sm={8} className="col-posts mt-3">
           <NewTopLevelPostCard />
 
-          <Nav className="justify-content-center">
-            <Nav.Item>
-              <Nav.Link
-                active={this.state.feed === 'unseen'}
-                onClick={() =>
-                  this.setState({
-                    feed: 'unseen',
-                    postsFilter: {
-                      requiredTags: [],
-                      forbiddenTagsByMe: [],
-                    },
-                  })
-                }
-              >
-                Unseen
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                active={this.state.feed === 'smart'}
-                onClick={() =>
-                  this.setState({
-                    feed: 'smart',
-                    postsFilter: {
-                      requiredTags: [],
-                      forbiddenTagsByMe: [],
-                    },
-                  })
-                }
-              >
-                Smart Feed
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                active={this.state.feed === 'all'}
-                onClick={() =>
-                  this.setState({
-                    feed: 'all',
-                    postsFilter: {
-                      requiredTags: [],
-                      forbiddenTagsByMe: [],
-                    },
-                  })
-                }
-              >
-                All Posts
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                active={this.state.feed === 'postsFilterByTags'}
-                onClick={() =>
-                  this.setState({
-                    feed: 'postsFilterByTags',
-                    postsFilter: {
-                      requiredTags: ['feature request'],
-                      forbiddenTagsByMe: ['done'],
-                    },
-                  })
-                }
-              >
-                Feature Requests
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
+          <PostsNav
+            currentFeed={this.state.feed}
+            setFeed={(feed) => this.setState({ feed: feed })}
+            setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+              this.setState({
+                postsFilter: {
+                  requiredTags: requiredTags,
+                  forbiddenTagsByMe: forbiddenTagsByMe,
+                },
+              })
+            }
+          />
 
           {feedSubtext ? (
             <small className="text-muted">{feedSubtext}</small>
