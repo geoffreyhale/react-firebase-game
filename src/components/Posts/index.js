@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
-import firebase, { auth } from '../../firebase.js';
+import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Mosaic from './Mosaic';
 import Post from './Post';
