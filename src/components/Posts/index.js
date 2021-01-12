@@ -84,16 +84,13 @@ export default class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        this.postsRef().on('value', (snapshot) => {
-          this.setState({ rawPosts: snapshot.val() });
-          const usersRef = firebase.database().ref('users');
-          usersRef.once('value', (usersSnapshot) => {
-            this.setState({ users: usersSnapshot.val() });
-          });
-        });
-      }
+    const usersRef = firebase.database().ref('users');
+    usersRef.once('value', (usersSnapshot) => {
+      this.setState({ users: usersSnapshot.val() });
+
+      this.postsRef().on('value', (postsSnapshot) => {
+        this.setState({ rawPosts: postsSnapshot.val() });
+      });
     });
   }
   deletePost(statePostsKey) {
