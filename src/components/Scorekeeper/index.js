@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/card';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
+// import friendlyTimestamp from '../shared/friendlyTimestamp';
 
 export default class Scorekeeper extends React.Component {
   constructor() {
@@ -19,16 +20,22 @@ export default class Scorekeeper extends React.Component {
     this.addButtonAmount = this.addButtonAmount.bind(this);
     this.addScore = this.addScore.bind(this);
     this.setButtonAmounts = this.setButtonAmounts.bind(this);
+    this.addLog = this.addLog.bind(this);
+  }
+  addLog(m) {
+    const log = this.state.log;
+    log.unshift(m);
+    this.setState({
+      log: log,
+    });
   }
   addScore(who, howMuch) {
-    const newScore = this.state.score;
-    newScore[who] = newScore[who] + howMuch;
-    const newLog = this.state.log;
-    newLog.unshift(`${who} + ${howMuch}`);
+    const score = this.state.score;
+    score[who] = score[who] + howMuch;
     this.setState({
-      score: newScore,
-      log: newLog,
+      score: score,
     });
+    this.addLog(`Player ${who}: ${howMuch < 0 ? howMuch : `+${howMuch}`}`);
   }
   addButtonAmount(amount) {
     const newAddButtonAmounts = this.state.addButtonAmounts;
@@ -46,7 +53,7 @@ export default class Scorekeeper extends React.Component {
     return (
       <Row>
         <Col></Col>
-        <Col sm={8}>
+        <Col md={8}>
           <Card>
             <Card.Body>
               <h2 style={{ marginBottom: 0 }}>
@@ -121,15 +128,18 @@ export default class Scorekeeper extends React.Component {
               <Table style={{ fontSize: '300%' }}>
                 <tbody>
                   <tr>
-                    <td>Player 1</td>
-                    <td>Player 2</td>
+                    <td>Player</td>
+                    <td>1</td>
+                    <td>2</td>
                   </tr>
                   <tr>
+                    <td>Score</td>
                     {Object.entries(this.state.score).map(([key, scores]) => {
                       return <td key={`player-${key}-score`}>{scores}</td>;
                     })}
                   </tr>
                   <tr>
+                    <td>Add</td>
                     {Object.entries(this.state.score).map(
                       ([scoreKey, scores]) => (
                         <td key={`player-${scoreKey}-buttons`}>
@@ -143,6 +153,7 @@ export default class Scorekeeper extends React.Component {
                                     this.addScore(scoreKey, amount)
                                   }
                                   className="mr-1"
+                                  style={{ fontSize: 'inherit' }}
                                 >
                                   {amount < 0 ? null : '+'}
                                   {amount}
