@@ -12,6 +12,10 @@ import firebase from '../../firebase.js';
 
 const postsRef = () => firebase.database().ref('posts');
 
+const deletePost = ({ postId }) => {
+  postsRef().child(postId).remove();
+};
+
 export const createNewPost = (
   newPostContent,
   replyToId,
@@ -165,7 +169,6 @@ const ReplyPostCard = ({
 const Post = ({
   post,
   myPhotoURL,
-  deletePost,
   hackDoNotAddPostToMessageLinks,
   hackShowSeenButton,
 }) => {
@@ -179,11 +182,9 @@ const Post = ({
           displayName={post.userDisplayName}
           showActions={isMyPost}
           postActionsDropdown={
-            deletePost && (
-              <PostActionsDropdown
-                deletePost={() => deletePost({ postId: post.id })}
-              />
-            )
+            <PostActionsDropdown
+              deletePost={() => deletePost({ postId: post.id })}
+            />
           }
           timestamp={post.timestamp}
           photoURL={post.userPhotoURL}
@@ -206,17 +207,16 @@ const Post = ({
             post.childNodes &&
             post.childNodes.map((replyPost) => {
               const isMyPost = myUserId === replyPost.userId;
-              const postActionsDropdown = deletePost && (
-                <PostActionsDropdown
-                  deletePost={() => deletePost({ postId: replyPost.id })}
-                />
-              );
               return (
                 <ReplyPostCard
                   key={replyPost.id}
                   userDisplayName={replyPost.userDisplayName}
                   showActions={isMyPost}
-                  postActionsDropdown={postActionsDropdown}
+                  postActionsDropdown={
+                    <PostActionsDropdown
+                      deletePost={() => deletePost({ postId: replyPost.id })}
+                    />
+                  }
                   timestamp={replyPost.timestamp}
                   userPhotoURL={replyPost.userPhotoURL}
                   content={replyPost.content}

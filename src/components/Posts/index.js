@@ -74,7 +74,6 @@ export default class Posts extends Component {
         forbiddenTagsByMe: [],
       },
     };
-    this.deletePost = this.deletePost.bind(this);
   }
 
   static contextType = AppContext;
@@ -92,9 +91,6 @@ export default class Posts extends Component {
         this.setState({ rawPosts: postsSnapshot.val() });
       });
     });
-  }
-  deletePost({ postId }) {
-    this.postsRef().child(postId).remove();
   }
   render() {
     let feedSubtext = null;
@@ -257,7 +253,6 @@ export default class Posts extends Component {
                       <Post
                         post={post}
                         myPhotoURL={this.user().photoURL}
-                        deletePost={this.deletePost}
                         hackShowSeenButton={this.state.feed === 'unseen'}
                       />
                     </td>
