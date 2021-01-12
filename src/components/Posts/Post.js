@@ -113,7 +113,6 @@ const ReplyPostCard = ({
   postTags,
   myUserId,
   thisPostId,
-  addTag,
 }) => {
   return (
     <Card className="mt-1">
@@ -128,18 +127,16 @@ const ReplyPostCard = ({
           postId={thisPostId}
         />
         <PostContent>{content}</PostContent>
-        {addTag && (
-          <div className="mt-2">
-            <PostTags
-              tags={postTags}
-              myUserId={myUserId}
-              addTag={(content, successCallback) =>
-                addTag(thisPostId, content, successCallback, myUserId)
-              }
-              postId={thisPostId}
-            />
-          </div>
-        )}
+        <div className="mt-2">
+          <PostTags
+            tags={postTags}
+            myUserId={myUserId}
+            addTag={(content, successCallback) =>
+              addTag(thisPostId, content, successCallback, myUserId)
+            }
+            postId={thisPostId}
+          />
+        </div>
       </Card.Body>
     </Card>
   );
@@ -205,7 +202,6 @@ const Post = ({
                   postTags={replyPost.tags}
                   myUserId={myUserId}
                   thisPostId={replyPost.id}
-                  addTag={addTag}
                 />
               );
             }, this)}
