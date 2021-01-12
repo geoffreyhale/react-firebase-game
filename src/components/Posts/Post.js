@@ -8,6 +8,21 @@ import NewPostForm from './NewPostForm';
 import PostTags from './PostTags';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { AppContext } from '../AppProvider';
+import firebase from '../../firebase.js';
+
+const addTag = (postId, tagContent, successCallback, myUserId) => {
+  const uid = myUserId; // TODO is this safe to do?
+  const postRef = firebase.database().ref('posts/' + postId);
+  const key = postRef.child('tags').push().key;
+  postRef
+    .child('tags')
+    .child(key)
+    .update({
+      type: tagContent,
+      userId: uid,
+    })
+    .then(successCallback());
+};
 
 const ReplyForm = ({ userPhotoURL, createNewPost, replyToPostId }) => {
   return (
@@ -136,7 +151,6 @@ const Post = ({
   myPhotoURL,
   createNewPost,
   deletePost,
-  addTag,
   hackDoNotAddPostToMessageLinks,
   hackShowSeenButton,
 }) => {
@@ -160,18 +174,16 @@ const Post = ({
           hackDoNotAddPostToMessageLinks={hackDoNotAddPostToMessageLinks}
         />
         <PostContent>{post.content}</PostContent>
-        {addTag && (
-          <div className="mt-2">
-            <PostTags
-              tags={post.tags}
-              myUserId={myUserId}
-              addTag={(content, successCallback) =>
-                addTag(post.id, content, successCallback, myUserId)
-              }
-              postId={post.id}
-            />
-          </div>
-        )}
+        <div className="mt-2">
+          <PostTags
+            tags={post.tags}
+            myUserId={myUserId}
+            addTag={(content, successCallback) =>
+              addTag(post.id, content, successCallback, myUserId)
+            }
+            postId={post.id}
+          />
+        </div>
         <div className="mt-3">
           {post &&
             post.childNodes &&

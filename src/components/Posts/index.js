@@ -81,19 +81,6 @@ export default class Posts extends Component {
     const post = this.state.rawPosts[statePostsKey];
     this.postsRef().child(post.id).remove();
   }
-  addTag(postId, tagContent, successCallback, myUserId) {
-    const uid = myUserId; // TODO is this safe to do?
-    const postRef = firebase.database().ref('posts/' + postId);
-    const key = postRef.child('tags').push().key;
-    postRef
-      .child('tags')
-      .child(key)
-      .update({
-        type: tagContent,
-        userId: uid,
-      })
-      .then(successCallback());
-  }
   render() {
     let feedSubtext = null;
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
@@ -315,7 +302,6 @@ export default class Posts extends Component {
                         myPhotoURL={this.user().photoURL}
                         createNewPost={this.createNewPost}
                         deletePost={this.deletePost}
-                        addTag={this.addTag}
                         hackShowSeenButton={this.state.feed === 'unseen'}
                       />
                     </td>
