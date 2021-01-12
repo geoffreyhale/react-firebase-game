@@ -193,11 +193,7 @@ export default class Posts extends Component {
           <Mosaic />
         </Col>
         <Col sm={8} className="col-posts mt-3">
-          <NewTopLevelPostCard
-            photoURL={this.user().photoURL}
-            displayName={this.user().displayName}
-            createNewPost={this.createNewPost}
-          />
+          <NewTopLevelPostCard createNewPost={this.createNewPost} />
 
           <Nav className="justify-content-center">
             <Nav.Item>
