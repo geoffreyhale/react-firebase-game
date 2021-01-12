@@ -6,6 +6,12 @@
 
 # TODO
 
+2021-01-12
+
+- cleanup instances of myUserId
+- clean out Posts index
+- do not query all posts
+
 - backups
 - posts feed slowness
 - NOTIFICATIONS - cool stuff you might care to see since you last logged in
