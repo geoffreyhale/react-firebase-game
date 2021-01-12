@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/card';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
-// import friendlyTimestamp from '../shared/friendlyTimestamp';
+import friendlyTimestamp from '../shared/friendlyTimestamp';
 
 export default class Scorekeeper extends React.Component {
   constructor() {
@@ -35,7 +35,10 @@ export default class Scorekeeper extends React.Component {
     this.setState({
       score: score,
     });
-    this.addLog(`Player ${who}: ${howMuch < 0 ? howMuch : `+${howMuch}`}`);
+    this.addLog([
+      Date.now(),
+      `Player ${who}: ${howMuch < 0 ? howMuch : `+${howMuch}`}`,
+    ]);
   }
   addButtonAmount(amount) {
     const newAddButtonAmounts = this.state.addButtonAmounts;
@@ -167,11 +170,18 @@ export default class Scorekeeper extends React.Component {
                   </tr>
                 </tbody>
               </Table>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body>
               <h5>Log:</h5>
               {Object.entries(this.state.log).map(([key, entry]) => {
+                const timestamp = entry[0];
+                const text = entry[1];
                 return (
                   <>
-                    {entry}
+                    <span>{friendlyTimestamp(timestamp)}</span>
+                    <span className="ml-3">{text}</span>
                     <br />
                   </>
                 );
