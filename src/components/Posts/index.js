@@ -6,28 +6,11 @@ import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Mosaic from './mosaic';
-import NewPostForm from './NewPostForm';
 import Post from './Post';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Stats from './Stats';
 import Tag from './Tag';
-
-const NewTopLevelPostCard = ({ photoURL, displayName, createNewPost }) => {
-  return (
-    <Card>
-      <Card.Body>
-        <Card.Title>
-          {photoURL ? (
-            <img src={photoURL} alt="user" style={{ height: 48 }} />
-          ) : null}
-          {displayName}
-          <small className="text-muted ml-2">&#127757; Public</small>
-        </Card.Title>
-        <NewPostForm onSubmit={createNewPost} multiline={true} />
-      </Card.Body>
-    </Card>
-  );
-};
+import NewTopLevelPostCard from './NewTopLevelPostCard';
 
 export default class Posts extends Component {
   constructor() {
