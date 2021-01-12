@@ -46,7 +46,7 @@ export default class Scorekeeper extends React.Component {
     return (
       <Row>
         <Col></Col>
-        <Col xs={8}>
+        <Col sm={8}>
           <Card>
             <Card.Body>
               <h2 style={{ marginBottom: 0 }}>
