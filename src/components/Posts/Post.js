@@ -180,7 +180,9 @@ const Post = ({
           showActions={isMyPost}
           postActionsDropdown={
             deletePost && (
-              <PostActionsDropdown deletePost={() => deletePost(post.id)} />
+              <PostActionsDropdown
+                deletePost={() => deletePost({ postId: post.id })}
+              />
             )
           }
           timestamp={post.timestamp}
@@ -206,7 +208,7 @@ const Post = ({
               const isMyPost = myUserId === replyPost.userId;
               const postActionsDropdown = deletePost && (
                 <PostActionsDropdown
-                  deletePost={() => deletePost(replyPost.id)}
+                  deletePost={() => deletePost({ postId: replyPost.id })}
                 />
               );
               return (

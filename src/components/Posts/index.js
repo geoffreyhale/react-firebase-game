@@ -93,9 +93,8 @@ export default class Posts extends Component {
       });
     });
   }
-  deletePost(statePostsKey) {
-    const post = this.state.rawPosts[statePostsKey];
-    this.postsRef().child(post.id).remove();
+  deletePost({ postId }) {
+    this.postsRef().child(postId).remove();
   }
   render() {
     let feedSubtext = null;
