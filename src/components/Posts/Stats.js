@@ -87,31 +87,39 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
   return result;
 };
 
-const TagStatsTable = ({ title, subtitle, statsByTag }) => (
-  <Card className="mb-2 tag-stats">
-    <Card.Body>
-      <Card.Title>
-        {title}
-        {subtitle && (
-          <>
-            <br />
-            <small className="text-muted">{subtitle}</small>
-          </>
-        )}
-      </Card.Title>
-      <Table borderless size="sm">
-        <tbody>
-          {Object.values(statsByTag)
-            .filter((tag) => tag.count >= 3)
-            .sort(
-              //descending by count then alphabetical
-              (a, b) => {
-                return b.count === a.count
-                  ? a.type.localeCompare(b.type)
-                  : b.count - a.count;
-              }
-            )
-            .map((tag) => {
+const TagStatsTable = ({ subtitle, statsByTag }) => {
+  const tagStatsArray = Object.values(statsByTag)
+    .filter((tag) => tag.count >= 3)
+    .sort(
+      //descending by count then alphabetical
+      (a, b) => {
+        return b.count === a.count
+          ? a.type.localeCompare(b.type)
+          : b.count - a.count;
+      }
+    );
+  const howMay = 20;
+  const xDeep = tagStatsArray.length > howMay ? howMay : tagStatsArray.length;
+  const countAtXDeep = tagStatsArray[xDeep] && tagStatsArray[xDeep].count;
+  const tagStatsArrayForDisplay = tagStatsArray.filter(
+    (tag) => tag.count >= countAtXDeep
+  );
+
+  return (
+    <Card className="mb-2 tag-stats">
+      <Card.Body>
+        <Card.Title>
+          Top {howMay} Tags
+          {subtitle && (
+            <>
+              <br />
+              <small className="text-muted">{subtitle}</small>
+            </>
+          )}
+        </Card.Title>
+        <Table borderless size="sm">
+          <tbody>
+            {tagStatsArrayForDisplay.map((tag) => {
               return (
                 <tr key={tag.type}>
                   <td>
@@ -121,14 +129,12 @@ const TagStatsTable = ({ title, subtitle, statsByTag }) => (
                 </tr>
               );
             })}
-        </tbody>
-      </Table>
-      <small className="text-muted">
-        Showing tags that appear 3 or more times.
-      </small>
-    </Card.Body>
-  </Card>
-);
+          </tbody>
+        </Table>
+      </Card.Body>
+    </Card>
+  );
+};
 
 const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
   <Card className="mb-2 user-stats">
@@ -220,7 +226,7 @@ const Stats = ({ posts, users }) => {
         key={'top-taggers'}
         footer={'Includes tags on your own posts.'}
       />
-      <TagStatsTable title={'Top Tags'} statsByTag={statsByTag} key={'tags'} />
+      <TagStatsTable statsByTag={statsByTag} key={'tags'} />
     </>
   );
 };
