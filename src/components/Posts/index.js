@@ -107,9 +107,11 @@ export default class Posts extends Component {
        */
       this.postsRef()
         // .orderByChild('timestamp') // Ascending
-        // .limitToLast(100) // Most recent
+        // .limitToLast(10) // Most recent
         .on('value', (postsSnapshot) => {
-          this.setState({ rawPosts: postsSnapshot.val() });
+          const posts = postsSnapshot.val();
+          // console.log('posts', posts);
+          this.setState({ rawPosts: posts });
         });
     });
   }
@@ -140,13 +142,6 @@ export default class Posts extends Component {
                     );
                   }
                 );
-                // const hasForbiddenTags = postsFilter.forbiddenTags.some(
-                //   (forbiddenTag) => {
-                //     return Object.values(post.tags).some(
-                //       (tag) => tag.type === forbiddenTag
-                //     );
-                //   }
-                // );
                 const hasForbiddenTagsByMe = postsFilter.forbiddenTagsByMe.some(
                   (forbiddenTag) => {
                     return Object.values(post.tags).some(
