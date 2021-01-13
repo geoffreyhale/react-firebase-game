@@ -95,28 +95,28 @@ export const PostHeader = ({
   postId,
   hackDoNotAddPostToMessageLinks,
 }) => (
-  <div style={{ fontSize: small ? '85%' : null }}>
-    <div className="float-left mr-2">
-      {photoURL ? (
-        <img src={photoURL} alt="user" style={{ height: small ? 38 : 48 }} />
-      ) : null}
-    </div>
-    <>
-      <div>
-        <strong>{displayName}</strong>
-        <div className="float-right">
-          {showActions ? postActionsDropdown : null}
+    <div style={{ fontSize: small ? '85%' : null }}>
+      <div className="float-left mr-2">
+        {photoURL ? (
+          <img src={photoURL} alt="user" style={{ height: small ? 38 : 48 }} />
+        ) : null}
+      </div>
+      <>
+        <div>
+          <strong>{displayName}</strong>
+          <div className="float-right">
+            {showActions ? postActionsDropdown : null}
+          </div>
         </div>
-      </div>
-      <div className="small text-muted">
-        <Link to={hackDoNotAddPostToMessageLinks ? postId : 'post/' + postId}>
-          {friendlyTimestamp(timestamp)}
-        </Link>
-      </div>
-    </>
-    <div style={{ clear: 'both' }}></div>
-  </div>
-);
+        <div className="small text-muted">
+          <Link to={hackDoNotAddPostToMessageLinks ? postId : 'post/' + postId}>
+            {friendlyTimestamp(timestamp)}
+          </Link>
+        </div>
+      </>
+      <div style={{ clear: 'both' }}></div>
+    </div>
+  );
 
 const PostContent = ({ children, small }) => (
   <div
@@ -137,6 +137,7 @@ const ReplyPostCard = ({
   postTags,
   myUserId,
   thisPostId,
+  hackDoNotAddPostToMessageLinks,
 }) => {
   return (
     <Card className="mt-1">
@@ -149,6 +150,7 @@ const ReplyPostCard = ({
           photoURL={userPhotoURL}
           small={true}
           postId={thisPostId}
+          hackDoNotAddPostToMessageLinks={hackDoNotAddPostToMessageLinks}
         />
         <PostContent>{content}</PostContent>
         <div className="mt-2">
@@ -166,12 +168,7 @@ const ReplyPostCard = ({
   );
 };
 
-const Post = ({
-  post,
-  myPhotoURL,
-  hackDoNotAddPostToMessageLinks,
-  hackShowSeenButton,
-}) => {
+const Post = ({ post, hackDoNotAddPostToMessageLinks, hackShowSeenButton }) => {
   const { user } = useContext(AppContext);
   const myUserId = user.uid;
   const isMyPost = myUserId === post.userId;
@@ -223,6 +220,9 @@ const Post = ({
                   postTags={replyPost.tags}
                   myUserId={myUserId}
                   thisPostId={replyPost.id}
+                  hackDoNotAddPostToMessageLinks={
+                    hackDoNotAddPostToMessageLinks
+                  }
                 />
               );
             }, this)}
@@ -230,7 +230,7 @@ const Post = ({
         {
           // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
           post.replyToId ? null : (
-            <ReplyForm userPhotoURL={myPhotoURL} replyToPostId={post.id} />
+            <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
           )
         }
       </Card.Body>

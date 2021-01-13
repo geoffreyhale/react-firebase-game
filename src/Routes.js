@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import Scorekeeper from './components/Scorekeeper';
 import IncrementalClickerGame from './components/Games/IncrementalClicker';
 import TicTacToe from './components/Games/TicTacToe';
@@ -11,6 +11,7 @@ import { AppContext } from './components/AppProvider';
 
 const Routes = () => {
   const { user } = useContext(AppContext);
+  const location = useLocation();
   return (
     <Switch>
       {user
@@ -36,7 +37,7 @@ const Routes = () => {
             // https://ui.dev/react-router-v4-pass-props-to-components/
             <Route
               path="/post/:postId"
-              key="/post"
+              key={location.pathname}
               render={(props) => <Post {...props} />}
             />,
           ]

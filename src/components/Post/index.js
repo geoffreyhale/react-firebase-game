@@ -65,7 +65,6 @@ export default class PostPage extends React.Component {
 
   render() {
     const { post, posts, users } = this.state;
-    const user = this.user();
 
     if (!post || !users) {
       return <>Loading</>;
@@ -86,11 +85,10 @@ export default class PostPage extends React.Component {
         <Col sm={8} className="col-posts mt-3">
           <Post
             post={postTree[0]}
-            myPhotoURL={user && user.photoURL}
-            // addTag={this.addTag}
+            myPhotoURL={this.user().photoURL}
             hackDoNotAddPostToMessageLinks={true}
+            hackHidePostLinks={true} // TODO current routing appends extra '/post''s
           />
-          <small className="text-muted">Limited functionality.</small>
         </Col>
         <Col></Col>
       </Row>
