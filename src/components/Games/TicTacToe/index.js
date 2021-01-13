@@ -49,7 +49,7 @@ const MostRecent = ({ mostRecent }) => (
 export default class TicTacToe extends Component {
   constructor() {
     super();
-    this.state = { board: [], users: {} };
+    this.state = { board: [], users: {}, mostRecent: {} };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
     this.resetGame = this.resetGame.bind(this);
