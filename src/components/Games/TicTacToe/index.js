@@ -193,6 +193,13 @@ export default class TicTacToe extends Component {
                           <td
                             key={j}
                             onClick={() => this.handleClickCell(i, j)}
+                            style={{
+                              border:
+                                this.state.mostRecent.i === i &&
+                                this.state.mostRecent.j === j
+                                  ? '2px solid deepskyblue'
+                                  : null,
+                            }}
                           >
                             {cell.photoURL ? (
                               <img
