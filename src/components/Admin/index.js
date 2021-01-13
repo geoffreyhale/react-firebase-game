@@ -10,7 +10,7 @@ export default class Admin extends React.Component {
     this.state = {
       users: {},
       user: {},
-      sortKey: null,
+      sortKey: 'lastOnline',
     };
   }
   componentDidMount() {
@@ -48,12 +48,12 @@ export default class Admin extends React.Component {
   }
   render() {
     const properties = [
+      // { name: 'photoURL' },
       { name: 'displayName' },
       { name: 'email' },
-      // { name: 'photoURL' },
-      { name: 'joined', display: 'friendlyTimestamp' },
-      { name: 'lastLogin', display: 'friendlyTimestamp' },
       { name: 'lastOnline', display: 'friendlyTimestamp' },
+      { name: 'lastLogin', display: 'friendlyTimestamp' },
+      { name: 'joined', display: 'friendlyTimestamp' },
     ];
 
     const sortKey = this.state.sortKey;
