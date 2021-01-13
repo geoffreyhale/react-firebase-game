@@ -59,10 +59,10 @@ export default class Admin extends React.Component {
     const sortKey = this.state.sortKey;
     const users = Object.entries(this.state.users).sort((a, b) => {
       if (!a[1][sortKey]) {
-        return -1;
+        return 1;
       }
       if (!b[1][sortKey]) {
-        return 1;
+        return -1;
       }
       if (typeof a[1][sortKey] === 'string') {
         return a[1][sortKey].localeCompare(b[1][sortKey]);
