@@ -10,7 +10,7 @@ export default class Admin extends React.Component {
     this.state = {
       users: {},
       user: {},
-      sortPropertyname: null,
+      sortKey: null,
     };
   }
   componentDidMount() {
