@@ -10,6 +10,7 @@ import { SmartPost } from './Post';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Stats from './Stats';
 import Tag from './Tag';
+import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
@@ -111,6 +112,7 @@ export default class Posts extends Component {
         .on('value', (postsSnapshot) => {
           const posts = postsSnapshot.val();
           // console.log('posts', posts);
+          // console.log('postsRef posts changed!!');
           this.setState({ rawPosts: posts });
         });
     });
@@ -266,13 +268,24 @@ export default class Posts extends Component {
                 }
 
                 return (
-                  <tr key={post.id}>
+                  <tr key={post.id + post.childNodes.length}>
                     <td>
-                      <SmartPost
-                        postId={post.id}
-                        hackForPostChildNodes={post.childNodes}
-                        hackShowSeenButton={this.state.feed === 'unseen'}
-                      />
+                      <Card className="mt-4">
+                        <Card.Body>
+                          <SmartPost
+                            postId={post.id}
+                            hackForPostChildNodes={post.childNodes}
+                          />
+                        </Card.Body>
+                        {this.state.feed === 'unseen' ? (
+                          <Card.Footer>
+                            <div className="float-right">
+                              <MarkAsSeenButton postId={post.id} />
+                            </div>
+                            <div style={{ clear: 'both' }}></div>
+                          </Card.Footer>
+                        ) : null}
+                      </Card>
                     </td>
                   </tr>
                 );

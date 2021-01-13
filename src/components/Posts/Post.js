@@ -6,7 +6,6 @@ import friendlyTimestamp from '../shared/friendlyTimestamp';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import PostTags from './PostTags';
-import MarkAsSeenButton from './MarkAsSeenButton';
 import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 
@@ -199,19 +198,28 @@ export class SmartPost extends React.Component {
   userRef = (userId) => this.db().ref('users/' + userId);
 
   componentDidMount() {
-    this.postRef(this.props.postId).on('value', (postSnapshot) => {
+    const { postId } = this.props;
+    this.postRef(postId).on('value', (postSnapshot) => {
       const post = postSnapshot.val();
-      this.userRef(post.userId).once('value', (userSnapshot) => {
-        const postUser = userSnapshot.val();
-        post.userDisplayName = postUser.displayName;
-        post.userPhotoURL = postUser.photoURL;
-        post.childNodes = this.props.hackForPostChildNodes;
-        this.setState({ post: post });
-        // TODO get rid of hackForPostChildNodes / do the following:
-        // TODO if this is a reply, include to which it was a reply and display as such
-        // TODO if there are replies to this, display them
-        // TODO actually need to have had pre-processing... will take childNodes here...
-      });
+      if (post) {
+        post.id = postId;
+        this.userRef(post.userId).once('value', (userSnapshot) => {
+          const postUser = userSnapshot.val();
+          post.userDisplayName = postUser.displayName;
+          post.userPhotoURL = postUser.photoURL;
+          post.childNodes = this.props.hackForPostChildNodes;
+          this.setState({ post: post });
+          // TODO BROKEN -- NEW REPLIES DO NOT APPEAR WITHOUT REFRESH
+          // TODO BROKEN -- IF A POST IS DELETED, IT DOES NOT DISAPPEAR WITHOUT REFRESH (is this a problem?)
+          // TODO BROKEN -- new tags aren't added either!?!
+          // TODO get rid of hackForPostChildNodes / do the following:
+          // TODO if this is a reply, include to which it was a reply and display as such
+          // TODO if there are replies to this, display them
+          // TODO actually need to have had pre-processing... will take childNodes here...
+        });
+      } else {
+        this.setState({ post: null });
+      }
     });
   }
 
@@ -226,91 +234,80 @@ export class SmartPost extends React.Component {
         hackDoNotAddPostToMessageLinkURL={
           this.props.hackDoNotAddPostToMessageLinkURL
         }
-        hackShowSeenButton={this.props.hackShowSeenButton}
       />
     );
   }
 }
 
-const Post = ({
-  post,
-  hackDoNotAddPostToMessageLinkURL,
-  hackShowSeenButton,
-}) => {
+const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   const { user } = useContext(AppContext);
   const myUserId = user.uid;
   const isMyPost = myUserId === post.userId;
+  if (!post.id) {
+    return <>Waiting for post.id</>;
+  }
+
   return (
-    <Card className="mt-4">
-      <Card.Body>
-        <PostHeader
-          displayName={post.userDisplayName}
-          showActions={isMyPost}
-          postActionsDropdown={
-            <PostActionsDropdown
-              deletePost={() => deletePost({ postId: post.id })}
-            />
-          }
-          timestamp={post.timestamp}
-          photoURL={post.userPhotoURL}
-          postId={post.id}
-          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-        />
-        <PostContent>{post.content}</PostContent>
-        <div className="mt-2">
-          <PostTags
-            tags={post.tags}
-            myUserId={myUserId}
-            addTag={(content, successCallback) =>
-              addTag(post.id, content, successCallback, myUserId)
-            }
-            postId={post.id}
+    <>
+      <PostHeader
+        displayName={post.userDisplayName}
+        showActions={isMyPost}
+        postActionsDropdown={
+          <PostActionsDropdown
+            deletePost={() => deletePost({ postId: post.id })}
           />
-        </div>
-        <div className="mt-3">
-          {post &&
-            post.childNodes &&
-            post.childNodes.map((replyPost) => {
-              const isMyPost = myUserId === replyPost.userId;
-              return (
-                <ReplyPostCard
-                  key={replyPost.id}
-                  userDisplayName={replyPost.userDisplayName}
-                  showActions={isMyPost}
-                  postActionsDropdown={
-                    <PostActionsDropdown
-                      deletePost={() => deletePost({ postId: replyPost.id })}
-                    />
-                  }
-                  timestamp={replyPost.timestamp}
-                  userPhotoURL={replyPost.userPhotoURL}
-                  content={replyPost.content}
-                  postTags={replyPost.tags}
-                  myUserId={myUserId}
-                  thisPostId={replyPost.id}
-                  hackDoNotAddPostToMessageLinkURL={
-                    hackDoNotAddPostToMessageLinkURL
-                  }
-                />
-              );
-            }, this)}
-        </div>
-        {
-          // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
-          post.replyToId ? null : (
-            <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
-          )
         }
-      </Card.Body>
-      {hackShowSeenButton ? (
-        <Card.Footer>
-          <div className="float-right">
-            <MarkAsSeenButton postId={post.id} />
-          </div>
-          <div style={{ clear: 'both' }}></div>
-        </Card.Footer>
-      ) : null}
-    </Card>
+        timestamp={post.timestamp}
+        photoURL={post.userPhotoURL}
+        postId={post.id}
+        hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+      />
+      <PostContent>{post.content}</PostContent>
+      <div className="mt-2">
+        <PostTags
+          tags={post.tags}
+          myUserId={myUserId}
+          addTag={(content, successCallback) =>
+            addTag(post.id, content, successCallback, myUserId)
+          }
+          postId={post.id}
+        />
+      </div>
+      <div className="mt-3">
+        {post &&
+          post.childNodes &&
+          post.childNodes.map((replyPost) => {
+            const isMyPost = myUserId === replyPost.userId;
+            return (
+              <ReplyPostCard
+                key={replyPost.id}
+                userDisplayName={replyPost.userDisplayName}
+                showActions={isMyPost}
+                postActionsDropdown={
+                  <PostActionsDropdown
+                    deletePost={() => deletePost({ postId: replyPost.id })}
+                  />
+                }
+                timestamp={replyPost.timestamp}
+                userPhotoURL={replyPost.userPhotoURL}
+                content={replyPost.content}
+                postTags={replyPost.tags}
+                myUserId={myUserId}
+                thisPostId={replyPost.id}
+                hackDoNotAddPostToMessageLinkURL={
+                  hackDoNotAddPostToMessageLinkURL
+                }
+              />
+            );
+          }, this)}
+      </div>
+      {
+        // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
+        post.replyToId ? null : (
+          <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
+        )
+      }
+    </>
   );
 };
 
