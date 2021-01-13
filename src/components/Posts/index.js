@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Mosaic from './Mosaic';
-import Post from './Post';
+import { SmartPost } from './Post';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Stats from './Stats';
 import Tag from './Tag';
@@ -268,9 +268,9 @@ export default class Posts extends Component {
                 return (
                   <tr key={post.id}>
                     <td>
-                      <Post
-                        post={post}
-                        myPhotoURL={this.user().photoURL}
+                      <SmartPost
+                        postId={post.id}
+                        hackForPostChildNodes={post.childNodes}
                         hackShowSeenButton={this.state.feed === 'unseen'}
                       />
                     </td>
