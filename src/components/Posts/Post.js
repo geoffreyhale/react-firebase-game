@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -118,14 +118,32 @@ export const PostHeader = ({
   </div>
 );
 
-const PostContent = ({ children, small }) => (
-  <div
-    className="mt-1"
-    style={{ whiteSpace: 'break-spaces', fontSize: small ? '85%' : null }}
-  >
-    {children}
-  </div>
-);
+const PostContent = ({ children, small }) => {
+  const startCollapsed = typeof children === 'string' && children.length > 1000;
+  const [collapsed, setCollapsed] = useState(startCollapsed);
+
+  const collapsedContent = (
+    <>
+      {children.substring(0, 500)}
+      {'... '}
+      <span
+        onClick={() => setCollapsed(false)}
+        style={{ fontWeight: 600, cursor: 'pointer' }}
+      >
+        See More
+      </span>
+    </>
+  );
+
+  return (
+    <div
+      className="mt-1"
+      style={{ whiteSpace: 'break-spaces', fontSize: small ? '85%' : null }}
+    >
+      {collapsed ? collapsedContent : children}
+    </div>
+  );
+};
 
 const ReplyPostCard = ({
   userDisplayName,
