@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import firebase, { auth } from '../../firebase.js';
@@ -83,12 +84,16 @@ export default class PostPage extends React.Component {
       <Row>
         <Col></Col>
         <Col sm={8} className="col-posts mt-3">
-          <Post
-            post={postTree[0]}
-            myPhotoURL={this.user().photoURL}
-            hackDoNotAddPostToMessageLinkURL={true}
-            hackHidePostLinks={true} // TODO current routing appends extra '/post''s
-          />
+          <Card className="mt-4">
+            <Card.Body>
+              <Post
+                post={postTree[0]}
+                myPhotoURL={this.user().photoURL}
+                hackDoNotAddPostToMessageLinkURL={true}
+                hackHidePostLinks={true} // TODO current routing appends extra '/post''s
+              />
+            </Card.Body>
+          </Card>
         </Col>
         <Col></Col>
       </Row>
