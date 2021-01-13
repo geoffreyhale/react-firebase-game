@@ -86,7 +86,7 @@ export default class PostPage extends React.Component {
           <Post
             post={postTree[0]}
             myPhotoURL={this.user().photoURL}
-            hackDoNotAddPostToMessageLinks={true}
+            hackDoNotAddPostToMessageLinkURL={true}
             hackHidePostLinks={true} // TODO current routing appends extra '/post''s
           />
         </Col>
