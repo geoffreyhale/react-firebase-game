@@ -83,27 +83,39 @@ export default class TicTacToe extends Component {
     const tictactoeBoardCellRef = firebase
       .database()
       .ref(`games/tictactoe/board/${i}/${j}`);
+
     tictactoeBoardCellRef.once('value', (snapshot) => {
-      const cell = snapshot.val();
-      if (cell && cell.userId && cell.userId !== this.user().uid) {
+      const existingCell = snapshot.val();
+      const cellOccupiedByOther =
+        existingCell &&
+        existingCell.userId &&
+        existingCell.userId !== this.user().uid;
+      const cellOccupiedBySelf =
+        existingCell && existingCell.userId === this.user().uid;
+
+      if (cellOccupiedByOther) {
         return;
-      } else if (cell && cell.userId === this.user().uid) {
-        tictactoeBoardCellRef.set('');
-        const mostRecentRef = firebase
-          .database()
-          .ref(`games/tictactoe/mostRecent`);
-        mostRecentRef.set(cell);
-      } else {
-        const cell = {
-          userId: this.user().uid,
-          photoURL: this.user().photoURL,
-        };
-        tictactoeBoardCellRef.set(cell);
-        const mostRecentRef = firebase
-          .database()
-          .ref(`games/tictactoe/mostRecent`);
-        mostRecentRef.set(cell);
       }
+
+      const cell = {
+        userId: this.user().uid,
+        photoURL: this.user().photoURL,
+      };
+      if (cellOccupiedBySelf) {
+        tictactoeBoardCellRef.set('');
+      } else {
+        tictactoeBoardCellRef.set(cell);
+      }
+
+      const mostRecentRef = firebase
+        .database()
+        .ref(`games/tictactoe/mostRecent`);
+      mostRecentRef.set({
+        userId: this.user().uid,
+        photoURL: this.user().photoURL,
+        i: i,
+        j: j,
+      });
     });
   }
   save(board) {
