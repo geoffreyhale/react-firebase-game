@@ -10,6 +10,7 @@
 
 - fix post page doesn't include full tree
 - fix double render
+- 'Add Tags' to new top level post
 - cleanup 'Add Tags' and 'Reply' buttons
 
 2021-01-12
