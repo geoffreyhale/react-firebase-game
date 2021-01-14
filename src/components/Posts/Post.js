@@ -216,8 +216,6 @@ const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
 };
 
 const ReplyPostCard = ({ hackDoNotAddPostToMessageLinkURL, post }) => {
-  const { user } = useContext(AppContext);
-  const myUserId = user.uid;
   return (
     <Card className="mt-1">
       <Card.Body style={{ padding: '0.75rem' }}>
@@ -297,9 +295,6 @@ export class SmartPost extends React.Component {
 }
 
 const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
-  const { user } = useContext(AppContext);
-  const myUserId = user.uid;
-  const isMyPost = myUserId === post.userId;
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
