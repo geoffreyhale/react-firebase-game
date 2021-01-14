@@ -88,28 +88,32 @@ const PostTags = ({ post }) => {
 const ReplyForm = ({ replyToPostId }) => {
   const { user } = useContext(AppContext);
   return (
-    <div
-      className="mt-3"
-      style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-      }}
-    >
-      <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
-        {user.photoURL ? (
-          <img src={user.photoURL} alt="user" style={{ height: 38 }} />
-        ) : null}
-      </div>
-      <div style={{ flexGrow: 1 }}>
-        <NewPostForm
-          onSubmit={createNewPost}
-          placeholder="Write a reply..."
-          replyToId={replyToPostId}
-          multiline={true}
-        />
-      </div>
-    </div>
+    <Card className="mt-1">
+      <Card.Body>
+        <div
+          className="mt-3"
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+        >
+          <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
+            {user.photoURL ? (
+              <img src={user.photoURL} alt="user" style={{ height: 38 }} />
+            ) : null}
+          </div>
+          <div style={{ flexGrow: 1 }}>
+            <NewPostForm
+              onSubmit={createNewPost}
+              placeholder="Write a reply..."
+              replyToId={replyToPostId}
+              multiline={true}
+            />
+          </div>
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 
@@ -128,6 +132,7 @@ export const PostHeader = ({
   small,
   hackDoNotAddPostToMessageLinkURL,
   post,
+  hideActionsAndTimestamp,
 }) => {
   const { user } = useContext(AppContext);
   const myUserId = user.uid;
@@ -148,21 +153,25 @@ export const PostHeader = ({
       <>
         <div>
           <strong>{displayName}</strong>
-          <div className="float-right">
-            {showActions ? (
-              <PostActionsDropdown
-                deletePost={() => deletePost({ postId: post.id })}
-              />
-            ) : null}
+          {hideActionsAndTimestamp ? null : (
+            <div className="float-right">
+              {showActions ? (
+                <PostActionsDropdown
+                  deletePost={() => deletePost({ postId: post.id })}
+                />
+              ) : null}
+            </div>
+          )}
+        </div>
+        {hideActionsAndTimestamp ? null : (
+          <div className="small text-muted">
+            <Link
+              to={hackDoNotAddPostToMessageLinkURL ? postId : 'post/' + postId}
+            >
+              {friendlyTimestamp(timestamp)}
+            </Link>
           </div>
-        </div>
-        <div className="small text-muted">
-          <Link
-            to={hackDoNotAddPostToMessageLinkURL ? postId : 'post/' + postId}
-          >
-            {friendlyTimestamp(timestamp)}
-          </Link>
-        </div>
+        )}
       </>
       <div style={{ clear: 'both' }}></div>
     </div>
