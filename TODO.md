@@ -9,31 +9,24 @@
 2021-01-12
 
 - clean out Posts index
-- do not query all posts
-- change context user to currentUser?
-
-- backups
+- do not query all posts, do not return all posts; chunks please
 - posts feed slowness
 - NOTIFICATIONS - cool stuff you might care to see since you last logged in
 - security, seriously
 - bug: after log out, PERMISSION DENIED errors
-
 - motivate user to put it on their phone home screen
-- do not return all posts; chunks please
 - move junk data out of db users
-- fix the smart feed active indicator, differently weird on desktop and phone
-- user most recent login/action/active timestamp
-- phone users may be confused about no submit buttons for replies/tags/etc
+- fix the smart feed active indicator, differently weird on desktop and phone ?
+- phone users may be confused about no submit buttons for tags
 - allow like or heart or read or something on replies or all posts
 - chess+
-- optional display names?
+- optional custom display names?
+- community verification for display names
 - private rooms for conversations, games, etc?
 - user profiles
-- picture handling
-- Long tags break UI
+- picture handling, stop querying google lol
 - Ability to delete your own tags
 - can't see stats tables on phones very well; they're at bottom of post feed
-- tags on replies?
 - firebase nodes have metadata with creationTime and lastSignInTime; do we need my janky `joined` or `lastLogin` ?
 
 ### SECURITY & DEV
@@ -51,12 +44,11 @@
 - confirm prompt for delete post
 - ability to edit your existing posts
 - ability to share pictures
-- better handling for orphan posts
+- better handling for orphan posts; how handle deleting posts?
 
 ### NEW USERS AND PARTICIPATION
 
-- stats for top tag getters and by tag type
-- order of stats tables is good as is?
+- stats for top tag getters esp by tag type
 - invite codes and family-tree displays and stats for top inviters ?
 
 ### MONETIZATION
@@ -73,6 +65,9 @@
 - view posts feed by filters: user, tag
 - groups -> rooms / post feeds / chat rooms
 - healthy intimacy dating called Tender XD
+- user private profile includes:
+  - round tables, eg 5 closest friends, 5 best friends, 5 friends I want to be more like, etc
+  - jom's productivity tracker
 
 ### UTILITIES
 
