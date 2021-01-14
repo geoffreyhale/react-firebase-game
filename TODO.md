@@ -6,6 +6,10 @@
 
 # TODO
 
+2021-01-14
+
+- fix post page doesn't include full tree
+
 2021-01-12
 
 - clean out Posts index

@@ -6,13 +6,12 @@ import Row from 'react-bootstrap/Row';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Mosaic from './Mosaic';
-import Post, { SmartPost } from './Post';
+import Post from './Post';
 import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 import Stats from './Stats';
 import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
-import createPostTreeFromPostsObject from './createPostTreeFromPostsObject';
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
@@ -89,33 +88,10 @@ export default class Posts extends Component {
     usersRef.once('value', (usersSnapshot) => {
       this.setState({ users: usersSnapshot.val() });
 
-      /**
-       * TODO
-       *
-       * What I actually want here is speed and relevancy
-       *
-       * Relevant Posts
-       * - not filtered by the user, eg seen (applicable to "unseen" feed)
-       * - preferred (not yet implemented)
-       *
-       * Steps:
-       * 1. quickly query some minimum necessary posts basis
-       * 2. get other necessary posts and data, eg top level posts and info about other replies
-       * 3. process as necessary, filter as necessary
-       * 4. build for view (eg tree)
-       * 5. (tree-based processing and filtering?)
-       *
-       * ...!?
-       */
-      this.postsRef()
-        // .orderByChild('timestamp') // Ascending
-        // .limitToLast(10) // Most recent
-        .on('value', (postsSnapshot) => {
-          const posts = postsSnapshot.val();
-          // console.log('posts', posts);
-          // console.log('postsRef posts changed!!');
-          this.setState({ rawPosts: posts });
-        });
+      this.postsRef().on('value', (postsSnapshot) => {
+        const posts = postsSnapshot.val();
+        this.setState({ rawPosts: posts });
+      });
     });
   }
 
@@ -194,15 +170,10 @@ export default class Posts extends Component {
 
     if (this.state.feed === 'unseen') {
       // TODO tests for this
-      const topLevelPostIdsToAllow =
+      const threadSeedPostIdsToAllow =
         flatPostsArray &&
         flatPostsArray
           .filter((post) => {
-            const isTopLevelPost = !post.replyToId;
-            if (!isTopLevelPost) {
-              return false;
-            }
-
             let mostRecentPostInThread = post;
             let topLevelPostOrMostRecentPostBySomeoneElse = post;
             flatPostsArray.forEach((p) => {
@@ -231,13 +202,12 @@ export default class Posts extends Component {
           })
           .map((post) => post.id);
 
-      posts = posts.filter((post) => topLevelPostIdsToAllow.includes(post.id));
+      posts = posts.filter((post) =>
+        threadSeedPostIdsToAllow.includes(post.id)
+      );
       feedSubtext =
         'Threads in which someone else posted since you last clicked the yellow `mark thread as seen` button.  Click the `mark thread as seen` button to temporarily hide a thread from this feed until someone else posts something new.';
     }
-
-    // const postsTwoPointOh = createPostTreeFromPostsObject(this.state.rawPosts);
-    // console.log(postsTwoPointOh);
 
     return (
       <Row>
