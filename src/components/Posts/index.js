@@ -12,6 +12,7 @@ import Stats from './Stats';
 import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
+import NotificationsFeed from './NotificationsFeed';
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
@@ -96,6 +97,10 @@ export default class Posts extends Component {
   }
 
   render() {
+    // if (this.state.feed === 'notifications') {
+    //   return <NotificationsFeed />;
+    // }
+
     let feedSubtext = null;
 
     const flatPostsArray = Object.entries(this.state.rawPosts).map(

@@ -227,7 +227,6 @@ const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
     post &&
     post.childNodes &&
     post.childNodes.map((replyPost) => {
-      const isMyPost = user.uid === replyPost.userId;
       return (
         <ReplyPostCard
           key={replyPost.id}
@@ -298,7 +297,6 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
-
   return (
     <>
       <PostHeader

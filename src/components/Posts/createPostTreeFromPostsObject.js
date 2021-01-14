@@ -4,7 +4,7 @@ export const createSortedArrayFromObjectWithIdFromKey = (
 ) => {
   return Object.entries(posts)
     .map(([key, value]) => ({ id: key, ...value }))
-    .sort((a, b) => a[sortKey] - b[sortKey]);
+    .sort((a, b) => b[sortKey] - a[sortKey]);
 };
 
 export const createTreeFromSortedArray = (array, link = 'parentId') => {
