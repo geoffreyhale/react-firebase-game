@@ -85,7 +85,8 @@ const PostTags = ({ post }) => {
   );
 };
 
-const ReplyForm = ({ userPhotoURL, replyToPostId }) => {
+const ReplyForm = ({ replyToPostId }) => {
+  const { user } = useContext(AppContext);
   return (
     <div
       className="mt-3"
@@ -96,8 +97,8 @@ const ReplyForm = ({ userPhotoURL, replyToPostId }) => {
       }}
     >
       <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
-        {userPhotoURL ? (
-          <img src={userPhotoURL} alt="user" style={{ height: 38 }} />
+        {user.photoURL ? (
+          <img src={user.photoURL} alt="user" style={{ height: 38 }} />
         ) : null}
       </div>
       <div style={{ flexGrow: 1 }}>
@@ -235,7 +236,7 @@ const ReplyPostCard = ({ hackDoNotAddPostToMessageLinkURL, post }) => {
             hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
           />
         </div>
-        <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
+        <ReplyForm replyToPostId={post.id} />
       </Card.Body>
     </Card>
   );
@@ -319,7 +320,7 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
           hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
         />
       </div>
-      <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
+      <ReplyForm replyToPostId={post.id} />
     </>
   );
 };
