@@ -5,9 +5,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
-import PostTags from './PostTags';
 import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
+import Tag from './Tag';
 
 const postsRef = () => firebase.database().ref('posts');
 
@@ -44,6 +44,45 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
       userId: myUserId,
     })
     .then(successCallback());
+};
+
+const PostTags = ({ post }) => {
+  const { user } = useContext(AppContext);
+  const myUserId = user.uid;
+  const { tags } = post;
+
+  const placeholder =
+    tags && Object.keys(tags).length > 0
+      ? 'add tag'
+      : 'this post needs tags help add tags';
+
+  return (
+    <div>
+      {tags &&
+        Object.values(tags).map((tag) => {
+          const tagUniqueKey = post.id + tag.userId + tag.type + Math.random();
+          if (tag.userId === myUserId) {
+            return (
+              <Tag variant="info" key={tagUniqueKey}>
+                {tag.type}
+              </Tag>
+            );
+          }
+          return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
+        })}
+      <div className={'mt-1'}>
+        <NewPostForm
+          onSubmit={(content, replyToId, successCallback, userId) => {
+            addTag(post.id, content, successCallback, userId);
+          }}
+          placeholder={placeholder}
+          hideSubmitButton={true}
+          small={true}
+          characterLimit={25}
+        />
+      </div>
+    </div>
+  );
 };
 
 const ReplyForm = ({ userPhotoURL, replyToPostId }) => {
@@ -144,14 +183,39 @@ const PostContent = ({ children, small }) => {
   );
 };
 
+const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
+  const { user } = useContext(AppContext);
+  const myUserId = user.uid;
+  return (
+    post &&
+    post.childNodes &&
+    post.childNodes.map((replyPost) => {
+      const isMyPost = myUserId === replyPost.userId;
+      return (
+        <ReplyPostCard
+          key={replyPost.id}
+          showActions={isMyPost}
+          postActionsDropdown={
+            <PostActionsDropdown
+              deletePost={() => deletePost({ postId: replyPost.id })}
+            />
+          }
+          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+          post={replyPost}
+        />
+      );
+    }, this)
+  );
+};
+
 const ReplyPostCard = ({
   showActions,
   postActionsDropdown,
-  myUserId,
   hackDoNotAddPostToMessageLinkURL,
   post,
 }) => {
   const { user } = useContext(AppContext);
+  const myUserId = user.uid;
   return (
     <Card className="mt-1">
       <Card.Body style={{ padding: '0.75rem' }}>
@@ -167,37 +231,13 @@ const ReplyPostCard = ({
         />
         <PostContent>{post.content}</PostContent>
         <div className="mt-2">
-          <PostTags
-            tags={post.tags}
-            myUserId={myUserId}
-            addTag={(content, successCallback) =>
-              addTag(post.id, content, successCallback, myUserId)
-            }
-            postId={post.id}
-          />
+          <PostTags post={post} />
         </div>
         <div className="mt-3">
-          {post &&
-            post.childNodes &&
-            post.childNodes.map((replyPost) => {
-              const isMyPost = myUserId === replyPost.userId;
-              return (
-                <ReplyPostCard
-                  key={replyPost.id}
-                  showActions={isMyPost}
-                  postActionsDropdown={
-                    <PostActionsDropdown
-                      deletePost={() => deletePost({ postId: replyPost.id })}
-                    />
-                  }
-                  myUserId={myUserId}
-                  hackDoNotAddPostToMessageLinkURL={
-                    hackDoNotAddPostToMessageLinkURL
-                  }
-                  post={replyPost}
-                />
-              );
-            }, this)}
+          <Replies
+            post={post}
+            hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+          />
         </div>
         <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
       </Card.Body>
@@ -266,7 +306,6 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
-  console.log(post);
 
   return (
     <>
@@ -285,37 +324,13 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
       />
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
-        <PostTags
-          tags={post.tags}
-          myUserId={myUserId}
-          addTag={(content, successCallback) =>
-            addTag(post.id, content, successCallback, myUserId)
-          }
-          postId={post.id}
-        />
+        <PostTags post={post} />
       </div>
       <div className="mt-3">
-        {post &&
-          post.childNodes &&
-          post.childNodes.map((replyPost) => {
-            const isMyPost = myUserId === replyPost.userId;
-            return (
-              <ReplyPostCard
-                key={replyPost.id}
-                showActions={isMyPost}
-                postActionsDropdown={
-                  <PostActionsDropdown
-                    deletePost={() => deletePost({ postId: replyPost.id })}
-                  />
-                }
-                myUserId={myUserId}
-                hackDoNotAddPostToMessageLinkURL={
-                  hackDoNotAddPostToMessageLinkURL
-                }
-                post={replyPost}
-              />
-            );
-          }, this)}
+        <Replies
+          post={post}
+          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+        />
       </div>
       <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
     </>
