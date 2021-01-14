@@ -53,6 +53,8 @@ export default class PostPage extends React.Component {
                   : [];
                 this.setState({ posts: postsArray });
               });
+
+            // TODO loop queries for reply posts of reply posts etc until no more new posts returning
           });
         });
 

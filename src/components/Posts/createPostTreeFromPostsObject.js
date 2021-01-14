@@ -21,10 +21,10 @@ export const createTreeFromSortedArray = (array, link = 'parentId') => {
   return dataTree;
 };
 
-const createPostIdTreeFromPostsObject = (postsObject) =>
+const createPostTreeFromPostsObject = (postsObject) =>
   createTreeFromSortedArray(
     createSortedArrayFromObjectWithIdFromKey(postsObject),
     'replyToId'
   );
 
-export default createPostIdTreeFromPostsObject;
+export default createPostTreeFromPostsObject;

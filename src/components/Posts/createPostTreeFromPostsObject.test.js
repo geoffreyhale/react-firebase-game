@@ -1,7 +1,7 @@
-import createPostIdTreeFromPostsObject, {
+import createPostTreeFromPostsObject, {
   createSortedArrayFromObjectWithIdFromKey,
   createTreeFromSortedArray,
-} from './createPostIdTreeFromPostsObject';
+} from './createPostTreeFromPostsObject';
 
 const posts = {
   '0006': {
@@ -79,9 +79,9 @@ describe('createTree', () => {
   });
 });
 
-describe('createPostIdTreeFromPostsObject', () => {
+describe('createPostTreeFromPostsObject', () => {
   it('works', () => {
-    expect(createPostIdTreeFromPostsObject(posts)).toEqual(
+    expect(createPostTreeFromPostsObject(posts)).toEqual(
       treeFromPostsExpectedResult
     );
   });

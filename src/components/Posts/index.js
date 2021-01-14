@@ -12,6 +12,7 @@ import Stats from './Stats';
 import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
+import createPostTreeFromPostsObject from './createPostTreeFromPostsObject';
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
@@ -234,6 +235,9 @@ export default class Posts extends Component {
       feedSubtext =
         'Threads in which someone else posted since you last clicked the yellow `mark thread as seen` button.  Click the `mark thread as seen` button to temporarily hide a thread from this feed until someone else posts something new.';
     }
+
+    // const postsTwoPointOh = createPostTreeFromPostsObject(this.state.rawPosts);
+    // console.log(postsTwoPointOh);
 
     return (
       <Row>

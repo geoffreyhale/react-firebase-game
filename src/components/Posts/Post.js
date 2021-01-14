@@ -145,41 +145,61 @@ const PostContent = ({ children, small }) => {
 };
 
 const ReplyPostCard = ({
-  userDisplayName,
   showActions,
   postActionsDropdown,
-  timestamp,
-  userPhotoURL,
-  content,
-  postTags,
   myUserId,
-  thisPostId,
   hackDoNotAddPostToMessageLinkURL,
+  post,
 }) => {
+  const { user } = useContext(AppContext);
   return (
     <Card className="mt-1">
       <Card.Body style={{ padding: '0.75rem' }}>
         <PostHeader
-          displayName={userDisplayName}
+          displayName={post.userDisplayName}
           showActions={showActions}
           postActionsDropdown={postActionsDropdown}
-          timestamp={timestamp}
-          photoURL={userPhotoURL}
+          timestamp={post.timestamp}
+          photoURL={post.userPhotoURL}
           small={true}
-          postId={thisPostId}
+          postId={post.id}
           hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
         />
-        <PostContent>{content}</PostContent>
+        <PostContent>{post.content}</PostContent>
         <div className="mt-2">
           <PostTags
-            tags={postTags}
+            tags={post.tags}
             myUserId={myUserId}
             addTag={(content, successCallback) =>
-              addTag(thisPostId, content, successCallback, myUserId)
+              addTag(post.id, content, successCallback, myUserId)
             }
-            postId={thisPostId}
+            postId={post.id}
           />
         </div>
+        <div className="mt-3">
+          {post &&
+            post.childNodes &&
+            post.childNodes.map((replyPost) => {
+              const isMyPost = myUserId === replyPost.userId;
+              return (
+                <ReplyPostCard
+                  key={replyPost.id}
+                  showActions={isMyPost}
+                  postActionsDropdown={
+                    <PostActionsDropdown
+                      deletePost={() => deletePost({ postId: replyPost.id })}
+                    />
+                  }
+                  myUserId={myUserId}
+                  hackDoNotAddPostToMessageLinkURL={
+                    hackDoNotAddPostToMessageLinkURL
+                  }
+                  post={replyPost}
+                />
+              );
+            }, this)}
+        </div>
+        <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
       </Card.Body>
     </Card>
   );
@@ -246,6 +266,7 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
+  console.log(post);
 
   return (
     <>
@@ -281,32 +302,22 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
             return (
               <ReplyPostCard
                 key={replyPost.id}
-                userDisplayName={replyPost.userDisplayName}
                 showActions={isMyPost}
                 postActionsDropdown={
                   <PostActionsDropdown
                     deletePost={() => deletePost({ postId: replyPost.id })}
                   />
                 }
-                timestamp={replyPost.timestamp}
-                userPhotoURL={replyPost.userPhotoURL}
-                content={replyPost.content}
-                postTags={replyPost.tags}
                 myUserId={myUserId}
-                thisPostId={replyPost.id}
                 hackDoNotAddPostToMessageLinkURL={
                   hackDoNotAddPostToMessageLinkURL
                 }
+                post={replyPost}
               />
             );
           }, this)}
       </div>
-      {
-        // this is a dirty temp hack to avoid reply posts to reply posts, which are not currently handled
-        post.replyToId ? null : (
-          <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
-        )
-      }
+      <ReplyForm userPhotoURL={user.photoURL} replyToPostId={post.id} />
     </>
   );
 };
