@@ -48,7 +48,6 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
 
 const PostTags = ({ post }) => {
   const { user } = useContext(AppContext);
-  const myUserId = user.uid;
   const { tags } = post;
 
   const placeholder =
@@ -61,7 +60,7 @@ const PostTags = ({ post }) => {
       {tags &&
         Object.values(tags).map((tag) => {
           const tagUniqueKey = post.id + tag.userId + tag.type + Math.random();
-          if (tag.userId === myUserId) {
+          if (tag.userId === user.uid) {
             return (
               <Tag variant="info" key={tagUniqueKey}>
                 {tag.type}
@@ -135,12 +134,11 @@ export const PostHeader = ({
   hideActionsAndTimestamp,
 }) => {
   const { user } = useContext(AppContext);
-  const myUserId = user.uid;
   const displayName = post.userDisplayName;
   const timestamp = post.timestamp;
   const photoURL = post.userPhotoURL;
   const postId = post.id;
-  const isMyPost = myUserId === post.userId;
+  const isMyPost = user.uid === post.userId;
   const showActions = isMyPost;
 
   return (
@@ -207,12 +205,11 @@ const PostContent = ({ children, small }) => {
 
 const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   const { user } = useContext(AppContext);
-  const myUserId = user.uid;
   return (
     post &&
     post.childNodes &&
     post.childNodes.map((replyPost) => {
-      const isMyPost = myUserId === replyPost.userId;
+      const isMyPost = user.uid === replyPost.userId;
       return (
         <ReplyPostCard
           key={replyPost.id}

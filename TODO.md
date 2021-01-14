@@ -8,7 +8,6 @@
 
 2021-01-12
 
-- cleanup instances of myUserId
 - clean out Posts index
 - do not query all posts
 - change context user to currentUser?
