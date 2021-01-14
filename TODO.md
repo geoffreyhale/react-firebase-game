@@ -9,6 +9,7 @@
 2021-01-14
 
 - fix post page doesn't include full tree
+- fix double render
 
 2021-01-12
 

@@ -47,14 +47,13 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
 };
 
 const PostTags = ({ post }) => {
+  const [formCollapsed, setFormCollapsed] = useState(true);
   const { user } = useContext(AppContext);
   const { tags } = post;
-
-  const placeholder =
-    tags && Object.keys(tags).length > 0
-      ? 'add tag'
-      : 'this post needs tags help add tags';
-
+  // const placeholder =
+  //   tags && Object.keys(tags).length > 0
+  //     ? 'add tag'
+  //     : 'this post needs tags help add tags';
   return (
     <div>
       {tags &&
@@ -69,16 +68,29 @@ const PostTags = ({ post }) => {
           }
           return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
         })}
-      <div className={'mt-1'}>
-        <NewPostForm
-          onSubmit={(content, replyToId, successCallback, userId) => {
-            addTag(post.id, content, successCallback, userId);
-          }}
-          placeholder={placeholder}
-          hideSubmitButton={true}
-          small={true}
-          characterLimit={25}
-        />
+      <div>
+        {formCollapsed ? (
+          <>
+            <hr style={{ margin: '0.25rem 0' }} />
+            <small
+              onClick={() => setFormCollapsed(false)}
+              style={{ fontWeight: 600, cursor: 'pointer' }}
+              className="text-muted"
+            >
+              Add Tags
+            </small>
+          </>
+        ) : (
+          <NewPostForm
+            onSubmit={(content, replyToId, successCallback, userId) => {
+              addTag(post.id, content, successCallback, userId);
+            }}
+            placeholder={'submit tags one at a time'}
+            hideSubmitButton={true}
+            small={true}
+            characterLimit={25}
+          />
+        )}
       </div>
     </div>
   );
