@@ -49,6 +49,7 @@ export default class NewPostForm extends React.Component {
             placeholder={this.props.placeholder || 'How are you?'}
             value={this.state.content}
             onChange={this.handleChange}
+            autoFocus={this.props.autoFocus}
           />
         ) : (
           <Form.Control
@@ -57,7 +58,7 @@ export default class NewPostForm extends React.Component {
             value={this.state.content}
             onChange={this.handleChange}
             size={this.props.small ? 'sm' : null}
-            autoFocus
+            autoFocus={this.props.autoFocus}
           />
         )}
         {!this.props.hideSubmitButton && (

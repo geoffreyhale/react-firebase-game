@@ -56,18 +56,22 @@ const PostTags = ({ post }) => {
   //     : 'this post needs tags help add tags';
   return (
     <div>
-      {tags &&
-        Object.values(tags).map((tag) => {
-          const tagUniqueKey = post.id + tag.userId + tag.type + Math.random();
-          if (tag.userId === user.uid) {
-            return (
-              <Tag variant="info" key={tagUniqueKey}>
-                {tag.type}
-              </Tag>
-            );
-          }
-          return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
-        })}
+      {tags && (
+        <div className="mb-1">
+          {Object.values(tags).map((tag) => {
+            const tagUniqueKey =
+              post.id + tag.userId + tag.type + Math.random();
+            if (tag.userId === user.uid) {
+              return (
+                <Tag variant="info" key={tagUniqueKey}>
+                  {tag.type}
+                </Tag>
+              );
+            }
+            return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
+          })}
+        </div>
+      )}
       <div>
         {formCollapsed ? (
           <>
@@ -89,6 +93,7 @@ const PostTags = ({ post }) => {
             hideSubmitButton={true}
             small={true}
             characterLimit={25}
+            autoFocus={true}
           />
         )}
       </div>
@@ -96,7 +101,7 @@ const PostTags = ({ post }) => {
   );
 };
 
-const ReplyForm = ({ replyToPostId }) => {
+const ReplyForm = ({ replyToPostId, autoFocus }) => {
   const { user } = useContext(AppContext);
   return (
     <Card className="mt-1">
@@ -120,6 +125,7 @@ const ReplyForm = ({ replyToPostId }) => {
               placeholder="Write a reply..."
               replyToId={replyToPostId}
               multiline={true}
+              autoFocus={autoFocus}
             />
           </div>
         </div>
@@ -288,6 +294,7 @@ export class SmartPost extends React.Component {
 }
 
 const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
+  const [replyFormCollapsed, setReplyFormCollapsed] = useState(small);
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
@@ -309,7 +316,17 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
           hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
         />
       </div>
-      <ReplyForm replyToPostId={post.id} />
+      {replyFormCollapsed ? (
+        <small
+          onClick={() => setReplyFormCollapsed(false)}
+          style={{ fontWeight: 600, cursor: 'pointer' }}
+          className="text-muted"
+        >
+          Reply
+        </small>
+      ) : (
+        <ReplyForm replyToPostId={post.id} autoFocus={small} />
+      )}
     </>
   );
 };
