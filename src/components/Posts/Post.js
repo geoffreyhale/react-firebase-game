@@ -215,31 +215,6 @@ const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   );
 };
 
-const ReplyPostCard = ({ hackDoNotAddPostToMessageLinkURL, post }) => {
-  return (
-    <Card className="mt-1">
-      <Card.Body style={{ padding: '0.75rem' }}>
-        <PostHeader
-          small={true}
-          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-          post={post}
-        />
-        <PostContent>{post.content}</PostContent>
-        <div className="mt-2">
-          <PostTags post={post} />
-        </div>
-        <div className="mt-3">
-          <Replies
-            post={post}
-            hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-          />
-        </div>
-        <ReplyForm replyToPostId={post.id} />
-      </Card.Body>
-    </Card>
-  );
-};
-
 export class SmartPost extends React.Component {
   constructor() {
     super();
@@ -294,7 +269,7 @@ export class SmartPost extends React.Component {
   }
 }
 
-const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
+const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
@@ -304,6 +279,7 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
       <PostHeader
         hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
         post={post}
+        small={small}
       />
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
@@ -321,3 +297,17 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
 };
 
 export default Post;
+
+const ReplyPostCard = ({ hackDoNotAddPostToMessageLinkURL, post }) => {
+  return (
+    <Card className="mt-1">
+      <Card.Body>
+        <Post
+          post={post}
+          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+          small={true}
+        />
+      </Card.Body>
+    </Card>
+  );
+};
