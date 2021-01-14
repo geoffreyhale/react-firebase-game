@@ -124,37 +124,49 @@ const PostActionsDropdown = ({ deletePost }) => (
 );
 
 export const PostHeader = ({
-  displayName,
-  showActions,
-  postActionsDropdown,
-  timestamp,
-  photoURL,
   small,
-  postId,
   hackDoNotAddPostToMessageLinkURL,
-}) => (
-  <div style={{ fontSize: small ? '85%' : null }}>
-    <div className="float-left mr-2">
-      {photoURL ? (
-        <img src={photoURL} alt="user" style={{ height: small ? 38 : 48 }} />
-      ) : null}
-    </div>
-    <>
-      <div>
-        <strong>{displayName}</strong>
-        <div className="float-right">
-          {showActions ? postActionsDropdown : null}
+  post,
+}) => {
+  const { user } = useContext(AppContext);
+  const myUserId = user.uid;
+  const displayName = post.userDisplayName;
+  const timestamp = post.timestamp;
+  const photoURL = post.userPhotoURL;
+  const postId = post.id;
+  const isMyPost = myUserId === post.userId;
+  const showActions = isMyPost;
+
+  return (
+    <div style={{ fontSize: small ? '85%' : null }}>
+      <div className="float-left mr-2">
+        {photoURL ? (
+          <img src={photoURL} alt="user" style={{ height: small ? 38 : 48 }} />
+        ) : null}
+      </div>
+      <>
+        <div>
+          <strong>{displayName}</strong>
+          <div className="float-right">
+            {showActions ? (
+              <PostActionsDropdown
+                deletePost={() => deletePost({ postId: post.id })}
+              />
+            ) : null}
+          </div>
         </div>
-      </div>
-      <div className="small text-muted">
-        <Link to={hackDoNotAddPostToMessageLinkURL ? postId : 'post/' + postId}>
-          {friendlyTimestamp(timestamp)}
-        </Link>
-      </div>
-    </>
-    <div style={{ clear: 'both' }}></div>
-  </div>
-);
+        <div className="small text-muted">
+          <Link
+            to={hackDoNotAddPostToMessageLinkURL ? postId : 'post/' + postId}
+          >
+            {friendlyTimestamp(timestamp)}
+          </Link>
+        </div>
+      </>
+      <div style={{ clear: 'both' }}></div>
+    </div>
+  );
+};
 
 const PostContent = ({ children, small }) => {
   const startCollapsed = typeof children === 'string' && children.length > 1000;
@@ -194,12 +206,6 @@ const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
       return (
         <ReplyPostCard
           key={replyPost.id}
-          showActions={isMyPost}
-          postActionsDropdown={
-            <PostActionsDropdown
-              deletePost={() => deletePost({ postId: replyPost.id })}
-            />
-          }
           hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
           post={replyPost}
         />
@@ -208,26 +214,16 @@ const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   );
 };
 
-const ReplyPostCard = ({
-  showActions,
-  postActionsDropdown,
-  hackDoNotAddPostToMessageLinkURL,
-  post,
-}) => {
+const ReplyPostCard = ({ hackDoNotAddPostToMessageLinkURL, post }) => {
   const { user } = useContext(AppContext);
   const myUserId = user.uid;
   return (
     <Card className="mt-1">
       <Card.Body style={{ padding: '0.75rem' }}>
         <PostHeader
-          displayName={post.userDisplayName}
-          showActions={showActions}
-          postActionsDropdown={postActionsDropdown}
-          timestamp={post.timestamp}
-          photoURL={post.userPhotoURL}
           small={true}
-          postId={post.id}
           hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+          post={post}
         />
         <PostContent>{post.content}</PostContent>
         <div className="mt-2">
@@ -310,17 +306,8 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
   return (
     <>
       <PostHeader
-        displayName={post.userDisplayName}
-        showActions={isMyPost}
-        postActionsDropdown={
-          <PostActionsDropdown
-            deletePost={() => deletePost({ postId: post.id })}
-          />
-        }
-        timestamp={post.timestamp}
-        photoURL={post.userPhotoURL}
-        postId={post.id}
         hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+        post={post}
       />
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
