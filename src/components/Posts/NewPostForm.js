@@ -57,6 +57,7 @@ export default class NewPostForm extends React.Component {
             value={this.state.content}
             onChange={this.handleChange}
             size={this.props.small ? 'sm' : null}
+            autoFocus
           />
         )}
         {!this.props.hideSubmitButton && (
