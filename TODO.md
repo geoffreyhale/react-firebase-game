@@ -6,6 +6,11 @@
 
 # TODO
 
+2021-01-15
+
+- replace all user stuff with firestore
+- replace all posts stuff with firestore
+
 2021-01-14
 
 - fix post page doesn't include full tree
