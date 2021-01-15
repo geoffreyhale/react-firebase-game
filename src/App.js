@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container';
 import { Link, NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import firebase, { auth, provider } from './firebase.js';
+import firebase, { auth, db, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
@@ -137,22 +137,31 @@ class App extends Component {
         },
         () => {
           const uid = user.uid;
-          const userRef = firebase.database().ref('users/' + uid);
-          userRef.update({
+          const dbUserObject = {
             displayName: user.displayName,
             email: user.email,
             photoURL: user.photoURL,
+          };
+          // old
+          const userRef = firebase.database().ref('users/' + uid);
+          userRef.update({
+            ...dbUserObject,
             lastLogin: firebase.database.ServerValue.TIMESTAMP,
           });
-          const userIsAdmin = firebase
-            .database()
-            .ref('users/' + uid + '/joined');
-          userIsAdmin.once('value', (snapshot) => {
+          const joinedRef = firebase.database().ref('users/' + uid + '/joined');
+          joinedRef.once('value', (snapshot) => {
             const joined = snapshot.val();
             if (!joined) {
-              userIsAdmin.set(firebase.database.ServerValue.TIMESTAMP);
+              joinedRef.set(firebase.database.ServerValue.TIMESTAMP);
             }
           });
+          // new
+          db.collection('user')
+            .doc(user.uid)
+            .update({
+              ...dbUserObject,
+              lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+            });
         }
       );
     });
