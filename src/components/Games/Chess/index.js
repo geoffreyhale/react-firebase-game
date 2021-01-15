@@ -49,9 +49,18 @@ const Cell = ({ cell, children, onClick }) => {
 export default class Chess extends Component {
   constructor() {
     super();
-    this.state = { users: {}, cells: [], holding: null };
+    this.state = {
+      users: {},
+      cells: [],
+      holding: null,
+      boardViewLayout: {
+        rows: [0, 1, 2, 3, 4, 5, 6, 7],
+        cols: [0, 1, 2, 3, 4, 5, 6, 7],
+      },
+    };
     this.handleClickCell = this.handleClickCell.bind(this);
     this.reset = this.reset.bind(this);
+    this.switchSides = this.switchSides.bind(this);
   }
 
   static contextType = AppContext;
@@ -157,6 +166,17 @@ export default class Chess extends Component {
       }
     });
   }
+  switchSides() {
+    const { rows, cols } = this.state.boardViewLayout;
+    rows.reverse();
+    cols.reverse();
+    this.setState({
+      boardViewLayout: {
+        rows: rows,
+        cols: cols,
+      },
+    });
+  }
   render() {
     return (
       <Row>
@@ -166,10 +186,10 @@ export default class Chess extends Component {
             <Card.Body>
               <table id="chess">
                 <tbody>
-                  {[0, 1, 2, 3, 4, 5, 6, 7].map((row) => {
+                  {this.state.boardViewLayout.rows.map((row) => {
                     return (
                       <tr>
-                        {[0, 1, 2, 3, 4, 5, 6, 7].map((col) => {
+                        {this.state.boardViewLayout.cols.map((col) => {
                           return (
                             <Cell
                               onClick={() => {
@@ -191,7 +211,10 @@ export default class Chess extends Component {
               </table>
             </Card.Body>
           </Card>
-          <Button onClick={this.reset}>Reset</Button>
+          <Button onClick={this.reset} variant={'danger'}>
+            Reset
+          </Button>
+          <Button onClick={this.switchSides}>Switch Sides</Button>
           <div>{this.state.holding}</div>
         </Col>
         <Col></Col>
