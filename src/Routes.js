@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import Scorekeeper from './components/Scorekeeper';
 import IncrementalClickerGame from './components/Games/IncrementalClicker';
+import Chess from './components/Games/Chess';
 import TicTacToe from './components/Games/TicTacToe';
 import Groups from './components/Groups';
 import Post from './components/Post';
@@ -30,6 +31,9 @@ const Routes = () => {
             </Route>,
             <Route path="/tictactoe" key="/tictactoe">
               <TicTacToe />
+            </Route>,
+            <Route path="/chess" key="/chess">
+              <Chess />
             </Route>,
             <Route path="/admin" key="/admin">
               <Admin />

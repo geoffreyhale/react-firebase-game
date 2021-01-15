@@ -57,6 +57,11 @@ const AppNav = ({ admin }) => {
       <NavDropdown title="&#8943;">
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
+          <Nav.Link as={NavLink} to="/chess">
+            Chess
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/groups">
             Groups
           </Nav.Link>
