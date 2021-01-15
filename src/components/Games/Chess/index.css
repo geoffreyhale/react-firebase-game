@@ -3,6 +3,7 @@
   border: 1px lightgrey solid;
   background-color: white;
   text-align: center;
+  font-size: 40px;
 }
 #chess td.walkable {
   border: 2px grey solid;

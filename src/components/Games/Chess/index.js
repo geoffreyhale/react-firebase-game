@@ -6,17 +6,40 @@ import firebase from '../../../firebase.js';
 
 import './index.css';
 
+const pieceHash = {
+  b: '&#9821;',
+  k: '&#9818;',
+  n: '&#9822;',
+  p: '&#9823;',
+  q: '&#9819;',
+  r: '&#9820;',
+  B: '&#9815;',
+  K: '&#9812;',
+  N: '&#9816;',
+  P: '&#9817;',
+  Q: '&#9813;',
+  R: '&#9814;',
+};
+
 const Cell = ({ cell, children, onClick }) => {
   return (
     <td
       onClick={onClick}
       style={{
-        height: 32,
-        width: 32,
+        height: 64,
+        width: 64,
       }}
       className={cell && cell.walkable ? 'walkable' : null}
     >
-      {cell && cell.piece}
+      {cell && cell.piece ? (
+        pieceHash[cell.piece] ? (
+          <span
+            dangerouslySetInnerHTML={{ __html: pieceHash[cell.piece] }}
+          ></span>
+        ) : (
+          cell.piece
+        )
+      ) : null}
     </td>
   );
 };
