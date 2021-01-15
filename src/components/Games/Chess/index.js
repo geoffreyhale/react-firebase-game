@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import { AppContext } from '../../AppProvider';
 import firebase from '../../../firebase.js';
 
@@ -157,39 +159,43 @@ export default class Chess extends Component {
   }
   render() {
     return (
-      <>
-        <Card>
-          <Card.Body>
-            <table id="chess">
-              <tbody>
-                {[0, 1, 2, 3, 4, 5, 6, 7].map((row) => {
-                  return (
-                    <tr>
-                      {[0, 1, 2, 3, 4, 5, 6, 7].map((col) => {
-                        return (
-                          <Cell
-                            onClick={() => {
-                              this.handleClickCell(row, col);
-                            }}
-                            cell={
-                              this.state.cells &&
-                              this.state.cells.filter(
-                                (cell) => cell.row === row && cell.col === col
-                              )[0]
-                            }
-                          ></Cell>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </Card.Body>
-        </Card>
-        <Button onClick={this.reset}>Reset</Button>
-        <div>{this.state.holding}</div>
-      </>
+      <Row>
+        <Col></Col>
+        <Col md={8}>
+          <Card>
+            <Card.Body>
+              <table id="chess">
+                <tbody>
+                  {[0, 1, 2, 3, 4, 5, 6, 7].map((row) => {
+                    return (
+                      <tr>
+                        {[0, 1, 2, 3, 4, 5, 6, 7].map((col) => {
+                          return (
+                            <Cell
+                              onClick={() => {
+                                this.handleClickCell(row, col);
+                              }}
+                              cell={
+                                this.state.cells &&
+                                this.state.cells.filter(
+                                  (cell) => cell.row === row && cell.col === col
+                                )[0]
+                              }
+                            ></Cell>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </Card.Body>
+          </Card>
+          <Button onClick={this.reset}>Reset</Button>
+          <div>{this.state.holding}</div>
+        </Col>
+        <Col></Col>
+      </Row>
     );
   }
 }
