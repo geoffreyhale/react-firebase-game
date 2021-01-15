@@ -105,23 +105,23 @@ class App extends Component {
     this.logout = this.logout.bind(this);
   }
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      // TODO this user MAY NOT be my database user object!!
-      // ^ this could have drastic consequences if trying to add more than the one Google authorization method
-      // ^ this user object may just be the Google auth results atm
-      // ^ add another way of authenticating if you wanna keep this fun and doubly productive
-      if (user) {
-        this.setState({ user: user });
-        const userIsAdmin = firebase
-          .database()
-          .ref('users/' + user.uid + '/admin');
+    auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        const uid = authUser.uid;
+        const user = {
+          uid: uid,
+          displayName: authUser.displayName,
+          email: authUser.email,
+          photoURL: authUser.photoURL,
+        };
+        const userIsAdmin = firebase.database().ref('users/' + uid + '/admin');
         userIsAdmin.once('value', (snapshot) => {
-          this.setState({ userIsAdmin: snapshot.val() });
+          this.setState({ user: { ...user, admin: snapshot.val() } });
         });
         // TODO does this ever work?
         const userLastOnlineRef = firebase
           .database()
-          .ref('users/' + user.uid + '/lastOnline');
+          .ref('users/' + uid + '/lastOnline');
         userLastOnlineRef
           .onDisconnect()
           .set(firebase.database.ServerValue.TIMESTAMP);
@@ -131,18 +131,24 @@ class App extends Component {
   //TODO move to UserAuth
   login() {
     auth.signInWithPopup(provider).then((result) => {
-      const user = result.user;
+      const authUser = result.user;
+      const user = {
+        uid: authUser.uid,
+        displayName: authUser.displayName,
+        email: authUser.email,
+        photoURL: authUser.photoURL,
+      };
       this.setState(
         {
-          user,
+          user: user,
         },
         () => {
           updateUser({
-            uid: user.uid,
+            uid: authUser.uid,
             user: {
-              displayName: user.displayName,
-              email: user.email,
-              photoURL: user.photoURL,
+              displayName: authUser.displayName,
+              email: authUser.email,
+              photoURL: authUser.photoURL,
             },
           });
         }
@@ -187,7 +193,7 @@ class App extends Component {
                       >
                         {this.state.user ? (
                           <>
-                            <AppNav admin={this.state.userIsAdmin} />
+                            <AppNav admin={this.state.user.admin} />
                           </>
                         ) : (
                           <div>

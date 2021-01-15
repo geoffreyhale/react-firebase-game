@@ -3,43 +3,31 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import firebase, { auth } from '../../firebase.js';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
+import { AppContext } from '../AppProvider';
 
 export default class Admin extends React.Component {
   constructor() {
     super();
     this.state = {
       users: {},
-      user: {},
       sortKey: 'lastOnline',
     };
   }
+
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        firebase
-          .database()
-          .ref('users/' + user.uid)
-          .on('value', (snapshot) => {
-            this.setState(
-              {
-                user: snapshot.val(),
-              },
-              () => {
-                if (this.state.user.admin) {
-                  firebase
-                    .database()
-                    .ref('users')
-                    .on('value', (usersSnapshot) => {
-                      this.setState({
-                        users: usersSnapshot.val(),
-                      });
-                    });
-                }
-              }
-            );
+    if (this.user().admin) {
+      firebase
+        .database()
+        .ref('users')
+        .on('value', (usersSnapshot) => {
+          this.setState({
+            users: usersSnapshot.val(),
           });
-      }
-    });
+        });
+    }
   }
   sort(propertyName) {
     this.setState({
@@ -47,6 +35,10 @@ export default class Admin extends React.Component {
     });
   }
   render() {
+    if (!this.user().admin) {
+      return <>Loading or Access Denied</>;
+    }
+
     const properties = [
       // { name: 'photoURL' },
       { name: 'displayName' },
@@ -72,7 +64,7 @@ export default class Admin extends React.Component {
       }
     });
 
-    return this.state.user.admin ? (
+    return (
       <Card>
         <Card.Body>
           <Table bordered hover size="sm">
@@ -106,8 +98,6 @@ export default class Admin extends React.Component {
           </Table>
         </Card.Body>
       </Card>
-    ) : (
-      <>Loading or Access Denied</>
     );
   }
 }
