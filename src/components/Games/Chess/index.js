@@ -77,6 +77,7 @@ export default class Chess extends Component {
         });
       });
     });
+    this.setState({ holding: null });
   }
   handleClickCell(row, col) {
     this.cellsRef().once('value', (snapshot) => {
@@ -111,8 +112,16 @@ export default class Chess extends Component {
       }
 
       if (this.state.holding) {
-        if (!existingCell || existingCell.piece) {
+        if (!existingCell) {
           console.log('You can`t move here!');
+        } else if (
+          existingCell &&
+          existingCell.piece &&
+          this.state.holding &&
+          (existingCell.piece.toUpperCase() === existingCell.piece) ===
+            (this.state.holding.toUpperCase() === this.state.holding)
+        ) {
+          console.log('You can`t take your own piece');
         } else {
           this.cellsRef().child(existingCell.key).update({
             piece: this.state.holding,
