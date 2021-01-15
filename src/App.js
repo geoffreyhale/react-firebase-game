@@ -13,6 +13,7 @@ import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 import AppProvider from './components/AppProvider';
+import { updateUser } from './components/shared/db';
 
 const AppHeaderTitle = () => {
   const taglines = [
@@ -136,32 +137,14 @@ class App extends Component {
           user,
         },
         () => {
-          const uid = user.uid;
-          const dbUserObject = {
-            displayName: user.displayName,
-            email: user.email,
-            photoURL: user.photoURL,
-          };
-          // old
-          const userRef = firebase.database().ref('users/' + uid);
-          userRef.update({
-            ...dbUserObject,
-            lastLogin: firebase.database.ServerValue.TIMESTAMP,
+          updateUser({
+            uid: user.uid,
+            user: {
+              displayName: user.displayName,
+              email: user.email,
+              photoURL: user.photoURL,
+            },
           });
-          const joinedRef = firebase.database().ref('users/' + uid + '/joined');
-          joinedRef.once('value', (snapshot) => {
-            const joined = snapshot.val();
-            if (!joined) {
-              joinedRef.set(firebase.database.ServerValue.TIMESTAMP);
-            }
-          });
-          // new
-          db.collection('user')
-            .doc(user.uid)
-            .update({
-              ...dbUserObject,
-              lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-            });
         }
       );
     });
