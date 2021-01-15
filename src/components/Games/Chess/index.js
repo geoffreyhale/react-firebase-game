@@ -91,14 +91,14 @@ export default class Chess extends Component {
   reset() {
     this.cellsRef().set(null);
     const board = [
-      ['r', 'n', 'b', 'k', 'q', 'b', 'n', 'r'],
+      ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
       ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
       ['', '', '', '', '', '', '', ''],
       ['', '', '', '', '', '', '', ''],
       ['', '', '', '', '', '', '', ''],
       ['', '', '', '', '', '', '', ''],
       ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-      ['R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'],
+      ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
     ];
     board.forEach((row, i) => {
       row.forEach((cell, j) => {
