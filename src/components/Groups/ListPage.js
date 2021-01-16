@@ -21,6 +21,7 @@ export default class Groups extends Component {
   user = () => this.context.user;
 
   componentDidMount() {
+    // TODO don't do this on the user object; make a groups collection
     auth.onAuthStateChanged((user) => {
       if (user) {
         const userRef = firebase.database().ref('users/' + this.user().uid);

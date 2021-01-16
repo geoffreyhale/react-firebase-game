@@ -1,5 +1,19 @@
 import firebase, { db } from '../../firebase.js';
 
+export const getUser = (uid, callback) => {
+  db.collection('users')
+    .doc(uid)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const user = doc.data();
+        callback(user);
+      } else {
+        console.error('No such document!');
+      }
+    });
+};
+
 export const getUsers = (callback) => {
   const users = [];
   db.collection('users')

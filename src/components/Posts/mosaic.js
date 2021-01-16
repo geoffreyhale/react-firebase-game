@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
-import firebase, { auth } from '../../firebase.js';
 import { getUsers } from '../shared/db';
 
 // Fisher-Yates (aka Knuth) Shuffle

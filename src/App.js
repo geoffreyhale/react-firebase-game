@@ -13,7 +13,7 @@ import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 import AppProvider from './components/AppProvider';
-import { updateUser } from './components/shared/db';
+import { getUser, updateUser } from './components/shared/db';
 
 const AppHeaderTitle = () => {
   const taglines = [
@@ -108,9 +108,7 @@ class App extends Component {
       if (authUser) {
         const uid = authUser.uid;
 
-        const userRef = firebase.database().ref('users/' + uid);
-        userRef.once('value', (snapshot) => {
-          const dbUser = snapshot.val();
+        getUser(uid, (dbUser) => {
           const user = {
             uid: uid,
             admin: dbUser.admin,
@@ -121,6 +119,7 @@ class App extends Component {
           this.setState({ user });
         });
 
+        // TODO can do this with firestore?
         const userLastOnlineRef = firebase
           .database()
           .ref('users/' + uid + '/lastOnline');

@@ -13,7 +13,7 @@ import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
-import { getUsers } from '../shared/db';
+import { getUser, getUsers } from '../shared/db';
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">

@@ -6,7 +6,7 @@ import firebase, { auth } from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Post from '../Posts/Post';
 import postsTreeFromRawPosts from '../Posts/postsTreeFromRawPosts';
-import { getUsers } from '../shared/db';
+import { getUser, getUsers } from '../shared/db';
 
 export default class PostPage extends React.Component {
   constructor() {
@@ -32,9 +32,7 @@ export default class PostPage extends React.Component {
           this.setState({ post: post }, () => {
             const post = this.state.post;
 
-            const postUserRef = firebase.database().ref('users/' + post.userId);
-            postUserRef.once('value', (snapshot) => {
-              const postUser = snapshot.val();
+            getUser(post.userId, (postUser) => {
               post.userDisplayName = postUser.displayName;
               post.userPhotoURL = postUser.photoURL;
               this.setState({ post: post });
