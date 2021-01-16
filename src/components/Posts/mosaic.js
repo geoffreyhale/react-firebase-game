@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
 import firebase, { auth } from '../../firebase.js';
+import { getUsers } from '../shared/db';
 
 // Fisher-Yates (aka Knuth) Shuffle
 // https://stackoverflow.com/a/2450976/1438029
@@ -33,17 +34,10 @@ export default class Mosaic extends Component {
     };
   }
   componentDidMount() {
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        const usersRef = firebase.database().ref('users');
-        usersRef.once('value', (usersSnapshot) => {
-          this.setState({
-            users: shuffle(
-              Object.values(usersSnapshot.val()).map((user) => user.photoURL)
-            ),
-          });
-        });
-      }
+    getUsers((users) => {
+      this.setState({
+        users: shuffle(Object.values(users).map((user) => user.photoURL)),
+      });
     });
   }
   render() {

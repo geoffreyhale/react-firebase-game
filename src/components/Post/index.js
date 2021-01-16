@@ -6,6 +6,7 @@ import firebase, { auth } from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Post from '../Posts/Post';
 import postsTreeFromRawPosts from '../Posts/postsTreeFromRawPosts';
+import { getUsers } from '../shared/db';
 
 export default class PostPage extends React.Component {
   constructor() {
@@ -58,10 +59,7 @@ export default class PostPage extends React.Component {
           });
         });
 
-        const usersRef = firebase.database().ref('users');
-        usersRef.once('value', (usersSnapshot) => {
-          this.setState({ users: usersSnapshot.val() });
-        });
+        getUsers((users) => this.setState({ users }));
       }
     });
   }

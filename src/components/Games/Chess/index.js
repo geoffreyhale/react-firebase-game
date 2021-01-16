@@ -50,7 +50,6 @@ export default class Chess extends Component {
   constructor() {
     super();
     this.state = {
-      users: {},
       cells: [],
       holding: null,
       boardViewLayout: {
@@ -65,17 +64,11 @@ export default class Chess extends Component {
 
   static contextType = AppContext;
   user = () => this.context.user;
-  usersRef = () => firebase.database().ref('users');
   gameChessRef = () => firebase.database().ref('games/chess');
 
   cellsRef = () => firebase.database().ref(`games/chess/cells`);
 
   componentDidMount() {
-    this.usersRef().once('value', (snapshot) => {
-      this.setState({
-        users: snapshot.val(),
-      });
-    });
     this.cellsRef().on('value', (snapshot) => {
       const flatCellsArray = snapshot.val()
         ? Object.entries(snapshot.val()).map(([key, cell]) => {

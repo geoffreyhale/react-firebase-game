@@ -13,6 +13,7 @@ import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
+import { getUsers } from '../shared/db';
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
@@ -85,10 +86,10 @@ export default class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
-    const usersRef = firebase.database().ref('users');
-    usersRef.once('value', (usersSnapshot) => {
-      this.setState({ users: usersSnapshot.val() });
-
+    getUsers((users) => {
+      this.setState({
+        users,
+      });
       this.postsRef().on('value', (postsSnapshot) => {
         const posts = postsSnapshot.val();
         this.setState({ rawPosts: posts });

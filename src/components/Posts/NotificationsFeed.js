@@ -16,7 +16,7 @@ export default class NotificationsFeed extends React.Component {
 
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
-  usersRef = () => this.db().ref('users');
+  // usersRef = () => this.db().ref('users'); // TODO this is outdated; use db.js getUsers
 
   componentDidMount() {
     this.usersRef().once('value', (usersSnapshot) => {

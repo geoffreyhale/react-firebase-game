@@ -5,6 +5,9 @@ export default class Sandbox extends React.Component {
   constructor() {
     super();
     this.createExampleData = this.createExampleData.bind(this);
+    this.overwriteFirestoreDbWithFirebaseDatabaseUsersData = this.overwriteFirestoreDbWithFirebaseDatabaseUsersData.bind(
+      this
+    );
   }
 
   createExampleData() {
@@ -35,7 +38,7 @@ export default class Sandbox extends React.Component {
       });
   }
 
-  componentDidMount() {
+  overwriteFirestoreDbWithFirebaseDatabaseUsersData() {
     firebase
       .database()
       .ref('users/')
@@ -49,6 +52,10 @@ export default class Sandbox extends React.Component {
           db.collection('users').doc(user.uid).set(user);
         });
       });
+  }
+
+  componentDidMount() {
+    // this.overwriteFirestoreDbWithFirebaseDatabaseUsersData()
 
     db.collection('users')
       .get()
@@ -60,6 +67,6 @@ export default class Sandbox extends React.Component {
   }
 
   render() {
-    return 'test';
+    return 'sandbox';
   }
 }

@@ -99,7 +99,6 @@ class App extends Component {
     super();
     this.state = {
       user: null,
-      userIsAdmin: false,
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -108,17 +107,20 @@ class App extends Component {
     auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         const uid = authUser.uid;
-        const user = {
-          uid: uid,
-          displayName: authUser.displayName,
-          email: authUser.email,
-          photoURL: authUser.photoURL,
-        };
-        const userIsAdmin = firebase.database().ref('users/' + uid + '/admin');
-        userIsAdmin.once('value', (snapshot) => {
-          this.setState({ user: { ...user, admin: snapshot.val() } });
+
+        const userRef = firebase.database().ref('users/' + uid);
+        userRef.once('value', (snapshot) => {
+          const dbUser = snapshot.val();
+          const user = {
+            uid: uid,
+            admin: dbUser.admin,
+            displayName: dbUser.displayName,
+            email: dbUser.email,
+            photoURL: dbUser.photoURL,
+          };
+          this.setState({ user });
         });
-        // TODO does this ever work?
+
         const userLastOnlineRef = firebase
           .database()
           .ref('users/' + uid + '/lastOnline');

@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { AppContext } from '../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
+import { getUsers } from '../../shared/db';
 
 import './index.css';
 
@@ -70,12 +71,11 @@ export default class TicTacToe extends Component {
             mostRecent: tictactoe.mostRecent,
           });
         });
-        const usersRef = firebase.database().ref('users');
-        usersRef.once('value', (snapshot) => {
+        getUsers((users) =>
           this.setState({
-            users: snapshot.val(),
-          });
-        });
+            users,
+          })
+        );
       }
     });
   }

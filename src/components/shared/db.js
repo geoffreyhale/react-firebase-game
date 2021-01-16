@@ -1,5 +1,18 @@
 import firebase, { db } from '../../firebase.js';
 
+export const getUsers = (callback) => {
+  const users = [];
+  db.collection('users')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const user = doc.data();
+        users[user.uid] = user;
+      });
+      callback(users);
+    });
+};
+
 export const updateUser = ({ uid, user }) => {
   // old
   const userRef = firebase.database().ref('users/' + uid);

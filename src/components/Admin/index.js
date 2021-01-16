@@ -1,9 +1,10 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import firebase, { auth } from '../../firebase.js';
+import { db } from '../../firebase.js';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
+import { getUsers } from '../shared/db';
 
 export default class Admin extends React.Component {
   constructor() {
@@ -19,14 +20,11 @@ export default class Admin extends React.Component {
 
   componentDidMount() {
     if (this.user().admin) {
-      firebase
-        .database()
-        .ref('users')
-        .on('value', (usersSnapshot) => {
-          this.setState({
-            users: usersSnapshot.val(),
-          });
+      getUsers((users) => {
+        this.setState({
+          users,
         });
+      });
     }
   }
   sort(propertyName) {
@@ -40,7 +38,7 @@ export default class Admin extends React.Component {
     }
 
     const properties = [
-      // { name: 'photoURL' },
+      { name: 'uid' },
       { name: 'displayName' },
       { name: 'email' },
       { name: 'lastOnline', display: 'friendlyTimestamp' },
@@ -70,7 +68,6 @@ export default class Admin extends React.Component {
           <Table bordered hover size="sm">
             <thead>
               <tr>
-                <td key="userId"></td>
                 {properties.map((property) => (
                   <td
                     key={property.name}
@@ -82,9 +79,8 @@ export default class Admin extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {users.map(([userId, user]) => (
-                <tr key={userId}>
-                  <td key="userId">{userId}</td>
+              {users.map(([i, user]) => (
+                <tr key={i}>
                   {properties.map((property) => (
                     <td key={property.name}>
                       {property.display === 'friendlyTimestamp'
