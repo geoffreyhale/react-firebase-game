@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const TemporarilyDownForMaintainence = () => (
+  <>Site temporarily down for maintenance. Brb, friends!</>
+);
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
