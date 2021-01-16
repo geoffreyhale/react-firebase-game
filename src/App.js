@@ -151,6 +151,7 @@ class App extends Component {
               displayName: authUser.displayName,
               email: authUser.email,
               photoURL: authUser.photoURL,
+              joined: new Date(parseInt(authUser.metadata.a)),
             },
           });
         }

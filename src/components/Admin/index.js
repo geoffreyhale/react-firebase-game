@@ -28,6 +28,7 @@ export default class Admin extends React.Component {
           users[key].lastLogin = getMillisFromDifferingTypes(
             users[key].lastLogin
           );
+          users[key].joined = getMillisFromDifferingTypes(users[key].joined);
         });
         // lastOnline lives in realtime database
         getUsersLastOnline((realtimeUsers) => {
