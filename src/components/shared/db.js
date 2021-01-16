@@ -36,10 +36,5 @@ export const getUsersLastOnline = (callback) => {
 };
 
 export const updateUser = ({ uid, user }) => {
-  db.collection('users')
-    .doc(uid)
-    .update({
-      ...user,
-      lastLogin: firebase.firestore.FieldValue.serverTimestamp(), //TODO this serverTimestamp is different than the realtime database unix number
-    });
+  db.collection('users').doc(uid).update(user);
 };

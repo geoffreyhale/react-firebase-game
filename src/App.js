@@ -152,6 +152,7 @@ class App extends Component {
               email: authUser.email,
               photoURL: authUser.photoURL,
               joined: new Date(parseInt(authUser.metadata.a)),
+              lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
             },
           });
         }
