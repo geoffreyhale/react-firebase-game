@@ -119,11 +119,12 @@ class App extends Component {
           this.setState({ user });
         });
 
-        // TODO can do this with firestore?
-        const userLastOnlineRef = firebase
+        // onDisconnect is a feature of firebase realtime database
+        // this is the only valid use of the realtime database users collection atm
+        // all other user data should be handled in firebase cloud firestore
+        firebase
           .database()
-          .ref('users/' + uid + '/lastOnline');
-        userLastOnlineRef
+          .ref('users/' + uid + '/lastOnline')
           .onDisconnect()
           .set(firebase.database.ServerValue.TIMESTAMP);
       }
