@@ -27,6 +27,14 @@ export const getUsers = (callback) => {
     });
 };
 
+export const getUsersLastOnline = (callback) => {
+  const usersRef = firebase.database().ref('users');
+  usersRef.once('value', (snapshot) => {
+    const users = snapshot.val();
+    callback(users);
+  });
+};
+
 export const updateUser = ({ uid, user }) => {
   // old
   const userRef = firebase.database().ref('users/' + uid);

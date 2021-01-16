@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
-import { getUsers } from '../shared/db';
+import { getUsers, getUsersLastOnline } from '../shared/db';
 
 const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
@@ -23,13 +23,23 @@ export default class Admin extends React.Component {
   componentDidMount() {
     if (this.user().admin) {
       getUsers((users) => {
+        // firestore uses time objects instead of the old millisecond strings from realtime
         Object.keys(users).forEach((key) => {
           users[key].lastLogin = getMillisFromDifferingTypes(
             users[key].lastLogin
           );
         });
-        this.setState({
-          users,
+        // lastOnline lives in realtime database
+        getUsersLastOnline((realtimeUsers) => {
+          Object.keys(users).forEach((key) => {
+            users[key].lastOnline =
+              realtimeUsers[key] && realtimeUsers[key].lastOnline
+                ? realtimeUsers[key].lastOnline
+                : users[key].lastOnline;
+          });
+          this.setState({
+            users,
+          });
         });
       });
     }
