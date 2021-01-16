@@ -1,10 +1,12 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { db } from '../../firebase.js';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
 import { getUsers } from '../shared/db';
+
+const getMillisFromDifferingTypes = (lastLogin) =>
+  typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
 
 export default class Admin extends React.Component {
   constructor() {
@@ -21,6 +23,11 @@ export default class Admin extends React.Component {
   componentDidMount() {
     if (this.user().admin) {
       getUsers((users) => {
+        Object.keys(users).forEach((key) => {
+          users[key].lastLogin = getMillisFromDifferingTypes(
+            users[key].lastLogin
+          );
+        });
         this.setState({
           users,
         });
@@ -81,13 +88,16 @@ export default class Admin extends React.Component {
             <tbody>
               {users.map(([i, user]) => (
                 <tr key={i}>
-                  {properties.map((property) => (
-                    <td key={property.name}>
-                      {property.display === 'friendlyTimestamp'
-                        ? friendlyTimestamp(user[property.name])
-                        : user[property.name]}
-                    </td>
-                  ))}
+                  {properties.map((property) => {
+                    const value = user[property.name];
+                    return (
+                      <td key={property.name}>
+                        {property.display === 'friendlyTimestamp'
+                          ? friendlyTimestamp(value)
+                          : value}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>
