@@ -9,6 +9,7 @@ import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 import Tag from './Tag';
 import { createNewPost, deletePost } from '../shared/db';
+import { Upvote } from './PostVote';
 
 const addTag = (postId, tagContent, successCallback, myUserId) => {
   const postRef = firebase.database().ref('posts/' + postId);
@@ -285,6 +286,7 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
         <PostTags post={post} />
+        <Upvote postId={post.id} />
         {replyFormCollapsed ? (
           <small
             onClick={() => setReplyFormCollapsed(false)}

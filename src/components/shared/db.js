@@ -4,6 +4,10 @@ const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');
 const notificationsRef = ({ userId }) =>
   firebase.database().ref('notifications/' + userId);
+const upvoteUserRef = ({ postId, userId }) =>
+  firebase.database().ref('posts/' + postId + '/upvote/' + userId);
+const upvoteRef = ({ postId }) =>
+  firebase.database().ref('posts/' + postId + '/upvote');
 
 // post w id postId received a reply
 // add a notification for the user who authored the post
@@ -102,4 +106,33 @@ export const getUsersLastOnline = (callback) => {
 
 export const updateUser = ({ uid, user }) => {
   db.collection('users').doc(uid).update(user);
+};
+
+export const toggleUpvote = ({ postId, userId }) => {
+  upvoteUserRef({ postId, userId })
+    .once('value')
+    .then((snapshot) => {
+      const upvoteExists = !!snapshot.val();
+      if (upvoteExists) {
+        upvoteUserRef({ postId, userId }).remove();
+      } else {
+        upvoteUserRef({ postId, userId }).set(
+          firebase.database.ServerValue.TIMESTAMP
+        );
+      }
+    });
+};
+
+export const hasMyUpvote = ({ postId, userId }, callback) => {
+  upvoteUserRef({ postId, userId }).on('value', (snapshot) => {
+    const upvoteExists = !!snapshot.val();
+    callback(upvoteExists);
+  });
+};
+
+export const upvoteCount = ({ postId }, callback) => {
+  upvoteRef({ postId }).on('value', (snapshot) => {
+    const upvotes = snapshot.val();
+    callback(upvotes ? Object.keys(upvotes).length : 0);
+  });
 };
