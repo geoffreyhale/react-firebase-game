@@ -15,13 +15,20 @@ import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import { getUser, getUsers } from '../shared/db';
 
+const FEED = Object.freeze({
+  UNSEEN: 'unseen',
+  SMART: 'smart',
+  ALL: 'all',
+  FILTER_BY_TAGS: 'postsFilterByTags',
+});
+
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
     <Nav.Item>
       <Nav.Link
-        active={currentFeed === 'unseen'}
+        active={currentFeed === FEED.UNSEEN}
         onClick={() => {
-          setFeed('unseen');
+          setFeed(FEED.UNSEEN);
           setPostsFilter([], []);
         }}
       >
@@ -30,9 +37,9 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
     </Nav.Item>
     <Nav.Item>
       <Nav.Link
-        active={currentFeed === 'smart'}
+        active={currentFeed === FEED.SMART}
         onClick={() => {
-          setFeed('smart');
+          setFeed(FEED.SMART);
           setPostsFilter([], []);
         }}
       >
@@ -41,9 +48,9 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
     </Nav.Item>
     <Nav.Item>
       <Nav.Link
-        active={currentFeed === 'all'}
+        active={currentFeed === FEED.ALL}
         onClick={() => {
-          setFeed('all');
+          setFeed(FEED.ALL);
           setPostsFilter([], []);
         }}
       >
@@ -52,9 +59,9 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
     </Nav.Item>
     <Nav.Item>
       <Nav.Link
-        active={currentFeed === 'postsFilterByTags'}
+        active={currentFeed === FEED.FILTER_BY_TAGS}
         onClick={() => {
-          setFeed('postsFilterByTags');
+          setFeed(FEED.FILTER_BY_TAGS);
           setPostsFilter(['feature request'], ['done']);
         }}
       >
@@ -70,7 +77,7 @@ export default class Posts extends Component {
     this.state = {
       rawPosts: {},
       countLowPriorityPosts: 0,
-      feed: 'unseen',
+      feed: FEED.UNSEEN,
       users: {},
       postsFilter: {
         requiredTags: [],
@@ -109,7 +116,7 @@ export default class Posts extends Component {
 
     let filteredPosts = flatPostsArray;
     switch (this.state.feed) {
-      case 'postsFilterByTags':
+      case FEED.FILTER_BY_TAGS:
         const { postsFilter } = this.state;
         // TODO tests for this
         filteredPosts = flatPostsArray
@@ -170,7 +177,7 @@ export default class Posts extends Component {
     let posts = postsTree.posts;
     const countLowPriorityPosts = postsTree.data.countLowPriorityPosts;
 
-    if (this.state.feed === 'unseen') {
+    if (this.state.feed === FEED.UNSEEN) {
       // TODO tests for this
       const threadSeedPostIdsToAllow =
         flatPostsArray &&
@@ -240,7 +247,7 @@ export default class Posts extends Component {
           <table>
             <tbody>
               {Object.entries(posts).map(([key, post]) => {
-                if (this.state.feed === 'smart' && post.lowPriority) {
+                if (this.state.feed === FEED.SMART && post.lowPriority) {
                   return null;
                 }
 
@@ -255,7 +262,7 @@ export default class Posts extends Component {
                           /> */}
                           <Post post={post} />
                         </Card.Body>
-                        {this.state.feed === 'unseen' ? (
+                        {this.state.feed === FEED.UNSEEN ? (
                           <Card.Footer>
                             <div className="float-right">
                               <MarkAsSeenButton postId={post.id} />
@@ -268,7 +275,7 @@ export default class Posts extends Component {
                   </tr>
                 );
               })}
-              {this.state.feed === 'smart' ? (
+              {this.state.feed === FEED.SMART ? (
                 <tr key={'countLowPriorityPosts'}>
                   <td>
                     <Card className="mt-2">
