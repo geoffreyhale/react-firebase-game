@@ -11,6 +11,24 @@ import Tag from './Tag';
 import { createNewPost, deletePost } from '../shared/db';
 import { Upvote } from './PostVote';
 
+const redditRed = '#fd5828';
+
+export const PostMenuBarItem = ({ active = false, children, onClick }) => {
+  return (
+    <small
+      onClick={onClick}
+      style={{
+        fontWeight: 600,
+        cursor: 'pointer',
+        color: active ? redditRed : null,
+      }}
+      className={active ? null : 'text-muted'}
+    >
+      {children}
+    </small>
+  );
+};
+
 const addTag = (postId, tagContent, successCallback, myUserId) => {
   const postRef = firebase.database().ref('posts/' + postId);
   const key = postRef.child('tags').push().key;
@@ -54,13 +72,9 @@ const PostTags = ({ post }) => {
         {formCollapsed ? (
           <>
             <hr style={{ margin: '0.25rem 0' }} />
-            <small
-              onClick={() => setFormCollapsed(false)}
-              style={{ fontWeight: 600, cursor: 'pointer' }}
-              className="text-muted"
-            >
+            <PostMenuBarItem onClick={() => setFormCollapsed(false)}>
               Add Tags
-            </small>
+            </PostMenuBarItem>
           </>
         ) : (
           <NewPostForm
@@ -286,15 +300,13 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
         <PostTags post={post} />
-        <Upvote postId={post.id} />
+        <div>
+          <Upvote postId={post.id} />
+        </div>
         {replyFormCollapsed ? (
-          <small
-            onClick={() => setReplyFormCollapsed(false)}
-            style={{ fontWeight: 600, cursor: 'pointer' }}
-            className="text-muted"
-          >
+          <PostMenuBarItem onClick={() => setReplyFormCollapsed(false)}>
             Reply
-          </small>
+          </PostMenuBarItem>
         ) : (
           <ReplyForm
             replyToPostId={post.id}

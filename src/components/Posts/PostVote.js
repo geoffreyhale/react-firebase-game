@@ -1,8 +1,7 @@
 import React from 'react';
 import { AppContext } from '../AppProvider';
 import { hasMyUpvote, upvoteCount, toggleUpvote } from '../shared/db';
-
-const redditRed = '#fd5828';
+import { PostMenuBarItem } from './Post';
 
 export class Upvote extends React.Component {
   constructor() {
@@ -38,19 +37,12 @@ export class Upvote extends React.Component {
     const userId = this.user().uid;
 
     return (
-      <div
-        style={{
-          color: this.state.hasMyUpvote ? redditRed : 'inherit',
-        }}
+      <PostMenuBarItem
+        onClick={() => toggleUpvote({ postId, userId })}
+        active={this.state.hasMyUpvote}
       >
-        <small
-          onClick={() => toggleUpvote({ postId, userId })}
-          style={{ fontWeight: 600, cursor: 'pointer' }}
-          // className="text-muted"
-        >
-          &#8593; {this.state.count}
-        </small>
-      </div>
+        &#8593; {this.state.count}
+      </PostMenuBarItem>
     );
   }
 }
