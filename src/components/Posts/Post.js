@@ -8,13 +8,7 @@ import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 import Tag from './Tag';
-import { createNewPost } from '../shared/db';
-
-const postsRef = () => firebase.database().ref('posts');
-
-const deletePost = ({ postId }) => {
-  postsRef().child(postId).remove();
-};
+import { createNewPost, deletePost } from '../shared/db';
 
 const addTag = (postId, tagContent, successCallback, myUserId) => {
   const postRef = firebase.database().ref('posts/' + postId);
