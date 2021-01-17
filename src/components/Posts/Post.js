@@ -299,7 +299,7 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
           <ReplyForm
             replyToPostId={post.id}
             autoFocus={small}
-            onSuccess={() => replyFormCollapsed(true)}
+            onSuccess={() => setReplyFormCollapsed(true)}
           />
         )}
       </div>
