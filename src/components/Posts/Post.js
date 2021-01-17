@@ -8,29 +8,12 @@ import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 import Tag from './Tag';
+import { createNewPost } from '../shared/db';
 
 const postsRef = () => firebase.database().ref('posts');
 
 const deletePost = ({ postId }) => {
   postsRef().child(postId).remove();
-};
-
-export const createNewPost = (
-  newPostContent,
-  replyToId,
-  successCallback,
-  myUserId
-) => {
-  const key = postsRef().push().key;
-  postsRef()
-    .child(key)
-    .update({
-      content: newPostContent,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-      userId: myUserId,
-      replyToId: replyToId,
-    })
-    .then(successCallback());
 };
 
 const addTag = (postId, tagContent, successCallback, myUserId) => {

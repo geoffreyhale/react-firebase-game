@@ -1,5 +1,25 @@
 import firebase, { db } from '../../firebase.js';
 
+const postsRef = () => firebase.database().ref('posts');
+
+export const createNewPost = (
+  newPostContent,
+  replyToId,
+  successCallback,
+  myUserId
+) => {
+  const key = postsRef().push().key;
+  postsRef()
+    .child(key)
+    .update({
+      content: newPostContent,
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+      userId: myUserId,
+      replyToId: replyToId,
+    })
+    .then(successCallback());
+};
+
 export const getUser = (uid, callback) => {
   db.collection('users')
     .doc(uid)

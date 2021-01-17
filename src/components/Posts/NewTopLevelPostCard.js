@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
-import { createNewPost } from './Post';
+import { createNewPost } from '../shared/db';
 
 const NewTopLevelPostCard = () => {
   const { user } = useContext(AppContext);
