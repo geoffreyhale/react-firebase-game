@@ -33,7 +33,10 @@ export default class NewPostForm extends React.Component {
           if (this.state.content === '') {
             return;
           }
-          const successCallback = () => this.setState({ content: '' });
+          const successCallback = () => {
+            this.setState({ content: '' });
+            this.props.onSuccess();
+          };
           this.props.onSubmit(
             this.state.content,
             this.props.replyToId || null,

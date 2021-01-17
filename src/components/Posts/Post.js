@@ -78,7 +78,7 @@ const PostTags = ({ post }) => {
   );
 };
 
-const ReplyForm = ({ replyToPostId, autoFocus }) => {
+const ReplyForm = ({ replyToPostId, autoFocus, onSuccess }) => {
   const { user } = useContext(AppContext);
   return (
     <Card className="mt-1">
@@ -99,6 +99,7 @@ const ReplyForm = ({ replyToPostId, autoFocus }) => {
           <div style={{ flexGrow: 1 }}>
             <NewPostForm
               onSubmit={createNewPost}
+              onSuccess={onSuccess}
               placeholder="Write a reply..."
               replyToId={replyToPostId}
               multiline={true}
@@ -293,7 +294,11 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
             Reply
           </small>
         ) : (
-          <ReplyForm replyToPostId={post.id} autoFocus={small} />
+          <ReplyForm
+            replyToPostId={post.id}
+            autoFocus={small}
+            onSuccess={() => replyFormCollapsed(true)}
+          />
         )}
       </div>
       {post.childNodes.length > 0 && (
