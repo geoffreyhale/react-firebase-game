@@ -37,21 +37,22 @@ export default class NotificationsFeed extends React.Component {
   componentDidMount() {
     this.notificationsRef().on('value', (snapshot) => {
       const notificationsObject = snapshot.val();
+      const notifications = [];
+      const postIds = [];
       if (notificationsObject) {
-        const notifications = [];
-        const postIds = [];
         Object.entries(notificationsObject).forEach(([key, value]) => {
           const postId = key;
           const count = value;
           postIds.push(postId);
           notifications.push({ postId, count });
         });
-        this.setState({
-          notifications: notifications,
-        });
-        hackCleanupNotifications(this.user().uid, postIds); // make better
       }
+      this.setState({
+        notifications: notifications,
+      });
+      postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
     });
+    // TODO removeNotification does't update the feed
   }
 
   render() {
