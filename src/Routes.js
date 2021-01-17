@@ -5,7 +5,7 @@ import IncrementalClickerGame from './components/Games/IncrementalClicker';
 import Chess from './components/Games/Chess';
 import TicTacToe from './components/Games/TicTacToe';
 import Groups from './components/Groups';
-import Post from './components/Post';
+import PostPage from './components/PostPage';
 import Posts from './components/Posts';
 import Admin from './components/Admin';
 import Sandbox from './components/Sandbox/firestore';
@@ -46,7 +46,7 @@ const Routes = () => {
             <Route
               path="/post/:postId"
               key={location.pathname}
-              render={(props) => <Post {...props} />}
+              render={(props) => <PostPage {...props} />}
             />,
           ]
         : null}

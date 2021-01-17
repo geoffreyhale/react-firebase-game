@@ -101,7 +101,6 @@ export default class Posts extends Component {
 
   static contextType = AppContext;
   user = () => this.context.user;
-
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
 
