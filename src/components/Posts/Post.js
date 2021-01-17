@@ -42,54 +42,60 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
     .then(successCallback());
 };
 
-const PostTags = ({ post }) => {
+const AddTags = ({ post }) => {
   const [formCollapsed, setFormCollapsed] = useState(true);
   const { user } = useContext(AppContext);
+
+  if (formCollapsed) {
+    return (
+      <PostMenuBarItem onClick={() => setFormCollapsed(false)}>
+        Add Tags
+      </PostMenuBarItem>
+    );
+  }
+
   const { tags } = post;
   // const placeholder =
   //   tags && Object.keys(tags).length > 0
   //     ? 'add tag'
   //     : 'this post needs tags help add tags';
+
   return (
-    <div>
-      {tags && (
-        <div className="mb-1">
-          {Object.values(tags).map((tag) => {
-            const tagUniqueKey =
-              post.id + tag.userId + tag.type + Math.random();
-            if (tag.userId === user.uid) {
-              return (
-                <Tag variant="info" key={tagUniqueKey}>
-                  {tag.type}
-                </Tag>
-              );
-            }
-            return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
-          })}
-        </div>
-      )}
-      <div>
-        {formCollapsed ? (
-          <>
-            <hr style={{ margin: '0.25rem 0' }} />
-            <PostMenuBarItem onClick={() => setFormCollapsed(false)}>
-              Add Tags
-            </PostMenuBarItem>
-          </>
-        ) : (
-          <NewPostForm
-            onSubmit={(content, replyToId, successCallback, userId) => {
-              addTag(post.id, content, successCallback, userId);
-            }}
-            placeholder={'submit tags one at a time'}
-            hideSubmitButton={true}
-            small={true}
-            characterLimit={25}
-            autoFocus={true}
-          />
-        )}
-      </div>
-    </div>
+    <NewPostForm
+      onSubmit={(content, replyToId, successCallback, userId) => {
+        addTag(post.id, content, successCallback, userId);
+      }}
+      placeholder={'submit tags one at a time'}
+      hideSubmitButton={true}
+      small={true}
+      characterLimit={25}
+      autoFocus={true}
+    />
+  );
+};
+
+const Tags = ({ post }) => {
+  const { user } = useContext(AppContext);
+  const { tags } = post;
+
+  if (!tags || tags.length === 0) {
+    return null;
+  }
+
+  return (
+    <>
+      {Object.values(tags).map((tag) => {
+        const tagUniqueKey = post.id + tag.userId + tag.type + Math.random();
+        if (tag.userId === user.uid) {
+          return (
+            <Tag variant="info" key={tagUniqueKey}>
+              {tag.type}
+            </Tag>
+          );
+        }
+        return <Tag key={tagUniqueKey}>{tag.type}</Tag>;
+      })}
+    </>
   );
 };
 
@@ -299,7 +305,11 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
       />
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
-        <PostTags post={post} />
+        <div className="mb-1">
+          <Tags post={post} />
+        </div>
+        {/* <hr style={{ margin: '0.25rem 0' }} /> */}
+        <AddTags post={post} />
         <div>
           <Upvote postId={post.id} />
         </div>
