@@ -293,7 +293,7 @@ export class SmartPost extends React.Component {
 }
 
 const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
-  const [replyFormCollapsed, setReplyFormCollapsed] = useState(small);
+  const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
@@ -307,23 +307,25 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
         <PostTags post={post} />
+        {replyFormCollapsed ? (
+          <small
+            onClick={() => setReplyFormCollapsed(false)}
+            style={{ fontWeight: 600, cursor: 'pointer' }}
+            className="text-muted"
+          >
+            Reply
+          </small>
+        ) : (
+          <ReplyForm replyToPostId={post.id} autoFocus={small} />
+        )}
       </div>
-      <div className="mt-3">
-        <Replies
-          post={post}
-          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-        />
-      </div>
-      {replyFormCollapsed ? (
-        <small
-          onClick={() => setReplyFormCollapsed(false)}
-          style={{ fontWeight: 600, cursor: 'pointer' }}
-          className="text-muted"
-        >
-          Reply
-        </small>
-      ) : (
-        <ReplyForm replyToPostId={post.id} autoFocus={small} />
+      {post.childNodes.length > 0 && (
+        <div className="mt-3">
+          <Replies
+            post={post}
+            hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
+          />
+        </div>
       )}
     </>
   );
