@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
+import { removeNotification } from '../shared/db';
 
 const hackCleanupNotifications = (userId, postIds) => {
   const notificationsRef = firebase.database().ref('notifications/' + userId);
@@ -65,6 +66,18 @@ export default class NotificationsFeed extends React.Component {
                     {notification.count} replies to your post{' '}
                     {notification.postId}
                   </Link>
+                  <a
+                    className={'ml-2'}
+                    style={{ color: 'red' }}
+                    onClick={() =>
+                      removeNotification({
+                        postId: notification.postId,
+                        myUserId: this.user().uid,
+                      })
+                    }
+                  >
+                    remove
+                  </a>
                 </div>
               ))
             : 'None'}

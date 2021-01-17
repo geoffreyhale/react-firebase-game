@@ -7,7 +7,7 @@ const notificationsRef = ({ userId }) =>
 
 // post w id postId received a reply
 // add a notification for the user who authored the post
-const addNotifications = ({ postId, myUserId }) => {
+const incrementNotifications = ({ postId, myUserId }) => {
   postRef(postId)
     .once('value')
     .then((snapshot) => {
@@ -37,6 +37,10 @@ const decrementNotifications = ({ postId, myUserId }) => {
     });
 };
 
+export const removeNotification = ({ postId, myUserId }) => {
+  notificationsRef({ userId: myUserId }).child(postId).remove();
+};
+
 export const createNewPost = (
   newPostContent,
   replyToId,
@@ -52,7 +56,7 @@ export const createNewPost = (
       userId: myUserId,
       replyToId: replyToId,
     })
-    .then(replyToId && addNotifications({ postId: replyToId, myUserId }))
+    .then(replyToId && incrementNotifications({ postId: replyToId, myUserId }))
     .then(successCallback());
 };
 
