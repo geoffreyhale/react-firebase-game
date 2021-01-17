@@ -49,7 +49,7 @@ const AddTags = ({ post }) => {
   if (formCollapsed) {
     return (
       <PostMenuBarItem onClick={() => setFormCollapsed(false)}>
-        Add Tags
+        Tag
       </PostMenuBarItem>
     );
   }
@@ -309,15 +309,20 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
           <Tags post={post} />
         </div>
         {/* <hr style={{ margin: '0.25rem 0' }} /> */}
-        <AddTags post={post} />
         <div>
           <Upvote postId={post.id} />
+          <span className="ml-2">
+            <AddTags post={post} />
+          </span>
+          {replyFormCollapsed && (
+            <span className="ml-2">
+              <PostMenuBarItem onClick={() => setReplyFormCollapsed(false)}>
+                Reply
+              </PostMenuBarItem>
+            </span>
+          )}
         </div>
-        {replyFormCollapsed ? (
-          <PostMenuBarItem onClick={() => setReplyFormCollapsed(false)}>
-            Reply
-          </PostMenuBarItem>
-        ) : (
+        {!replyFormCollapsed && (
           <ReplyForm
             replyToPostId={post.id}
             autoFocus={small}
