@@ -15,6 +15,7 @@ export default class PostPage extends React.Component {
       post: null,
       posts: [],
       users: null,
+      message: 'Loading...',
     };
   }
 
@@ -28,6 +29,10 @@ export default class PostPage extends React.Component {
         const postRef = firebase.database().ref('posts/' + postId);
         postRef.once('value', (snapshot) => {
           const post = snapshot.val();
+          if (!post) {
+            this.setState({ message: 'Post does not exist.' });
+            return;
+          }
           post.id = postId;
           this.setState({ post: post }, () => {
             const post = this.state.post;
@@ -66,7 +71,7 @@ export default class PostPage extends React.Component {
     const { post, posts, users } = this.state;
 
     if (!post || !users) {
-      return <>Loading</>;
+      return <>{this.state.message}</>;
     }
 
     const flatPostsArray = posts;
