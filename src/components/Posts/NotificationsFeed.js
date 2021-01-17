@@ -24,7 +24,7 @@ const hackCleanupNotifications = (userId, postIds) => {
 export default class NotificationsFeed extends React.Component {
   constructor() {
     super();
-    this.state = { postIds: [] };
+    this.state = { notifications: [] };
   }
 
   static contextType = AppContext;
@@ -34,16 +34,23 @@ export default class NotificationsFeed extends React.Component {
   notificationsRef = () => this.db().ref('notifications/' + this.user().uid);
 
   componentDidMount() {
-    this.notificationsRef()
-      .once('value') // use .on
-      .then((snapshot) => {
-        const notificationsObject = snapshot.val();
-        const postIds = notificationsObject && Object.keys(notificationsObject);
+    this.notificationsRef().on('value', (snapshot) => {
+      const notificationsObject = snapshot.val();
+      if (notificationsObject) {
+        const notifications = [];
+        const postIds = [];
+        Object.entries(notificationsObject).forEach(([key, value]) => {
+          const postId = key;
+          const count = value;
+          postIds.push(postId);
+          notifications.push({ postId, count });
+        });
         this.setState({
-          postIds: postIds,
+          notifications: notifications,
         });
         hackCleanupNotifications(this.user().uid, postIds); // make better
-      });
+      }
+    });
   }
 
   render() {
@@ -51,10 +58,13 @@ export default class NotificationsFeed extends React.Component {
       <Card className="mt-4">
         <Card.Body>
           <Card.Title>Notifications</Card.Title>
-          {this.state.postIds
-            ? this.state.postIds.map((postId) => (
-                <div>
-                  <Link to={`post/${postId}`}>{postId}</Link>
+          {this.state.notifications && this.state.notifications.length > 0
+            ? this.state.notifications.map((notification) => (
+                <div key={notification.postId}>
+                  <Link to={`post/${notification.postId}`}>
+                    {notification.count} replies to your post{' '}
+                    {notification.postId}
+                  </Link>
                 </div>
               ))
             : 'None'}

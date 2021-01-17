@@ -98,10 +98,6 @@ export default class Posts extends Component {
   }
 
   render() {
-    // if (this.state.feed === 'notifications') {
-    //   return <NotificationsFeed />;
-    // }
-
     let feedSubtext = null;
 
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
@@ -219,6 +215,7 @@ export default class Posts extends Component {
       <Row>
         <Col>
           <Mosaic />
+          <NotificationsFeed />
         </Col>
         <Col sm={8} className="col-posts mt-3">
           <NewTopLevelPostCard />
