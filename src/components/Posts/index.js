@@ -14,16 +14,29 @@ import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import { getUser, getUsers } from '../shared/db';
+import PopularPostsFeed from './PopularPostsFeed';
 
 const FEED = Object.freeze({
   UNSEEN: 'unseen',
   SMART: 'smart',
   ALL: 'all',
   FILTER_BY_TAGS: 'postsFilterByTags',
+  POPULAR: 'popular',
 });
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
+    {/* <Nav.Item>
+      <Nav.Link
+        active={currentFeed === FEED.POPULAR}
+        onClick={() => {
+          setFeed(FEED.POPULAR);
+          setPostsFilter([], []);
+        }}
+      >
+        Popular
+      </Nav.Link>
+    </Nav.Item> */}
     <Nav.Item>
       <Nav.Link
         active={currentFeed === FEED.UNSEEN}
@@ -105,6 +118,10 @@ export default class Posts extends Component {
   }
 
   render() {
+    if (this.state.feed === FEED.POPULAR) {
+      return <PopularPostsFeed />;
+    }
+
     let feedSubtext = null;
 
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
