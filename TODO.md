@@ -7,7 +7,6 @@
 # TODO
 
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
-- Feature Requests should also not-show for "closed" tag, not just "done"
 - buggish: Feature Requests feed allows replies now but does't show them
 - popular feed
 - daily scorecard app w limited visibility for habits etc and accountability

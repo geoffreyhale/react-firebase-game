@@ -64,12 +64,15 @@ const getFeedFilterByTags = ({ flatPostsArray, postsFilter, myUserId }) => {
       </div>
       <div>
         Forbidden:{' '}
-        {postsFilter.forbiddenTagsByMe.map((forbiddenTagByMe) => (
-          <Tag variant="info">{forbiddenTagByMe}</Tag>
+        {postsFilter.forbiddenTagsByMe.map((forbiddenTagByMe, i) => (
+          <>
+            {i !== 0 ? ' or ' : ''}
+            <Tag variant="info">{forbiddenTagByMe}</Tag>
+          </>
         ))}
       </div>
-      'Posts tagged `feature request` that viewer did not tag `done` (for dev
-      use):'
+      'Posts tagged `feature request` that viewer did not tag `done` or `closed`
+      (for dev use):'
     </>
   );
   return [filteredPosts, feedSubtext];
@@ -126,7 +129,7 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
         active={currentFeed === FEED.FILTER_BY_TAGS}
         onClick={() => {
           setFeed(FEED.FILTER_BY_TAGS);
-          setPostsFilter(['feature request'], ['done']);
+          setPostsFilter(['feature request'], ['done', 'closed']);
         }}
       >
         Feature Requests
