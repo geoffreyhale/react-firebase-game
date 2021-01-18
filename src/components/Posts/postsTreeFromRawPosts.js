@@ -18,35 +18,14 @@ export const createDataTree = (dataset) => {
   return dataTree;
 };
 
-const shouldLowPriority = (post) => {
-  // is old
-  const duration = intervalToDuration({
-    start: new Date(post.timestamp),
-    end: new Date(),
-  });
-
-  const isOld = duration.years || duration.months || duration.days > 7;
-  if (isOld) {
-    return true;
-  }
-
-  return false;
-};
-
 //TODO write tests for this function
 const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
   const postsByTimestamp = {};
-  let countLowPriorityPosts = 0;
-
   flatPostsArray.forEach((post) => {
     post.userDisplayName =
       (users[post.userId] && users[post.userId].displayName) || 'Loading...';
     post.userPhotoURL =
       (users[post.userId] && users[post.userId].photoURL) || null;
-    if (shouldLowPriority(post)) {
-      post.lowPriority = true;
-      countLowPriorityPosts++;
-    }
 
     postsByTimestamp[post.timestamp] = post;
   });
@@ -67,7 +46,6 @@ const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
 
   return {
     posts: postsTreeReverseChronological,
-    data: { countLowPriorityPosts },
   };
 };
 

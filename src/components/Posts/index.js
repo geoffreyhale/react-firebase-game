@@ -17,7 +17,6 @@ import { getUsers } from '../shared/db';
 
 const FEED = Object.freeze({
   UNSEEN: 'unseen',
-  SMART: 'smart',
   ALL: 'all',
   FILTER_BY_TAGS: 'postsFilterByTags',
   POPULAR: 'popular',
@@ -103,17 +102,6 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
     </Nav.Item>
     <Nav.Item>
       <Nav.Link
-        active={currentFeed === FEED.SMART}
-        onClick={() => {
-          setFeed(FEED.SMART);
-          setPostsFilter([], []);
-        }}
-      >
-        Smart Feed
-      </Nav.Link>
-    </Nav.Item>
-    <Nav.Item>
-      <Nav.Link
         active={currentFeed === FEED.ALL}
         onClick={() => {
           setFeed(FEED.ALL);
@@ -142,7 +130,6 @@ export default class Posts extends Component {
     super();
     this.state = {
       rawPosts: {},
-      countLowPriorityPosts: 0,
       feed: FEED.UNSEEN,
       users: {},
       postsFilter: {
@@ -193,8 +180,7 @@ export default class Posts extends Component {
       flatPostsArray: filteredPosts,
       users: this.state.users,
     });
-    let posts = postsTree.posts;
-    const countLowPriorityPosts = postsTree.data.countLowPriorityPosts;
+    let { posts } = postsTree;
 
     if (this.state.feed === FEED.UNSEEN) {
       // TODO tests for this
@@ -278,10 +264,6 @@ export default class Posts extends Component {
           <table>
             <tbody>
               {Object.entries(posts).map(([key, post]) => {
-                if (this.state.feed === FEED.SMART && post.lowPriority) {
-                  return null;
-                }
-
                 return (
                   <tr key={post.id + post.childNodes.length}>
                     <td>
@@ -302,18 +284,6 @@ export default class Posts extends Component {
                   </tr>
                 );
               })}
-              {this.state.feed === FEED.SMART ? (
-                <tr key={'countLowPriorityPosts'}>
-                  <td>
-                    <Card className="mt-2">
-                      <Card.Body>
-                        {countLowPriorityPosts} posts were hidden because they
-                        were determined to be old.
-                      </Card.Body>
-                    </Card>
-                  </td>
-                </tr>
-              ) : null}
             </tbody>
           </table>
         </Col>
