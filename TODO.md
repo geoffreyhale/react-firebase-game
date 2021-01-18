@@ -6,6 +6,7 @@
 
 # TODO
 
+- character or word counts and maybe time to read length indicators maybe on Read More link
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
 - buggish: Feature Requests feed allows replies now but does't show them
 - daily scorecard app w limited visibility for habits etc and accountability
