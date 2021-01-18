@@ -213,7 +213,11 @@ const PostContent = ({ children, small }) => {
   return (
     <div
       className="mt-1"
-      style={{ whiteSpace: 'break-spaces', fontSize: small ? '85%' : null }}
+      style={{
+        whiteSpace: 'break-spaces',
+        wordBreak: 'break-word',
+        fontSize: small ? '85%' : null,
+      }}
     >
       {collapsed ? collapsedContent : children}
     </div>
