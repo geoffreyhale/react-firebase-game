@@ -220,7 +220,7 @@ export default class Posts extends Component {
         threadSeedPostIdsToAllow.includes(post.id)
       );
       feedSubtext =
-        'Threads in which someone else posted since you last clicked the yellow `mark thread as seen` button.  Click the `mark thread as seen` button to temporarily hide a thread from this feed until someone else posts something new.';
+        'Threads in which someone else posted since you last clicked the yellow `seen` button.  Click the `seen` button to temporarily hide a thread from this feed until someone else posts something new.';
     }
 
     if (this.state.feed === FEED.POPULAR) {

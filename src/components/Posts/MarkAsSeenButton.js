@@ -39,7 +39,7 @@ export default class MarkAsSeenButton extends React.Component {
   render() {
     return (
       <Button onClick={this.handleClick} variant="warning" size="sm">
-        Mark Thread As Seen
+        Seen
       </Button>
     );
   }
