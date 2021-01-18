@@ -13,7 +13,7 @@ import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
-import { getUser, getUsers } from '../shared/db';
+import { getUsers } from '../shared/db';
 import PopularPostsFeed from './PopularPostsFeed';
 
 const FEED = Object.freeze({
@@ -23,6 +23,57 @@ const FEED = Object.freeze({
   FILTER_BY_TAGS: 'postsFilterByTags',
   POPULAR: 'popular',
 });
+
+// TODO tests for this
+const getFeedFilterByTags = ({ flatPostsArray, postsFilter, myUserId }) => {
+  const filteredPosts = flatPostsArray
+    ? flatPostsArray.filter((post) => {
+        const hasTags = !!post.tags;
+        if (hasTags) {
+          const hasTagsRequiredByFilter = postsFilter.requiredTags.every(
+            (requiredTag) => {
+              return Object.values(post.tags).some(
+                (tag) => tag.type === requiredTag
+              );
+            }
+          );
+          const hasForbiddenTagsByMe = postsFilter.forbiddenTagsByMe.some(
+            (forbiddenTag) => {
+              return Object.values(post.tags).some(
+                (tag) => tag.type === forbiddenTag && tag.userId === myUserId
+              );
+            }
+          );
+          return hasTagsRequiredByFilter && !hasForbiddenTagsByMe;
+        }
+        return false;
+      })
+    : null;
+  const feedSubtext = (
+    <>
+      <div>Pre-programmed Tag Filter:</div>
+      <div>
+        Required:{' '}
+        {postsFilter.requiredTags.map((requiredTag) => (
+          <>
+            <Tag>{requiredTag}</Tag>
+            {' or '}
+            <Tag variant="info">{requiredTag}</Tag>
+          </>
+        ))}
+      </div>
+      <div>
+        Forbidden:{' '}
+        {postsFilter.forbiddenTagsByMe.map((forbiddenTagByMe) => (
+          <Tag variant="info">{forbiddenTagByMe}</Tag>
+        ))}
+      </div>
+      'Posts tagged `feature request` that viewer did not tag `done` (for dev
+      use):'
+    </>
+  );
+  return [filteredPosts, feedSubtext];
+};
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
@@ -131,59 +182,13 @@ export default class Posts extends Component {
     );
 
     let filteredPosts = flatPostsArray;
-    switch (this.state.feed) {
-      case FEED.FILTER_BY_TAGS:
-        const { postsFilter } = this.state;
-        // TODO tests for this
-        filteredPosts = flatPostsArray
-          ? flatPostsArray.filter((post) => {
-              const hasTags = !!post.tags;
-              if (hasTags) {
-                const hasTagsRequiredByFilter = postsFilter.requiredTags.every(
-                  (requiredTag) => {
-                    return Object.values(post.tags).some(
-                      (tag) => tag.type === requiredTag
-                    );
-                  }
-                );
-                const hasForbiddenTagsByMe = postsFilter.forbiddenTagsByMe.some(
-                  (forbiddenTag) => {
-                    return Object.values(post.tags).some(
-                      (tag) =>
-                        tag.type === forbiddenTag &&
-                        tag.userId === this.user().uid
-                    );
-                  }
-                );
-                return hasTagsRequiredByFilter && !hasForbiddenTagsByMe;
-              }
-              return false;
-            })
-          : null;
-        feedSubtext = (
-          <>
-            <div>Pre-programmed Tag Filter:</div>
-            <div>
-              Required:{' '}
-              {postsFilter.requiredTags.map((requiredTag) => (
-                <>
-                  <Tag>{requiredTag}</Tag>
-                  {' or '}
-                  <Tag variant="info">{requiredTag}</Tag>
-                </>
-              ))}
-            </div>
-            <div>
-              Forbidden:{' '}
-              {postsFilter.forbiddenTagsByMe.map((forbiddenTagByMe) => (
-                <Tag variant="info">{forbiddenTagByMe}</Tag>
-              ))}
-            </div>
-            'Posts tagged `feature request` that viewer did not tag `done` (for
-            dev use):'
-          </>
-        );
-        break;
+    if (this.state.feed === FEED.FILTER_BY_TAGS) {
+      const { postsFilter } = this.state;
+      [filteredPosts, feedSubtext] = getFeedFilterByTags({
+        flatPostsArray,
+        postsFilter,
+        myUserId: this.user().uid,
+      });
     }
 
     const postsTree = postsTreeFromRawPosts({
@@ -272,10 +277,6 @@ export default class Posts extends Component {
                     <td>
                       <Card className="mt-4">
                         <Card.Body>
-                          {/* <SmartPost
-                            postId={post.id}
-                            hackForPostChildNodes={post.childNodes}
-                          /> */}
                           <Post post={post} />
                         </Card.Body>
                         {this.state.feed === FEED.UNSEEN ? (
