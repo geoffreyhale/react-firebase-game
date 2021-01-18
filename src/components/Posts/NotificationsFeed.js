@@ -27,7 +27,6 @@ const RemoveNotificationButton = ({ postId, userId }) => {
   const { user } = useContext(AppContext);
   return (
     <a
-      className={'float-right'}
       style={{ color: 'red' }}
       onClick={() =>
         removeNotification({
@@ -45,9 +44,17 @@ const RemoveNotificationButton = ({ postId, userId }) => {
 const NotificationItem = ({ notification }) => {
   const { content, postId, userId } = notification;
   return (
-    <div key={postId + userId} className="my-3">
-      <RemoveNotificationButton postId={postId} userId={userId} />
-      <Link to={`post/${postId}`}>{content}</Link>
+    <div>
+      <hr />
+      <Link to={`post/${postId}`}>
+        <div key={postId + userId} className="my-3">
+          {content}
+        </div>
+      </Link>
+      <div style={{ clear: 'both' }} />
+      <div className={'float-right'}>
+        <RemoveNotificationButton postId={postId} userId={userId} />
+      </div>
       <div style={{ clear: 'both' }} />
     </div>
   );
