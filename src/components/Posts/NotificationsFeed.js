@@ -23,24 +23,30 @@ const hackCleanupNotifications = (userId, postIds) => {
     });
 };
 
-const NotificationItem = ({ notification }) => {
+const RemoveNotificationButton = ({ postId, userId }) => {
   const { user } = useContext(AppContext);
+  return (
+    <a
+      className={'float-right'}
+      style={{ color: 'red' }}
+      onClick={() =>
+        removeNotification({
+          postId: postId,
+          myUserId: user.uid,
+          userId: userId,
+        })
+      }
+    >
+      Remove
+    </a>
+  );
+};
+
+const NotificationItem = ({ notification }) => {
   const { content, postId, userId } = notification;
   return (
     <div key={postId + userId} className="my-3">
-      <a
-        className={'float-right'}
-        style={{ color: 'red' }}
-        onClick={() =>
-          removeNotification({
-            postId: postId,
-            myUserId: user.uid,
-            userId: userId,
-          })
-        }
-      >
-        remove
-      </a>
+      <RemoveNotificationButton postId={postId} userId={userId} />
       <Link to={`post/${postId}`}>{content}</Link>
       <div style={{ clear: 'both' }} />
     </div>
