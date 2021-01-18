@@ -6,6 +6,8 @@
 
 # TODO
 
+- improve notifications
+- post feeds start w replies collapsed ?
 - character or word counts and maybe time to read length indicators maybe on Read More link
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
 - buggish: Feature Requests feed allows replies now but does't show them
