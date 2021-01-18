@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
-import { removeNotification } from '../shared/db';
+import { getUsers, removeNotification } from '../shared/db';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
@@ -23,6 +23,49 @@ const hackCleanupNotifications = (userId, postIds) => {
     });
 };
 
+const NotificationItem = ({ notification }) => {
+  const { user } = useContext(AppContext);
+  const { content, postId, userId } = notification;
+  return (
+    <div key={postId + userId} className="my-3">
+      <a
+        className={'float-right'}
+        style={{ color: 'red' }}
+        onClick={() =>
+          removeNotification({
+            postId: postId,
+            myUserId: user.uid,
+            userId: userId,
+          })
+        }
+      >
+        remove
+      </a>
+      <Link to={`post/${postId}`}>{content}</Link>
+      <div style={{ clear: 'both' }} />
+    </div>
+  );
+};
+
+const NotificationItemLinkContent = ({
+  userDisplayName,
+  userPhotoURL,
+  postId,
+  timestamp,
+}) => (
+  <span>
+    {userPhotoURL ? (
+      <img
+        src={userPhotoURL}
+        alt="user"
+        style={{ height: 38 }}
+        className="mr-2 float-left"
+      />
+    ) : null}
+    <strong>{userDisplayName}</strong> replied to your post
+  </span>
+);
+
 export default class NotificationsFeed extends React.Component {
   constructor() {
     super();
@@ -36,35 +79,53 @@ export default class NotificationsFeed extends React.Component {
   notificationsRef = () => this.db().ref('notifications/' + this.user().uid);
 
   componentDidMount() {
-    this.notificationsRef().on('value', (snapshot) => {
-      const notificationsObject = snapshot.val();
-      const notifications = [];
-      const postIds = [];
-      if (notificationsObject) {
-        Object.entries(notificationsObject).forEach(([key, nItem]) => {
-          const postId = key;
-          postIds.push(postId);
-          // TODO get rid of notifications in db that are just the old count style
-          if (typeof nItem === 'number') {
-            notifications.push({
-              postId,
-              message: `${nItem} replies to your post ${postId}`,
-            });
-          } else if (typeof nItem === 'object') {
-            Object.entries(nItem).forEach(([userId, timestamp]) => {
+    getUsers((users) => {
+      this.setState({ users });
+      this.notificationsRef().on('value', (snapshot) => {
+        const notificationsObject = snapshot.val();
+        const notifications = [];
+        const postIds = [];
+        if (notificationsObject) {
+          Object.entries(notificationsObject).forEach(([key, nItem]) => {
+            const postId = key;
+            postIds.push(postId);
+            // TODO get rid of notifications in db that are just the old count style
+            if (typeof nItem === 'number') {
               notifications.push({
                 postId,
-                userId,
-                message: `${userId} replied to your post ${postId} at ${timestamp}`,
+                content: `${nItem} replies to your post ${postId}`,
               });
-            });
-          }
+            } else if (typeof nItem === 'object') {
+              Object.entries(nItem).forEach(([userId, timestamp]) => {
+                const userDisplayName =
+                  this.state.users &&
+                  this.state.users[userId] &&
+                  this.state.users[userId].displayName;
+                const userPhotoURL =
+                  this.state.users &&
+                  this.state.users[userId] &&
+                  this.state.users[userId].photoURL;
+                notifications.push({
+                  postId,
+                  userId,
+                  content: (
+                    <NotificationItemLinkContent
+                      userDisplayName={userDisplayName}
+                      userPhotoURL={userPhotoURL}
+                      postId={postId}
+                      timestamp={timestamp}
+                    />
+                  ),
+                });
+              });
+            }
+          });
+        }
+        this.setState({
+          notifications: notifications,
         });
-      }
-      this.setState({
-        notifications: notifications,
+        postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
       });
-      postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
     });
     // TODO removeNotification does't update the feed
   }
@@ -76,24 +137,7 @@ export default class NotificationsFeed extends React.Component {
           <Card.Title>Notifications</Card.Title>
           {this.state.notifications && this.state.notifications.length > 0
             ? this.state.notifications.map((notification) => (
-                <div key={notification.postId}>
-                  <Link to={`post/${notification.postId}`}>
-                    {notification.message}
-                  </Link>
-                  <a
-                    className={'ml-2'}
-                    style={{ color: 'red' }}
-                    onClick={() =>
-                      removeNotification({
-                        postId: notification.postId,
-                        myUserId: this.user().uid,
-                        userId: notification.userId,
-                      })
-                    }
-                  >
-                    remove
-                  </a>
-                </div>
+                <NotificationItem notification={notification} />
               ))
             : 'None'}
         </Card.Body>
