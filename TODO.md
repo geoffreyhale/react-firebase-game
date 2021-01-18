@@ -8,7 +8,6 @@
 
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
 - buggish: Feature Requests feed allows replies now but does't show them
-- popular feed
 - daily scorecard app w limited visibility for habits etc and accountability
 - about page
 - front page

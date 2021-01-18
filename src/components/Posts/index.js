@@ -14,7 +14,6 @@ import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import { getUsers } from '../shared/db';
-import PopularPostsFeed from './PopularPostsFeed';
 
 const FEED = Object.freeze({
   UNSEEN: 'unseen',
@@ -80,7 +79,7 @@ const getFeedFilterByTags = ({ flatPostsArray, postsFilter, myUserId }) => {
 
 const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   <Nav className="justify-content-center">
-    {/* <Nav.Item>
+    <Nav.Item>
       <Nav.Link
         active={currentFeed === FEED.POPULAR}
         onClick={() => {
@@ -90,7 +89,7 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
       >
         Popular
       </Nav.Link>
-    </Nav.Item> */}
+    </Nav.Item>
     <Nav.Item>
       <Nav.Link
         active={currentFeed === FEED.UNSEEN}
@@ -171,10 +170,6 @@ export default class Posts extends Component {
   }
 
   render() {
-    if (this.state.feed === FEED.POPULAR) {
-      return <PopularPostsFeed />;
-    }
-
     let feedSubtext = null;
 
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
@@ -240,6 +235,18 @@ export default class Posts extends Component {
       );
       feedSubtext =
         'Threads in which someone else posted since you last clicked the yellow `mark thread as seen` button.  Click the `mark thread as seen` button to temporarily hide a thread from this feed until someone else posts something new.';
+    }
+
+    if (this.state.feed === FEED.POPULAR) {
+      posts.sort((a, b) => {
+        if (!a.upvote) return 1;
+        if (!b.upvote) return -1;
+        return (
+          (b.upvote && Object.keys(b.upvote).length) -
+          (a.upvote && Object.keys(a.upvote).length)
+        );
+      });
+      feedSubtext = 'Most upvotes';
     }
 
     return (
