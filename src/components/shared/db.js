@@ -98,8 +98,7 @@ export const getUsers = (callback) => {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        const user = doc.data();
-        users[user.uid] = user;
+        users[doc.id] = doc.data();
       });
       callback(users);
     });
@@ -114,7 +113,7 @@ export const getUsersLastOnline = (callback) => {
 };
 
 export const updateUser = ({ uid, user }) => {
-  db.collection('users').doc(uid).update(user);
+  db.collection('users').doc(uid).set(user, { merge: true });
 };
 
 export const toggleUpvote = ({ postId, userId }) => {

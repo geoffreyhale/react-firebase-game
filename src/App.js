@@ -119,6 +119,8 @@ class App extends Component {
           this.setState({ user });
         });
 
+        // TODO also update lastOnline on login and every onAuthStateChanged etc!
+
         // onDisconnect is a feature of firebase realtime database
         // this is the only valid use of the realtime database users collection atm
         // all other user data should be handled in firebase cloud firestore

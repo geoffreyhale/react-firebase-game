@@ -23,6 +23,7 @@ export default class Admin extends React.Component {
   componentDidMount() {
     if (this.user().admin) {
       getUsers((users) => {
+        console.log(users);
         // firestore uses time objects instead of the old millisecond strings from realtime
         Object.keys(users).forEach((key) => {
           users[key].lastLogin = getMillisFromDifferingTypes(

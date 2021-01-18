@@ -6,13 +6,15 @@
 
 # TODO
 
+- !delete all uid's from firestore users!
+- !unable to login as someone else! log out, login automatically selects google account
 - lowercase all tags ?
 - tag filter digests group similar tags
 - save user preferred feed ?
 - sort replies by upvotes too
 - implement reemind app
 - ui manual collapse of reply tree branches
-- old existing code on people's unrefreshed browsers will knock out new notifications!
+- !old existing code on people's unrefreshed browsers will knock out new notifications!
 - remove hackFunctions
 - post feeds start w replies collapsed ?
 - character or word counts and maybe time to read length indicators maybe on Read More link
