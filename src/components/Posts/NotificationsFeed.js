@@ -5,6 +5,7 @@ import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import { removeNotification } from '../shared/db';
 
+// appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
   const notificationsRef = firebase.database().ref('notifications/' + userId);
   postIds &&
@@ -40,11 +41,24 @@ export default class NotificationsFeed extends React.Component {
       const notifications = [];
       const postIds = [];
       if (notificationsObject) {
-        Object.entries(notificationsObject).forEach(([key, value]) => {
+        Object.entries(notificationsObject).forEach(([key, nItem]) => {
           const postId = key;
-          const count = value;
           postIds.push(postId);
-          notifications.push({ postId, count });
+          // TODO get rid of notifications in db that are just the old count style
+          if (typeof nItem === 'number') {
+            notifications.push({
+              postId,
+              message: `${nItem} replies to your post ${postId}`,
+            });
+          } else if (typeof nItem === 'object') {
+            Object.entries(nItem).forEach(([userId, timestamp]) => {
+              notifications.push({
+                postId,
+                userId,
+                message: `${userId} replied to your post ${postId} at ${timestamp}`,
+              });
+            });
+          }
         });
       }
       this.setState({
@@ -64,8 +78,7 @@ export default class NotificationsFeed extends React.Component {
             ? this.state.notifications.map((notification) => (
                 <div key={notification.postId}>
                   <Link to={`post/${notification.postId}`}>
-                    {notification.count} replies to your post{' '}
-                    {notification.postId}
+                    {notification.message}
                   </Link>
                   <a
                     className={'ml-2'}
@@ -74,6 +87,7 @@ export default class NotificationsFeed extends React.Component {
                       removeNotification({
                         postId: notification.postId,
                         myUserId: this.user().uid,
+                        userId: notification.userId,
                       })
                     }
                   >

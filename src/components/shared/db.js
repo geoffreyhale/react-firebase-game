@@ -2,6 +2,8 @@ import firebase, { db } from '../../firebase.js';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');
+const notificationUserPostRef = ({ userId, postId }) =>
+  firebase.database().ref('notifications/' + userId + '/' + postId);
 const notificationsRef = ({ userId }) =>
   firebase.database().ref('notifications/' + userId);
 const upvoteUserRef = ({ postId, userId }) =>
@@ -11,17 +13,19 @@ const upvoteRef = ({ postId }) =>
 
 // post w id postId received a reply
 // add a notification for the user who authored the post
-const incrementNotifications = ({ postId, myUserId }) => {
+const addNotifications = ({ postId, myUserId }) => {
   postRef(postId)
     .once('value')
     .then((snapshot) => {
       const post = snapshot.val();
       const userId = post.userId;
-      if (userId !== myUserId) {
-        notificationsRef({ userId }).update({
-          [postId]: firebase.database.ServerValue.increment(1),
-        });
+      if (userId === myUserId) {
+        // do not notify user of post from themselves
+        return;
       }
+      notificationUserPostRef({ userId, postId }).update({
+        [myUserId]: firebase.database.ServerValue.TIMESTAMP,
+      });
     });
 };
 
@@ -41,8 +45,13 @@ const decrementNotifications = ({ postId, myUserId }) => {
     });
 };
 
-export const removeNotification = ({ postId, myUserId }) => {
-  notificationsRef({ userId: myUserId }).child(postId).remove();
+// TODO get rid of old count notifiations and should always require userId here
+export const removeNotification = ({ postId, myUserId, userId = null }) => {
+  if (userId) {
+    notificationsRef({ userId: myUserId }).child(postId).child(userId).remove();
+  } else {
+    notificationsRef({ userId: myUserId }).child(postId).remove();
+  }
 };
 
 export const createNewPost = (
@@ -60,7 +69,7 @@ export const createNewPost = (
       userId: myUserId,
       replyToId: replyToId,
     })
-    .then(replyToId && incrementNotifications({ postId: replyToId, myUserId }))
+    .then(replyToId && addNotifications({ postId: replyToId, myUserId }))
     .then(successCallback());
 };
 
