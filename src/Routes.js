@@ -8,7 +8,8 @@ import Groups from './components/Groups';
 import PostPage from './components/PostPage';
 import Posts from './components/Posts';
 import Admin from './components/Admin';
-import Sandbox from './components/Sandbox/firestore';
+import FirestoreSandbox from './components/Sandbox/firestore';
+import Sandbox from './components/Sandbox';
 import { AppContext } from './components/AppProvider';
 
 const Routes = () => {
@@ -39,9 +40,6 @@ const Routes = () => {
             <Route path="/admin" key="/admin">
               <Admin />
             </Route>,
-            <Route path="/sandbox" key="/sandbox">
-              <Sandbox />
-            </Route>,
             // https://ui.dev/react-router-v4-pass-props-to-components/
             <Route
               path="/post/:postId"
@@ -54,7 +52,11 @@ const Routes = () => {
       <Route path="/scorekeeper" key="/scorekeeper">
         <Scorekeeper />
       </Route>
-      ]
+      ,
+      <Route path="/sandbox" key="/sandbox">
+        <Sandbox />
+      </Route>
+      , ]
     </Switch>
   );
 };
