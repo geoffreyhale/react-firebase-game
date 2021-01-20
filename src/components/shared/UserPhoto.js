@@ -46,7 +46,10 @@ export default class UserPhoto extends React.Component {
       user: { premium, photoURL: src },
     } = this.state;
     return (
-      <div style={{ position: 'relative', display: 'inline-block' }}>
+      <div
+        key={this.props.key}
+        style={{ position: 'relative', display: 'inline-block' }}
+      >
         <img src={src} alt="user" style={{ height: size, width: size }} />
         {premium && <PremiumIcon size={size} />}
         {presence === 'online' && <PresenceIcon size={size} />}
