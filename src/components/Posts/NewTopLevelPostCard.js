@@ -11,7 +11,7 @@ const NewTopLevelPostCard = () => {
     <Card>
       <Card.Body>
         <Card.Title>
-          {user.photoURL ? <UserPhoto src={user.photoURL} /> : null}
+          <UserPhoto uid={user.uid} />
           {user.displayName}
           <small className="text-muted ml-2">&#127757; Public</small>
         </Card.Title>

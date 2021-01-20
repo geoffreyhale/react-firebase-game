@@ -114,7 +114,7 @@ const ReplyForm = ({ replyToPostId, autoFocus, onSuccess }) => {
           }}
         >
           <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
-            {user.photoURL ? <UserPhoto src={user.photoURL} size={38} /> : null}
+            {user.uid ? <UserPhoto uid={user.uid} size={38} /> : null}
           </div>
           <div style={{ flexGrow: 1 }}>
             <NewPostForm
@@ -159,9 +159,11 @@ export const PostHeader = ({
 
   return (
     <div style={{ fontSize: small ? '85%' : null }}>
-      <div className="float-left mr-2">
-        {photoURL ? <UserPhoto src={photoURL} size={small ? 38 : 48} /> : null}
-      </div>
+      {post.userId ? (
+        <div className="float-left mr-2">
+          <UserPhoto uid={post.userId} size={small ? 38 : 48} />
+        </div>
+      ) : null}
       <>
         <div>
           <strong>{displayName}</strong>

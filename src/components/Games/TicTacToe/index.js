@@ -42,8 +42,8 @@ const count = (tictactoe) => {
 const MostRecent = ({ mostRecent }) => (
   <div>
     Most Recent Move By:{' '}
-    {mostRecent && mostRecent.photoURL ? (
-      <UserPhoto src={mostRecent.photoURL} size={45} />
+    {mostRecent && mostRecent.userId ? (
+      <UserPhoto uid={mostRecent.userId} size={45} />
     ) : null}
   </div>
 );
@@ -202,8 +202,8 @@ export default class TicTacToe extends Component {
                                   : null,
                             }}
                           >
-                            {cell.photoURL ? (
-                              <UserPhoto src={cell.photoURL} size={45} />
+                            {cell.userId ? (
+                              <UserPhoto uid={cell.userId} size={45} />
                             ) : null}
                           </td>
                         );
@@ -229,14 +229,7 @@ export default class TicTacToe extends Component {
                     return (
                       <tr>
                         <td>
-                          {userId &&
-                          this.state.users[userId] &&
-                          this.state.users[userId].photoURL ? (
-                            <UserPhoto
-                              src={this.state.users[userId].photoURL}
-                              size={48}
-                            />
-                          ) : null}
+                          {userId ? <UserPhoto uid={userId} size={48} /> : null}
                         </td>
                         <td>{amount}</td>
                       </tr>

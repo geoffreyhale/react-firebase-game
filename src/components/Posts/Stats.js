@@ -157,13 +157,10 @@ const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
               (a, b) => b[statKey] - a[statKey] //descending
             )
             .map((user) => {
-              const userPhotoURL = user.userPhotoURL;
               return (
                 <tr key={Math.random()}>
                   <td>
-                    {userPhotoURL ? (
-                      <UserPhoto src={userPhotoURL} size={38} />
-                    ) : null}
+                    <UserPhoto uid={user.userId} size={38} />
                   </td>
                   <td>{user[statKey]}</td>
                 </tr>

@@ -16,7 +16,6 @@
 - notifications and links should take to full thread, top post "see more" state, other comments collapsed, relevant 2 posts uncollapsed
 - cleanup console warnings
 - accounting tools
-- paid premium member features or at least a tag badge something
 - improve loading experience on slow devices/connections
 - force-directed venn diagram
 - urls are clickable hyperlinks

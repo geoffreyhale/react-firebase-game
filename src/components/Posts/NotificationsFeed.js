@@ -67,18 +67,11 @@ const NotificationItem = ({ notification }) => {
   );
 };
 
-const NotificationItemLinkContent = ({
-  userDisplayName,
-  userPhotoURL,
-  postId,
-  timestamp,
-}) => (
+const NotificationItemLinkContent = ({ userDisplayName, timestamp, uid }) => (
   <span>
-    {userPhotoURL ? (
-      <div className="mr-2 float-left">
-        <UserPhoto src={userPhotoURL} size={38} />
-      </div>
-    ) : null}
+    <div className="mr-2 float-left">
+      <UserPhoto uid={uid} size={38} />
+    </div>
     <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
     {` replied to your post `}
     {friendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
@@ -130,9 +123,8 @@ export default class NotificationsFeed extends React.Component {
                   content: (
                     <NotificationItemLinkContent
                       userDisplayName={userDisplayName}
-                      userPhotoURL={userPhotoURL}
-                      postId={postId}
                       timestamp={timestamp}
+                      uid={userId}
                     />
                   ),
                   timestamp,

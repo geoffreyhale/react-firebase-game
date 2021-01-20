@@ -36,20 +36,16 @@ export default class Mosaic extends Component {
   componentDidMount() {
     getUsers((users) => {
       this.setState({
-        users: shuffle(Object.values(users).map((user) => user.photoURL)),
+        // TODO prioritize recently online and premium users in sort
+        users: shuffle(Object.values(users).map((user) => user.uid)),
       });
-    });
+    }, true);
   }
   render() {
     return (
       <Card>
         <Card.Body>
-          <Card.Title>
-            Community Mosaic
-            {/* {' '}<Badge variant="secondary">
-              {Object.keys(this.state.users).length}
-            </Badge> */}
-          </Card.Title>
+          <Card.Title>Community Mosaic</Card.Title>
           <div
             style={{
               display: 'inline-block',
@@ -63,9 +59,9 @@ export default class Mosaic extends Component {
           >
             {Object.keys(this.state.users).length}
           </div>
-          {Object.values(this.state.users).map((photoURL, i) =>
-            photoURL ? <UserPhoto key={i} src={photoURL} size={48} /> : null
-          )}
+          {Object.values(this.state.users).map((uid, i) => (
+            <UserPhoto key={i} uid={uid} size={48} />
+          ))}
         </Card.Body>
       </Card>
     );

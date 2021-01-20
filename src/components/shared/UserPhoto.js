@@ -1,4 +1,5 @@
 import React from 'react';
+import { getUser } from '../shared/db';
 
 const PremiumIcon = ({ size }) => (
   <div
@@ -14,12 +15,26 @@ const PremiumIcon = ({ size }) => (
   </div>
 );
 
-const UserPhoto = ({ src, size = 48, premium = false }) => {
-  return (
-    <div style={{ position: 'relative', display: 'inline-block' }}>
-      <img src={src} alt="user" style={{ height: size }} />
-      {premium && <PremiumIcon size={size} />}
-    </div>
-  );
-};
-export default UserPhoto;
+export default class UserPhoto extends React.Component {
+  constructor() {
+    super();
+    this.state = { user: { photoURL: null } };
+  }
+  componentDidMount() {
+    // TODO implement a cache for users, yikes
+    getUser(this.props.uid, (user) => this.setState({ user }));
+  }
+  render() {
+    const { size = 48 } = this.props;
+    const {
+      user: { premium, photoURL: src },
+    } = this.state;
+
+    return (
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        <img src={src} alt="user" style={{ height: size }} />
+        {premium && <PremiumIcon size={size} />}
+      </div>
+    );
+  }
+}

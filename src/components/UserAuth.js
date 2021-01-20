@@ -7,7 +7,7 @@ const UserAuth = ({ user, login, logout }) => {
   if (user) {
     return (
       <>
-        <UserPhoto src={user.photoURL} />
+        <UserPhoto uid={user.uid} />
         <Dropdown className="float-right">
           <MyDropdownToggle />
           <Dropdown.Menu>
