@@ -21,30 +21,31 @@ export default class Admin extends React.Component {
   user = () => this.context.user;
 
   componentDidMount() {
-    if (this.user().admin) {
-      getUsers((users) => {
-        console.log(users);
-        // firestore uses time objects instead of the old millisecond strings from realtime
+    if (!this.user().admin) {
+      return;
+    }
+    getUsers((users) => {
+      console.log(users);
+      // firestore uses time objects instead of the old millisecond strings from realtime
+      Object.keys(users).forEach((key) => {
+        users[key].lastLogin = getMillisFromDifferingTypes(
+          users[key].lastLogin
+        );
+        users[key].joined = getMillisFromDifferingTypes(users[key].joined);
+      });
+      // lastOnline lives in realtime database
+      getUsersLastOnline((realtimeUsers) => {
         Object.keys(users).forEach((key) => {
-          users[key].lastLogin = getMillisFromDifferingTypes(
-            users[key].lastLogin
-          );
-          users[key].joined = getMillisFromDifferingTypes(users[key].joined);
+          users[key].lastOnline =
+            realtimeUsers[key] && realtimeUsers[key].lastOnline
+              ? realtimeUsers[key].lastOnline
+              : users[key].lastOnline;
         });
-        // lastOnline lives in realtime database
-        getUsersLastOnline((realtimeUsers) => {
-          Object.keys(users).forEach((key) => {
-            users[key].lastOnline =
-              realtimeUsers[key] && realtimeUsers[key].lastOnline
-                ? realtimeUsers[key].lastOnline
-                : users[key].lastOnline;
-          });
-          this.setState({
-            users,
-          });
+        this.setState({
+          users,
         });
       });
-    }
+    });
   }
   sort(propertyName) {
     this.setState({
