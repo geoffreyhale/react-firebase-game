@@ -6,7 +6,6 @@
 
 # TODO
 
-- !delete all uid's from firestore users!
 - lowercase all tags ?
 - tag filter digests group similar tags
 - save user preferred feed ?
