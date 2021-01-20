@@ -94,6 +94,43 @@ const AppNav = ({ admin }) => {
   );
 };
 
+const AppHeader = ({ user, login, logout }) => (
+  <header>
+    <Card>
+      <Card.Body>
+        <AppHeaderTitle />
+        <div style={{ float: 'right' }}>
+          <UserAuth user={user} login={login} logout={logout} />
+        </div>
+      </Card.Body>
+    </Card>
+    <Card className="mt-1">
+      <Card.Body
+        style={{
+          paddingBottom: '0.25rem',
+          paddingTop: '0.25rem',
+        }}
+      >
+        {user ? (
+          <>
+            <AppNav admin={user.admin} />
+          </>
+        ) : (
+          <div>
+            <small className="text-muted">
+              <em>
+                New online community that will never sell your data.
+                <br />
+                Join the discussion now for free.
+              </em>
+            </small>
+          </div>
+        )}
+      </Card.Body>
+    </Card>
+  </header>
+);
+
 class App extends Component {
   constructor() {
     super();
@@ -177,45 +214,11 @@ class App extends Component {
             <Container fluid>
               <Row>
                 <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
-                  <header>
-                    <Card>
-                      <Card.Body>
-                        <AppHeaderTitle />
-                        <div style={{ float: 'right' }}>
-                          <UserAuth
-                            user={this.state.user}
-                            login={this.login}
-                            logout={this.logout}
-                          />
-                        </div>
-                      </Card.Body>
-                    </Card>
-                    <Card className="mt-1">
-                      <Card.Body
-                        style={{
-                          paddingBottom: '0.25rem',
-                          paddingTop: '0.25rem',
-                        }}
-                      >
-                        {this.state.user ? (
-                          <>
-                            <AppNav admin={this.state.user.admin} />
-                          </>
-                        ) : (
-                          <div>
-                            <small className="text-muted">
-                              <em>
-                                New online community that will never sell your
-                                data.
-                                <br />
-                                Join the discussion now for free.
-                              </em>
-                            </small>
-                          </div>
-                        )}
-                      </Card.Body>
-                    </Card>
-                  </header>
+                  <AppHeader
+                    user={this.state.user}
+                    login={this.login}
+                    logout={this.logout}
+                  />
                   <div className="mt-3">
                     <Routes />
                   </div>
