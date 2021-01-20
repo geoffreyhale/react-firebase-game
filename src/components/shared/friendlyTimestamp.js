@@ -3,7 +3,7 @@ import formatDuration from 'date-fns/formatDuration';
 import intervalToDuration from 'date-fns/intervalToDuration';
 
 //TODO write tests for this function
-const friendlyTimestamp = (timestamp) => {
+const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
   if (!timestamp) {
     return;
   }
@@ -13,22 +13,36 @@ const friendlyTimestamp = (timestamp) => {
     start: timestampDate,
     end: new Date(),
   });
+
+  let content = false;
+  let useSuffix = false;
   if (duration.years || duration.months || duration.days > 3) {
-    return `${formattedTimestamp}`;
+    content = `${formattedTimestamp}`;
+    useSuffix = true;
+  } else if (duration.days) {
+    content = `${duration.days}d`;
+    useSuffix = true;
+  } else if (duration.hours) {
+    content = `${duration.hours}h`;
+    useSuffix = true;
+  } else if (duration.minutes) {
+    content = `${duration.minutes}m`;
+    useSuffix = true;
+  } else if (duration.seconds) {
+    content = `${duration.seconds}s`;
+    useSuffix = true;
+  } else if (Object.values(duration).every((unit) => unit === 0)) {
+    content = 'just now';
   }
-  if (duration.days) {
-    return `${duration.days}d`;
+
+  if (content) {
+    return (
+      <>
+        <span style={style}>{content}</span>
+        {useSuffix ? suffix : ''}
+      </>
+    );
   }
-  if (duration.hours) {
-    return `${duration.hours}h`;
-  }
-  if (duration.minutes) {
-    return `${duration.minutes}m`;
-  }
-  if (duration.seconds) {
-    return `${duration.seconds}s`;
-  }
-  return `${formattedTimestamp} (${formatDuration(duration)})`;
 };
 
 export default friendlyTimestamp;

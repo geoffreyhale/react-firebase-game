@@ -83,8 +83,7 @@ const NotificationItemLinkContent = ({
     ) : null}
     <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
     {` replied to your post `}
-    <strong style={{ fontWeight: 600 }}>{friendlyTimestamp(timestamp)}</strong>
-    {` ago`}
+    {friendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
   </span>
 );
 
