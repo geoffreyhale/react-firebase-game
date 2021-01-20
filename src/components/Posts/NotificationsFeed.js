@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
+import Table from 'react-bootstrap/Table';
+import { useHistory } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import { getUsers, removeNotification } from '../shared/db';
@@ -46,19 +47,22 @@ const RemoveNotificationButton = ({ postId, userId }) => {
 
 const NotificationItem = ({ notification }) => {
   const { content, postId, userId } = notification;
+  const history = useHistory();
   return (
-    <div>
-      <hr />
-      <div className={'float-right'}>
+    <tr>
+      <td
+        // onClick doesn't allow right-click on anchor functionality
+        // but cannot find cleaner way to link a whole cell (or row) atm
+        onClick={() => {
+          history.push('post/' + postId);
+        }}
+      >
+        {content}
+      </td>
+      <td>
         <RemoveNotificationButton postId={postId} userId={userId} />
-      </div>
-      <Link to={`post/${postId}`}>
-        <div key={postId + userId} className="my-3">
-          {content}
-        </div>
-      </Link>
-      <div style={{ clear: 'both' }} />
-    </div>
+      </td>
+    </tr>
   );
 };
 
@@ -77,8 +81,10 @@ const NotificationItemLinkContent = ({
         className="mr-2 float-left"
       />
     ) : null}
-    <strong>{userDisplayName}</strong>
-    {` replied to your post ${friendlyTimestamp(timestamp)}`}
+    <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
+    {` replied to your post `}
+    <strong style={{ fontWeight: 600 }}>{friendlyTimestamp(timestamp)}</strong>
+    {` ago`}
   </span>
 );
 
@@ -155,11 +161,15 @@ export default class NotificationsFeed extends React.Component {
       <Card className="mt-4">
         <Card.Body>
           <Card.Title>Notifications</Card.Title>
-          {this.state.notifications && this.state.notifications.length > 0
-            ? this.state.notifications.map((notification) => (
-                <NotificationItem notification={notification} />
-              ))
-            : 'None'}
+          <Table hover>
+            <tbody>
+              {this.state.notifications && this.state.notifications.length > 0
+                ? this.state.notifications.map((notification) => (
+                    <NotificationItem notification={notification} />
+                  ))
+                : 'None'}
+            </tbody>
+          </Table>
         </Card.Body>
       </Card>
     );
