@@ -9,7 +9,7 @@ const PremiumIcon = ({ size }) => (
       top: 0,
       fontSize: size / 3,
     }}
-    title="premium"
+    title="premium member supporting xbk.io"
   >
     &#11088; {/* white medium star, emoji */}
   </div>
