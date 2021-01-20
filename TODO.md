@@ -1,20 +1,27 @@
 # FOCUS
 
-- manifest a handful of regular active users
-- build for constructive conversation
-- healthy relating, productivity, health
+1. security
+   - database security rules should prevent clients from reading any private data
+   - cleanup db calls and looping many calls
+   - do not query all posts, do not return all posts; chunks please
+2. performance
+3. features
+   - build for constructive conversation
+   - healthy relating, productivity, health
+4. activity
+   - handful of obsessed users
+   - hundred daily users
+   - ten thousand registered users
 
 # TODO
 
-## priorities
-
-- database security rules should prevent clients from reading any private data
-- cleanup db calls and looping many calls
-- do not query all posts, do not return all posts; chunks please
-- finish notifications
-
-## other
-
+- rewire database calls and improve front-end data handling and implement caching
+- finish notifications; they should be easy, no user effort; also add (#) count to browser tab
+- improve front page, about page, new member experience, on-boarding
+- develop the end-game, Trust Points or Healthy Relater levels and access to deeper safer rooms for higher safety and vulnerable/charged topics etc
+- tag filtering; presets; digests
+- merely clicking upvote refreshes all the notifications and stats!
+- notifications should be easy, automated, don't make me remember and click around and guess and remove
 - notifications and links should take to full thread, top post "see more" state, other comments collapsed, relevant 2 posts uncollapsed
 - cleanup console warnings
 - accounting tools
