@@ -92,13 +92,16 @@ export const getUser = (uid, callback) => {
     });
 };
 
-export const getUsers = (callback) => {
+export const getUsers = (callback, uid = false) => {
   const users = [];
   db.collection('users')
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         users[doc.id] = doc.data();
+        if (uid) {
+          users[doc.id].uid = doc.id;
+        }
       });
       callback(users);
     });

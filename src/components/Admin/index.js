@@ -45,13 +45,15 @@ export default class Admin extends React.Component {
           users,
         });
       });
-    });
+    }, true);
   }
+
   sort(propertyName) {
     this.setState({
       sortKey: propertyName,
     });
   }
+
   render() {
     if (!this.user().admin) {
       return <>Loading or Access Denied</>;
