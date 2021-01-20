@@ -50,7 +50,7 @@ const NotificationItem = ({ notification }) => {
   const { content, postId, userId } = notification;
   const history = useHistory();
   return (
-    <tr>
+    <tr key={Math.random()}>
       <td
         // onClick doesn't allow right-click on anchor functionality
         // but cannot find cleaner way to link a whole cell (or row) atm
