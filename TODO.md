@@ -6,6 +6,17 @@
 
 # TODO
 
+## priorities
+
+- do not query all posts, do not return all posts; chunks please
+- database security rules should prevent clients from reading any private data
+
+## other
+
+- notifications and links should take to full thread, top post "see more" state, other comments collapsed, relevant 2 posts uncollapsed
+- cleanup console warnings
+- accounting tools
+- paid premium member features or at least a tag badge something
 - improve loading experience on slow devices/connections
 - force-directed venn diagram
 - urls are clickable hyperlinks
@@ -34,7 +45,6 @@
 - 3d force graph for something
 - fix double render
 - clean out Posts index
-- do not query all posts, do not return all posts; chunks please
 - posts feed slowness ?
 - security, seriously
 - bug: after log out, PERMISSION DENIED errors, still an issue?
@@ -69,18 +79,10 @@
 - new names networking/contacts/friends utility
 - scorekeeper as part of rooms
 - humans game modeling reality, eg mood meter
-
-### SECURITY & DEV
-
-- database security rules should prevent clients from reading any private data
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
-- more protect from accidental wipes, eg overwrites to zero in game
 - abstract posts' and collections' functions into models and utils etc
 - better react props handling
-
-### MONETIZATION
-
 - add backend app to complete Stripe payment gateway
 - add purchasables
 - save successful card info (PCI compliance!?)
