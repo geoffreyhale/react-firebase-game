@@ -6,6 +6,16 @@
 
 # TODO
 
+- force-directed venn diagram
+- urls are clickable hyperlinks
+- what is "healthy relating"? what are the expectations here, how do i play?
+- order replies by upvotes/karma too
+- 'Add Tags' to new top level post
+- times on notifications
+- notifications column persists beside single post page
+- top karma (upvotes) received
+- downvotes
+- map out what is healthy relating
 - lowercase all tags ?
 - tag filter digests group similar tags
 - save user preferred feed ?
@@ -23,7 +33,6 @@
 - front page
 - 3d force graph for something
 - fix double render
-- 'Add Tags' to new top level post
 - clean out Posts index
 - do not query all posts, do not return all posts; chunks please
 - posts feed slowness ?
