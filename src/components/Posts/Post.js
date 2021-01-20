@@ -9,6 +9,7 @@ import { AppContext } from '../AppProvider';
 import firebase from '../../firebase.js';
 import Tag from './Tag';
 import { createNewPost, deletePost } from '../shared/db';
+import UserPhoto from '../shared/UserPhoto';
 import { Upvote } from './PostVote';
 
 const redditRed = '#fd5828';
@@ -113,9 +114,7 @@ const ReplyForm = ({ replyToPostId, autoFocus, onSuccess }) => {
           }}
         >
           <div className={'mr-2'} style={{ alignSelf: 'flex-start' }}>
-            {user.photoURL ? (
-              <img src={user.photoURL} alt="user" style={{ height: 38 }} />
-            ) : null}
+            {user.photoURL ? <UserPhoto src={user.photoURL} size={38} /> : null}
           </div>
           <div style={{ flexGrow: 1 }}>
             <NewPostForm
@@ -161,9 +160,7 @@ export const PostHeader = ({
   return (
     <div style={{ fontSize: small ? '85%' : null }}>
       <div className="float-left mr-2">
-        {photoURL ? (
-          <img src={photoURL} alt="user" style={{ height: small ? 38 : 48 }} />
-        ) : null}
+        {photoURL ? <UserPhoto src={photoURL} size={small ? 38 : 48} /> : null}
       </div>
       <>
         <div>

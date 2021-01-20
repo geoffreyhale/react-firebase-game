@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 import { AppContext } from '../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
 import { getUsers } from '../../shared/db';
+import UserPhoto from '../../shared/UserPhoto';
 
 import './index.css';
 
@@ -42,7 +43,7 @@ const MostRecent = ({ mostRecent }) => (
   <div>
     Most Recent Move By:{' '}
     {mostRecent && mostRecent.photoURL ? (
-      <img src={mostRecent.photoURL} alt="user" style={{ height: 45 }} />
+      <UserPhoto src={mostRecent.photoURL} size={45} />
     ) : null}
   </div>
 );
@@ -202,11 +203,7 @@ export default class TicTacToe extends Component {
                             }}
                           >
                             {cell.photoURL ? (
-                              <img
-                                src={cell.photoURL}
-                                alt="user"
-                                style={{ height: 45 }}
-                              />
+                              <UserPhoto src={cell.photoURL} size={45} />
                             ) : null}
                           </td>
                         );
@@ -235,10 +232,9 @@ export default class TicTacToe extends Component {
                           {userId &&
                           this.state.users[userId] &&
                           this.state.users[userId].photoURL ? (
-                            <img
+                            <UserPhoto
                               src={this.state.users[userId].photoURL}
-                              alt="user"
-                              style={{ height: 48 }}
+                              size={48}
                             />
                           ) : null}
                         </td>

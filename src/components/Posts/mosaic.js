@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
 import { getUsers } from '../shared/db';
+import UserPhoto from '../shared/UserPhoto';
 
 // Fisher-Yates (aka Knuth) Shuffle
 // https://stackoverflow.com/a/2450976/1438029
@@ -63,9 +64,7 @@ export default class Mosaic extends Component {
             {Object.keys(this.state.users).length}
           </div>
           {Object.values(this.state.users).map((photoURL, i) =>
-            photoURL ? (
-              <img src={photoURL} alt="user" style={{ height: 48 }} key={i} />
-            ) : null
+            photoURL ? <UserPhoto key={i} src={photoURL} size={48} /> : null
           )}
         </Card.Body>
       </Card>

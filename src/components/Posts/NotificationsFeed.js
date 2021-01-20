@@ -7,6 +7,7 @@ import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import { getUsers, removeNotification } from '../shared/db';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
+import UserPhoto from '../shared/UserPhoto';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
@@ -74,12 +75,9 @@ const NotificationItemLinkContent = ({
 }) => (
   <span>
     {userPhotoURL ? (
-      <img
-        src={userPhotoURL}
-        alt="user"
-        style={{ height: 38 }}
-        className="mr-2 float-left"
-      />
+      <div className="mr-2 float-left">
+        <UserPhoto src={userPhotoURL} size={38} />
+      </div>
     ) : null}
     <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
     {` replied to your post `}

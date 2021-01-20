@@ -2,6 +2,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Tag from './Tag';
+import UserPhoto from '../shared/UserPhoto';
 
 // TODO refactor: build stats.users etc object first, then iterate posts
 export const statsFromPostsAndUsers = ({ posts, users }) => {
@@ -161,11 +162,7 @@ const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
                 <tr key={Math.random()}>
                   <td>
                     {userPhotoURL ? (
-                      <img
-                        src={userPhotoURL}
-                        alt="user"
-                        style={{ height: 38 }}
-                      />
+                      <UserPhoto src={userPhotoURL} size={38} />
                     ) : null}
                   </td>
                   <td>{user[statKey]}</td>

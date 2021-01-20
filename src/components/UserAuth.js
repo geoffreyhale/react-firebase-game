@@ -1,12 +1,13 @@
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import MyDropdownToggle from './shared/MyDropdownToggle';
+import UserPhoto from './shared/UserPhoto';
 
 const UserAuth = ({ user, login, logout }) => {
   if (user) {
     return (
       <>
-        <img src={user.photoURL} alt="user" style={{ height: 48 }} />
+        <UserPhoto src={user.photoURL} />
         <Dropdown className="float-right">
           <MyDropdownToggle />
           <Dropdown.Menu>
