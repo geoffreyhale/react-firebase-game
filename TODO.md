@@ -68,7 +68,6 @@
 - better handling for orphan posts; how handle deleting posts?
 - stats for top tag getters esp by tag type
 - invite codes and family-tree displays and stats for top inviters ?
-- who's online now
 - private rooms like worlds w game-ified invites / vote-off-island / scores etc
 - auto-curated feed universal and personal, eg most active recent posts
 - view posts feed by filters: user, tag
