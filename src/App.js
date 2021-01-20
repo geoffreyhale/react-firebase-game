@@ -162,7 +162,7 @@ class App extends Component {
           this.setState({ user });
         });
 
-        // TODO also update lastOnline on login and every onAuthStateChanged etc!
+        // TODO combine these w an update instead of a set
 
         // onDisconnect is a feature of firebase realtime database
         // this is the only valid use of the realtime database users collection atm
@@ -171,7 +171,35 @@ class App extends Component {
           .database()
           .ref('users/' + uid + '/lastOnline')
           .onDisconnect()
-          .set(firebase.database.ServerValue.TIMESTAMP);
+          .set(firebase.database.ServerValue.TIMESTAMP)
+          .then(() => {
+            // The promise returned from .onDisconnect().set() will
+            // resolve as soon as the server acknowledges the onDisconnect()
+            // request, NOT once we've actually disconnected:
+            // https://firebase.google.com/docs/reference/js/firebase.database.OnDisconnect
+            firebase
+              .database()
+              .ref('users/' + uid + '/lastOnline')
+              .set(firebase.database.ServerValue.TIMESTAMP);
+          });
+        firebase
+          .database()
+          .ref('users/' + uid + '/presence')
+          .onDisconnect()
+          .set('offline')
+          .then(() => {
+            // The promise returned from .onDisconnect().set() will
+            // resolve as soon as the server acknowledges the onDisconnect()
+            // request, NOT once we've actually disconnected:
+            // https://firebase.google.com/docs/reference/js/firebase.database.OnDisconnect
+
+            // We can now safely set ourselves as 'online' knowing that the
+            // server will mark us as offline once we lose connection.
+            firebase
+              .database()
+              .ref('users/' + uid + '/presence')
+              .set('online');
+          });
       }
     });
   }
