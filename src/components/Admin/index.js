@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
-import { getUsers, getUsersLastOnline } from '../shared/db';
+import { getUsers, getUsersRealtimeDatabase } from '../shared/db';
 
 const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
@@ -34,7 +34,7 @@ export default class Admin extends React.Component {
         users[key].joined = getMillisFromDifferingTypes(users[key].joined);
       });
       // lastOnline lives in realtime database
-      getUsersLastOnline((realtimeUsers) => {
+      getUsersRealtimeDatabase((realtimeUsers) => {
         Object.keys(users).forEach((key) => {
           users[key].lastOnline =
             realtimeUsers[key] && realtimeUsers[key].lastOnline

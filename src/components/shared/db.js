@@ -107,7 +107,7 @@ export const getUsers = (callback, uid = false) => {
     });
 };
 
-export const getUsersLastOnline = (callback) => {
+export const getUsersRealtimeDatabase = (callback) => {
   const usersRef = firebase.database().ref('users');
   usersRef.once('value', (snapshot) => {
     const users = snapshot.val();
