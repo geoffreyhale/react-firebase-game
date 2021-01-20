@@ -8,8 +8,10 @@
 
 ## priorities
 
-- do not query all posts, do not return all posts; chunks please
 - database security rules should prevent clients from reading any private data
+- cleanup db calls and looping many calls
+- do not query all posts, do not return all posts; chunks please
+- finish notifications
 
 ## other
 
