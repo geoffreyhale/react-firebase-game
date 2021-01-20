@@ -7,7 +7,6 @@
 # TODO
 
 - !delete all uid's from firestore users!
-- !unable to login as someone else! log out, login automatically selects google account
 - lowercase all tags ?
 - tag filter digests group similar tags
 - save user preferred feed ?

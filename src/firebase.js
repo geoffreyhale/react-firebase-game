@@ -8,6 +8,10 @@ const config = {
 firebase.initializeApp(config);
 
 export const provider = new firebase.auth.GoogleAuthProvider();
+// https://stackoverflow.com/a/43727675/1438029
+provider.setCustomParameters({
+  prompt: 'select_account',
+});
 export const auth = firebase.auth();
 export default firebase;
 
