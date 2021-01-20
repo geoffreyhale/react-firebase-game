@@ -14,6 +14,7 @@ import Routes from './Routes';
 import { BrowserRouter } from 'react-router-dom';
 import AppProvider from './components/AppProvider';
 import { getUser, updateUser } from './components/shared/db';
+import About from './components/About';
 
 const AppHeaderTitle = () => {
   const taglines = [
@@ -56,6 +57,11 @@ const AppNav = ({ admin }) => {
         </Nav.Link>
       </Nav.Item>
       <NavDropdown title="&#8943;">
+        <NavDropdown.Item>
+          <Nav.Link as={NavLink} to="/about">
+            About
+          </Nav.Link>
+        </NavDropdown.Item>
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/chess">
@@ -220,6 +226,7 @@ class App extends Component {
                     logout={this.logout}
                   />
                   <div className="mt-3">
+                    {!this.state.user && <About />}
                     <Routes />
                   </div>
                 </Col>

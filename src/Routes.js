@@ -23,6 +23,9 @@ const Routes = () => {
             <Route exact path="/" key="/">
               <Posts />
             </Route>,
+            <Route path="/about" key="/about">
+              <About />
+            </Route>,
             <Route
               path="/incremental-clicker-game"
               key="/incremental-clicker-game"
@@ -50,10 +53,6 @@ const Routes = () => {
           ]
         : null}
       [
-      <Route path="/about" key="/about">
-        <About />
-      </Route>
-      ,
       <Route path="/scorekeeper" key="/scorekeeper">
         <Scorekeeper />
       </Route>

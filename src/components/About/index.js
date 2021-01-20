@@ -9,7 +9,7 @@ const About = () => (
     <Col sm={8}>
       <Card>
         <Card.Body>
-          <Card.Title>About</Card.Title>
+          {/* <Card.Title>About</Card.Title> */}
           <h2>What is it?</h2>
           <p>xbk.io is a social networking platform for healthy relating.</p>
           {/* <p>
