@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 // import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
-import { getUsers, getUsersRealtimeDatabase } from '../shared/db';
+import { getUsers } from '../shared/db';
 import UserPhoto from '../shared/UserPhoto';
+import firebase from '../../firebase';
 
 // Fisher-Yates (aka Knuth) Shuffle
 // https://stackoverflow.com/a/2450976/1438029
@@ -35,7 +36,9 @@ export default class Mosaic extends Component {
   }
   componentDidMount() {
     getUsers((users) => {
-      getUsersRealtimeDatabase((usersRD) => {
+      const usersRef = firebase.database().ref('users');
+      usersRef.on('value', (snapshot) => {
+        const usersRD = snapshot.val();
         Object.keys(usersRD).forEach((uid) => {
           if (users[uid]) {
             users[uid].lastOnline = usersRD[uid].lastOnline;
@@ -53,6 +56,44 @@ export default class Mosaic extends Component {
     const usersArray = shuffle(
       Object.values(this.state.users).map((user) => user)
     );
+    // TODO test and fix this sort
+    /**
+     * 1. online (presence)
+     * 2. premium
+     * 3. lastOnline
+     */
+    usersArray.sort((a, b) => {
+      if (a.presence !== 'online' && b.presence !== 'online') {
+        // neither are online:
+        // use premium, else use lastOnline
+        if (!a.premium) {
+          return 1;
+        }
+        if (!b.premium) {
+          return -1;
+        }
+        // neither online, both premium:
+        // use lastOnline
+        return b.lastOnline - a.lastOnline;
+      }
+      if (a.presence !== 'online') {
+        return 1;
+      }
+      if (b.presence !== 'online') {
+        return -1;
+      }
+      // both are online:
+      // use premium, else use lastOnline
+      if (!a.premium) {
+        return 1;
+      }
+      if (!b.premium) {
+        return -1;
+      }
+      // both online, both premium:
+      // use lastOnline
+      return b.lastOnline - a.lastOnline;
+    });
     return (
       <Card>
         <Card.Body>
