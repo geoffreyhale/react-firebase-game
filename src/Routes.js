@@ -10,6 +10,7 @@ import Posts from './components/Posts';
 import Admin from './components/Admin';
 import FirestoreSandbox from './components/Sandbox/firestore';
 import Sandbox from './components/Sandbox';
+import About from './components/About';
 import { AppContext } from './components/AppProvider';
 
 const Routes = () => {
@@ -49,6 +50,10 @@ const Routes = () => {
           ]
         : null}
       [
+      <Route path="/about" key="/about">
+        <About />
+      </Route>
+      ,
       <Route path="/scorekeeper" key="/scorekeeper">
         <Scorekeeper />
       </Route>
