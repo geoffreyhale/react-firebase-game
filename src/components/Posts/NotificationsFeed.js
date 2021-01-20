@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
@@ -27,8 +28,9 @@ const hackCleanupNotifications = (userId, postIds) => {
 const RemoveNotificationButton = ({ postId, userId }) => {
   const { user } = useContext(AppContext);
   return (
-    <a
-      style={{ color: 'red' }}
+    <Button
+      variant="outline-danger"
+      size="sm"
       onClick={() =>
         removeNotification({
           postId: postId,
@@ -37,8 +39,8 @@ const RemoveNotificationButton = ({ postId, userId }) => {
         })
       }
     >
-      Remove
-    </a>
+      x
+    </Button>
   );
 };
 
@@ -47,15 +49,14 @@ const NotificationItem = ({ notification }) => {
   return (
     <div>
       <hr />
+      <div className={'float-right'}>
+        <RemoveNotificationButton postId={postId} userId={userId} />
+      </div>
       <Link to={`post/${postId}`}>
         <div key={postId + userId} className="my-3">
           {content}
         </div>
       </Link>
-      <div style={{ clear: 'both' }} />
-      <div className={'float-right'}>
-        <RemoveNotificationButton postId={postId} userId={userId} />
-      </div>
       <div style={{ clear: 'both' }} />
     </div>
   );
