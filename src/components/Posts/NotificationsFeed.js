@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import { getUsers, removeNotification } from '../shared/db';
+import friendlyTimestamp from '../shared/friendlyTimestamp';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
@@ -75,7 +76,8 @@ const NotificationItemLinkContent = ({
         className="mr-2 float-left"
       />
     ) : null}
-    <strong>{userDisplayName}</strong> replied to your post
+    <strong>{userDisplayName}</strong>
+    {` replied to your post ${friendlyTimestamp(timestamp)}`}
   </span>
 );
 

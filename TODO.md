@@ -11,7 +11,6 @@
 - what is "healthy relating"? what are the expectations here, how do i play?
 - order replies by upvotes/karma too
 - 'Add Tags' to new top level post
-- times on notifications
 - notifications column persists beside single post page
 - top karma (upvotes) received
 - downvotes
