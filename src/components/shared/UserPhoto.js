@@ -32,7 +32,7 @@ export default class UserPhoto extends React.Component {
 
     return (
       <div style={{ position: 'relative', display: 'inline-block' }}>
-        <img src={src} alt="user" style={{ height: size }} />
+        <img src={src} alt="user" style={{ height: size, width: size }} />
         {premium && <PremiumIcon size={size} />}
       </div>
     );
