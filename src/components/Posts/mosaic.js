@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
-import { getUsers } from '../shared/db';
+import { getUsers, getUsersRealtimeDatabase } from '../shared/db';
 import UserPhoto from '../shared/UserPhoto';
 
 // Fisher-Yates (aka Knuth) Shuffle
@@ -35,13 +35,24 @@ export default class Mosaic extends Component {
   }
   componentDidMount() {
     getUsers((users) => {
-      this.setState({
-        // TODO prioritize recently online and premium users in sort
-        users: shuffle(Object.values(users).map((user) => user.uid)),
+      getUsersRealtimeDatabase((usersRD) => {
+        Object.keys(usersRD).forEach((uid) => {
+          if (users[uid]) {
+            users[uid].lastOnline = usersRD[uid].lastOnline;
+            users[uid].presence = usersRD[uid].presence;
+          }
+        });
+        this.setState({
+          users,
+        });
       });
     }, true);
   }
   render() {
+    // TODO prioritize recently online and premium users in sort
+    const usersArray = shuffle(
+      Object.values(this.state.users).map((user) => user)
+    );
     return (
       <Card>
         <Card.Body>
@@ -57,10 +68,15 @@ export default class Mosaic extends Component {
               fontWeight: 900,
             }}
           >
-            {Object.keys(this.state.users).length}
+            {usersArray.length}
           </div>
-          {Object.values(this.state.users).map((uid, i) => (
-            <UserPhoto key={i} uid={uid} size={48} />
+          {usersArray.map((user, i) => (
+            <UserPhoto
+              key={i}
+              uid={user.uid}
+              size={48}
+              presence={user.presence}
+            />
           ))}
         </Card.Body>
       </Card>
