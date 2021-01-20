@@ -6,6 +6,8 @@
 
 # TODO
 
+- improve loading experience on slow devices/connections
+- fix timestamp is ugly initially
 - force-directed venn diagram
 - urls are clickable hyperlinks
 - what is "healthy relating"? what are the expectations here, how do i play?
