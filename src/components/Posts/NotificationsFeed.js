@@ -131,11 +131,15 @@ export default class NotificationsFeed extends React.Component {
                       timestamp={timestamp}
                     />
                   ),
+                  timestamp,
                 });
               });
             }
           });
         }
+        notifications.sort((a, b) => {
+          return b.timestamp - a.timestamp;
+        });
         this.setState({
           notifications: notifications,
         });
