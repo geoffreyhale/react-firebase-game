@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
-import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
+import { BrowserRouter } from 'react-router-dom';
 import { Link, NavLink } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 import firebase, { auth, db, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
-import { BrowserRouter } from 'react-router-dom';
 import AppProvider from './components/AppProvider';
 import { getUser, updateUser } from './components/shared/db';
 import About from './components/About';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 
 const AppHeaderTitle = () => {
   const taglines = [
@@ -141,6 +143,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      loading: true,
       user: null,
     };
     this.login = this.login.bind(this);
@@ -159,7 +162,7 @@ class App extends Component {
             email: dbUser.email,
             photoURL: dbUser.photoURL,
           };
-          this.setState({ user });
+          this.setState({ loading: false, user });
         });
 
         // TODO combine these w an update instead of a set
@@ -200,6 +203,8 @@ class App extends Component {
               .ref('users/' + uid + '/presence')
               .set('online');
           });
+      } else {
+        this.setState({ loading: false });
       }
     });
   }
@@ -253,10 +258,16 @@ class App extends Component {
                     login={this.login}
                     logout={this.logout}
                   />
-                  <div className="mt-3">
-                    {!this.state.user && <About />}
-                    <Routes />
-                  </div>
+                  {this.state.loading ? (
+                    <Spinner animation="border" role="status" variant="primary">
+                      <span className="sr-only">Loading...</span>
+                    </Spinner>
+                  ) : (
+                    <div className="mt-3">
+                      {!this.state.user && <About />}
+                      <Routes />
+                    </div>
+                  )}
                 </Col>
               </Row>
             </Container>
