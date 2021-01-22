@@ -6,13 +6,12 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
-import { BrowserRouter } from 'react-router-dom';
-import { Link, NavLink } from 'react-router-dom';
-import firebase, { auth, db, provider } from './firebase.js';
+import { BrowserRouter, Link, NavLink } from 'react-router-dom';
+import firebase, { auth, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import AppProvider from './components/AppProvider';
-import { getUser, updateUser } from './components/shared/db';
+import { getUser, getUsers, updateUser } from './components/shared/db';
 import About from './components/About';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -145,6 +144,7 @@ class App extends Component {
     this.state = {
       loading: true,
       user: null,
+      users: null,
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -163,6 +163,10 @@ class App extends Component {
             photoURL: dbUser.photoURL,
           };
           this.setState({ loading: false, user });
+        });
+
+        getUsers((users) => {
+          this.setState({ users });
         });
 
         // TODO combine these w an update instead of a set
@@ -247,7 +251,7 @@ class App extends Component {
   }
   render() {
     return (
-      <AppProvider user={this.state.user}>
+      <AppProvider user={this.state.user} users={this.state.users}>
         <BrowserRouter>
           <div className="app">
             <Container fluid>
