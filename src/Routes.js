@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import Scorekeeper from './components/Scorekeeper';
 import IncrementalClickerGame from './components/Games/IncrementalClicker';
 import Chess from './components/Games/Chess';
@@ -9,19 +9,27 @@ import Groups from './components/Groups';
 import PostPage from './components/PostPage';
 import Posts from './components/Posts';
 import Admin from './components/Admin';
-import FirestoreSandbox from './components/Sandbox/firestore';
 import Sandbox from './components/Sandbox';
 import About from './components/About';
 import { AppContext } from './components/AppProvider';
 
 const Routes = () => {
   const { user } = useContext(AppContext);
+  const history = useHistory();
   const location = useLocation();
+
+  if (location.pathname === '/') {
+    history.push('/posts');
+  }
+
   return (
     <Switch>
       {user
         ? [
-            <Route exact path="/" key="/">
+            // <Route exact path="/" key="/">
+
+            // </Route>,
+            <Route path="/posts" key="/posts">
               <Posts />
             </Route>,
             <Route path="/about" key="/about">
