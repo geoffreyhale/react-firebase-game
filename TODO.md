@@ -15,6 +15,7 @@
 
 # TODO
 
+- move Tag Stats to home / Posts page
 - fix tests
 - finish notifications; they should be easy, no user effort; also add (#) count to browser tab
 - improve new member experience, on-boarding
@@ -23,7 +24,6 @@
 - merely clicking upvote refreshes all the notifications and stats!
 - notifications should be easy, automated, don't make me remember and click around and guess and remove
 - notifications and links should take to full thread, top post "see more" state, other comments collapsed, relevant 2 posts uncollapsed
-- cleanup console warnings
 - accounting tools
 - improve loading experience on slow devices/connections
 - urls are clickable hyperlinks

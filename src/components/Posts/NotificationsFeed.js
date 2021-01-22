@@ -50,7 +50,7 @@ const NotificationItem = ({ notification }) => {
   const { content, postId, userId } = notification;
   const history = useHistory();
   return (
-    <tr key={Math.random()}>
+    <tr>
       <td
         // onClick doesn't allow right-click on anchor functionality
         // but cannot find cleaner way to link a whole cell (or row) atm
@@ -146,17 +146,23 @@ export default class NotificationsFeed extends React.Component {
   }
 
   render() {
+    const notifications = this.state.notifications;
+    const hasNotifications = notifications && notifications.length > 0;
     return (
       <Card className="mt-3">
         <Card.Body>
           <Card.Title>Notifications</Card.Title>
+          {hasNotifications ? null : 'None'}
           <Table hover>
             <tbody>
-              {this.state.notifications && this.state.notifications.length > 0
+              {hasNotifications
                 ? this.state.notifications.map((notification) => (
-                    <NotificationItem notification={notification} />
+                    <NotificationItem
+                      key={Math.random()}
+                      notification={notification}
+                    />
                   ))
-                : 'None'}
+                : null}
             </tbody>
           </Table>
         </Card.Body>

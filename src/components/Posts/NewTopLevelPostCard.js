@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import { createNewPost } from '../shared/db';
+import Spinner from '../shared/Spinner';
 import UserPhoto from '../shared/UserPhoto';
 
 const NewTopLevelPostCard = () => {

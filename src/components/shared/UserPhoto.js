@@ -36,12 +36,12 @@ const PresenceIcon = ({ size }) => (
 const UserPhoto = ({ size = 48, presence, key, uid }) => {
   const { users } = useContext(AppContext);
   if (!users) {
-    console.error('UserPhoto used before users context available');
+    console.warn('UserPhoto used before users context available');
     return null;
   }
   const user = users[uid];
   if (!user) {
-    console.error('UserPhoto unable to find uid in global users');
+    console.warn('UserPhoto unable to find uid in global users');
     return null;
   }
   return (
