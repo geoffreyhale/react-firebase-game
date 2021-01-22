@@ -29,9 +29,15 @@ const Routes = () => {
             // <Route exact path="/" key="/">
 
             // </Route>,
-            <Route path="/posts" key="/posts">
+            <Route exact path="/posts" key="/posts">
               <Posts />
             </Route>,
+            // https://ui.dev/react-router-v4-pass-props-to-components/
+            <Route
+              path="/posts/:postId"
+              key={location.pathname}
+              render={(props) => <PostPage {...props} />}
+            />,
             <Route path="/about" key="/about">
               <About />
             </Route>,
@@ -56,12 +62,6 @@ const Routes = () => {
             <Route path="/admin" key="/admin">
               <Admin />
             </Route>,
-            // https://ui.dev/react-router-v4-pass-props-to-components/
-            <Route
-              path="/post/:postId"
-              key={location.pathname}
-              render={(props) => <PostPage {...props} />}
-            />,
           ]
         : null}
       [

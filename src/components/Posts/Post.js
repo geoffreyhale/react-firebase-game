@@ -180,7 +180,7 @@ export const PostHeader = ({
         {hideActionsAndTimestamp ? null : (
           <div className="small text-muted">
             <Link
-              to={hackDoNotAddPostToMessageLinkURL ? postId : 'post/' + postId}
+              to={hackDoNotAddPostToMessageLinkURL ? postId : 'posts/' + postId}
             >
               {friendlyTimestamp(timestamp)}
             </Link>
