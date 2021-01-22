@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
 import { getUsersRealtimeDatabase } from '../shared/db';
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from '../shared/Spinner';
 
 const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
@@ -39,11 +39,7 @@ export default class Admin extends React.Component {
 
   render() {
     if (!this.user() || !this.users()) {
-      return (
-        <Spinner animation="border" role="status" variant="primary">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      );
+      return <Spinner />;
     }
     if (!this.user().admin) {
       return <>Access Denied</>;

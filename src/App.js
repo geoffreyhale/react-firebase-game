@@ -12,6 +12,7 @@ import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import AppProvider from './components/AppProvider';
 import { getUser, getUsers, updateUser } from './components/shared/db';
+// import Spinner from './components/shared/Spinner';
 import About from './components/About';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -263,6 +264,7 @@ class App extends Component {
                     logout={this.logout}
                   />
                   {this.state.loading ? (
+                    // WTF Can't seem to replace this with shard Spinner without browser failing
                     <Spinner animation="border" role="status" variant="primary">
                       <span className="sr-only">Loading...</span>
                     </Spinner>
