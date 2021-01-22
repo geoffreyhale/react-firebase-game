@@ -13,7 +13,7 @@ import Tag from './Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
-import { getUsers } from '../shared/db';
+import Spinner from '../shared/Spinner';
 
 const FEED = Object.freeze({
   UNSEEN: 'unseen',
@@ -131,7 +131,6 @@ export default class Posts extends Component {
     this.state = {
       rawPosts: {},
       feed: FEED.UNSEEN,
-      users: {},
       postsFilter: {
         requiredTags: [],
         forbiddenTagsByMe: [],
@@ -141,22 +140,23 @@ export default class Posts extends Component {
 
   static contextType = AppContext;
   user = () => this.context.user;
+  users = () => this.context.users;
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
-    getUsers((users) => {
-      this.setState({
-        users,
-      });
-      this.postsRef().on('value', (postsSnapshot) => {
-        const posts = postsSnapshot.val();
-        this.setState({ rawPosts: posts });
-      });
+    this.postsRef().on('value', (postsSnapshot) => {
+      const posts = postsSnapshot.val();
+      this.setState({ rawPosts: posts });
     });
   }
 
   render() {
+    const users = this.users();
+    if (!users) {
+      <Spinner />;
+    }
+
     let feedSubtext = null;
 
     const flatPostsArray = Object.entries(this.state.rawPosts).map(
@@ -178,7 +178,7 @@ export default class Posts extends Component {
 
     const postsTree = postsTreeFromRawPosts({
       flatPostsArray: filteredPosts,
-      users: this.state.users,
+      users,
     });
     let { posts } = postsTree;
 
@@ -288,7 +288,7 @@ export default class Posts extends Component {
           </table>
         </Col>
         <Col>
-          <Stats posts={this.state.rawPosts} users={this.state.users} />
+          <Stats posts={this.state.rawPosts} users={users} />
         </Col>
       </Row>
     );
