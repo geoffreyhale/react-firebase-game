@@ -32,12 +32,15 @@ const Routes = () => {
             <Route exact path="/posts" key="/posts">
               <Posts />
             </Route>,
-            // https://ui.dev/react-router-v4-pass-props-to-components/
-            <Route
-              path="/posts/:postId"
-              key={location.pathname}
-              render={(props) => <PostPage {...props} />}
-            />,
+            <Route path="/posts/:postId" key="/posts/post">
+              <Posts />
+            </Route>,
+            // // https://ui.dev/react-router-v4-pass-props-to-components/
+            // <Route
+            //   path="/posts/:postId"
+            //   key={location.pathname}
+            //   render={(props) => <PostPage {...props} />}
+            // />,
             <Route path="/about" key="/about">
               <About />
             </Route>,

@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
+import { withRouter } from 'react-router';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
@@ -12,6 +13,20 @@ import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import Post from './Post';
+
+const searchTree = ({ postId, post, key = 'childNodes' }) => {
+  if (post.id === postId) {
+    return post;
+  } else if (post[key]) {
+    var i;
+    var result = null;
+    for (i = 0; result == null && i < post[key].length; i++) {
+      result = searchTree({ postId, post: post[key][i] });
+    }
+    return result;
+  }
+  return null;
+};
 
 const FEED = Object.freeze({
   UNSEEN: 'unseen',
@@ -123,7 +138,7 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
   </Nav>
 );
 
-export default class Posts extends Component {
+class Posts extends Component {
   constructor() {
     super();
     this.state = {
@@ -145,19 +160,22 @@ export default class Posts extends Component {
   componentDidMount() {
     this.postsRef().on('value', (postsSnapshot) => {
       const posts = postsSnapshot.val();
-      this.setState({ rawPosts: posts });
+      this.setState({ posts });
     });
   }
 
   render() {
+    const postId = this.props.match.params.postId;
+    const isSinglePostPage = !!postId;
+
     const users = this.users();
-    if (!users) {
-      <Spinner />;
+    if (!users || !this.state.posts || this.state.posts.length === 0) {
+      return <Spinner />;
     }
 
     let feedSubtext = null;
 
-    const flatPostsArray = Object.entries(this.state.rawPosts).map(
+    const flatPostsArray = Object.entries(this.state.posts).map(
       ([id, post]) => {
         post.id = id;
         return post;
@@ -165,13 +183,15 @@ export default class Posts extends Component {
     );
 
     let filteredPosts = flatPostsArray;
-    if (this.state.feed === FEED.FILTER_BY_TAGS) {
-      const { postsFilter } = this.state;
-      [filteredPosts, feedSubtext] = getFeedFilterByTags({
-        flatPostsArray,
-        postsFilter,
-        myUserId: this.user().uid,
-      });
+    if (!isSinglePostPage) {
+      if (this.state.feed === FEED.FILTER_BY_TAGS) {
+        const { postsFilter } = this.state;
+        [filteredPosts, feedSubtext] = getFeedFilterByTags({
+          flatPostsArray,
+          postsFilter,
+          myUserId: this.user().uid,
+        });
+      }
     }
 
     const postsTree = postsTreeFromRawPosts({
@@ -180,112 +200,135 @@ export default class Posts extends Component {
     });
     let { posts } = postsTree;
 
-    if (this.state.feed === FEED.UNSEEN) {
-      // TODO tests for this
-      const threadSeedPostIdsToAllow =
-        flatPostsArray &&
-        flatPostsArray
-          .filter((post) => {
-            let mostRecentPostInThread = post;
-            let topLevelPostOrMostRecentPostBySomeoneElse = post;
-            flatPostsArray.forEach((p) => {
-              const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
-              if (isReplyToThisPost) {
-                if (
-                  !mostRecentPostInThread ||
-                  p.timestamp > mostRecentPostInThread.timestamp
-                ) {
-                  mostRecentPostInThread = p;
-                  if (p.userId !== this.user().uid) {
-                    topLevelPostOrMostRecentPostBySomeoneElse = p;
+    let post = {};
+    if (isSinglePostPage) {
+      post = searchTree({ postId, post: { childNodes: postsTree.posts } });
+      if (!post) {
+        return <>Post not found!</>;
+      }
+    } else {
+      if (this.state.feed === FEED.UNSEEN) {
+        // TODO tests for this
+        const threadSeedPostIdsToAllow =
+          flatPostsArray &&
+          flatPostsArray
+            .filter((post) => {
+              let mostRecentPostInThread = post;
+              let topLevelPostOrMostRecentPostBySomeoneElse = post;
+              flatPostsArray.forEach((p) => {
+                const isReplyToThisPost =
+                  p.replyToId && p.replyToId === post.id;
+                if (isReplyToThisPost) {
+                  if (
+                    !mostRecentPostInThread ||
+                    p.timestamp > mostRecentPostInThread.timestamp
+                  ) {
+                    mostRecentPostInThread = p;
+                    if (p.userId !== this.user().uid) {
+                      topLevelPostOrMostRecentPostBySomeoneElse = p;
+                    }
                   }
                 }
-              }
-            });
+              });
 
-            const yourMarkAsSeenTimestamp =
-              post.seen && post.seen[this.user().uid];
-            const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = topLevelPostOrMostRecentPostBySomeoneElse
-              ? yourMarkAsSeenTimestamp >
-                topLevelPostOrMostRecentPostBySomeoneElse.timestamp
-              : true;
+              const yourMarkAsSeenTimestamp =
+                post.seen && post.seen[this.user().uid];
+              const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = topLevelPostOrMostRecentPostBySomeoneElse
+                ? yourMarkAsSeenTimestamp >
+                  topLevelPostOrMostRecentPostBySomeoneElse.timestamp
+                : true;
 
-            return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
-          })
-          .map((post) => post.id);
+              return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
+            })
+            .map((post) => post.id);
 
-      posts = posts.filter((post) =>
-        threadSeedPostIdsToAllow.includes(post.id)
-      );
-      feedSubtext =
-        'Threads in which someone else posted since you last clicked the yellow `seen` button.  Click the `seen` button to temporarily hide a thread from this feed until someone else posts something new.';
-    }
-
-    if (this.state.feed === FEED.POPULAR) {
-      posts.sort((a, b) => {
-        if (!a.upvote) return 1;
-        if (!b.upvote) return -1;
-        return (
-          (b.upvote && Object.keys(b.upvote).length) -
-          (a.upvote && Object.keys(a.upvote).length)
+        posts = posts.filter((post) =>
+          threadSeedPostIdsToAllow.includes(post.id)
         );
-      });
-      feedSubtext = 'Most upvotes';
+        feedSubtext =
+          'Threads in which someone else posted since you last clicked the yellow `seen` button.  Click the `seen` button to temporarily hide a thread from this feed until someone else posts something new.';
+      }
+      if (this.state.feed === FEED.POPULAR) {
+        posts.sort((a, b) => {
+          if (!a.upvote) return 1;
+          if (!b.upvote) return -1;
+          return (
+            (b.upvote && Object.keys(b.upvote).length) -
+            (a.upvote && Object.keys(a.upvote).length)
+          );
+        });
+        feedSubtext = 'Most upvotes';
+      }
     }
 
     return (
       <Row>
-        <Col>
-          <NotificationsFeed />
-        </Col>
+        <Col>{isSinglePostPage ? null : <NotificationsFeed />}</Col>
         <Col sm={8} className="col-posts mt-3">
-          <NewTopLevelPostCard />
+          {isSinglePostPage ? (
+            <Card className="mt-4">
+              <Card.Body>
+                <Post
+                  post={post}
+                  myPhotoURL={this.user().photoURL}
+                  hackDoNotAddPostToMessageLinkURL={true}
+                  hackHidePostLinks={true} // TODO current routing appends extra '/post''s
+                />
+              </Card.Body>
+            </Card>
+          ) : (
+            <>
+              <NewTopLevelPostCard />
 
-          <PostsNav
-            currentFeed={this.state.feed}
-            setFeed={(feed) => this.setState({ feed: feed })}
-            setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-              this.setState({
-                postsFilter: {
-                  requiredTags: requiredTags,
-                  forbiddenTagsByMe: forbiddenTagsByMe,
-                },
-              })
-            }
-          />
+              <PostsNav
+                currentFeed={this.state.feed}
+                setFeed={(feed) => this.setState({ feed: feed })}
+                setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                  this.setState({
+                    postsFilter: {
+                      requiredTags: requiredTags,
+                      forbiddenTagsByMe: forbiddenTagsByMe,
+                    },
+                  })
+                }
+              />
 
-          {feedSubtext ? (
-            <small className="text-muted">{feedSubtext}</small>
-          ) : null}
+              {feedSubtext ? (
+                <small className="text-muted">{feedSubtext}</small>
+              ) : null}
 
-          <table>
-            <tbody>
-              {Object.entries(posts).map(([key, post]) => {
-                return (
-                  <tr key={post.id + post.childNodes.length}>
-                    <td>
-                      <Card className="mt-4">
-                        <Card.Body>
-                          <Post post={post} />
-                        </Card.Body>
-                        {this.state.feed === FEED.UNSEEN ? (
-                          <Card.Footer>
-                            <div className="float-right">
-                              <MarkAsSeenButton postId={post.id} />
-                            </div>
-                            <div style={{ clear: 'both' }}></div>
-                          </Card.Footer>
-                        ) : null}
-                      </Card>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+              <table>
+                <tbody>
+                  {Object.entries(posts).map(([key, post]) => {
+                    return (
+                      <tr key={post.id}>
+                        <td>
+                          <Card className="mt-4">
+                            <Card.Body>
+                              <Post post={post} />
+                            </Card.Body>
+                            {this.state.feed === FEED.UNSEEN ? (
+                              <Card.Footer>
+                                <div className="float-right">
+                                  <MarkAsSeenButton postId={post.id} />
+                                </div>
+                                <div style={{ clear: 'both' }}></div>
+                              </Card.Footer>
+                            ) : null}
+                          </Card>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          )}
         </Col>
         <Col></Col>
       </Row>
     );
   }
 }
+
+export default withRouter(Posts);
