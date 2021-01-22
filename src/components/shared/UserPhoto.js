@@ -45,7 +45,10 @@ const UserPhoto = ({ size = 48, presence, key, uid }) => {
     return null;
   }
   return (
-    <div key={key} style={{ position: 'relative', display: 'inline-block' }}>
+    <div
+      key={user.uid}
+      style={{ position: 'relative', display: 'inline-block' }}
+    >
       <img
         src={user.photoURL}
         alt="user"

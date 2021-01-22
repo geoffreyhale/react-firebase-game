@@ -122,12 +122,7 @@ export default class Mosaic extends Component {
             </span>
           </div>
           {usersArray.map((user, i) => (
-            <UserPhoto
-              key={i}
-              uid={user.uid}
-              size={48}
-              presence={user.presence}
-            />
+            <UserPhoto uid={user.uid} size={48} presence={user.presence} />
           ))}
         </Card.Body>
       </Card>
