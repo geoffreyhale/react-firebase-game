@@ -3,7 +3,8 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
-import { getUsers, getUsersRealtimeDatabase } from '../shared/db';
+import { getUsersRealtimeDatabase } from '../shared/db';
+import Spinner from 'react-bootstrap/Spinner';
 
 const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
@@ -19,33 +20,15 @@ export default class Admin extends React.Component {
 
   static contextType = AppContext;
   user = () => this.context.user;
+  users = () => this.context.users;
 
   componentDidMount() {
-    if (!this.user().admin) {
-      return;
-    }
-    getUsers((users) => {
-      console.log(users);
-      // firestore uses time objects instead of the old millisecond strings from realtime
-      Object.keys(users).forEach((key) => {
-        users[key].lastLogin = getMillisFromDifferingTypes(
-          users[key].lastLogin
-        );
-        users[key].joined = getMillisFromDifferingTypes(users[key].joined);
+    // lastOnline lives in realtime database
+    getUsersRealtimeDatabase((users) => {
+      this.setState({
+        users,
       });
-      // lastOnline lives in realtime database
-      getUsersRealtimeDatabase((realtimeUsers) => {
-        Object.keys(users).forEach((key) => {
-          users[key].lastOnline =
-            realtimeUsers[key] && realtimeUsers[key].lastOnline
-              ? realtimeUsers[key].lastOnline
-              : users[key].lastOnline;
-        });
-        this.setState({
-          users,
-        });
-      });
-    }, true);
+    });
   }
 
   sort(propertyName) {
@@ -55,9 +38,38 @@ export default class Admin extends React.Component {
   }
 
   render() {
-    if (!this.user().admin) {
-      return <>Loading or Access Denied</>;
+    if (!this.user() || !this.users()) {
+      return (
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      );
     }
+    if (!this.user().admin) {
+      return <>Access Denied</>;
+    }
+
+    const users = this.users();
+
+    // merge lastOnline from state
+    Object.entries(users).forEach(([key, user]) => {
+      if (this.state.users && this.state.users[user.uid]) {
+        users[key].lastOnline = this.state.users[user.uid].lastOnline;
+      }
+    });
+
+    Object.values(users).forEach((user) => {
+      if (users[user.uid]) {
+        // TODO in db: convert joined to object type
+        users[user.uid].joined = getMillisFromDifferingTypes(
+          users[user.uid].joined
+        );
+        // TODO in db: delete number/string lastLogins from db, only keep object versions; or convert
+        users[user.uid].lastLogin = getMillisFromDifferingTypes(
+          users[user.uid].lastLogin
+        );
+      }
+    });
 
     const properties = [
       { name: 'uid' },
@@ -68,21 +80,25 @@ export default class Admin extends React.Component {
       { name: 'joined', display: 'friendlyTimestamp' },
     ];
 
+    const usersArray = Object.values(users);
+
     const sortKey = this.state.sortKey;
-    const users = Object.entries(this.state.users).sort((a, b) => {
-      if (!a[1][sortKey]) {
-        return 1;
-      }
-      if (!b[1][sortKey]) {
-        return -1;
-      }
-      if (typeof a[1][sortKey] === 'string') {
-        return a[1][sortKey].localeCompare(b[1][sortKey]);
-      }
-      if (typeof a[1][sortKey] === 'number') {
-        return b[1][sortKey] - a[1][sortKey];
-      }
-    });
+    if (sortKey) {
+      usersArray.sort((a, b) => {
+        if (!a[sortKey]) {
+          return 1;
+        }
+        if (!b[sortKey]) {
+          return -1;
+        }
+        if (typeof a[sortKey] === 'string') {
+          return a[sortKey].localeCompare(b[sortKey]);
+        }
+        if (typeof a[sortKey] === 'number') {
+          return b[sortKey] - a[sortKey];
+        }
+      });
+    }
 
     return (
       <Card>
@@ -101,20 +117,22 @@ export default class Admin extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {users.map(([i, user]) => (
-                <tr key={i}>
-                  {properties.map((property) => {
-                    const value = user[property.name];
-                    return (
-                      <td key={property.name}>
-                        {property.display === 'friendlyTimestamp'
-                          ? friendlyTimestamp(value)
-                          : value}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
+              {usersArray.map((user) => {
+                return (
+                  <tr key={user.uid}>
+                    {properties.map((property) => {
+                      const value = user[property.name];
+                      return (
+                        <td key={property.name}>
+                          {property.display === 'friendlyTimestamp'
+                            ? friendlyTimestamp(value)
+                            : value}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         </Card.Body>
