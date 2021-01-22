@@ -55,7 +55,7 @@ const NotificationItem = ({ notification }) => {
         // onClick doesn't allow right-click on anchor functionality
         // but cannot find cleaner way to link a whole cell (or row) atm
         onClick={() => {
-          history.push('posts/' + postId);
+          history.push('/posts/' + postId);
         }}
       >
         {content}

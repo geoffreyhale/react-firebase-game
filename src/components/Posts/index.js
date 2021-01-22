@@ -263,7 +263,9 @@ class Posts extends Component {
 
     return (
       <Row>
-        <Col>{isSinglePostPage ? null : <NotificationsFeed />}</Col>
+        <Col>
+          <NotificationsFeed />
+        </Col>
         <Col sm={8} className="col-posts mt-3">
           {isSinglePostPage ? (
             <Card className="mt-4">
