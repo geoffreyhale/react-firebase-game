@@ -1,6 +1,10 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../AppProvider';
 
+// TODO write tests for this
+const isPremium = ({ premium }) =>
+  premium && premium.seconds && premium.seconds - Date.now() / 1000 > 0;
+
 const PremiumIcon = ({ size }) => (
   <div
     style={{
@@ -36,6 +40,10 @@ const UserPhoto = ({ size = 48, presence, key, uid }) => {
     return null;
   }
   const user = users[uid];
+  if (!user) {
+    console.error('UserPhoto unable to find uid in global users');
+    return null;
+  }
   return (
     <div key={key} style={{ position: 'relative', display: 'inline-block' }}>
       <img
@@ -43,7 +51,7 @@ const UserPhoto = ({ size = 48, presence, key, uid }) => {
         alt="user"
         style={{ height: size, width: size }}
       />
-      {user.premium && <PremiumIcon size={size} />}
+      {isPremium({ premium: user.premium }) && <PremiumIcon size={size} />}
       {presence === 'online' && <PresenceIcon size={size} />}
     </div>
   );
