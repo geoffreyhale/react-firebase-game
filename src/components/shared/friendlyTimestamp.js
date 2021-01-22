@@ -7,6 +7,10 @@ const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
   if (!timestamp) {
     return;
   }
+  if (typeof timestamp === 'object') {
+    console.error('friendlyTimestamp cannot convert object to timestamp');
+    return;
+  }
   const timestampDate = new Date(timestamp);
   const formattedTimestamp = format(timestampDate, "MMMM d, yyyy 'at' hh:mm b");
   const duration = intervalToDuration({
