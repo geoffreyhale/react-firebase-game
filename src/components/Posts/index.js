@@ -273,7 +273,6 @@ class Posts extends Component {
                 <Post
                   post={post}
                   myPhotoURL={this.user().photoURL}
-                  hackDoNotAddPostToMessageLinkURL={true}
                   hackHidePostLinks={true} // TODO current routing appends extra '/post''s
                 />
               </Card.Body>

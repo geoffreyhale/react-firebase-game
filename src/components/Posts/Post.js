@@ -143,12 +143,7 @@ const PostActionsDropdown = ({ deletePost }) => (
   </Dropdown>
 );
 
-export const PostHeader = ({
-  small,
-  hackDoNotAddPostToMessageLinkURL,
-  post,
-  hideActionsAndTimestamp,
-}) => {
+export const PostHeader = ({ small, post, hideActionsAndTimestamp }) => {
   const { user } = useContext(AppContext);
   const displayName = post.userDisplayName;
   const timestamp = post.timestamp;
@@ -179,11 +174,7 @@ export const PostHeader = ({
         </div>
         {hideActionsAndTimestamp ? null : (
           <div className="small text-muted">
-            <Link
-              to={hackDoNotAddPostToMessageLinkURL ? postId : 'posts/' + postId}
-            >
-              {friendlyTimestamp(timestamp)}
-            </Link>
+            <Link to={'/posts/' + postId}>{friendlyTimestamp(timestamp)}</Link>
           </div>
         )}
       </>
@@ -223,19 +214,13 @@ const PostContent = ({ children, small }) => {
   );
 };
 
-const Replies = ({ post, hackDoNotAddPostToMessageLinkURL }) => {
+const Replies = ({ post }) => {
   const { user } = useContext(AppContext);
   return (
     post &&
     post.childNodes &&
     post.childNodes.map((replyPost) => {
-      return (
-        <ReplyPostCard
-          key={replyPost.id}
-          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-          post={replyPost}
-        />
-      );
+      return <ReplyPostCard key={replyPost.id} post={replyPost} />;
     }, this)
   );
 };
@@ -283,29 +268,18 @@ export class SmartPost extends React.Component {
       return <>Loading SmartPost...</>;
     }
 
-    return (
-      <Post
-        post={this.state.post}
-        hackDoNotAddPostToMessageLinkURL={
-          this.props.hackDoNotAddPostToMessageLinkURL
-        }
-      />
-    );
+    return <Post post={this.state.post} />;
   }
 }
 
-const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
+const Post = ({ post, small }) => {
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
   return (
     <>
-      <PostHeader
-        hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-        post={post}
-        small={small}
-      />
+      <PostHeader post={post} small={small} />
       <PostContent>{post.content}</PostContent>
       <div className="mt-2">
         <div className="mb-1">
@@ -335,10 +309,7 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
       </div>
       {post.childNodes.length > 0 && (
         <div className="mt-3">
-          <Replies
-            post={post}
-            hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-          />
+          <Replies post={post} />
         </div>
       )}
     </>
@@ -347,15 +318,11 @@ const Post = ({ post, hackDoNotAddPostToMessageLinkURL, small }) => {
 
 export default Post;
 
-const ReplyPostCard = ({ hackDoNotAddPostToMessageLinkURL, post }) => {
+const ReplyPostCard = ({ post }) => {
   return (
     <Card className="mt-1">
       <Card.Body>
-        <Post
-          post={post}
-          hackDoNotAddPostToMessageLinkURL={hackDoNotAddPostToMessageLinkURL}
-          small={true}
-        />
+        <Post post={post} small={true} />
       </Card.Body>
     </Card>
   );
