@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
@@ -268,7 +269,11 @@ class Posts extends Component {
         </Col>
         <Col sm={8} className="col-posts mt-3">
           {isSinglePostPage ? (
-            <Card className="mt-4">
+            <Card>
+              <Card.Header>
+                {post.replyToId ? '...' : null}
+                {/* <Link to={'/posts/' + post.id}>{post.id}</Link> */}
+              </Card.Header>
               <Card.Body>
                 <Post
                   post={post}
