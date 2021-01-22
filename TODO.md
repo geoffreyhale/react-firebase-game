@@ -15,9 +15,9 @@
 
 # TODO
 
-- rewire database calls and improve front-end data handling and implement caching
+- fix tests
 - finish notifications; they should be easy, no user effort; also add (#) count to browser tab
-- improve front page, about page, new member experience, on-boarding
+- improve new member experience, on-boarding
 - develop the end-game, Trust Points or Healthy Relater levels and access to deeper safer rooms for higher safety and vulnerable/charged topics etc
 - tag filtering; presets; digests
 - merely clicking upvote refreshes all the notifications and stats!
@@ -26,14 +26,13 @@
 - cleanup console warnings
 - accounting tools
 - improve loading experience on slow devices/connections
-- force-directed venn diagram
 - urls are clickable hyperlinks
 - what is "healthy relating"? what are the expectations here, how do i play?
 - order replies by upvotes/karma too
 - 'Add Tags' to new top level post
 - notifications column persists beside single post page
 - top karma (upvotes) received
-- downvotes
+- downvotes, or flagging or something
 - map out what is healthy relating
 - lowercase all tags ?
 - tag filter digests group similar tags
@@ -48,16 +47,12 @@
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
 - buggish: Feature Requests feed allows replies now but does't show them
 - daily scorecard app w limited visibility for habits etc and accountability
-- about page
-- front page
-- 3d force graph for something
-- fix double render
+- fix double render (still happening? / use more loading)
 - clean out Posts index
 - posts feed slowness ?
-- security, seriously
-- bug: after log out, PERMISSION DENIED errors, still an issue?
+- bug: after log out, PERMISSION DENIED errors (still an issue?)
 - help user to put it on their phone home screen
-- move junk data out of db users
+- move junk data out of db users, eg groups
 - fix the smart feed active indicator, differently weird on desktop and phone ?
 - phone users may be confused about no submit buttons for tags
 - allow like or heart or read or something on replies or all posts
