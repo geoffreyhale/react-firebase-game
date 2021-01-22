@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import Tag from './Tag';
+import { AppContext } from '../AppProvider';
 import UserPhoto from '../shared/UserPhoto';
+import Tag from './Tag';
 
 // TODO refactor: build stats.users etc object first, then iterate posts
 export const statsFromPostsAndUsers = ({ posts, users }) => {
@@ -173,8 +174,14 @@ const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
   </Card>
 );
 
-const Stats = ({ posts, users }) => {
-  if (!posts || !users) {
+const Stats = ({ posts }) => {
+  const { users } = useContext(AppContext);
+  if (!posts) {
+    console.error('Stats did not receive any posts');
+    return null;
+  }
+  if (!users) {
+    console.error('Stats could not find any users information');
     return null;
   }
 

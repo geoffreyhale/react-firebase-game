@@ -288,7 +288,7 @@ export default class Posts extends Component {
           </table>
         </Col>
         <Col>
-          <Stats posts={this.state.rawPosts} users={users} />
+          <Stats posts={this.state.rawPosts} />
         </Col>
       </Row>
     );
