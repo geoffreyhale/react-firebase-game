@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-// import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
 import { getUsers } from '../shared/db';
 import UserPhoto from '../shared/UserPhoto';
 import firebase from '../../firebase';
+import Spinner from '../shared/Spinner';
 
 // Fisher-Yates (aka Knuth) Shuffle
 // https://stackoverflow.com/a/2450976/1438029
@@ -56,6 +56,9 @@ export default class Mosaic extends Component {
     const usersArray = shuffle(
       Object.values(this.state.users).map((user) => user)
     );
+    if (!usersArray || usersArray.length === 0) {
+      return <Spinner />;
+    }
     // TODO test and fix this sort
     /**
      * 1. online (presence)
@@ -97,19 +100,26 @@ export default class Mosaic extends Component {
     return (
       <Card>
         <Card.Body>
-          <Card.Title>Community Mosaic</Card.Title>
+          {/* <Card.Title>Community Mosaic</Card.Title> */}
           <div
             style={{
               display: 'inline-block',
               height: 48,
               width: 48,
               verticalAlign: 'middle',
-              backgroundColor: 'grey',
-              color: 'whitesmoke',
-              fontWeight: 900,
+              backgroundColor: '#209cee',
             }}
           >
-            {usersArray.length}
+            <span
+              className="ml-1"
+              style={{
+                color: 'whitesmoke',
+                fontWeight: 900,
+                fontSize: 20,
+              }}
+            >
+              {usersArray.length}
+            </span>
           </div>
           {usersArray.map((user, i) => (
             <UserPhoto

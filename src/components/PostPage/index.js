@@ -5,8 +5,8 @@ import Row from 'react-bootstrap/Row';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import Post from '../Posts/Post';
-import postsTreeFromRawPosts from '../Posts/postsTreeFromRawPosts';
 import { getUsers } from '../shared/db';
+import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {

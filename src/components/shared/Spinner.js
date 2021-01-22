@@ -1,9 +1,10 @@
 import React from 'react';
+import BootstrapSpinner from 'react-bootstrap/Spinner';
 
 const Spinner = () => (
-  <Spinner animation="border" role="status" variant="primary">
+  <BootstrapSpinner animation="border" role="status" variant="primary">
     <span className="sr-only">Loading...</span>
-  </Spinner>
+  </BootstrapSpinner>
 );
 
 export default Spinner;

@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { AppContext } from '../AppProvider';
 import UserPhoto from '../shared/UserPhoto';
-import Tag from './Tag';
+import Tag from '../shared/Tag';
 
 // TODO refactor: build stats.users etc object first, then iterate posts
 export const statsFromPostsAndUsers = ({ posts, users }) => {
@@ -108,7 +108,10 @@ const TagStatsTable = ({ subtitle, statsByTag }) => {
   );
 
   return (
-    <Card className="mb-2 tag-stats">
+    <Card
+      className="mb-2 tag-stats mr-2"
+      style={{ display: 'inline-block', verticalAlign: 'top' }}
+    >
       <Card.Body>
         <Card.Title>
           Top {howMay} Tags
@@ -139,9 +142,12 @@ const TagStatsTable = ({ subtitle, statsByTag }) => {
 };
 
 const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
-  <Card className="mb-2 user-stats">
+  <Card
+    className="mb-2 user-stats mr-2"
+    style={{ display: 'inline-block', verticalAlign: 'top' }}
+  >
     <Card.Body>
-      <Card.Title>
+      <Card.Title style={{ minHeight: 72 }}>
         {title}
         {subtitle && (
           <>
@@ -196,6 +202,7 @@ const Stats = ({ posts }) => {
 
   return (
     <>
+      {/* TODO "Karma / Upvotes" */}
       <StatsTable
         title={'Most Replies Received'}
         subtitle={'Conversation Starters'}

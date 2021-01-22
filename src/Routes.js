@@ -4,6 +4,7 @@ import Scorekeeper from './components/Scorekeeper';
 import IncrementalClickerGame from './components/Games/IncrementalClicker';
 import Chess from './components/Games/Chess';
 import TicTacToe from './components/Games/TicTacToe';
+import Community from './components/Community';
 import Groups from './components/Groups';
 import PostPage from './components/PostPage';
 import Posts from './components/Posts';
@@ -25,6 +26,9 @@ const Routes = () => {
             </Route>,
             <Route path="/about" key="/about">
               <About />
+            </Route>,
+            <Route path="/Community" key="/Community">
+              <Community />
             </Route>,
             <Route
               path="/incremental-clicker-game"

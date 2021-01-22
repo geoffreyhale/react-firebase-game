@@ -5,15 +5,13 @@ import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
-import Mosaic from './Mosaic';
-import Post from './Post';
-import postsTreeFromRawPosts from './postsTreeFromRawPosts';
-import Stats from './Stats';
-import Tag from './Tag';
+import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
+import Spinner from '../shared/Spinner';
+import Tag from '../shared/Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
-import Spinner from '../shared/Spinner';
+import Post from './Post';
 
 const FEED = Object.freeze({
   UNSEEN: 'unseen',
@@ -238,7 +236,6 @@ export default class Posts extends Component {
     return (
       <Row>
         <Col>
-          <Mosaic />
           <NotificationsFeed />
         </Col>
         <Col sm={8} className="col-posts mt-3">
@@ -287,9 +284,7 @@ export default class Posts extends Component {
             </tbody>
           </table>
         </Col>
-        <Col>
-          <Stats posts={this.state.rawPosts} />
-        </Col>
+        <Col></Col>
       </Row>
     );
   }

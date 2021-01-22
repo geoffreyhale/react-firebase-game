@@ -147,7 +147,7 @@ export default class NotificationsFeed extends React.Component {
 
   render() {
     return (
-      <Card className="mt-4">
+      <Card className="mt-3">
         <Card.Body>
           <Card.Title>Notifications</Card.Title>
           <Table hover>

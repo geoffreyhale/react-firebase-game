@@ -5,14 +5,13 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
-import Spinner from 'react-bootstrap/Spinner';
 import { BrowserRouter, Link, NavLink } from 'react-router-dom';
 import firebase, { auth, provider } from './firebase.js';
 import UserAuth from './components/UserAuth';
 import Routes from './Routes';
 import AppProvider from './components/AppProvider';
 import { getUser, getUsers, updateUser } from './components/shared/db';
-// import Spinner from './components/shared/Spinner';
+import Spinner from './components/shared/Spinner';
 import About from './components/About';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -56,6 +55,11 @@ const AppNav = ({ admin }) => {
       <Nav.Item>
         <Nav.Link as={NavLink} to="/" exact>
           Home
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link as={NavLink} to="/community">
+          Community
         </Nav.Link>
       </Nav.Item>
       <NavDropdown title="&#8943;">
@@ -264,10 +268,7 @@ class App extends Component {
                     logout={this.logout}
                   />
                   {this.state.loading ? (
-                    // WTF Can't seem to replace this with shard Spinner without browser failing
-                    <Spinner animation="border" role="status" variant="primary">
-                      <span className="sr-only">Loading...</span>
-                    </Spinner>
+                    <Spinner />
                   ) : (
                     <div className="mt-3">
                       {!this.state.user && <About />}
