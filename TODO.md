@@ -22,7 +22,6 @@
 - hide Feature Requests feed, is for devs
 - many replies deep the padding is too much!
 - move Tag Stats to home / Posts page
-- fix tests
 - add (#) count to browser tab
 - improve new member experience, on-boarding
 - develop the end-game, Trust Points or Healthy Relater levels and access to deeper safer rooms for higher safety and vulnerable/charged topics etc

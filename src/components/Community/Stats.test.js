@@ -17,6 +17,10 @@ describe('statsByUserFromPosts', () => {
           1236: { type: 'asdf', userId: '23456789' },
         },
         userId: '12345678',
+        upvote: {
+          asdf: {},
+          'jkl;': {},
+        },
       },
       1237: {
         replyToId: '1234',
@@ -40,6 +44,7 @@ describe('statsByUserFromPosts', () => {
           repliesSentNotSelf: 0,
           replyCount: 1,
           tags: 1,
+          upvotes: 2,
           userId: '12345678',
         },
         23456789: {
@@ -48,6 +53,7 @@ describe('statsByUserFromPosts', () => {
           repliesSentNotSelf: 1,
           replyCount: 1,
           tags: 1,
+          upvotes: 0,
           userId: '23456789',
         },
         '0987654321zyx': {
@@ -56,6 +62,7 @@ describe('statsByUserFromPosts', () => {
           repliesSentNotSelf: 0,
           replyCount: 0,
           tags: 0,
+          upvotes: 0,
           userId: '0987654321zyx',
         },
       },

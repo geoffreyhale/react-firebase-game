@@ -1,9 +1,11 @@
-import postsTreeFromRawPosts, { createDataTree } from './Stats';
+import postsTreeFromRawPosts from './postsTreeFromRawPosts';
 
 describe('postsTreeFromRawPosts', () => {
   it('handles empty objects', () => {
-    const posts = {};
+    const flatPostsArray = [];
     const users = {};
-    expect(postsTreeFromRawPosts({ posts, users })).toEqual({});
+    expect(postsTreeFromRawPosts({ flatPostsArray, users })).toEqual({
+      posts: [],
+    });
   });
 });
