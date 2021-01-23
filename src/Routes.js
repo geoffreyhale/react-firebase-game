@@ -6,7 +6,6 @@ import Chess from './components/Games/Chess';
 import TicTacToe from './components/Games/TicTacToe';
 import Community from './components/Community';
 import Groups from './components/Groups';
-import PostPage from './components/PostPage';
 import Posts from './components/Posts';
 import Admin from './components/Admin';
 import Sandbox from './components/Sandbox';
