@@ -15,6 +15,8 @@
 
 # TODO
 
+- change db 'upvote' to 'upvotes'
+- https://www.robinwieruch.de/react-firebase-realtime-database
 - step by step intro/tutorial/quest-lines
 - @usernames
 - change display name
