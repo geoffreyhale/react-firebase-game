@@ -258,7 +258,7 @@ const Post = ({ post, small }) => {
         {repliesCollapsed && replyCount > 0 && (
           // TODO abuse of card-footer class
           <div
-            class="mt-2 card-footer"
+            className="mt-2 card-footer"
             onClick={() => setRepliesCollapsed(!repliesCollapsed)}
           >
             <PostMenuBarItem>&#128488;&#65039; {replyCount}</PostMenuBarItem>
