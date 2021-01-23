@@ -21,7 +21,6 @@
 - @usernames
 - change display name
 - hot feed combines upvotes and recence
-- hide Feature Requests feed, is for devs
 - many replies deep the padding is too much!
 - move Tag Stats to home / Posts page
 - add (#) count to browser tab

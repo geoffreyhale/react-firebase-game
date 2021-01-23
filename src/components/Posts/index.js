@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Nav from 'react-bootstrap/Nav';
@@ -90,54 +90,59 @@ const getFeedFilterByTags = ({ flatPostsArray, postsFilter, myUserId }) => {
   return [filteredPosts, feedSubtext];
 };
 
-const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => (
-  <Nav className="justify-content-center">
-    <Nav.Item>
-      <Nav.Link
-        active={currentFeed === FEED.POPULAR}
-        onClick={() => {
-          setFeed(FEED.POPULAR);
-          setPostsFilter([], []);
-        }}
-      >
-        Popular
-      </Nav.Link>
-    </Nav.Item>
-    <Nav.Item>
-      <Nav.Link
-        active={currentFeed === FEED.UNSEEN}
-        onClick={() => {
-          setFeed(FEED.UNSEEN);
-          setPostsFilter([], []);
-        }}
-      >
-        Unseen
-      </Nav.Link>
-    </Nav.Item>
-    <Nav.Item>
-      <Nav.Link
-        active={currentFeed === FEED.ALL}
-        onClick={() => {
-          setFeed(FEED.ALL);
-          setPostsFilter([], []);
-        }}
-      >
-        All Posts
-      </Nav.Link>
-    </Nav.Item>
-    <Nav.Item>
-      <Nav.Link
-        active={currentFeed === FEED.FILTER_BY_TAGS}
-        onClick={() => {
-          setFeed(FEED.FILTER_BY_TAGS);
-          setPostsFilter(['feature request'], ['done', 'closed']);
-        }}
-      >
-        Feature Requests
-      </Nav.Link>
-    </Nav.Item>
-  </Nav>
-);
+const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => {
+  const { user } = useContext(AppContext);
+  return (
+    <Nav className="justify-content-center">
+      <Nav.Item>
+        <Nav.Link
+          active={currentFeed === FEED.POPULAR}
+          onClick={() => {
+            setFeed(FEED.POPULAR);
+            setPostsFilter([], []);
+          }}
+        >
+          Popular
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link
+          active={currentFeed === FEED.UNSEEN}
+          onClick={() => {
+            setFeed(FEED.UNSEEN);
+            setPostsFilter([], []);
+          }}
+        >
+          Unseen
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link
+          active={currentFeed === FEED.ALL}
+          onClick={() => {
+            setFeed(FEED.ALL);
+            setPostsFilter([], []);
+          }}
+        >
+          All Posts
+        </Nav.Link>
+      </Nav.Item>
+      {user.admin && (
+        <Nav.Item>
+          <Nav.Link
+            active={currentFeed === FEED.FILTER_BY_TAGS}
+            onClick={() => {
+              setFeed(FEED.FILTER_BY_TAGS);
+              setPostsFilter(['feature request'], ['done', 'closed']);
+            }}
+          >
+            Feature Requests
+          </Nav.Link>
+        </Nav.Item>
+      )}
+    </Nav>
+  );
+};
 
 class Posts extends Component {
   constructor() {
