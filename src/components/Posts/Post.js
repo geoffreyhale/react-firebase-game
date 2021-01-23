@@ -216,11 +216,12 @@ const Post = ({ post, small }) => {
     <>
       <PostHeader post={post} small={small} />
       <PostContent>{post.content}</PostContent>
-      <div className="mt-2">
-        <div className="mb-1">
+      <hr style={{ margin: '1rem 0 .5rem' }} />
+      <div>
+        <div className="mb-2">
           <Tags post={post} />
         </div>
-        <div className="mb-1">
+        <div className="mb-2">
           {!tagFormCollapsed && (
             <NewPostForm
               onSubmit={(content, replyToId, successCallback, userId) => {
@@ -233,7 +234,6 @@ const Post = ({ post, small }) => {
             />
           )}
         </div>
-        {/* <hr style={{ margin: '0.25rem 0' }} /> */}
         <div>
           <Upvote postId={post.id} />
           {/* // TODO replies icon active if you've replied to the thread */}
