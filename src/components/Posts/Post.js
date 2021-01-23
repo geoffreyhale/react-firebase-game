@@ -23,7 +23,7 @@ export const PostMenuBarItem = ({ active = false, children, onClick }) => {
         cursor: 'pointer',
         color: active ? redditRed : null,
       }}
-      className={active ? null : 'text-muted'}
+      className={'mr-2 ' + (active ? null : 'text-muted')}
     >
       {children}
     </small>
@@ -41,38 +41,6 @@ const addTag = (postId, tagContent, successCallback, myUserId) => {
       userId: myUserId,
     })
     .then(successCallback());
-};
-
-const AddTags = ({ post }) => {
-  const [formCollapsed, setFormCollapsed] = useState(true);
-  const { user } = useContext(AppContext);
-
-  if (formCollapsed) {
-    return (
-      <PostMenuBarItem onClick={() => setFormCollapsed(false)}>
-        Tag
-      </PostMenuBarItem>
-    );
-  }
-
-  const { tags } = post;
-  // const placeholder =
-  //   tags && Object.keys(tags).length > 0
-  //     ? 'add tag'
-  //     : 'this post needs tags help add tags';
-
-  return (
-    <NewPostForm
-      onSubmit={(content, replyToId, successCallback, userId) => {
-        addTag(post.id, content, successCallback, userId);
-      }}
-      placeholder={'submit tags one at a time'}
-      hideSubmitButton={true}
-      small={true}
-      characterLimit={25}
-      autoFocus={true}
-    />
-  );
 };
 
 const Tags = ({ post }) => {
@@ -100,10 +68,10 @@ const Tags = ({ post }) => {
   );
 };
 
-const ReplyForm = ({ replyToPostId, autoFocus, onSuccess }) => {
+const ReplyForm = ({ replyToPostId, onSuccess }) => {
   const { user } = useContext(AppContext);
   return (
-    <Card className="mt-1">
+    <Card className="mt-2">
       <Card.Body>
         <div
           className="mt-3"
@@ -123,7 +91,6 @@ const ReplyForm = ({ replyToPostId, autoFocus, onSuccess }) => {
               placeholder="Write a reply..."
               replyToId={replyToPostId}
               multiline={true}
-              autoFocus={autoFocus}
             />
           </div>
         </div>
@@ -225,11 +192,26 @@ const Replies = ({ post }) => {
   );
 };
 
+// TODO write tests for this
+// Note: this counts the first node (self)
+const countAncestors = (node) => {
+  const thisCount =
+    node.childNodes &&
+    node.childNodes.length > 0 &&
+    node.childNodes.reduce((count, node) => {
+      return count + countAncestors(node);
+    }, 0);
+  return thisCount + 1;
+};
+
 const Post = ({ post, small }) => {
+  const [tagFormCollapsed, setTagFormCollapsed] = useState(true);
+  const [repliesCollapsed, setRepliesCollapsed] = useState(true);
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
+  const replyCount = countAncestors(post) - 1;
   return (
     <>
       <PostHeader post={post} small={small} />
@@ -238,30 +220,59 @@ const Post = ({ post, small }) => {
         <div className="mb-1">
           <Tags post={post} />
         </div>
+        <div className="mb-1">
+          {!tagFormCollapsed && (
+            <NewPostForm
+              onSubmit={(content, replyToId, successCallback, userId) => {
+                addTag(post.id, content, successCallback, userId);
+              }}
+              placeholder={'submit tags one at a time'}
+              hideSubmitButton={true}
+              small={true}
+              characterLimit={25}
+            />
+          )}
+        </div>
         {/* <hr style={{ margin: '0.25rem 0' }} /> */}
         <div>
           <Upvote postId={post.id} />
-          <span className="ml-2">
-            <AddTags post={post} />
-          </span>
-          {replyFormCollapsed && (
-            <span className="ml-2">
-              <PostMenuBarItem onClick={() => setReplyFormCollapsed(false)}>
-                Reply
-              </PostMenuBarItem>
-            </span>
-          )}
+          {/* // TODO replies icon active if you've replied to the thread */}
+          <PostMenuBarItem
+            onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+          >
+            &#128488;&#65039; {replyCount}
+          </PostMenuBarItem>
+          <PostMenuBarItem
+            onClick={() => setTagFormCollapsed(!tagFormCollapsed)}
+            active={!tagFormCollapsed}
+          >
+            Tag
+          </PostMenuBarItem>
+          <PostMenuBarItem
+            onClick={() => setReplyFormCollapsed(!replyFormCollapsed)}
+            active={!replyFormCollapsed}
+          >
+            Reply
+          </PostMenuBarItem>
         </div>
+        {repliesCollapsed && replyCount > 0 && (
+          // TODO abuse of card-footer class
+          <div
+            class="mt-2 card-footer"
+            onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+          >
+            <PostMenuBarItem>&#128488;&#65039; {replyCount}</PostMenuBarItem>
+          </div>
+        )}
         {!replyFormCollapsed && (
           <ReplyForm
             replyToPostId={post.id}
-            autoFocus={small}
             onSuccess={() => setReplyFormCollapsed(true)}
           />
         )}
       </div>
-      {post.childNodes.length > 0 && (
-        <div className="mt-3">
+      {!repliesCollapsed && post.childNodes.length > 0 && (
+        <div className="mt-2">
           <Replies post={post} />
         </div>
       )}

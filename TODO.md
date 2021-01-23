@@ -39,9 +39,7 @@
 - downvotes, or flagging or something
 - lowercase all tags ?
 - save user preferred feed ?
-- ui manual collapse of reply tree branches
 - remove hackFunctions
-- post feeds start w replies collapsed ?
 - character or word counts and maybe time to read length indicators maybe on Read More link
 - daily scorecard app w limited visibility for habits etc and accountability
 - fix double render (still happening? / use more loading)
