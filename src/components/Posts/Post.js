@@ -225,53 +225,6 @@ const Replies = ({ post }) => {
   );
 };
 
-export class SmartPost extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      post: null,
-    };
-  }
-
-  db = () => firebase.database();
-  postRef = (postId) => this.db().ref('posts/' + postId);
-  userRef = (userId) => this.db().ref('users/' + userId);
-
-  componentDidMount() {
-    const { postId } = this.props;
-    this.postRef(postId).on('value', (postSnapshot) => {
-      const post = postSnapshot.val();
-      if (post) {
-        post.id = postId;
-        this.userRef(post.userId).once('value', (userSnapshot) => {
-          const postUser = userSnapshot.val();
-          post.userDisplayName = postUser.displayName;
-          post.userPhotoURL = postUser.photoURL;
-          post.childNodes = this.props.hackForPostChildNodes;
-          this.setState({ post: post });
-          // TODO BROKEN -- NEW REPLIES DO NOT APPEAR WITHOUT REFRESH
-          // TODO BROKEN -- IF A POST IS DELETED, IT DOES NOT DISAPPEAR WITHOUT REFRESH (is this a problem?)
-          // TODO BROKEN -- new tags aren't added either!?!
-          // TODO get rid of hackForPostChildNodes / do the following:
-          // TODO if this is a reply, include to which it was a reply and display as such
-          // TODO if there are replies to this, display them
-          // TODO actually need to have had pre-processing... will take childNodes here...
-        });
-      } else {
-        this.setState({ post: null });
-      }
-    });
-  }
-
-  render() {
-    if (!this.state.post) {
-      return <>Loading SmartPost...</>;
-    }
-
-    return <Post post={this.state.post} />;
-  }
-}
-
 const Post = ({ post, small }) => {
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
   if (!post.id) {
