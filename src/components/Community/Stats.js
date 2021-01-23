@@ -18,6 +18,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
         repliesSentNotSelf: 0,
         replyCount: 0,
         tags: 0,
+        upvotes: 0,
       };
     });
 
@@ -33,11 +34,16 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
         repliesSentNotSelf: 0,
         replyCount: 0,
         tags: 0,
+        upvotes: 0,
       };
     }
 
     // Posts (includes Replies)
     result.users[userId].postCount++;
+
+    if (typeof post.upvote === 'object') {
+      result.users[userId].upvotes += Object.keys(post.upvote).length;
+    }
 
     // Replies
     if (post.replyToId) {
@@ -77,6 +83,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
                 repliesSentNotSelf: 0,
                 replyCount: 0,
                 tags: 0,
+                upvotes: 0,
               };
             }
             result.users[tag.userId].tags++;
@@ -202,7 +209,13 @@ const Stats = ({ posts }) => {
 
   return (
     <>
-      {/* TODO "Karma / Upvotes" */}
+      <StatsTable
+        title={'Most Upvotes Received'}
+        subtitle={'Good Karma'}
+        statsByUser={statsByUser}
+        statKey={'upvotes'}
+        key={'upvotes'}
+      />
       <StatsTable
         title={'Most Replies Received'}
         subtitle={'Conversation Starters'}
