@@ -271,8 +271,9 @@ class Posts extends Component {
           {isSinglePostPage ? (
             <Card>
               <Card.Header>
-                {post.replyToId ? '...' : null}
-                {/* <Link to={'/posts/' + post.id}>{post.id}</Link> */}
+                {post.replyToId ? (
+                  <Link to={'/posts/' + post.replyToId}>&#8598;...</Link>
+                ) : null}
               </Card.Header>
               <Card.Body>
                 <Post
