@@ -5,21 +5,23 @@ import { AppContext } from '../AppProvider';
 import UserPhoto from '../shared/UserPhoto';
 import Tag from '../shared/Tag';
 
+const createUserStatsZeroObject = ({ userId }) => ({
+  userId,
+  postCount: 0,
+  repliesReceivedNotSelf: 0,
+  repliesSentNotSelf: 0,
+  replyCount: 0,
+  tags: 0,
+  upvotes: 0,
+});
+
 // TODO refactor: build stats.users etc object first, then iterate posts
 export const statsFromPostsAndUsers = ({ posts, users }) => {
   const result = { users: {}, tags: {} };
 
   users &&
-    Object.entries(users).forEach(([i, user]) => {
-      result.users[i] = {
-        userId: i,
-        postCount: 0,
-        repliesReceivedNotSelf: 0,
-        repliesSentNotSelf: 0,
-        replyCount: 0,
-        tags: 0,
-        upvotes: 0,
-      };
+    Object.keys(users).forEach((key) => {
+      result.users[key] = createUserStatsZeroObject({ userId: key });
     });
 
   Object.values(posts).forEach((post) => {
@@ -27,15 +29,7 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
 
     // if user missing from users! add user for stats
     if (!result.users[userId]) {
-      result.users[userId] = {
-        userId: userId,
-        postCount: 0,
-        repliesReceivedNotSelf: 0,
-        repliesSentNotSelf: 0,
-        replyCount: 0,
-        tags: 0,
-        upvotes: 0,
-      };
+      result.users[userId] = createUserStatsZeroObject({ userId });
     }
 
     // Posts (includes Replies)
@@ -76,15 +70,9 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
           if (tag.userId) {
             // if user missing from users! add user for stats
             if (tag.userId && !result.users[tag.userId]) {
-              result.users[tag.userId] = {
+              result.users[tag.userId] = createUserStatsZeroObject({
                 userId: tag.userId,
-                postCount: 0,
-                repliesReceivedNotSelf: 0,
-                repliesSentNotSelf: 0,
-                replyCount: 0,
-                tags: 0,
-                upvotes: 0,
-              };
+              });
             }
             result.users[tag.userId].tags++;
           }
