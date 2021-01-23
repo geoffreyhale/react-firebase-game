@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../AppProvider';
 import { getUsers, removeNotification } from '../shared/db';
@@ -49,8 +49,13 @@ const RemoveNotificationButton = ({ postId, userId }) => {
 const NotificationItem = ({ notification }) => {
   const { content, postId, userId } = notification;
   const history = useHistory();
+  const location = useLocation();
+  const active = location.pathname.indexOf(postId) !== -1 ? true : false;
+  const bootstrapTableHoverColor = 'rgba(0,0,0,.075)';
   return (
-    <tr>
+    <tr
+      style={{ backgroundColor: active ? bootstrapTableHoverColor : 'inherit' }}
+    >
       <td
         // onClick doesn't allow right-click on anchor functionality
         // but cannot find cleaner way to link a whole cell (or row) atm
