@@ -157,7 +157,17 @@ const PostContent = ({ children, small }) => {
 
   const collapsedContent = (
     <>
-      <Linkify>{children.substring(0, 500)}</Linkify>
+      <Linkify
+        options={{
+          defaultProtocol: 'https',
+          target: {
+            url: (url) =>
+              url.startsWith('https://xbk.io') ? '_self' : '_blank',
+          },
+        }}
+      >
+        {children.substring(0, 500)}
+      </Linkify>
       {'... '}
       <span
         onClick={() => setCollapsed(false)}
@@ -177,7 +187,21 @@ const PostContent = ({ children, small }) => {
         fontSize: small ? '85%' : null,
       }}
     >
-      {collapsed ? collapsedContent : <Linkify>{children}</Linkify>}
+      {collapsed ? (
+        collapsedContent
+      ) : (
+        <Linkify
+          options={{
+            defaultProtocol: 'https',
+            target: {
+              url: (url) =>
+                url.startsWith('https://xbk.io') ? '_self' : '_blank',
+            },
+          }}
+        >
+          {children}
+        </Linkify>
+      )}
     </div>
   );
 };
