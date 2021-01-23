@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import Linkify from 'linkifyjs/react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -156,7 +157,7 @@ const PostContent = ({ children, small }) => {
 
   const collapsedContent = (
     <>
-      {children.substring(0, 500)}
+      <Linkify>{children.substring(0, 500)}</Linkify>
       {'... '}
       <span
         onClick={() => setCollapsed(false)}
@@ -176,7 +177,7 @@ const PostContent = ({ children, small }) => {
         fontSize: small ? '85%' : null,
       }}
     >
-      {collapsed ? collapsedContent : children}
+      {collapsed ? collapsedContent : <Linkify>{children}</Linkify>}
     </div>
   );
 };
