@@ -91,10 +91,10 @@ const getFeedFilterByTags = ({ flatPostsArray, postsFilter, myUserId }) => {
   return [filteredPosts, feedSubtext];
 };
 
-const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => {
+const FeedsNav = ({ currentFeed, setFeed, setPostsFilter }) => {
   const { user } = useContext(AppContext);
   return (
-    <Nav className="justify-content-center">
+    <Nav variant="tabs" className="justify-content-center mt-2">
       <Nav.Item>
         <Nav.Link
           active={currentFeed === FEED.HOT}
@@ -114,7 +114,7 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => {
             setPostsFilter([], []);
           }}
         >
-          Popular
+          Upvotes
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
@@ -136,7 +136,7 @@ const PostsNav = ({ currentFeed, setFeed, setPostsFilter }) => {
             setPostsFilter([], []);
           }}
         >
-          All Posts
+          All
         </Nav.Link>
       </Nav.Item>
       {user.admin && (
@@ -321,7 +321,7 @@ class Posts extends Component {
             <>
               <NewTopLevelPostCard />
 
-              <PostsNav
+              <FeedsNav
                 currentFeed={this.state.feed}
                 setFeed={(feed) => this.setState({ feed: feed })}
                 setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
