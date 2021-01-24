@@ -252,7 +252,7 @@ const Post = ({ post, small }) => {
               onSubmit={(content, replyToId, successCallback, userId) => {
                 addTag(post.id, content, successCallback, userId);
               }}
-              placeholder={'submit tags one at a time'}
+              placeholder={'add tag'}
               hideSubmitButton={true}
               small={true}
               characterLimit={25}

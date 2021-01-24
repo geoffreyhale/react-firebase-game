@@ -16,7 +16,11 @@ const NewTopLevelPostCard = () => {
           {user.displayName}
           <small className="text-muted ml-2">&#127757; Public</small>
         </Card.Title>
-        <NewPostForm onSubmit={createNewPost} multiline={true} />
+        <NewPostForm
+          onSubmit={createNewPost}
+          multiline={true}
+          placeholder={'How are you really feeling?'}
+        />
       </Card.Body>
     </Card>
   );

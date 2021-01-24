@@ -49,7 +49,7 @@ export default class NewPostForm extends React.Component {
           <Form.Control
             as="textarea"
             rows={3}
-            placeholder={this.props.placeholder || 'How are you?'}
+            placeholder={this.props.placeholder}
             value={this.state.content}
             onChange={this.handleChange}
             autoFocus={true}
@@ -57,7 +57,7 @@ export default class NewPostForm extends React.Component {
         ) : (
           <Form.Control
             type="text"
-            placeholder={this.props.placeholder || 'How are you?'}
+            placeholder={this.props.placeholder}
             value={this.state.content}
             onChange={this.handleChange}
             size={this.props.small ? 'sm' : null}
