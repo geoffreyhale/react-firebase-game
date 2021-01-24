@@ -161,7 +161,7 @@ class Posts extends Component {
     super();
     this.state = {
       rawPosts: {},
-      feed: FEED.UNSEEN,
+      feed: FEED.HOT,
       postsFilter: {
         requiredTags: [],
         forbiddenTagsByMe: [],
