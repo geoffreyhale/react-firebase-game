@@ -101,6 +101,48 @@ export const getFeedFilterByTags = ({
   return [filteredPosts, feedSubtext];
 };
 
+export const getUnseenFeed = ({ flatPostsArray, posts, userId }) => {
+  // TODO write tests for this
+  const threadSeedPostIdsToAllow =
+    flatPostsArray &&
+    flatPostsArray
+      .filter((post) => {
+        let mostRecentPostInThread = post;
+        let topLevelPostOrMostRecentPostBySomeoneElse = post;
+        flatPostsArray.forEach((p) => {
+          const isReplyToThisPost = p.replyToId && p.replyToId === post.id;
+          if (isReplyToThisPost) {
+            if (
+              !mostRecentPostInThread ||
+              p.timestamp > mostRecentPostInThread.timestamp
+            ) {
+              mostRecentPostInThread = p;
+              if (p.userId !== userId) {
+                topLevelPostOrMostRecentPostBySomeoneElse = p;
+              }
+            }
+          }
+        });
+
+        const yourMarkAsSeenTimestamp = post.seen && post.seen[userId];
+        const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = topLevelPostOrMostRecentPostBySomeoneElse
+          ? yourMarkAsSeenTimestamp >
+            topLevelPostOrMostRecentPostBySomeoneElse.timestamp
+          : true;
+
+        return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
+      })
+      .map((post) => post.id);
+
+  // TODO fix this mutates posts, undesirable
+  posts = posts.filter((post) => threadSeedPostIdsToAllow.includes(post.id));
+
+  return [
+    posts,
+    'Threads in which someone else posted since you last clicked the yellow `seen` button.  Click the `seen` button to temporarily hide a thread from this feed until someone else posts something new.',
+  ];
+};
+
 export const FeedNav = ({ currentFeed, setFeed, setPostsFilter }) => {
   const { user } = useContext(AppContext);
   return (

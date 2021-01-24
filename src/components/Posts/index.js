@@ -18,6 +18,7 @@ import {
   getFeedFilterByTags,
   getHotFeed,
   getPopularFeed,
+  getUnseenFeed,
 } from './Feed';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
@@ -104,45 +105,11 @@ class Posts extends Component {
       }
     } else {
       if (this.state.feed === FEED.UNSEEN) {
-        // TODO tests for this
-        const threadSeedPostIdsToAllow =
-          flatPostsArray &&
-          flatPostsArray
-            .filter((post) => {
-              let mostRecentPostInThread = post;
-              let topLevelPostOrMostRecentPostBySomeoneElse = post;
-              flatPostsArray.forEach((p) => {
-                const isReplyToThisPost =
-                  p.replyToId && p.replyToId === post.id;
-                if (isReplyToThisPost) {
-                  if (
-                    !mostRecentPostInThread ||
-                    p.timestamp > mostRecentPostInThread.timestamp
-                  ) {
-                    mostRecentPostInThread = p;
-                    if (p.userId !== this.user().uid) {
-                      topLevelPostOrMostRecentPostBySomeoneElse = p;
-                    }
-                  }
-                }
-              });
-
-              const yourMarkAsSeenTimestamp =
-                post.seen && post.seen[this.user().uid];
-              const yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread = topLevelPostOrMostRecentPostBySomeoneElse
-                ? yourMarkAsSeenTimestamp >
-                  topLevelPostOrMostRecentPostBySomeoneElse.timestamp
-                : true;
-
-              return !yourMarkAsSeenTimestampIsMoreRecentThanMostRecentPostBySomeoneElseInThread;
-            })
-            .map((post) => post.id);
-
-        posts = posts.filter((post) =>
-          threadSeedPostIdsToAllow.includes(post.id)
-        );
-        feedSubtext =
-          'Threads in which someone else posted since you last clicked the yellow `seen` button.  Click the `seen` button to temporarily hide a thread from this feed until someone else posts something new.';
+        [posts, feedSubtext] = getUnseenFeed({
+          flatPostsArray,
+          posts,
+          userId: this.user().uid,
+        });
       }
       if (this.state.feed === FEED.POPULAR) {
         [posts, feedSubtext] = getPopularFeed({ posts });
