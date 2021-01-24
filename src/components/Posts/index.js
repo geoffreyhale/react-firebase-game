@@ -12,7 +12,7 @@ import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import Post from './Post';
-import { FEED, FeedNav, getFeedFilterByTags } from './Feed';
+import { FEED, FeedNav, getFeedFilterByTags, getPopularFeed } from './Feed';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
@@ -139,15 +139,7 @@ class Posts extends Component {
           'Threads in which someone else posted since you last clicked the yellow `seen` button.  Click the `seen` button to temporarily hide a thread from this feed until someone else posts something new.';
       }
       if (this.state.feed === FEED.POPULAR) {
-        posts.sort((a, b) => {
-          if (!a.upvote) return 1;
-          if (!b.upvote) return -1;
-          return (
-            (b.upvote && Object.keys(b.upvote).length) -
-            (a.upvote && Object.keys(a.upvote).length)
-          );
-        });
-        feedSubtext = 'Most upvotes';
+        [posts, feedSubtext] = getPopularFeed({ posts });
       }
       if (this.state.feed === FEED.HOT) {
         Object.keys(posts).forEach((key) => {

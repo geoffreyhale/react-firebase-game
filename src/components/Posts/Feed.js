@@ -11,7 +11,20 @@ export const FEED = Object.freeze({
   UNSEEN: 'unseen',
 });
 
-// TODO tests for this
+// TODO write tests for this
+export const getPopularFeed = ({ posts }) => [
+  posts.sort((a, b) => {
+    if (!a.upvote) return 1;
+    if (!b.upvote) return -1;
+    return (
+      (b.upvote && Object.keys(b.upvote).length) -
+      (a.upvote && Object.keys(a.upvote).length)
+    );
+  }),
+  'Most upvotes',
+];
+
+// TODO write tests for this
 export const getFeedFilterByTags = ({
   flatPostsArray,
   postsFilter,
