@@ -1,0 +1,9 @@
+ul.horizontal-justify {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding-left: 0;
+}
+ul.horizontal-justify > li {
+  text-align: center;
+}

@@ -5,6 +5,8 @@ import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
 import { getUsersRealtimeDatabase } from '../shared/db';
 import Spinner from '../shared/Spinner';
+import isPremium from '../shared/isPremium';
+import Funnel from './Funnel';
 
 const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
@@ -64,6 +66,9 @@ export default class Admin extends React.Component {
         users[user.uid].lastLogin = getMillisFromDifferingTypes(
           users[user.uid].lastLogin
         );
+        users[user.uid].isPremium = isPremium({
+          premium: users[user.uid].premium,
+        });
       }
     });
 
@@ -97,42 +102,49 @@ export default class Admin extends React.Component {
     }
 
     return (
-      <Card>
-        <Card.Body>
-          <Table bordered hover size="sm">
-            <thead>
-              <tr>
-                {properties.map((property) => (
-                  <td
-                    key={property.name}
-                    onClick={() => this.sort(property.name)}
-                  >
-                    {property.name}
-                  </td>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {usersArray.map((user) => {
-                return (
-                  <tr key={user.uid}>
-                    {properties.map((property) => {
-                      const value = user[property.name];
-                      return (
-                        <td key={property.name}>
-                          {property.display === 'friendlyTimestamp'
-                            ? friendlyTimestamp(value)
-                            : value}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </Card.Body>
-      </Card>
+      <>
+        <Card>
+          <Card.Body>
+            <Funnel usersArray={usersArray} />
+          </Card.Body>
+        </Card>
+        <Card className={'mt-3'}>
+          <Card.Body>
+            <Table bordered hover size="sm">
+              <thead>
+                <tr>
+                  {properties.map((property) => (
+                    <td
+                      key={property.name}
+                      onClick={() => this.sort(property.name)}
+                    >
+                      {property.name}
+                    </td>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {usersArray.map((user) => {
+                  return (
+                    <tr key={user.uid}>
+                      {properties.map((property) => {
+                        const value = user[property.name];
+                        return (
+                          <td key={property.name}>
+                            {property.display === 'friendlyTimestamp'
+                              ? friendlyTimestamp(value)
+                              : value}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Card>
+      </>
     );
   }
 }
