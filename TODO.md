@@ -15,12 +15,12 @@
 
 # TODO
 
+- a top level post (without replyToId) is akin to a thread-head; a thread would keep useful meta-data, eg whether anyone had replied to any message in the thread since you last visited it
 - change db 'upvote' to 'upvotes'
 - https://www.robinwieruch.de/react-firebase-realtime-database
 - step by step intro/tutorial/quest-lines
 - @usernames
 - change display name
-- hot feed combines upvotes and recence
 - many replies deep the padding is too much!
 - move Tag Stats to home / Posts page
 - add (#) count to browser tab
