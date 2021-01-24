@@ -6,16 +6,16 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
 import { BrowserRouter, Link, NavLink } from 'react-router-dom';
-import firebase, { auth, provider } from './firebase.js';
-import UserAuth from './components/UserAuth';
-import Routes from './Routes';
-import AppProvider from './components/AppProvider';
-import { getUser, getUsers, updateUser } from './components/shared/db';
-import Spinner from './components/shared/Spinner';
-import About from './components/About';
+import firebase, { auth, provider } from '../../firebase.js';
+import UserAuth from '../UserAuth';
+import Routes from '../../Routes';
+import AppProvider from '../AppProvider';
+import { getUser, getUsers, updateUser } from '../shared/db';
+import Spinner from '../shared/Spinner';
+import About from '../About';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+import './index.css';
 
 const AppHeaderTitle = () => {
   const taglines = [
