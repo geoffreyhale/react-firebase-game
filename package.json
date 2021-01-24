@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/annotations": "^0.67.0",
+    "@nivo/core": "^0.67.0",
+    "@nivo/funnel": "^0.67.0",
+    "@nivo/tooltip": "^0.67.0",
     "@stripe/react-stripe-js": "^1.1.2",
     "@stripe/stripe-js": "^1.11.0",
     "@testing-library/jest-dom": "^5.11.4",
