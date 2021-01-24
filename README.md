@@ -1,10 +1,14 @@
-# xbk.io
+<img alt="nivo" src="https://raw.githubusercontent.com/geoffreyhale/xbk.io/master/public/logo192.png" width="68" height="68"/>
 
-Like Facebook, but better.
+**xBook** is a social network for healthy relating.
 
-Built with React, Firebase, Bootstrap.
+Join the [xbk.io](https://xbk.io) community.
 
-## Dev
+# Developers
+
+Built with React, Firebase, Bootstrap, and more.
+
+## Local
 
 ```
 yarn start
@@ -16,7 +20,7 @@ yarn start
 yarn deploy
 ```
 
-# Quotes
+# Testimonials
 
 "Your mission to create a safe and healthy space on and offline is exciting. I believe the world would greatly benefit from models to understand how they can help themselves and others through communication" - HP 1/8/2021
 
