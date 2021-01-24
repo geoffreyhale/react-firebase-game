@@ -12,7 +12,13 @@ import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import Post from './Post';
-import { FEED, FeedNav, getFeedFilterByTags, getPopularFeed } from './Feed';
+import {
+  FEED,
+  FeedNav,
+  getFeedFilterByTags,
+  getHotFeed,
+  getPopularFeed,
+} from './Feed';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
@@ -142,21 +148,7 @@ class Posts extends Component {
         [posts, feedSubtext] = getPopularFeed({ posts });
       }
       if (this.state.feed === FEED.HOT) {
-        Object.keys(posts).forEach((key) => {
-          const upvotes =
-            posts[key].upvote && Object.keys(posts[key].upvote).length;
-
-          const millisSincePost = Date.now() - posts[key].timestamp;
-          const daysSincePost = millisSincePost / 8.64e7;
-
-          posts[key].feedHot = (upvotes + 1) / daysSincePost;
-        });
-        posts.sort((a, b) => {
-          if (!a.feedHot) return 1;
-          if (!b.feedHot) return -1;
-          return b.feedHot - a.feedHot;
-        });
-        feedSubtext = 'Upvotes and recency (upvotes / days old)';
+        [posts, feedSubtext] = getHotFeed({ posts });
       }
     }
 

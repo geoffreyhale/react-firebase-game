@@ -11,8 +11,27 @@ export const FEED = Object.freeze({
   UNSEEN: 'unseen',
 });
 
+export const getHotFeed = ({ posts }) => {
+  // TODO fix this mutates posts, undesirable
+  Object.keys(posts).forEach((key) => {
+    const upvotes = posts[key].upvote && Object.keys(posts[key].upvote).length;
+
+    const millisSincePost = Date.now() - posts[key].timestamp;
+    const daysSincePost = millisSincePost / 8.64e7;
+
+    posts[key].feedHot = (upvotes + 1) / daysSincePost;
+  });
+  posts.sort((a, b) => {
+    if (!a.feedHot) return 1;
+    if (!b.feedHot) return -1;
+    return b.feedHot - a.feedHot;
+  });
+  return [posts, 'Upvotes and recency (upvotes / days old)'];
+};
+
 // TODO write tests for this
 export const getPopularFeed = ({ posts }) => [
+  // TODO fix this mutates posts, undesirable
   posts.sort((a, b) => {
     if (!a.upvote) return 1;
     if (!b.upvote) return -1;
