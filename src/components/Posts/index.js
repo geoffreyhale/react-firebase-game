@@ -1,7 +1,6 @@
-import React, { Component, useContext } from 'react';
+import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -9,11 +8,11 @@ import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';
-import Tag from '../shared/Tag';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import Post from './Post';
+import { FEED, FeedNav, getFeedFilterByTags } from './Feed';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
@@ -27,133 +26,6 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
     return result;
   }
   return null;
-};
-
-const FEED = Object.freeze({
-  ALL: 'all',
-  FILTER_BY_TAGS: 'postsFilterByTags',
-  HOT: 'hot',
-  POPULAR: 'popular',
-  UNSEEN: 'unseen',
-});
-
-// TODO tests for this
-const getFeedFilterByTags = ({ flatPostsArray, postsFilter, myUserId }) => {
-  const filteredPosts = flatPostsArray
-    ? flatPostsArray.filter((post) => {
-        const hasTags = !!post.tags;
-        if (hasTags) {
-          const hasTagsRequiredByFilter = postsFilter.requiredTags.every(
-            (requiredTag) => {
-              return Object.values(post.tags).some(
-                (tag) => tag.type === requiredTag
-              );
-            }
-          );
-          const hasForbiddenTagsByMe = postsFilter.forbiddenTagsByMe.some(
-            (forbiddenTag) => {
-              return Object.values(post.tags).some(
-                (tag) => tag.type === forbiddenTag && tag.userId === myUserId
-              );
-            }
-          );
-          return hasTagsRequiredByFilter && !hasForbiddenTagsByMe;
-        }
-        return false;
-      })
-    : null;
-  const feedSubtext = (
-    <>
-      <div>Pre-programmed Tag Filter:</div>
-      <div>
-        Required:{' '}
-        {postsFilter.requiredTags.map((requiredTag) => (
-          <>
-            <Tag>{requiredTag}</Tag>
-            {' or '}
-            <Tag variant="info">{requiredTag}</Tag>
-          </>
-        ))}
-      </div>
-      <div>
-        Forbidden:{' '}
-        {postsFilter.forbiddenTagsByMe.map((forbiddenTagByMe, i) => (
-          <>
-            {i !== 0 ? ' or ' : ''}
-            <Tag variant="info">{forbiddenTagByMe}</Tag>
-          </>
-        ))}
-      </div>
-      'Posts tagged `feature request` that viewer did not tag `done` or `closed`
-      (for dev use):'
-    </>
-  );
-  return [filteredPosts, feedSubtext];
-};
-
-const FeedsNav = ({ currentFeed, setFeed, setPostsFilter }) => {
-  const { user } = useContext(AppContext);
-  return (
-    <Nav variant="tabs" className="justify-content-center mt-2">
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.HOT}
-          onClick={() => {
-            setFeed(FEED.HOT);
-            setPostsFilter([], []);
-          }}
-        >
-          Hot
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.POPULAR}
-          onClick={() => {
-            setFeed(FEED.POPULAR);
-            setPostsFilter([], []);
-          }}
-        >
-          Upvotes
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.UNSEEN}
-          onClick={() => {
-            setFeed(FEED.UNSEEN);
-            setPostsFilter([], []);
-          }}
-        >
-          Unseen
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.ALL}
-          onClick={() => {
-            setFeed(FEED.ALL);
-            setPostsFilter([], []);
-          }}
-        >
-          All
-        </Nav.Link>
-      </Nav.Item>
-      {user.admin && (
-        <Nav.Item>
-          <Nav.Link
-            active={currentFeed === FEED.FILTER_BY_TAGS}
-            onClick={() => {
-              setFeed(FEED.FILTER_BY_TAGS);
-              setPostsFilter(['feature request'], ['done', 'closed']);
-            }}
-          >
-            Feature Requests
-          </Nav.Link>
-        </Nav.Item>
-      )}
-    </Nav>
-  );
 };
 
 class Posts extends Component {
@@ -321,7 +193,7 @@ class Posts extends Component {
             <>
               <NewTopLevelPostCard />
 
-              <FeedsNav
+              <FeedNav
                 currentFeed={this.state.feed}
                 setFeed={(feed) => this.setState({ feed: feed })}
                 setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
