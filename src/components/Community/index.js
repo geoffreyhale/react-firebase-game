@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import firebase from '../../firebase.js';
+import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';

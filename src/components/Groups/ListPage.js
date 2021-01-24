@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import { AppContext } from '../AppProvider';
-import firebase, { auth } from '../../firebase.js';
+import firebase, { auth } from '../firebase.js';
 import { Link } from 'react-router-dom';
 
 export default class Groups extends Component {

@@ -1,4 +1,4 @@
-import firebase, { db } from '../../firebase.js';
+import firebase, { db } from '../firebase.js';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');

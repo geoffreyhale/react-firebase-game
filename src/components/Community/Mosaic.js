@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import { getUsers } from '../shared/db';
 import UserPhoto from '../shared/UserPhoto';
-import firebase from '../../firebase';
+import firebase from '../firebase';
 import Spinner from '../shared/Spinner';
 
 // Fisher-Yates (aka Knuth) Shuffle

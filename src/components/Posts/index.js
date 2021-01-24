@@ -5,7 +5,7 @@ import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
-import firebase from '../../firebase.js';
+import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';

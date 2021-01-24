@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase, { db } from '../../firebase';
+import firebase, { db } from '../firebase';
 
 export default class Sandbox extends React.Component {
   constructor() {

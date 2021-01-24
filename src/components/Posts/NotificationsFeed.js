@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { useHistory, useLocation } from 'react-router-dom';
-import firebase from '../../firebase.js';
+import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
 import { getUsers, removeNotification } from '../shared/db';
 import friendlyTimestamp from '../shared/friendlyTimestamp';

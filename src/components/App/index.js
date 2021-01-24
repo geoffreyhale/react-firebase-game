@@ -6,7 +6,7 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
 import { BrowserRouter, Link, NavLink } from 'react-router-dom';
-import firebase, { auth, provider } from '../../firebase.js';
+import firebase, { auth, provider } from '../firebase.js';
 import UserAuth from '../UserAuth';
 import Routes from '../Routes';
 import AppProvider from '../AppProvider';

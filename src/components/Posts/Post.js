@@ -7,7 +7,7 @@ import friendlyTimestamp from '../shared/friendlyTimestamp';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
-import firebase from '../../firebase.js';
+import firebase from '../firebase.js';
 import Tag from '../shared/Tag';
 import { createNewPost, deletePost } from '../shared/db';
 import UserPhoto from '../shared/UserPhoto';
