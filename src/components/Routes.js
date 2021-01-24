@@ -25,9 +25,6 @@ const Routes = () => {
     <Switch>
       {user
         ? [
-            // <Route exact path="/" key="/">
-
-            // </Route>,
             <Route exact path="/posts" key="/posts">
               <Posts />
             </Route>,
@@ -43,7 +40,7 @@ const Routes = () => {
             <Route path="/about" key="/about">
               <About />
             </Route>,
-            <Route path="/Community" key="/Community">
+            <Route path="/community" key="/community">
               <Community />
             </Route>,
             <Route
