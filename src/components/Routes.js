@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import Scorekeeper from './components/Scorekeeper';
-import IncrementalClickerGame from './components/Games/IncrementalClicker';
-import Chess from './components/Games/Chess';
-import TicTacToe from './components/Games/TicTacToe';
-import Community from './components/Community';
-import Groups from './components/Groups';
-import Posts from './components/Posts';
-import Admin from './components/Admin';
-import Sandbox from './components/Sandbox';
-import About from './components/About';
-import { AppContext } from './components/AppProvider';
+import Scorekeeper from './Scorekeeper';
+import IncrementalClickerGame from './Games/IncrementalClicker';
+import Chess from './Games/Chess';
+import TicTacToe from './Games/TicTacToe';
+import Community from './Community';
+import Groups from './Groups';
+import Posts from './Posts';
+import Admin from './Admin';
+import Sandbox from './Sandbox';
+import About from './About';
+import { AppContext } from './AppProvider';
 
 const Routes = () => {
   const { user } = useContext(AppContext);

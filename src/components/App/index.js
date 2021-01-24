@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import { BrowserRouter, Link, NavLink } from 'react-router-dom';
 import firebase, { auth, provider } from '../../firebase.js';
 import UserAuth from '../UserAuth';
-import Routes from '../../Routes';
+import Routes from '../Routes';
 import AppProvider from '../AppProvider';
 import { getUser, getUsers, updateUser } from '../shared/db';
 import Spinner from '../shared/Spinner';
