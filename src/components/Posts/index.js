@@ -21,6 +21,7 @@ import {
   getUnseenFeed,
 } from './Feed';
 import { RoomsMenu } from '../Rooms';
+import { isLurker, NoLurking } from './Lurking';
 
 import './index.css';
 
@@ -43,6 +44,7 @@ class Posts extends Component {
     super();
     this.state = {
       loading: true,
+      lurker: null,
       posts: {},
       feed: FEED.HOT,
       postsFilter: {
@@ -59,6 +61,12 @@ class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
+    const userId = this.user().uid;
+    isLurker({
+      userId,
+      callback: (isLurker) => this.setState({ lurker: isLurker }),
+    });
+
     const roomFilter = this.props.room;
     this.postsRef()
       .orderByChild('room')
@@ -75,7 +83,7 @@ class Posts extends Component {
 
     const users = this.users();
     // TODO fix this will spin erroneously for a room with legitimately 0 posts
-    if (!users || this.state.loading) {
+    if (!users || this.state.loading || this.state.lurker === null) {
       return <Spinner />;
     }
 
@@ -83,7 +91,11 @@ class Posts extends Component {
 
     let post = {};
     let posts = [];
-    if (this.state.posts && this.state.posts.length !== 0) {
+    if (
+      !this.state.lurker &&
+      this.state.posts &&
+      this.state.posts.length !== 0
+    ) {
       const flatPostsArray = Object.entries(this.state.posts).map(
         ([id, post]) => {
           post.id = id;
@@ -153,7 +165,12 @@ class Posts extends Component {
           </div>
         </Col>
         <Col sm={8} className="col-posts">
-          {isSinglePostPage ? (
+          {this.state.lurker ? (
+            <>
+              <NewTopLevelPostCard hackRoom={this.props.room} />
+              <NoLurking userDisplayName={this.user().displayName} />
+            </>
+          ) : isSinglePostPage ? (
             <Card>
               <Card.Header>
                 {post.replyToId ? (
