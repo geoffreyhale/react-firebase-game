@@ -127,33 +127,40 @@ export const PostHeader = ({
   const postUrl = `/r/${hackRoom}/posts/${postId}`;
 
   return (
-    <div style={{ fontSize: small ? '85%' : null }}>
-      {post.userId ? (
-        <div className="float-left mr-2">
-          <UserPhoto uid={post.userId} size={small ? 38 : 48} />
+    <>
+      {hackRoom && !small && (
+        <div className="small text-muted mb-1">
+          <Link to={`/r/${hackRoom}`}>{`r/${hackRoom}`}</Link>
         </div>
-      ) : null}
-      <>
-        <div>
-          <strong>{displayName}</strong>
+      )}
+      <div style={{ fontSize: small ? '85%' : null }}>
+        {post.userId ? (
+          <div className="float-left mr-2">
+            <UserPhoto uid={post.userId} size={small ? 38 : 48} />
+          </div>
+        ) : null}
+        <>
+          <div>
+            <strong>{displayName}</strong>
+            {hideActionsAndTimestamp ? null : (
+              <div className="float-right">
+                {showActions ? (
+                  <PostActionsDropdown
+                    deletePost={() => deletePost({ postId: post.id })}
+                  />
+                ) : null}
+              </div>
+            )}
+          </div>
           {hideActionsAndTimestamp ? null : (
-            <div className="float-right">
-              {showActions ? (
-                <PostActionsDropdown
-                  deletePost={() => deletePost({ postId: post.id })}
-                />
-              ) : null}
+            <div className="small text-muted">
+              <Link to={postUrl}>{friendlyTimestamp(timestamp)}</Link>
             </div>
           )}
-        </div>
-        {hideActionsAndTimestamp ? null : (
-          <div className="small text-muted">
-            <Link to={postUrl}>{friendlyTimestamp(timestamp)}</Link>
-          </div>
-        )}
-      </>
-      <div style={{ clear: 'both' }}></div>
-    </div>
+        </>
+        <div style={{ clear: 'both' }}></div>
+      </div>
+    </>
   );
 };
 

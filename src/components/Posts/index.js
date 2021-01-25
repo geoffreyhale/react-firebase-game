@@ -67,14 +67,16 @@ class Posts extends Component {
       callback: (isLurker) => this.setState({ lurker: isLurker }),
     });
 
-    const roomFilter = this.props.room;
-    this.postsRef()
-      .orderByChild('room')
-      .equalTo(roomFilter)
-      .on('value', (postsSnapshot) => {
-        const posts = postsSnapshot.val();
-        this.setState({ posts, loading: false });
-      });
+    let postsRef = null;
+    if (this.props.room) {
+      postsRef = this.postsRef().orderByChild('room').equalTo(this.props.room);
+    } else {
+      postsRef = this.postsRef();
+    }
+    postsRef.on('value', (postsSnapshot) => {
+      const posts = postsSnapshot.val();
+      this.setState({ posts, loading: false });
+    });
   }
 
   render() {
@@ -167,7 +169,9 @@ class Posts extends Component {
         <Col sm={8} className="col-posts">
           {this.state.lurker ? (
             <>
-              <NewTopLevelPostCard hackRoom={this.props.room} />
+              {this.props.room && (
+                <NewTopLevelPostCard hackRoom={this.props.room} />
+              )}
               <NoLurking userDisplayName={this.user().displayName} />
             </>
           ) : isSinglePostPage ? (
@@ -184,13 +188,15 @@ class Posts extends Component {
                   post={post}
                   myPhotoURL={this.user().photoURL}
                   hackHidePostLinks={true} // TODO current routing appends extra '/post''s
-                  hackRoom={this.props.room} // TODO use context instead?
+                  hackRoom={post.room} // TODO use context instead?
                 />
               </Card.Body>
             </Card>
           ) : (
             <>
-              <NewTopLevelPostCard hackRoom={this.props.room} />
+              {this.props.room && (
+                <NewTopLevelPostCard hackRoom={this.props.room} />
+              )}
 
               <FeedNav
                 currentFeed={this.state.feed}
@@ -217,7 +223,7 @@ class Posts extends Component {
                         <td>
                           <Card className="mt-4">
                             <Card.Body>
-                              <Post post={post} hackRoom={this.props.room} />
+                              <Post post={post} hackRoom={post.room} />
                             </Card.Body>
                             {this.state.feed === FEED.UNSEEN ? (
                               <Card.Footer>

@@ -78,7 +78,7 @@ class Rooms extends React.Component {
   // TODO maybe more robust to use a room context instead of prop-drilling this room stuff
   render() {
     const { roomId } = this.props.match.params;
-    const room = rooms[roomId];
+    const room = roomId === undefined ? null : rooms[roomId];
 
     return (
       <Posts

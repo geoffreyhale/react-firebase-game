@@ -18,9 +18,6 @@ const Routes = () => {
   const history = useHistory();
   const location = useLocation();
 
-  if (location.pathname === '/') {
-    history.push('/r/general');
-  }
   // redirect old post links to general post link
   if (location.pathname.startsWith('/posts/')) {
     history.push('/r/general' + location.pathname);
@@ -30,24 +27,15 @@ const Routes = () => {
     <Switch>
       {user
         ? [
+            <Route exact path="/" key={location.pathname}>
+              <Rooms />
+            </Route>,
             <Route exact path="/r/:roomId" key={location.pathname}>
               <Rooms />
             </Route>,
             <Route path="/r/:roomId/posts/:postId" key={location.pathname}>
               <Rooms />
             </Route>,
-            // <Route exact path="/posts" key="/posts">
-            //   <Posts />
-            // </Route>,
-            // <Route path="/posts/:postId" key="/post">
-            //   <Posts />
-            // </Route>,
-            // // https://ui.dev/react-router-v4-pass-props-to-components/
-            // <Route
-            //   path="/posts/:postId"
-            //   key={location.pathname}
-            //   render={(props) => <PostPage {...props} />}
-            // />,
             <Route path="/about" key="/about">
               <About />
             </Route>,
