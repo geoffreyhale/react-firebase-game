@@ -10,6 +10,7 @@ import Posts from './Posts';
 import Admin from './Admin';
 import Sandbox from './Sandbox';
 import About from './About';
+import Rooms from './Rooms';
 import { AppContext } from './AppProvider';
 
 const Routes = () => {
@@ -18,19 +19,25 @@ const Routes = () => {
   const location = useLocation();
 
   if (location.pathname === '/') {
-    history.push('/posts');
+    history.push('/r/general');
   }
 
   return (
     <Switch>
       {user
         ? [
-            <Route exact path="/posts" key="/posts">
-              <Posts />
+            <Route exact path="/r/:roomId" key={location.pathname}>
+              <Rooms />
             </Route>,
-            <Route path="/posts/:postId" key="/posts/post">
-              <Posts />
+            <Route path="/r/:roomId/posts/:postId" key={location.pathname}>
+              <Rooms />
             </Route>,
+            // <Route exact path="/posts" key="/posts">
+            //   <Posts />
+            // </Route>,
+            // <Route path="/posts/:postId" key="/post">
+            //   <Posts />
+            // </Route>,
             // // https://ui.dev/react-router-v4-pass-props-to-components/
             // <Route
             //   path="/posts/:postId"

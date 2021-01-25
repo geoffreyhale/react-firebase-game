@@ -21,6 +21,8 @@ import {
   getUnseenFeed,
 } from './Feed';
 
+import './index.css';
+
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;
@@ -55,10 +57,14 @@ class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
-    this.postsRef().on('value', (postsSnapshot) => {
-      const posts = postsSnapshot.val();
-      this.setState({ posts });
-    });
+    const roomFilter = this.props.room;
+    this.postsRef()
+      .orderByChild('room')
+      .equalTo(roomFilter)
+      .on('value', (postsSnapshot) => {
+        const posts = postsSnapshot.val();
+        this.setState({ posts });
+      });
   }
 
   render() {
@@ -66,6 +72,7 @@ class Posts extends Component {
     const isSinglePostPage = !!postId;
 
     const users = this.users();
+    // TODO fix this will spin erroneously for a room with legitimately 0 posts
     if (!users || !this.state.posts || this.state.posts.length === 0) {
       return <Spinner />;
     }
@@ -120,77 +127,111 @@ class Posts extends Component {
     }
 
     return (
-      <Row>
-        <Col>
-          <NotificationsFeed />
-        </Col>
-        <Col sm={8} className="col-posts mt-3">
-          {isSinglePostPage ? (
-            <Card>
-              <Card.Header>
-                {post.replyToId ? (
-                  <Link to={'/posts/' + post.replyToId}>&#8598;...</Link>
-                ) : null}
-              </Card.Header>
+      <>
+        {this.props.room && (
+          <Row className="mb-3">
+            <Col>
+              <Card
+                style={{ backgroundColor: this.props.roomColor || 'inherit' }}
+              >
+                <Card.Body>
+                  <Card.Title>r/{this.props.room}</Card.Title>
+                  {this.props.roomDescription}
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        )}
+        <Row>
+          <Col>
+            <Card className="mb-3">
               <Card.Body>
-                <Post
-                  post={post}
-                  myPhotoURL={this.user().photoURL}
-                  hackHidePostLinks={true} // TODO current routing appends extra '/post''s
-                />
+                <Card.Title>Rooms</Card.Title>
+                <ul id="rooms">
+                  <li>
+                    <Link to={'/r/general'}>r/general</Link>
+                  </li>
+                  <li>
+                    <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
+                  </li>
+                </ul>
               </Card.Body>
             </Card>
-          ) : (
-            <>
-              <NewTopLevelPostCard />
+            <div className="notifications mb-3">
+              <NotificationsFeed />
+            </div>
+          </Col>
+          <Col sm={8} className="col-posts">
+            {isSinglePostPage ? (
+              <Card>
+                <Card.Header>
+                  {post.replyToId ? (
+                    <Link to={`/r/${this.props.room}/posts/${post.replyToId}`}>
+                      &#8598;...
+                    </Link>
+                  ) : null}
+                </Card.Header>
+                <Card.Body>
+                  <Post
+                    post={post}
+                    myPhotoURL={this.user().photoURL}
+                    hackHidePostLinks={true} // TODO current routing appends extra '/post''s
+                    hackRoom={this.props.room} // TODO use context instead?
+                  />
+                </Card.Body>
+              </Card>
+            ) : (
+              <>
+                <NewTopLevelPostCard hackRoom={this.props.room} />
 
-              <FeedNav
-                currentFeed={this.state.feed}
-                setFeed={(feed) => this.setState({ feed: feed })}
-                setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                  this.setState({
-                    postsFilter: {
-                      requiredTags: requiredTags,
-                      forbiddenTagsByMe: forbiddenTagsByMe,
-                    },
-                  })
-                }
-              />
+                <FeedNav
+                  currentFeed={this.state.feed}
+                  setFeed={(feed) => this.setState({ feed: feed })}
+                  setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                    this.setState({
+                      postsFilter: {
+                        requiredTags: requiredTags,
+                        forbiddenTagsByMe: forbiddenTagsByMe,
+                      },
+                    })
+                  }
+                />
 
-              {feedSubtext ? (
-                <small className="text-muted">{feedSubtext}</small>
-              ) : null}
+                {feedSubtext ? (
+                  <small className="text-muted">{feedSubtext}</small>
+                ) : null}
 
-              <table>
-                <tbody>
-                  {Object.entries(posts).map(([key, post]) => {
-                    return (
-                      <tr key={post.id}>
-                        <td>
-                          <Card className="mt-4">
-                            <Card.Body>
-                              <Post post={post} />
-                            </Card.Body>
-                            {this.state.feed === FEED.UNSEEN ? (
-                              <Card.Footer>
-                                <div className="float-right">
-                                  <MarkAsSeenButton postId={post.id} />
-                                </div>
-                                <div style={{ clear: 'both' }}></div>
-                              </Card.Footer>
-                            ) : null}
-                          </Card>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </>
-          )}
-        </Col>
-        <Col></Col>
-      </Row>
+                <table>
+                  <tbody>
+                    {Object.entries(posts).map(([key, post]) => {
+                      return (
+                        <tr key={post.id}>
+                          <td>
+                            <Card className="mt-4">
+                              <Card.Body>
+                                <Post post={post} hackRoom={this.props.room} />
+                              </Card.Body>
+                              {this.state.feed === FEED.UNSEEN ? (
+                                <Card.Footer>
+                                  <div className="float-right">
+                                    <MarkAsSeenButton postId={post.id} />
+                                  </div>
+                                  <div style={{ clear: 'both' }}></div>
+                                </Card.Footer>
+                              ) : null}
+                            </Card>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </Col>
+          <Col></Col>
+        </Row>
+      </>
     );
   }
 }

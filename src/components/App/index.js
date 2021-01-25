@@ -53,8 +53,8 @@ const AppNav = ({ admin }) => {
   return (
     <Nav className="justify-content-center">
       <Nav.Item>
-        <Nav.Link as={NavLink} to="/posts" exact>
-          Posts
+        <Nav.Link as={NavLink} to="/" exact>
+          Home
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>

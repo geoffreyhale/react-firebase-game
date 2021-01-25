@@ -41,7 +41,8 @@ export default class NewPostForm extends React.Component {
             this.state.content,
             this.props.replyToId || null,
             successCallback,
-            this.user().uid
+            this.user().uid,
+            this.props.hackRoom
           );
         }}
       >

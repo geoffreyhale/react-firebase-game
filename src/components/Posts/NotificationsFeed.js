@@ -154,7 +154,7 @@ export default class NotificationsFeed extends React.Component {
     const notifications = this.state.notifications;
     const hasNotifications = notifications && notifications.length > 0;
     return (
-      <Card className="mt-3">
+      <Card>
         <Card.Body>
           <Card.Title>Notifications</Card.Title>
           {hasNotifications ? null : 'None'}

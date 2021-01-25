@@ -3,10 +3,9 @@ import Card from 'react-bootstrap/Card';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import { createNewPost } from '../shared/db';
-import Spinner from '../shared/Spinner';
 import UserPhoto from '../shared/UserPhoto';
 
-const NewTopLevelPostCard = () => {
+const NewTopLevelPostCard = ({ hackRoom }) => {
   const { user } = useContext(AppContext);
   return (
     <Card>
@@ -20,6 +19,7 @@ const NewTopLevelPostCard = () => {
           onSubmit={createNewPost}
           multiline={true}
           placeholder={'How are you really feeling?'}
+          hackRoom={hackRoom}
         />
       </Card.Body>
     </Card>

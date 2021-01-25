@@ -69,7 +69,7 @@ const Tags = ({ post }) => {
   );
 };
 
-const ReplyForm = ({ replyToPostId, onSuccess }) => {
+const ReplyForm = ({ replyToPostId, onSuccess, hackRoom }) => {
   const { user } = useContext(AppContext);
   return (
     <Card className="mt-2">
@@ -92,6 +92,7 @@ const ReplyForm = ({ replyToPostId, onSuccess }) => {
               placeholder="Write a reply..."
               replyToId={replyToPostId}
               multiline={true}
+              hackRoom={hackRoom}
             />
           </div>
         </div>
@@ -111,14 +112,19 @@ const PostActionsDropdown = ({ deletePost }) => (
   </Dropdown>
 );
 
-export const PostHeader = ({ small, post, hideActionsAndTimestamp }) => {
+export const PostHeader = ({
+  small,
+  post,
+  hideActionsAndTimestamp,
+  hackRoom,
+}) => {
   const { user } = useContext(AppContext);
   const displayName = post.userDisplayName;
   const timestamp = post.timestamp;
-  const photoURL = post.userPhotoURL;
   const postId = post.id;
   const isMyPost = user.uid === post.userId;
   const showActions = isMyPost;
+  const postUrl = `/r/${hackRoom}/posts/${postId}`;
 
   return (
     <div style={{ fontSize: small ? '85%' : null }}>
@@ -142,7 +148,7 @@ export const PostHeader = ({ small, post, hideActionsAndTimestamp }) => {
         </div>
         {hideActionsAndTimestamp ? null : (
           <div className="small text-muted">
-            <Link to={'/posts/' + postId}>{friendlyTimestamp(timestamp)}</Link>
+            <Link to={postUrl}>{friendlyTimestamp(timestamp)}</Link>
           </div>
         )}
       </>
@@ -206,13 +212,19 @@ const PostContent = ({ children, small }) => {
   );
 };
 
-const Replies = ({ post }) => {
+const Replies = ({ post, hackRoom }) => {
   const { user } = useContext(AppContext);
   return (
     post &&
     post.childNodes &&
     post.childNodes.map((replyPost) => {
-      return <ReplyPostCard key={replyPost.id} post={replyPost} />;
+      return (
+        <ReplyPostCard
+          key={replyPost.id}
+          post={replyPost}
+          hackRoom={hackRoom}
+        />
+      );
     }, this)
   );
 };
@@ -229,7 +241,7 @@ const countAncestors = (node) => {
   return thisCount + 1;
 };
 
-const Post = ({ post, small }) => {
+const Post = ({ post, small, hackRoom }) => {
   const [tagFormCollapsed, setTagFormCollapsed] = useState(true);
   const [repliesCollapsed, setRepliesCollapsed] = useState(true);
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
@@ -239,7 +251,7 @@ const Post = ({ post, small }) => {
   const replyCount = countAncestors(post) - 1;
   return (
     <>
-      <PostHeader post={post} small={small} />
+      <PostHeader post={post} small={small} hackRoom={hackRoom} />
       <PostContent>{post.content}</PostContent>
       <hr style={{ margin: '1rem 0 .5rem' }} />
       <div>
@@ -256,6 +268,7 @@ const Post = ({ post, small }) => {
               hideSubmitButton={true}
               small={true}
               characterLimit={25}
+              hackRoom={hackRoom}
             />
           )}
         </div>
@@ -293,12 +306,13 @@ const Post = ({ post, small }) => {
           <ReplyForm
             replyToPostId={post.id}
             onSuccess={() => setReplyFormCollapsed(true)}
+            hackRoom={hackRoom}
           />
         )}
       </div>
       {!repliesCollapsed && post.childNodes.length > 0 && (
         <div className="mt-2">
-          <Replies post={post} />
+          <Replies post={post} hackRoom={hackRoom} />
         </div>
       )}
     </>
@@ -307,11 +321,11 @@ const Post = ({ post, small }) => {
 
 export default Post;
 
-const ReplyPostCard = ({ post }) => {
+const ReplyPostCard = ({ post, hackRoom }) => {
   return (
     <Card className="mt-1">
       <Card.Body>
-        <Post post={post} small={true} />
+        <Post post={post} small={true} hackRoom={hackRoom} />
       </Card.Body>
     </Card>
   );

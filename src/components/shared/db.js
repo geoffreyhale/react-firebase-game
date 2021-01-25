@@ -54,12 +54,18 @@ export const removeNotification = ({ postId, myUserId, userId = null }) => {
   }
 };
 
+// TODO should take a keyed object
 export const createNewPost = (
   newPostContent,
   replyToId,
   successCallback,
-  myUserId
+  myUserId,
+  room
 ) => {
+  if (!room) {
+    console.error('createNewPost must receive value for room');
+    return;
+  }
   const key = postsRef().push().key;
   postsRef()
     .child(key)
@@ -68,6 +74,7 @@ export const createNewPost = (
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       userId: myUserId,
       replyToId: replyToId,
+      room: room,
     })
     .then(replyToId && addNotifications({ postId: replyToId, myUserId }))
     .then(successCallback());
