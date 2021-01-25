@@ -145,6 +145,9 @@ class Posts extends Component {
               <Card.Title>Rooms</Card.Title>
               <ul id="rooms">
                 <li>
+                  <Link to={'/r/dev'}>r/dev</Link>
+                </li>
+                <li>
                   <Link to={'/r/general'}>r/general</Link>
                 </li>
                 <li>

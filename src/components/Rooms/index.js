@@ -3,6 +3,20 @@ import { withRouter } from 'react-router';
 import Posts from '../Posts';
 
 const rooms = {
+  dev: {
+    color: 'Beige',
+    description: (
+      <small className="text-muted">
+        <ul>
+          <li>
+            This is a public room for discussing bugs, feature requests,
+            technical support, developer updates, new features, and other
+            release notes.
+          </li>
+        </ul>
+      </small>
+    ),
+  },
   general: {
     color: 'AliceBlue',
     description: (
