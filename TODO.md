@@ -15,6 +15,8 @@
 
 # TODO
 
+- manually fix old post links, there's not many of them
+- use context for room, remove roomHack
 - nicer single post not found page, like link back to room
 - lift notifications out of rooms in ui/ux
 - the mark-post/thread-as-seen button should be more like a universal hide-until-new-stuff; Unseen feed should be obsolute, just a layer available on any other feed

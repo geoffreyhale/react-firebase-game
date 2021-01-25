@@ -21,6 +21,10 @@ const Routes = () => {
   if (location.pathname === '/') {
     history.push('/r/general');
   }
+  // redirect old post links to general post link
+  if (location.pathname.startsWith('/posts/')) {
+    history.push('/r/general' + location.pathname);
+  }
 
   return (
     <Switch>
