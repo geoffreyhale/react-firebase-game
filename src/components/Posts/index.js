@@ -41,7 +41,8 @@ class Posts extends Component {
   constructor() {
     super();
     this.state = {
-      rawPosts: {},
+      loading: true,
+      posts: {},
       feed: FEED.HOT,
       postsFilter: {
         requiredTags: [],
@@ -63,7 +64,7 @@ class Posts extends Component {
       .equalTo(roomFilter)
       .on('value', (postsSnapshot) => {
         const posts = postsSnapshot.val();
-        this.setState({ posts });
+        this.setState({ posts, loading: false });
       });
   }
 
@@ -73,56 +74,59 @@ class Posts extends Component {
 
     const users = this.users();
     // TODO fix this will spin erroneously for a room with legitimately 0 posts
-    if (!users || !this.state.posts || this.state.posts.length === 0) {
+    if (!users || this.state.loading) {
       return <Spinner />;
     }
 
     let feedSubtext = null;
 
-    const flatPostsArray = Object.entries(this.state.posts).map(
-      ([id, post]) => {
-        post.id = id;
-        return post;
-      }
-    );
-
-    let filteredPosts = flatPostsArray;
-    if (!isSinglePostPage) {
-      if (this.state.feed === FEED.FILTER_BY_TAGS) {
-        const { postsFilter } = this.state;
-        [filteredPosts, feedSubtext] = getFeedFilterByTags({
-          flatPostsArray,
-          postsFilter,
-          myUserId: this.user().uid,
-        });
-      }
-    }
-
-    const postsTree = postsTreeFromRawPosts({
-      flatPostsArray: filteredPosts,
-      users,
-    });
-    let { posts } = postsTree;
-
     let post = {};
-    if (isSinglePostPage) {
-      post = searchTree({ postId, post: { childNodes: postsTree.posts } });
-      if (!post) {
-        return <>Post not found!</>;
+    let posts = [];
+    if (this.state.posts && this.state.posts.length !== 0) {
+      const flatPostsArray = Object.entries(this.state.posts).map(
+        ([id, post]) => {
+          post.id = id;
+          return post;
+        }
+      );
+
+      let filteredPosts = flatPostsArray;
+      if (!isSinglePostPage) {
+        if (this.state.feed === FEED.FILTER_BY_TAGS) {
+          const { postsFilter } = this.state;
+          [filteredPosts, feedSubtext] = getFeedFilterByTags({
+            flatPostsArray,
+            postsFilter,
+            myUserId: this.user().uid,
+          });
+        }
       }
-    } else {
-      if (this.state.feed === FEED.UNSEEN) {
-        [posts, feedSubtext] = getUnseenFeed({
-          flatPostsArray,
-          posts,
-          userId: this.user().uid,
-        });
-      }
-      if (this.state.feed === FEED.POPULAR) {
-        [posts, feedSubtext] = getPopularFeed({ posts });
-      }
-      if (this.state.feed === FEED.HOT) {
-        [posts, feedSubtext] = getHotFeed({ posts });
+
+      const postsTree = postsTreeFromRawPosts({
+        flatPostsArray: filteredPosts,
+        users,
+      });
+      posts = postsTree.posts;
+
+      if (isSinglePostPage) {
+        post = searchTree({ postId, post: { childNodes: postsTree.posts } });
+        if (!post) {
+          return <>Post not found!</>;
+        }
+      } else {
+        if (this.state.feed === FEED.UNSEEN) {
+          [posts, feedSubtext] = getUnseenFeed({
+            flatPostsArray,
+            posts,
+            userId: this.user().uid,
+          });
+        }
+        if (this.state.feed === FEED.POPULAR) {
+          [posts, feedSubtext] = getPopularFeed({ posts });
+        }
+        if (this.state.feed === FEED.HOT) {
+          [posts, feedSubtext] = getHotFeed({ posts });
+        }
       }
     }
 
