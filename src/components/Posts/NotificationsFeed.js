@@ -46,8 +46,7 @@ const RemoveNotificationButton = ({ postId, userId }) => {
   );
 };
 
-const NotificationItem = ({ notification }) => {
-  const { content, postId, userId } = notification;
+const NotificationItem = ({ content, postId, url, userId }) => {
   const history = useHistory();
   const location = useLocation();
   const active = location.pathname.indexOf(postId) !== -1 ? true : false;
@@ -60,7 +59,7 @@ const NotificationItem = ({ notification }) => {
         // onClick doesn't allow right-click on anchor functionality
         // but cannot find cleaner way to link a whole cell (or row) atm
         onClick={() => {
-          history.push('/posts/' + postId);
+          history.push(url);
         }}
       >
         {content}
@@ -110,19 +109,28 @@ export default class NotificationsFeed extends React.Component {
           const postId = key;
           postIds.push(postId);
           if (typeof nItem === 'object') {
-            Object.entries(nItem).forEach(([userId, timestamp]) => {
-              notifications.push({
-                postId,
-                userId,
-                content: (
-                  <NotificationItemLinkContent
-                    timestamp={timestamp}
-                    uid={userId}
-                  />
-                ),
-                timestamp,
+            // TODO this is a hack to get room from post, but could be dup in notifications
+            this.db()
+              .ref('posts/' + postId + '/room')
+              .once('value', (snapshot) => {
+                const room = snapshot.val();
+                if (room) {
+                  Object.entries(nItem).forEach(([userId, timestamp]) => {
+                    notifications.push({
+                      postId,
+                      room,
+                      userId,
+                      content: (
+                        <NotificationItemLinkContent
+                          timestamp={timestamp}
+                          uid={userId}
+                        />
+                      ),
+                      timestamp,
+                    });
+                  });
+                }
               });
-            });
           }
         });
       }
@@ -151,7 +159,15 @@ export default class NotificationsFeed extends React.Component {
                 ? this.state.notifications.map((notification) => (
                     <NotificationItem
                       key={Math.random()}
-                      notification={notification}
+                      content={notification.content}
+                      postId={notification.postId}
+                      userId={notification.userId}
+                      url={
+                        '/r/' +
+                        notification.room +
+                        '/posts/' +
+                        notification.postId
+                      }
                     />
                   ))
                 : null}
