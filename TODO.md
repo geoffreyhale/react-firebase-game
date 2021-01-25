@@ -15,7 +15,10 @@
 
 # TODO
 
-- room-specifics like stats
+- fix notifications
+- hot should include comments in equation
+- cross site search
+- room-specifics like stats, users here now, etc
 - manually fix old post links, there's not many of them
 - use context for room, remove roomHack
 - nicer single post not found page, like link back to room
