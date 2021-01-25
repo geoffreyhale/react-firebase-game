@@ -127,111 +127,106 @@ class Posts extends Component {
     }
 
     return (
-      <>
-        {this.props.room && (
-          <Row className="mb-3">
-            <Col>
-              <Card
-                style={{ backgroundColor: this.props.roomColor || 'inherit' }}
-              >
-                <Card.Body>
-                  <Card.Title>r/{this.props.room}</Card.Title>
-                  {this.props.roomDescription}
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        )}
-        <Row>
-          <Col>
-            <Card className="mb-3">
+      <Row>
+        <Col>
+          {this.props.room && (
+            <Card
+              className="mb-3"
+              style={{ backgroundColor: this.props.roomColor || 'inherit' }}
+            >
               <Card.Body>
-                <Card.Title>Rooms</Card.Title>
-                <ul id="rooms">
-                  <li>
-                    <Link to={'/r/general'}>r/general</Link>
-                  </li>
-                  <li>
-                    <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
-                  </li>
-                </ul>
+                <Card.Title>r/{this.props.room}</Card.Title>
+                {this.props.roomDescription}
               </Card.Body>
             </Card>
-            <div className="notifications mb-3">
-              <NotificationsFeed />
-            </div>
-          </Col>
-          <Col sm={8} className="col-posts">
-            {isSinglePostPage ? (
-              <Card>
-                <Card.Header>
-                  {post.replyToId ? (
-                    <Link to={`/r/${this.props.room}/posts/${post.replyToId}`}>
-                      &#8598;...
-                    </Link>
-                  ) : null}
-                </Card.Header>
-                <Card.Body>
-                  <Post
-                    post={post}
-                    myPhotoURL={this.user().photoURL}
-                    hackHidePostLinks={true} // TODO current routing appends extra '/post''s
-                    hackRoom={this.props.room} // TODO use context instead?
-                  />
-                </Card.Body>
-              </Card>
-            ) : (
-              <>
-                <NewTopLevelPostCard hackRoom={this.props.room} />
-
-                <FeedNav
-                  currentFeed={this.state.feed}
-                  setFeed={(feed) => this.setState({ feed: feed })}
-                  setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                    this.setState({
-                      postsFilter: {
-                        requiredTags: requiredTags,
-                        forbiddenTagsByMe: forbiddenTagsByMe,
-                      },
-                    })
-                  }
-                />
-
-                {feedSubtext ? (
-                  <small className="text-muted">{feedSubtext}</small>
+          )}
+          <Card className="mb-3">
+            <Card.Body>
+              <Card.Title>Rooms</Card.Title>
+              <ul id="rooms">
+                <li>
+                  <Link to={'/r/general'}>r/general</Link>
+                </li>
+                <li>
+                  <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
+                </li>
+              </ul>
+            </Card.Body>
+          </Card>
+          <div className="notifications mb-3">
+            <NotificationsFeed />
+          </div>
+        </Col>
+        <Col sm={8} className="col-posts">
+          {isSinglePostPage ? (
+            <Card>
+              <Card.Header>
+                {post.replyToId ? (
+                  <Link to={`/r/${this.props.room}/posts/${post.replyToId}`}>
+                    &#8598;...
+                  </Link>
                 ) : null}
+              </Card.Header>
+              <Card.Body>
+                <Post
+                  post={post}
+                  myPhotoURL={this.user().photoURL}
+                  hackHidePostLinks={true} // TODO current routing appends extra '/post''s
+                  hackRoom={this.props.room} // TODO use context instead?
+                />
+              </Card.Body>
+            </Card>
+          ) : (
+            <>
+              <NewTopLevelPostCard hackRoom={this.props.room} />
 
-                <table>
-                  <tbody>
-                    {Object.entries(posts).map(([key, post]) => {
-                      return (
-                        <tr key={post.id}>
-                          <td>
-                            <Card className="mt-4">
-                              <Card.Body>
-                                <Post post={post} hackRoom={this.props.room} />
-                              </Card.Body>
-                              {this.state.feed === FEED.UNSEEN ? (
-                                <Card.Footer>
-                                  <div className="float-right">
-                                    <MarkAsSeenButton postId={post.id} />
-                                  </div>
-                                  <div style={{ clear: 'both' }}></div>
-                                </Card.Footer>
-                              ) : null}
-                            </Card>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </>
-            )}
-          </Col>
-          <Col></Col>
-        </Row>
-      </>
+              <FeedNav
+                currentFeed={this.state.feed}
+                setFeed={(feed) => this.setState({ feed: feed })}
+                setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                  this.setState({
+                    postsFilter: {
+                      requiredTags: requiredTags,
+                      forbiddenTagsByMe: forbiddenTagsByMe,
+                    },
+                  })
+                }
+              />
+
+              {feedSubtext ? (
+                <small className="text-muted">{feedSubtext}</small>
+              ) : null}
+
+              <table>
+                <tbody>
+                  {Object.entries(posts).map(([key, post]) => {
+                    return (
+                      <tr key={post.id}>
+                        <td>
+                          <Card className="mt-4">
+                            <Card.Body>
+                              <Post post={post} hackRoom={this.props.room} />
+                            </Card.Body>
+                            {this.state.feed === FEED.UNSEEN ? (
+                              <Card.Footer>
+                                <div className="float-right">
+                                  <MarkAsSeenButton postId={post.id} />
+                                </div>
+                                <div style={{ clear: 'both' }}></div>
+                              </Card.Footer>
+                            ) : null}
+                          </Card>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </>
+          )}
+        </Col>
+        <Col></Col>
+      </Row>
     );
   }
 }
