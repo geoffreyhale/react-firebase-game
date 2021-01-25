@@ -72,16 +72,21 @@ const NotificationItem = ({ notification }) => {
   );
 };
 
-const NotificationItemLinkContent = ({ userDisplayName, timestamp, uid }) => (
-  <span>
-    <div className="mr-2 float-left">
-      <UserPhoto uid={uid} size={38} />
-    </div>
-    <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
-    {` replied to your post `}
-    {friendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
-  </span>
-);
+const NotificationItemLinkContent = ({ timestamp, uid }) => {
+  const { users } = useContext(AppContext);
+  const user = users && users[uid];
+  const userDisplayName = user && user.displayName;
+  return (
+    <span>
+      <div className="mr-2 float-left">
+        <UserPhoto uid={uid} size={38} />
+      </div>
+      <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
+      {` replied to your post `}
+      {friendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
+    </span>
+  );
+};
 
 export default class NotificationsFeed extends React.Component {
   constructor() {
@@ -96,56 +101,44 @@ export default class NotificationsFeed extends React.Component {
   notificationsRef = () => this.db().ref('notifications/' + this.user().uid);
 
   componentDidMount() {
-    getUsers((users) => {
-      this.setState({ users });
-      this.notificationsRef().on('value', (snapshot) => {
-        const notificationsObject = snapshot.val();
-        const notifications = [];
-        const postIds = [];
-        if (notificationsObject) {
-          Object.entries(notificationsObject).forEach(([key, nItem]) => {
-            const postId = key;
-            postIds.push(postId);
-            // TODO get rid of notifications in db that are just the old count style
-            if (typeof nItem === 'number') {
+    this.notificationsRef().on('value', (snapshot) => {
+      const notificationsObject = snapshot.val();
+      const notifications = [];
+      const postIds = [];
+      if (notificationsObject) {
+        Object.entries(notificationsObject).forEach(([key, nItem]) => {
+          const postId = key;
+          postIds.push(postId);
+          // TODO get rid of notifications in db that are just the old count style
+          if (typeof nItem === 'number') {
+            notifications.push({
+              postId,
+              content: `${nItem} replies to your post ${postId}`,
+            });
+          } else if (typeof nItem === 'object') {
+            Object.entries(nItem).forEach(([userId, timestamp]) => {
               notifications.push({
                 postId,
-                content: `${nItem} replies to your post ${postId}`,
+                userId,
+                content: (
+                  <NotificationItemLinkContent
+                    timestamp={timestamp}
+                    uid={userId}
+                  />
+                ),
+                timestamp,
               });
-            } else if (typeof nItem === 'object') {
-              Object.entries(nItem).forEach(([userId, timestamp]) => {
-                const userDisplayName =
-                  this.state.users &&
-                  this.state.users[userId] &&
-                  this.state.users[userId].displayName;
-                const userPhotoURL =
-                  this.state.users &&
-                  this.state.users[userId] &&
-                  this.state.users[userId].photoURL;
-                notifications.push({
-                  postId,
-                  userId,
-                  content: (
-                    <NotificationItemLinkContent
-                      userDisplayName={userDisplayName}
-                      timestamp={timestamp}
-                      uid={userId}
-                    />
-                  ),
-                  timestamp,
-                });
-              });
-            }
-          });
-        }
-        notifications.sort((a, b) => {
-          return b.timestamp - a.timestamp;
+            });
+          }
         });
-        this.setState({
-          notifications: notifications,
-        });
-        postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
+      }
+      notifications.sort((a, b) => {
+        return b.timestamp - a.timestamp;
       });
+      this.setState({
+        notifications: notifications,
+      });
+      postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
     });
     // TODO removeNotification does't update the feed
   }
