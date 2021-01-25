@@ -109,13 +109,7 @@ export default class NotificationsFeed extends React.Component {
         Object.entries(notificationsObject).forEach(([key, nItem]) => {
           const postId = key;
           postIds.push(postId);
-          // TODO get rid of notifications in db that are just the old count style
-          if (typeof nItem === 'number') {
-            notifications.push({
-              postId,
-              content: `${nItem} replies to your post ${postId}`,
-            });
-          } else if (typeof nItem === 'object') {
+          if (typeof nItem === 'object') {
             Object.entries(nItem).forEach(([userId, timestamp]) => {
               notifications.push({
                 postId,
