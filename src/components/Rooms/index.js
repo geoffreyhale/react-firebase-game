@@ -1,5 +1,7 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card';
 import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import Posts from '../Posts';
 
 const rooms = {
@@ -45,6 +47,25 @@ const rooms = {
     ),
   },
 };
+
+export const RoomsMenu = () => (
+  <Card>
+    <Card.Body>
+      <Card.Title>Rooms</Card.Title>
+      <ul id="rooms">
+        <li>
+          <Link to={'/r/dev'}>r/dev</Link>
+        </li>
+        <li>
+          <Link to={'/r/general'}>r/general</Link>
+        </li>
+        <li>
+          <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
+        </li>
+      </ul>
+    </Card.Body>
+  </Card>
+);
 
 class Rooms extends React.Component {
   constructor() {

@@ -20,6 +20,7 @@ import {
   getPopularFeed,
   getUnseenFeed,
 } from './Feed';
+import { RoomsMenu } from '../Rooms';
 
 import './index.css';
 
@@ -144,22 +145,9 @@ class Posts extends Component {
               </Card.Body>
             </Card>
           )}
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Rooms</Card.Title>
-              <ul id="rooms">
-                <li>
-                  <Link to={'/r/dev'}>r/dev</Link>
-                </li>
-                <li>
-                  <Link to={'/r/general'}>r/general</Link>
-                </li>
-                <li>
-                  <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
-                </li>
-              </ul>
-            </Card.Body>
-          </Card>
+          <div className="mb-3">
+            <RoomsMenu />
+          </div>
           <div className="notifications mb-3">
             <NotificationsFeed />
           </div>
