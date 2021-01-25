@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Row from 'react-bootstrap/Row';
-import { BrowserRouter, Link, NavLink } from 'react-router-dom';
+import { BrowserRouter, Link } from 'react-router-dom';
 import firebase, { auth, provider } from '../firebase.js';
 import UserAuth from '../UserAuth';
 import Routes from '../Routes';
@@ -13,7 +11,9 @@ import AppProvider from '../AppProvider';
 import { getUser, getUsers, updateUser } from '../shared/db';
 import Spinner from '../shared/Spinner';
 import About from '../About';
+import AppNav from './AppNav';
 
+import logoImg from './logo192.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
@@ -33,76 +33,19 @@ const AppHeaderTitle = () => {
           textDecoration: 'inherit',
         }}
       >
-        <span title="X Book">
+        <span title="xBook">
           <img
-            src="logo192.png"
-            alt="xbook logo"
+            src={logoImg}
+            alt="xBook logo"
             style={{ verticalAlign: 'bottom', height: '3rem' }}
           />
-          <span className="ml-2">Book</span>
+          <span className="ml-2">xBook</span>
         </span>
       </Link>
-      <span className="text-muted ml-2">
-        <small style={{ fontSize: '50%' }}>{randomTagline}</small>
-      </span>
+      {/* <span className="text-muted ml-2 d-xs-none">
+        <small style={{ fontSize: '50%' }}>healthy relating</small>
+      </span> */}
     </h1>
-  );
-};
-
-const AppNav = ({ admin }) => {
-  return (
-    <Nav className="justify-content-center">
-      <Nav.Item>
-        <Nav.Link as={NavLink} to="/" exact>
-          Home
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link as={NavLink} to="/community">
-          Community
-        </Nav.Link>
-      </Nav.Item>
-      <NavDropdown title="&#8943;">
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/about">
-            About
-          </Nav.Link>
-        </NavDropdown.Item>
-        <NavDropdown.Header>Under Construction</NavDropdown.Header>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/chess">
-            Chess
-          </Nav.Link>
-        </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/groups">
-            Groups
-          </Nav.Link>
-        </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/incremental-clicker-game">
-            Incremental Clicker
-          </Nav.Link>
-        </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/scorekeeper">
-            Scorekeeper
-          </Nav.Link>
-        </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/tictactoe">
-            Tic-tac-toe
-          </Nav.Link>
-        </NavDropdown.Item>
-      </NavDropdown>
-      {admin && (
-        <Nav.Item>
-          <Nav.Link as={NavLink} to="/admin">
-            Admin
-          </Nav.Link>
-        </Nav.Item>
-      )}
-    </Nav>
   );
 };
 

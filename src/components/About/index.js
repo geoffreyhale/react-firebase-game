@@ -10,29 +10,35 @@ const About = () => (
       <Card>
         <Card.Body>
           {/* <Card.Title>About</Card.Title> */}
-          <h2>What is it?</h2>
-          <p>xbk.io is a social networking platform for healthy relating.</p>
+          <h2>What is xBook?</h2>
+          <p>
+            <a href="https://xbk.io/">xBook</a> is a social network for healthy
+            relating.
+          </p>
           {/* <p>
             We value respectful, considerate participation. We value rationality
             and empathy. We welcome all ideas and feelings.
           </p> */}
           {/* <h2>What's different about it?</h2>*/}
+          <h2>How do I play?</h2>
+          <p>
+            Say hello in <a href="https://xbk.io/r/general">r/general</a>.
+          </p>
           <h2>What is it built with?</h2>
           <p>
-            xbk.io is a JavaScript application that runs in your web browser,
-            using the <a href="https://reactjs.org/">React</a> framework.
+            It is a JavaScript application that runs in your web browser, using
+            the <a href="https://reactjs.org/">React</a> framework.
           </p>
           <p>
-            The server side of xbk.io uses{' '}
+            Backend concerns are handled with{' '}
             <a href="https://firebase.google.com/">Firebase</a> Realtime
             Database and Cloud Firestore.
           </p>
           <h2>Who are we?</h2>
           <p>
-            We build a community platform for healthy relating on the web. We
-            started in 2020 by a founder unusually passionate about healthy
-            relating. Our team consists of <em>Geoffrey Hale</em> and you, our
-            community.
+            We build an online social networking platform for healthy relating.
+            We were founded in 2020 by an engineer exceptionally passionate
+            about healthy relating.
           </p>
         </Card.Body>
       </Card>

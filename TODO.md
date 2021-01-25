@@ -15,6 +15,7 @@
 
 # TODO
 
+- room-specifics like stats
 - manually fix old post links, there's not many of them
 - use context for room, remove roomHack
 - nicer single post not found page, like link back to room
