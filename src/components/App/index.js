@@ -3,88 +3,17 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { BrowserRouter, Link } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import firebase, { auth, provider } from '../firebase.js';
-import UserAuth from '../UserAuth';
 import Routes from '../Routes';
 import AppProvider from '../AppProvider';
 import { getUser, getUsers, updateUser } from '../shared/db';
 import Spinner from '../shared/Spinner';
 import About from '../About';
-import AppNav from './AppNav';
+import AppHeader from './AppHeader';
 
-import logoImg from './logo192.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-
-const AppHeaderTitle = () => {
-  const taglines = [
-    <em>better together &#128149;</em>,
-    <em>healthy relating &#128149;</em>,
-  ];
-  const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
-
-  return (
-    <h1 style={{ display: 'inline-block', marginBottom: 0 }}>
-      <Link
-        to="/"
-        style={{
-          color: 'inherit',
-          textDecoration: 'inherit',
-        }}
-      >
-        <span title="xBook">
-          <img
-            src={logoImg}
-            alt="xBook logo"
-            style={{ verticalAlign: 'bottom', height: '3rem' }}
-          />
-          <span className="ml-2">xBook</span>
-        </span>
-      </Link>
-      {/* <span className="text-muted ml-2 d-xs-none">
-        <small style={{ fontSize: '50%' }}>healthy relating</small>
-      </span> */}
-    </h1>
-  );
-};
-
-const AppHeader = ({ user, login, logout }) => (
-  <header>
-    <Card>
-      <Card.Body>
-        <AppHeaderTitle />
-        <div style={{ float: 'right' }}>
-          <UserAuth user={user} login={login} logout={logout} />
-        </div>
-      </Card.Body>
-    </Card>
-    <Card className="mt-1">
-      <Card.Body
-        style={{
-          paddingBottom: '0.25rem',
-          paddingTop: '0.25rem',
-        }}
-      >
-        {user ? (
-          <>
-            <AppNav admin={user.admin} />
-          </>
-        ) : (
-          <div>
-            <small className="text-muted">
-              <em>
-                New online community that will never sell your data.
-                <br />
-                Join the discussion now for free.
-              </em>
-            </small>
-          </div>
-        )}
-      </Card.Body>
-    </Card>
-  </header>
-);
 
 class App extends Component {
   constructor() {
