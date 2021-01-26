@@ -1,6 +1,12 @@
 import format from 'date-fns/format';
-import formatDuration from 'date-fns/formatDuration';
 import intervalToDuration from 'date-fns/intervalToDuration';
+
+export const elapsedDuration = ({ timestamp }) => {
+  return intervalToDuration({
+    start: new Date(timestamp),
+    end: new Date(),
+  });
+};
 
 //TODO write tests for this function
 const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
