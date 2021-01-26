@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import { AppContext } from '../AppProvider';
 import Tag from '../shared/Tag';
+import { elapsedDuration } from '../shared/friendlyTimestamp';
 
 export const FEED = Object.freeze({
   ALL: 'all',
@@ -11,20 +12,59 @@ export const FEED = Object.freeze({
   UNSEEN: 'unseen',
 });
 
+export const hotScore = ({ post }) => {
+  if (post.upvote === undefined || post.timestamp === undefined) {
+    return 0;
+  }
+
+  const upvotes = Object.keys(post.upvote).length + 1; // + 1 avoids exceptional 0 case
+  const { timestamp } = post;
+  const t = elapsedDuration({ timestamp });
+  // more than 1 month old
+  if (t.years || t.months) {
+    return upvotes;
+  }
+  // 1 month - 1 wk
+  if (t.days >= 7) {
+    return upvotes * 10;
+  }
+  // 1 wk - 1 day
+  if (t.days) {
+    return upvotes * 100;
+  }
+  // 1 day - 1 hour
+  if (t.hours) {
+    return upvotes * 1000;
+  }
+  // 1 hour - 1 minute
+  if (t.minutes) {
+    return upvotes * 10000;
+  }
+  // less than 1 minute
+  return upvotes * 100000;
+
+  // const millisSincePost = Date.now() - post.timestamp;
+  // const millisInADay = 8.64e7;
+  // const daysSincePost = millisSincePost / millisInADay + 1; // + 1 avoids divide by zero
+  // const feedHot = (upvotes + 1) / millisSincePost;
+  // post.feedHot = feedHot;
+};
+/**
+ * sorts posts by feedHot score greatest to least
+ */
+// TODO fix this mutates posts, undesirable
 export const getHotFeed = ({ posts }) => {
-  // TODO fix this mutates posts, undesirable
   Object.keys(posts).forEach((key) => {
-    const upvotes = posts[key].upvote && Object.keys(posts[key].upvote).length;
-
-    const millisSincePost = Date.now() - posts[key].timestamp;
-    const daysSincePost = millisSincePost / 8.64e7;
-
-    posts[key].feedHot = (upvotes + 1) / daysSincePost;
+    posts[key].feedHot = hotScore({ post: posts[key] });
   });
+
   posts.sort((a, b) => {
     if (!a.feedHot) return 1;
     if (!b.feedHot) return -1;
     return b.feedHot - a.feedHot;
+  });
+  posts.forEach((post, i) => {
+    delete posts[i].feedHot;
   });
   return [posts, 'Upvotes and recency (upvotes / days old)'];
 };
