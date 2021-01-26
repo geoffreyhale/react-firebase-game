@@ -15,7 +15,7 @@
 
 # TODO
 
-- fix notifications
+- watchout for posts that get added without a room; they can be fixed but are lost without a room field
 - hot should include comments in equation
 - cross site search
 - room-specifics like stats, users here now, etc
