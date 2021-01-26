@@ -219,7 +219,7 @@ const PostContent = ({ children, small }) => {
   );
 };
 
-const Replies = ({ post, hackRoom }) => {
+const Replies = ({ post, hackRoom, hackIsSinglePostPage }) => {
   const { user } = useContext(AppContext);
   return (
     post &&
@@ -230,6 +230,7 @@ const Replies = ({ post, hackRoom }) => {
           key={replyPost.id}
           post={replyPost}
           hackRoom={hackRoom}
+          hackIsSinglePostPage={hackIsSinglePostPage}
         />
       );
     }, this)
@@ -248,9 +249,11 @@ const countAncestors = (node) => {
   return thisCount + 1;
 };
 
-const Post = ({ post, small, hackRoom }) => {
+const Post = ({ post, small, hackRoom, hackIsSinglePostPage }) => {
   const [tagFormCollapsed, setTagFormCollapsed] = useState(true);
-  const [repliesCollapsed, setRepliesCollapsed] = useState(true);
+  const [repliesCollapsed, setRepliesCollapsed] = useState(
+    !hackIsSinglePostPage
+  );
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
   if (!post.id) {
     return <>Waiting for post.id</>;
@@ -319,7 +322,11 @@ const Post = ({ post, small, hackRoom }) => {
       </div>
       {!repliesCollapsed && post.childNodes.length > 0 && (
         <div className="mt-2">
-          <Replies post={post} hackRoom={hackRoom} />
+          <Replies
+            post={post}
+            hackRoom={hackRoom}
+            hackIsSinglePostPage={hackIsSinglePostPage}
+          />
         </div>
       )}
     </>
@@ -328,11 +335,16 @@ const Post = ({ post, small, hackRoom }) => {
 
 export default Post;
 
-const ReplyPostCard = ({ post, hackRoom }) => {
+const ReplyPostCard = ({ post, hackRoom, hackIsSinglePostPage }) => {
   return (
     <Card className="mt-1">
       <Card.Body>
-        <Post post={post} small={true} hackRoom={hackRoom} />
+        <Post
+          post={post}
+          small={true}
+          hackRoom={hackRoom}
+          hackIsSinglePostPage={hackIsSinglePostPage}
+        />
       </Card.Body>
     </Card>
   );

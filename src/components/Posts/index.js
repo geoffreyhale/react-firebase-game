@@ -189,6 +189,7 @@ class Posts extends Component {
                   myPhotoURL={this.user().photoURL}
                   hackHidePostLinks={true} // TODO current routing appends extra '/post''s
                   hackRoom={post.room} // TODO use context instead?
+                  hackIsSinglePostPage={isSinglePostPage}
                 />
               </Card.Body>
             </Card>
