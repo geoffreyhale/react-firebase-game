@@ -13,41 +13,41 @@ export const FEED = Object.freeze({
 });
 
 export const hotScore = ({ post }) => {
-  if (post.upvote === undefined || post.timestamp === undefined) {
+  if (
+    (post.upvote === undefined && post.childNodes === undefined) ||
+    post.timestamp === undefined
+  ) {
     return 0;
   }
 
-  const upvotes = Object.keys(post.upvote).length + 1; // + 1 avoids exceptional 0 case
+  const upvotes = post.upvote ? Object.keys(post.upvote).length : 0;
+  const firstChildren = post.childNodes ? post.childNodes.length : 0;
+  const upvotesPlusFirstChildren = upvotes + firstChildren + 1; // + 1 avoids exceptional 0 case
+
   const { timestamp } = post;
   const t = elapsedDuration({ timestamp });
   // more than 1 month old
   if (t.years || t.months) {
-    return upvotes;
+    return upvotesPlusFirstChildren;
   }
   // 1 month - 1 wk
   if (t.days >= 7) {
-    return upvotes * 10;
+    return upvotesPlusFirstChildren * 10;
   }
   // 1 wk - 1 day
   if (t.days) {
-    return upvotes * 100;
+    return upvotesPlusFirstChildren * 100;
   }
   // 1 day - 1 hour
   if (t.hours) {
-    return upvotes * 1000;
+    return upvotesPlusFirstChildren * 1000;
   }
   // 1 hour - 1 minute
   if (t.minutes) {
-    return upvotes * 10000;
+    return upvotesPlusFirstChildren * 10000;
   }
   // less than 1 minute
-  return upvotes * 100000;
-
-  // const millisSincePost = Date.now() - post.timestamp;
-  // const millisInADay = 8.64e7;
-  // const daysSincePost = millisSincePost / millisInADay + 1; // + 1 avoids divide by zero
-  // const feedHot = (upvotes + 1) / millisSincePost;
-  // post.feedHot = feedHot;
+  return upvotesPlusFirstChildren * 100000;
 };
 /**
  * sorts posts by feedHot score greatest to least

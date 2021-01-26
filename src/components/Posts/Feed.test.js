@@ -22,6 +22,7 @@ const ten1m = { upvote: Array(10).fill({}), timestamp: monthAgo };
 const hundred1d = { upvote: Array(100).fill({}), timestamp: dayAgo };
 const hundred1w = { upvote: Array(100).fill({}), timestamp: weekAgo };
 
+// TODO add tests for new childNodes inclusion
 describe('hotScore', () => {
   it('works', () => {
     expect(hotScore({ post: one1s })).toEqual(200000);
@@ -41,6 +42,7 @@ describe('hotScore', () => {
   });
 });
 
+// TODO add tests for new childNodes inclusion
 describe('getHotFeed', () => {
   it('handles empty object and missing parameters', () => {
     const posts = [{}, {}];
