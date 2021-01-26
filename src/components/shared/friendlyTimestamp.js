@@ -17,17 +17,17 @@ const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
     console.error('friendlyTimestamp cannot convert object to timestamp');
     return;
   }
-  const timestampDate = new Date(timestamp);
-  const formattedTimestamp = format(timestampDate, "MMMM d, yyyy 'at' hh:mm b");
-  const duration = intervalToDuration({
-    start: timestampDate,
-    end: new Date(),
-  });
+
+  const duration = elapsedDuration({ timestamp });
 
   let content = false;
   let useSuffix = false;
   if (duration.years || duration.months || duration.days > 3) {
-    content = `${formattedTimestamp}`;
+    const formattedTimestamp = format(
+      new Date(timestamp),
+      "MMMM d, yyyy 'at' hh:mm b"
+    );
+    content = formattedTimestamp;
     useSuffix = true;
   } else if (duration.days) {
     content = `${duration.days}d`;
