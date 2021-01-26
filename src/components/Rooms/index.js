@@ -62,6 +62,21 @@ export const RoomsMenu = () => (
         <li>
           <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
         </li>
+        <li>
+          <span className="text-muted" to={'/r/proven'}>
+            r/provensafe
+          </span>
+        </li>
+        <li>
+          <span className="text-muted" to={'/r/proven'}>
+            r/elitedeepend
+          </span>
+        </li>
+        <li>
+          <span className="text-muted" to={'/r/proven'}>
+            r/topsecret
+          </span>
+        </li>
       </ul>
     </Card.Body>
   </Card>
@@ -79,6 +94,17 @@ class Rooms extends React.Component {
   render() {
     const { roomId } = this.props.match.params;
     const room = roomId === undefined ? null : rooms[roomId];
+
+    if (roomId && !room) {
+      return (
+        <Card>
+          <Card.Body>
+            <Card.Title>Insufficient Access</Card.Title>
+            <p>You do not yet have access to this room.</p>
+          </Card.Body>
+        </Card>
+      );
+    }
 
     return (
       <Posts
