@@ -126,7 +126,7 @@ class Posts extends Component {
       if (isSinglePostPage) {
         post = searchTree({ postId, post: { childNodes: postsTree.posts } });
         if (!post) {
-          return <>Post not found!</>;
+          post = null; // not found
         }
       } else {
         if (this.state.feed === FEED.UNSEEN) {
@@ -176,22 +176,30 @@ class Posts extends Component {
             </>
           ) : isSinglePostPage ? (
             <Card>
-              <Card.Header>
-                {post.replyToId ? (
-                  <Link to={`/r/${this.props.room}/posts/${post.replyToId}`}>
-                    &#8598;...
-                  </Link>
-                ) : null}
-              </Card.Header>
-              <Card.Body>
-                <Post
-                  post={post}
-                  myPhotoURL={this.user().photoURL}
-                  hackHidePostLinks={true} // TODO current routing appends extra '/post''s
-                  hackRoom={post.room} // TODO use context instead?
-                  hackIsSinglePostPage={isSinglePostPage}
-                />
-              </Card.Body>
+              {post ? (
+                <>
+                  <Card.Header>
+                    {post.replyToId ? (
+                      <Link
+                        to={`/r/${this.props.room}/posts/${post.replyToId}`}
+                      >
+                        &#8598;...
+                      </Link>
+                    ) : null}
+                  </Card.Header>
+                  <Card.Body>
+                    <Post
+                      post={post}
+                      myPhotoURL={this.user().photoURL}
+                      hackHidePostLinks={true} // TODO current routing appends extra '/post''s
+                      hackRoom={post.room} // TODO use context instead?
+                      hackIsSinglePostPage={isSinglePostPage}
+                    />
+                  </Card.Body>
+                </>
+              ) : (
+                <Card.Body>Post not found!</Card.Body>
+              )}
             </Card>
           ) : (
             <>
