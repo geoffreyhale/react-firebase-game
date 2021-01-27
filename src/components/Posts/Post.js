@@ -113,9 +113,9 @@ const PostActionsDropdown = ({ deletePost }) => (
 );
 
 export const PostHeaderRoom = ({ room }) => (
-  <div className="small text-muted mb-1">
-    <Link to={`/r/${room}`}>{`r/${room}`}</Link>
-  </div>
+  <Link to={`/r/${room}`} style={{ color: 'inherit' }}>
+    <strong style={{ fontWeight: 600 }}>{`r/${room}`}</strong>
+  </Link>
 );
 
 export const PostHeader = ({
@@ -134,7 +134,6 @@ export const PostHeader = ({
 
   return (
     <>
-      {hackRoom && !small && <PostHeaderRoom room={hackRoom} />}
       <div style={{ fontSize: small ? '85%' : null }}>
         {post.userId ? (
           <div className="float-left mr-2">
@@ -143,9 +142,20 @@ export const PostHeader = ({
         ) : null}
         <>
           <div>
-            <Link style={{ color: 'inherit' }} to={`/u/${post.userId}`}>
-              <strong>{displayName}</strong>
-            </Link>
+            <div>
+              <Link
+                style={{ color: 'inherit', display: 'inline-block' }}
+                to={`/u/${post.userId}`}
+              >
+                <strong style={{ fontWeight: 600 }}>{displayName}</strong>
+              </Link>
+              {hackRoom && !small && (
+                <span>
+                  {' '}
+                  &#8250; <PostHeaderRoom room={hackRoom} />
+                </span>
+              )}
+            </div>
             {hideActionsAndTimestamp ? null : (
               <div className="float-right">
                 {showActions ? (

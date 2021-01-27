@@ -14,7 +14,7 @@ const NewTopLevelPostCard = ({ hackRoom }) => {
       <Card.Body>
         {!hackRoom && (
           <div className="float-right">
-            <small className="text-muted">posting to:</small>
+            <small className="text-muted">to: </small>
             <PostHeaderRoom room={hackHackRoom} />
           </div>
         )}
