@@ -3,6 +3,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import MyDropdownToggle from './shared/MyDropdownToggle';
 import { UserPhoto } from './shared/User';
 
+export const LogInButton = ({ login }) => (
+  <Button variant="primary" onClick={login}>
+    Log In
+  </Button>
+);
+
 const UserAuth = ({ user, login, logout }) => {
   if (user) {
     return (
@@ -19,11 +25,7 @@ const UserAuth = ({ user, login, logout }) => {
       </>
     );
   }
-  return (
-    <Button variant="primary" onClick={login}>
-      Log In
-    </Button>
-  );
+  return <LogInButton login={login} />;
 };
 
 export default UserAuth;
