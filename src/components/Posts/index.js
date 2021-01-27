@@ -215,62 +215,63 @@ class Posts extends Component {
           </div>
         </Col>
         <Col sm={8} className="col-posts">
-          {this.state.lurker ? (
-            <>
-              {this.props.room && (
-                <NewTopLevelPostCard hackRoom={this.props.room} />
-              )}
+          {isSinglePostPage ? (
+            this.state.lurker ? (
               <NoLurking userDisplayName={this.user().displayName} />
-            </>
-          ) : isSinglePostPage ? (
-            <Card>
-              {post ? (
-                <>
-                  <Card.Header>
-                    {post.replyToId ? (
-                      <Link
-                        to={`/r/${this.props.room}/posts/${post.replyToId}`}
-                      >
-                        &#8598;...
-                      </Link>
-                    ) : null}
-                  </Card.Header>
-                  <Card.Body>
-                    <Post
-                      post={post}
-                      myPhotoURL={this.user().photoURL}
-                      hackHidePostLinks={true} // TODO current routing appends extra '/post''s
-                      hackRoom={post.room} // TODO use context instead?
-                      hackIsSinglePostPage={isSinglePostPage}
-                    />
-                  </Card.Body>
-                </>
-              ) : (
-                <Card.Body>Post not found!</Card.Body>
-              )}
-            </Card>
+            ) : (
+              <Card>
+                {post ? (
+                  <>
+                    <Card.Header>
+                      {post.replyToId ? (
+                        <Link
+                          to={`/r/${this.props.room}/posts/${post.replyToId}`}
+                        >
+                          &#8598;...
+                        </Link>
+                      ) : null}
+                    </Card.Header>
+                    <Card.Body>
+                      <Post
+                        post={post}
+                        myPhotoURL={this.user().photoURL}
+                        hackHidePostLinks={true} // TODO current routing appends extra '/post''s
+                        hackRoom={post.room} // TODO use context instead?
+                        hackIsSinglePostPage={isSinglePostPage}
+                      />
+                    </Card.Body>
+                  </>
+                ) : (
+                  <Card.Body>Post not found!</Card.Body>
+                )}
+              </Card>
+            )
           ) : (
             <>
               <NewTopLevelPostCard hackRoom={this.props.room} />
-
-              <FeedNav
-                currentFeed={this.state.feed}
-                setFeed={(feed) => this.setState({ feed: feed })}
-                setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                  this.setState({
-                    postsFilter: {
-                      requiredTags: requiredTags,
-                      forbiddenTagsByMe: forbiddenTagsByMe,
-                    },
-                  })
-                }
-                feedSubtext={feedSubtext}
-              />
-
-              <PostsFeed
-                posts={posts}
-                isUnseenFeed={this.state.feed === FEED.UNSEEN}
-              />
+              {this.state.lurker ? (
+                <NoLurking userDisplayName={this.user().displayName} />
+              ) : (
+                <>
+                  <FeedNav
+                    currentFeed={this.state.feed}
+                    setFeed={(feed) => this.setState({ feed: feed })}
+                    setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                      this.setState({
+                        postsFilter: {
+                          requiredTags: requiredTags,
+                          forbiddenTagsByMe: forbiddenTagsByMe,
+                        },
+                      })
+                    }
+                    feedSubtext={feedSubtext}
+                  />
+                  <PostsFeed
+                    posts={posts}
+                    isUnseenFeed={this.state.feed === FEED.UNSEEN}
+                  />
+                </>
+              )}
             </>
           )}
         </Col>

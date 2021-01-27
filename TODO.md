@@ -16,7 +16,7 @@
 # TODO
 
 - better document.title tab titles like for rooms and user profiles
-- really cleanup Posts/index.js; it handles many things and the view logic is outrageous
+- cleanup Posts/index.js
 - favorite posts
 - editor's choice posts
 - room specific upvoting etc
