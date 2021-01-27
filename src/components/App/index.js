@@ -8,7 +8,7 @@ import Routes from '../Routes';
 import AppProvider from '../AppProvider';
 import { getUser, getUsers, updateUser } from '../shared/db';
 import Spinner from '../shared/Spinner';
-import About from '../About';
+import FrontPage from '../FrontPage';
 import AppHeader from './AppHeader';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -128,7 +128,7 @@ class App extends Component {
                     <Spinner />
                   ) : (
                     <div className="mt-3">
-                      {!this.state.user && <About />}
+                      {!this.state.user && <FrontPage />}
                       <Routes />
                     </div>
                   )}
