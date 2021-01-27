@@ -1,4 +1,5 @@
 import firebase, { db } from '../firebase.js';
+import isPremium from './isPremium';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');
@@ -106,6 +107,7 @@ export const getUser = (uid, callback) => {
           .once('value', (snapshot) => {
             const realtimeUser = snapshot.val();
             const mergedUser = Object.assign(user, realtimeUser);
+            mergedUser.isPremium = isPremium({ premium: mergedUser.premium });
             callback(mergedUser);
           });
       } else {
