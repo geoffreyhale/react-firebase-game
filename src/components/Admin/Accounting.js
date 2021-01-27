@@ -53,7 +53,10 @@ export default class Accounting extends React.Component {
                   <td>{a.id}</td>
                   <td>{a.uid}</td>
                   <td>
-                    <User uid={a.uid}>{this.users()[a.uid]?.displayName}</User>
+                    <User
+                      uid={a.uid}
+                      displayName={this.users()[a.uid]?.displayName}
+                    />
                   </td>
                   <td>{a.usd}</td>
                   <td>{a.via}</td>
