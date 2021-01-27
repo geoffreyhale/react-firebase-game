@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
 import { getAccounting } from '../shared/db';
+import { User } from '../shared/User';
 
 export default class Accounting extends React.Component {
   constructor() {
@@ -51,7 +52,9 @@ export default class Accounting extends React.Component {
                 <tr key={a.id}>
                   <td>{a.id}</td>
                   <td>{a.uid}</td>
-                  <td>{this.users()[a.uid]?.displayName}</td>
+                  <td>
+                    <User uid={a.uid}>{this.users()[a.uid]?.displayName}</User>
+                  </td>
                   <td>{a.usd}</td>
                   <td>{a.via}</td>
                   <td>{friendlyTimestamp(a.timestamp?.seconds)}</td>
