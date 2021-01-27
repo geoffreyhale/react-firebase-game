@@ -97,15 +97,6 @@ export default class Admin extends React.Component {
       }
     });
 
-    const properties = [
-      { name: 'uid' },
-      { name: 'displayName' },
-      { name: 'email' },
-      { name: 'lastOnline', display: 'friendlyTimestamp' },
-      { name: 'lastLogin', display: 'friendlyTimestamp' },
-      { name: 'joined', display: 'friendlyTimestamp' },
-    ];
-
     const usersArray = Object.values(users);
 
     const sortKey = this.state.sortKey;
@@ -140,30 +131,24 @@ export default class Admin extends React.Component {
             <Table bordered hover size="sm">
               <thead>
                 <tr>
-                  {properties.map((property) => (
-                    <td
-                      key={property.name}
-                      onClick={() => this.sort(property.name)}
-                    >
-                      {property.name}
-                    </td>
-                  ))}
+                  <td>uid</td>
+                  <td>displayName</td>
+                  <td>email</td>
+                  <td>lastOnline</td>
+                  <td>lastLogin</td>
+                  <td>joined</td>
                 </tr>
               </thead>
               <tbody>
                 {usersArray.map((user) => {
                   return (
                     <tr key={user.uid}>
-                      {properties.map((property) => {
-                        const value = user[property.name];
-                        return (
-                          <td key={property.name}>
-                            {property.display === 'friendlyTimestamp'
-                              ? friendlyTimestamp(value)
-                              : value}
-                          </td>
-                        );
-                      })}
+                      <td>{user.uid}</td>
+                      <td>{user.displayName}</td>
+                      <td>{user.email}</td>
+                      <td>{friendlyTimestamp(user.lastOnline)}</td>
+                      <td>{friendlyTimestamp(user.lastLogin)}</td>
+                      <td>{friendlyTimestamp(user.joined)}</td>
                     </tr>
                   );
                 })}
