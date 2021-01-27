@@ -67,6 +67,39 @@ const Funnel = ({ usersArray }) => {
       value: countTotal,
       label: 'Total',
     },
+    // {
+    //   id: 'active1m',
+    //   value: active1m,
+    //   label: 'Active (1m)',
+    // },
+    {
+      id: 'active1w',
+      value: active1w,
+      label: 'Active (1w)',
+    },
+    {
+      id: 'active1d',
+      value: active1d,
+      label: 'Active (1d)',
+    },
+    {
+      id: 'active1h',
+      value: active1h,
+      label: 'Active (1h)',
+    },
+  ];
+
+  const dataData = [
+    {
+      id: 'countTotal',
+      value: countTotal,
+      label: 'Total',
+    },
+    // {
+    //   id: 'hasJoined',
+    //   value: hasJoined,
+    //   label: 'hasJoined',
+    // },
     {
       id: 'hasLastLogin',
       value: hasLastLogin,
@@ -76,21 +109,6 @@ const Funnel = ({ usersArray }) => {
       id: 'hasLastOnline',
       value: hasLastOnline,
       label: 'hasLastOnline',
-    },
-    {
-      id: 'active1w',
-      value: active1w,
-      label: 'Active (1 week)',
-    },
-    {
-      id: 'active1d',
-      value: active1d,
-      label: 'Active (1 day)',
-    },
-    {
-      id: 'active1h',
-      value: active1h,
-      label: 'Active (1 hour)',
     },
   ];
 
@@ -104,6 +122,10 @@ const Funnel = ({ usersArray }) => {
         <MyResponsiveFunnel data={activityData} />
       </div>
       <HorizontalLabels data={activityData} />
+      <div style={{ height: 300 }}>
+        <MyResponsiveFunnel data={dataData} />
+      </div>
+      <HorizontalLabels data={dataData} />
     </>
   );
 };
