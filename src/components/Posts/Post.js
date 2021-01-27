@@ -143,7 +143,9 @@ export const PostHeader = ({
         ) : null}
         <>
           <div>
-            <strong>{displayName}</strong>
+            <Link style={{ color: 'inherit' }} to={`/u/${post.userId}`}>
+              <strong>{displayName}</strong>
+            </Link>
             {hideActionsAndTimestamp ? null : (
               <div className="float-right">
                 {showActions ? (
