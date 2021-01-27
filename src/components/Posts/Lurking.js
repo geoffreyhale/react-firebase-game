@@ -38,11 +38,11 @@ export const isLurker = ({ userId, callback }) => {
     });
 };
 
-export const NoLurking = ({ lurkerStatus, userDisplayName }) => {
-  if (lurkerStatus === LURKER.YES) {
-    return (
-      <Card bg="primary" text="white" className="mt-3">
-        <Card.Body>
+export const NoLurking = ({ lurkerStatus, userDisplayName }) => (
+  <Card bg="primary" text="white" className="mt-3">
+    <Card.Body>
+      {lurkerStatus === LURKER.YES && (
+        <>
           <Card.Title>
             {userDisplayName ? (
               <>Welcome back, {userDisplayName}!</>
@@ -63,13 +63,10 @@ export const NoLurking = ({ lurkerStatus, userDisplayName }) => {
             Once you've posted, you'll be welcome to browse and reply to posts
             as usual.
           </p>
-        </Card.Body>
-      </Card>
-    );
-  } else if (lurkerStatus === LURKER.NEW) {
-    return (
-      <Card bg="primary" text="white" className="mt-3">
-        <Card.Body>
+        </>
+      )}
+      {lurkerStatus === LURKER.NEW && (
+        <>
           <Card.Title>
             {userDisplayName ? <>Welcome, {userDisplayName}!</> : <>Welcome!</>}
           </Card.Title>
@@ -86,12 +83,8 @@ export const NoLurking = ({ lurkerStatus, userDisplayName }) => {
             </Link>{' '}
             and reply to posts as much as you like.
           </p>
-        </Card.Body>
-      </Card>
-    );
-  } else {
-    console.error(
-      'Lurker should not reach this code point.  Check parent logic or refactor.'
-    );
-  }
-};
+        </>
+      )}
+    </Card.Body>
+  </Card>
+);
