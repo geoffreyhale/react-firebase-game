@@ -22,6 +22,7 @@ import {
 } from './Feed';
 import { RoomsMenu } from '../Rooms';
 import { isLurker, NoLurking } from './Lurking';
+import PremiumSaleCard from '../shared/PremiumSaleCard';
 
 import './index.css';
 
@@ -205,6 +206,7 @@ class Posts extends Component {
               </Card.Body>
             </Card>
           )}
+          {!this.user().isPremium && <PremiumSaleCard />}
           <div className="mb-3">
             <RoomsMenu />
           </div>
