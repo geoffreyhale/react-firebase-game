@@ -8,6 +8,7 @@ import Spinner from '../shared/Spinner';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import isPremium from '../shared/isPremium';
 import Funnel from './Funnel';
+import Accounting from './Accounting';
 
 const Posts = ({ posts }) => {
   Object.keys(posts).map((key) => {
@@ -127,6 +128,7 @@ export default class Admin extends React.Component {
 
     return (
       <>
+        <Accounting users={this.state.users} />
         <Posts posts={this.state.posts} />
         <Card className={'mt-3'}>
           <Card.Body>
