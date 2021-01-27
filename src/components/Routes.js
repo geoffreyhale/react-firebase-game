@@ -6,12 +6,12 @@ import Chess from './Games/Chess';
 import TicTacToe from './Games/TicTacToe';
 import Community from './Community';
 import Groups from './Groups';
-import Posts from './Posts';
 import Admin from './Admin';
 import Sandbox from './Sandbox';
 import About from './About';
 import Rooms from './Rooms';
 import { AppContext } from './AppProvider';
+import UserProfile from './UserProfile';
 
 const Routes = () => {
   const { user } = useContext(AppContext);
@@ -35,6 +35,9 @@ const Routes = () => {
             </Route>,
             <Route path="/r/:roomId/posts/:postId" key={location.pathname}>
               <Rooms />
+            </Route>,
+            <Route path="/u/:userId" key={location.pathname}>
+              <UserProfile />
             </Route>,
             <Route path="/about" key="/about">
               <About />

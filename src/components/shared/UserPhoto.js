@@ -30,7 +30,7 @@ const PresenceIcon = ({ size }) => (
   </div>
 );
 
-const UserPhoto = ({ size = 48, presence, key, uid }) => {
+const UserPhoto = ({ size = 48, presence, uid }) => {
   const { users } = useContext(AppContext);
   if (!users) {
     console.warn('UserPhoto used before users context available');

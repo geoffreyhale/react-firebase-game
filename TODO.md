@@ -65,7 +65,6 @@
 - community verification for display names
 - private rooms like worlds w game-ified invites / vote-off-island / scores etc
 - private rooms for conversations, games, etc?
-- user profiles
 - picture handling, stop querying google for user photos
 - ability to share pictures
 - Ability to delete your own tags
