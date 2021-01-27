@@ -22,6 +22,9 @@ class UserProfile extends React.Component {
   user = () => this.context.user;
 
   componentDidMount() {
+    if (!this.user().isPremium) {
+      return;
+    }
     const { userId } = this.props.match.params;
     getUser(userId, (user) => {
       this.setState({ user });
@@ -29,6 +32,20 @@ class UserProfile extends React.Component {
   }
 
   render() {
+    if (!this.user().isPremium) {
+      return (
+        <Card>
+          <Card.Body>
+            <Card.Title>Premium Feature</Card.Title>
+            <p>
+              Viewing user profiles is a premium feature available to paying
+              users.
+            </p>
+            <p>Please subscribe now to enjoy premium features.</p>
+          </Card.Body>
+        </Card>
+      );
+    }
     const { user } = this.state;
     return (
       <Card>
