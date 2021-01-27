@@ -74,12 +74,23 @@ class Posts extends Component {
       postsRef = this.postsRef();
     }
     postsRef.on('value', (postsSnapshot) => {
-      const posts = postsSnapshot.val();
+      let posts = postsSnapshot.val();
+
+      if (this.props.uid) {
+        posts = Object.keys(posts)
+          .filter((key) => posts[key].userId === this.props.uid)
+          .reduce((res, key) => ((res[key] = posts[key]), res), {});
+        this.setState({ feed: FEED.ALL });
+      }
+
       this.setState({ posts, loading: false });
     });
   }
 
   render() {
+    const hackIsUserFeed = this.props.uid;
+    const hackOnlyShowThePostsColumn = hackIsUserFeed;
+
     const postId = this.props.match.params.postId;
     const isSinglePostPage = !!postId;
 
@@ -143,6 +154,39 @@ class Posts extends Component {
           [posts, feedSubtext] = getHotFeed({ posts });
         }
       }
+    }
+
+    if (hackOnlyShowThePostsColumn) {
+      // TODO these display without any context
+      // ie replies display without links to higher level posts
+      // at least just add link headers to the replyToId post single post page
+      return (
+        <table>
+          <tbody>
+            {Object.entries(posts).map(([key, post]) => {
+              return (
+                <tr key={post.id}>
+                  <td>
+                    <Card className="mt-4">
+                      <Card.Body>
+                        <Post post={post} hackRoom={post.room} />
+                      </Card.Body>
+                      {this.state.feed === FEED.UNSEEN ? (
+                        <Card.Footer>
+                          <div className="float-right">
+                            <MarkAsSeenButton postId={post.id} />
+                          </div>
+                          <div style={{ clear: 'both' }}></div>
+                        </Card.Footer>
+                      ) : null}
+                    </Card>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      );
     }
 
     return (
