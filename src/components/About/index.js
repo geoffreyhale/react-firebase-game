@@ -9,36 +9,61 @@ const About = () => (
     <Col sm={8}>
       <Card>
         <Card.Body>
-          {/* <Card.Title>About</Card.Title> */}
           <h2>What is xBook?</h2>
           <p>
-            <a href="https://xbk.io/">xBook</a> is a social network for healthy
-            relating.
+            <a href="https://xbk.io/">xBook</a> is the social network for
+            healthy relating.
           </p>
           {/* <p>
             We value respectful, considerate participation. We value rationality
             and empathy. We welcome all ideas and feelings.
+            safety, vulnerability, emotional intimacy, deep, meaningful connections
           </p> */}
           {/* <h2>What's different about it?</h2>*/}
           <h2>How do I play?</h2>
           <p>
-            Say hello in <a href="https://xbk.io/r/general">r/general</a>.
-          </p>
-          <h2>What is it built with?</h2>
-          <p>
-            It is a JavaScript application that runs in your web browser, using
-            the <a href="https://reactjs.org/">React</a> framework.
+            Log in for free and introduce yourself in{' '}
+            <a href="https://xbk.io/r/general">r/general</a>.
           </p>
           <p>
-            Backend concerns are handled with{' '}
-            <a href="https://firebase.google.com/">Firebase</a> Realtime
-            Database and Cloud Firestore.
+            Join premium for $1/mo and join us in{' '}
+            <a href="https://xbk.io/r/healthyrelating">r/healthyrelating</a>.
+          </p>
+          <h2>How do I pay?</h2>
+          {/* <p>Premium access is currently offered for $1/mo.</p> */}
+          <p>
+            Ask us anything in <a href="https://xbk.io/r/general">r/general</a>.
           </p>
           <h2>Who are we?</h2>
           <p>
             We build an online social networking platform for healthy relating.
-            We were founded in 2020 by an engineer exceptionally passionate
-            about healthy relating.
+          </p>
+          <p>
+            We were founded in 2020 by{' '}
+            <a href="http://xbk.io/u/GS6qQS0bCMWbeonwBAauvjlCsen1">
+              Geoffrey Hale
+            </a>
+            , an engineer passionate about healthy relating.
+          </p>
+          <p>
+            If you'd like to know more you can ask us anything in{' '}
+            <a href="https://xbk.io/r/general">r/general</a>.
+          </p>
+          <h2>What is it built with?</h2>
+          <p>
+            It is a JavaScript application that runs in your web browser, using
+            the{' '}
+            <a href="https://reactjs.org/" target="_blank">
+              React
+            </a>{' '}
+            framework.
+          </p>
+          <p>
+            Backend concerns are handled with{' '}
+            <a href="https://firebase.google.com/" target="_blank">
+              Firebase
+            </a>{' '}
+            Realtime Database and Cloud Firestore.
           </p>
         </Card.Body>
       </Card>
