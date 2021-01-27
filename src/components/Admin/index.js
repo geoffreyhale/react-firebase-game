@@ -9,6 +9,7 @@ import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import isPremium from '../shared/isPremium';
 import Funnel from './Funnel';
 import Accounting from './Accounting';
+import { User } from '../shared/User';
 
 const Posts = ({ posts }) => {
   Object.keys(posts).map((key) => {
@@ -144,7 +145,9 @@ export default class Admin extends React.Component {
                   return (
                     <tr key={user.uid}>
                       <td>{user.uid}</td>
-                      <td>{user.displayName}</td>
+                      <td>
+                        <User uid={user.uid} displayName={user.displayName} />
+                      </td>
                       <td>{user.email}</td>
                       <td>{friendlyTimestamp(user.lastOnline)}</td>
                       <td>{friendlyTimestamp(user.lastLogin)}</td>
