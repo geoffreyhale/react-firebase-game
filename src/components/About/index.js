@@ -2,6 +2,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import { Link } from 'react-router-dom';
 
 const About = () => (
   <Row>
@@ -23,16 +24,16 @@ const About = () => (
           <h2>How do I play?</h2>
           <p>
             Log in for free and introduce yourself in{' '}
-            <a href="https://xbk.io/r/general">r/general</a>.
+            <Link to="/r/general">r/general</Link>.
           </p>
           <p>
             Join premium for $1/mo and join us in{' '}
-            <a href="https://xbk.io/r/healthyrelating">r/healthyrelating</a>.
+            <Link to="/r/healthyrelating">r/healthyrelating</Link>
           </p>
           <h2>How do I pay?</h2>
           {/* <p>Premium access is currently offered for $1/mo.</p> */}
           <p>
-            Ask us anything in <a href="https://xbk.io/r/general">r/general</a>.
+            Ask us anything in <Link to="/r/general">r/general</Link>.
           </p>
           <h2>Who are we?</h2>
           <p>
@@ -40,14 +41,12 @@ const About = () => (
           </p>
           <p>
             We were founded in 2020 by{' '}
-            <a href="http://xbk.io/u/GS6qQS0bCMWbeonwBAauvjlCsen1">
-              Geoffrey Hale
-            </a>
-            , an engineer passionate about healthy relating.
+            <Link to="/u/GS6qQS0bCMWbeonwBAauvjlCsen1">Geoffrey Hale</Link>, an
+            engineer passionate about healthy relating.
           </p>
           <p>
             If you'd like to know more you can ask us anything in{' '}
-            <a href="https://xbk.io/r/general">r/general</a>.
+            <Link to="/r/general">r/general</Link>.
           </p>
           <h2>What is it built with?</h2>
           <p>
