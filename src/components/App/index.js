@@ -128,7 +128,7 @@ class App extends Component {
                     <Spinner />
                   ) : (
                     <div className="mt-3">
-                      {!this.state.user && <FrontPage />}
+                      {!this.state.user && <FrontPage login={this.login} />}
                       <Routes />
                     </div>
                   )}
