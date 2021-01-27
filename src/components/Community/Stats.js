@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { AppContext } from '../AppProvider';
-import UserPhoto from '../shared/UserPhoto';
+import { UserPhoto } from '../shared/User';
 import Tag from '../shared/Tag';
 
 const createUserStatsZeroObject = ({ userId }) => ({

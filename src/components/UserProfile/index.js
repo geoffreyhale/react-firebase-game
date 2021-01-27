@@ -7,7 +7,7 @@ import { withRouter } from 'react-router';
 import { AppContext } from '../AppProvider';
 import { getUser } from '../shared/db';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
-import UserPhoto from '../shared/UserPhoto';
+import { UserPhoto } from '../shared/User';
 import Spinner from '../shared/Spinner';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import Posts from '../Posts';

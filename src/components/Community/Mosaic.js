@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import { getUsers } from '../shared/db';
-import UserPhoto from '../shared/UserPhoto';
+import { UserPhoto } from '../shared/User';
 import firebase from '../firebase';
 import Spinner from '../shared/Spinner';
 

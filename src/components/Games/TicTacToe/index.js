@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/Table';
 import { AppContext } from '../../AppProvider';
 import firebase, { auth } from '../../firebase.js';
 import { getUsers } from '../../shared/db';
-import UserPhoto from '../../shared/UserPhoto';
+import { UserPhoto } from '../../shared/User';
 
 import './index.css';
 

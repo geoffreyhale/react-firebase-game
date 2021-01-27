@@ -10,7 +10,7 @@ import { AppContext } from '../AppProvider';
 import firebase from '../firebase.js';
 import Tag from '../shared/Tag';
 import { createNewPost, deletePost } from '../shared/db';
-import UserPhoto from '../shared/UserPhoto';
+import { UserPhoto } from '../shared/User';
 import { Upvote } from './PostVote';
 
 const redditRed = '#fd5828';

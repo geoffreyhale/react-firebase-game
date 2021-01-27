@@ -7,7 +7,7 @@ import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
 import { getUsers, removeNotification } from '../shared/db';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
-import UserPhoto from '../shared/UserPhoto';
+import { UserPhoto } from '../shared/User';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {

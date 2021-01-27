@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import MyDropdownToggle from './shared/MyDropdownToggle';
-import UserPhoto from './shared/UserPhoto';
+import { UserPhoto } from './shared/User';
 
 const UserAuth = ({ user, login, logout }) => {
   if (user) {
