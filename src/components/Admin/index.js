@@ -5,6 +5,7 @@ import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
 import { getPosts, getUsersRealtimeDatabase } from '../shared/db';
 import Spinner from '../shared/Spinner';
+import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import isPremium from '../shared/isPremium';
 import Funnel from './Funnel';
 
@@ -29,9 +30,6 @@ const Posts = ({ posts }) => {
     </Card>
   );
 };
-
-export const getMillisFromDifferingTypes = (lastLogin) =>
-  typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
 
 export default class Admin extends React.Component {
   constructor() {

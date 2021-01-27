@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { AppContext } from '../AppProvider';
 import { getUser } from '../shared/db';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import UserPhoto from '../shared/UserPhoto';
-import { getMillisFromDifferingTypes } from '../Admin';
+import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 
 export default class UserProfile extends React.Component {
   constructor() {
