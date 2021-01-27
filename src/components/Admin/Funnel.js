@@ -47,6 +47,12 @@ const Funnel = ({ usersArray }) => {
   const active1w = usersArray.filter((user) => {
     return user.lastOnline && Date.now() - user.lastOnline < 604800000;
   }).length;
+  const active1m = usersArray.filter((user) => {
+    return user.lastOnline && Date.now() - user.lastOnline < 2.628e9;
+  }).length;
+  const active1y = usersArray.filter((user) => {
+    return user.lastOnline && Date.now() - user.lastOnline < 3.154e10;
+  }).length;
 
   const conversionData = [
     {
@@ -67,11 +73,16 @@ const Funnel = ({ usersArray }) => {
       value: countTotal,
       label: 'Total',
     },
-    // {
-    //   id: 'active1m',
-    //   value: active1m,
-    //   label: 'Active (1m)',
-    // },
+    {
+      id: 'active1y',
+      value: active1y,
+      label: 'Active (1y)',
+    },
+    {
+      id: 'active1m',
+      value: active1m,
+      label: 'Active (1m)',
+    },
     {
       id: 'active1w',
       value: active1w,
