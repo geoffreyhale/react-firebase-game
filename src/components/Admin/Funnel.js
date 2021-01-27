@@ -126,15 +126,15 @@ const Funnel = ({ usersArray }) => {
 
   return (
     <>
-      <div style={{ height: 200 }}>
+      <div style={{ height: 100 }}>
         <MyResponsiveFunnel data={conversionData} />
       </div>
       <HorizontalLabels data={conversionData} />
-      <div style={{ height: 300 }}>
+      <div style={{ height: 200 }}>
         <MyResponsiveFunnel data={activityData} />
       </div>
       <HorizontalLabels data={activityData} />
-      <div style={{ height: 300 }}>
+      <div style={{ height: 100 }}>
         <MyResponsiveFunnel data={dataData} />
       </div>
       <HorizontalLabels data={dataData} />
