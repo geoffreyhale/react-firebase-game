@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { withRouter } from 'react-router';
 import { AppContext } from '../AppProvider';
 import { getUser } from '../shared/db';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
@@ -11,7 +12,7 @@ import Spinner from '../shared/Spinner';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import Posts from '../Posts';
 
-export default class UserProfile extends React.Component {
+class UserProfile extends React.Component {
   constructor() {
     super();
     this.state = { user: {} };
@@ -21,7 +22,8 @@ export default class UserProfile extends React.Component {
   user = () => this.context.user;
 
   componentDidMount() {
-    getUser(this.user().uid, (user) => {
+    const { userId } = this.props.match.params;
+    getUser(userId, (user) => {
       this.setState({ user });
     });
   }
@@ -61,3 +63,5 @@ export default class UserProfile extends React.Component {
     );
   }
 }
+
+export default withRouter(UserProfile);
