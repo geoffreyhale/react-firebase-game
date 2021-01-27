@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 import firebase from '../firebase.js';
 
 export const LURKER = Object.freeze({
@@ -40,18 +41,27 @@ export const isLurker = ({ userId, callback }) => {
 export const NoLurking = ({ lurkerStatus, userDisplayName }) => {
   if (lurkerStatus === LURKER.YES) {
     return (
-      <Card bg="secondary" text="white" className="mt-3">
+      <Card bg="primary" text="white" className="mt-3">
         <Card.Body>
-          <Card.Title>Please post to continue</Card.Title>
-          {userDisplayName && <p>{userDisplayName},</p>}
-          <p>Welcome back!</p>
-          <p>You haven't posted in over 3 days. We miss you!</p>
+          <Card.Title>
+            {userDisplayName ? (
+              <>Welcome back, {userDisplayName}!</>
+            ) : (
+              <>Welcome back!</>
+            )}
+          </Card.Title>
           <p>
-            xBook is testing a "no lurking" policy to encourage participation
-            and increase safety of its active community members.
+            You haven't posted in a few days. Please share an update about
+            yourself to rejoin the conversation. We miss you!
           </p>
           <p>
-            Please share an update about yourself to rejoin the conversation.
+            This participation requirement helps promote meaningful connections
+            and safety in the active community in accordance with our "no
+            lurking" policy.
+          </p>
+          <p>
+            Once you've posted, you'll be welcome to browse and reply to posts
+            as usual.
           </p>
         </Card.Body>
       </Card>
@@ -64,6 +74,18 @@ export const NoLurking = ({ lurkerStatus, userDisplayName }) => {
             {userDisplayName ? <>Welcome, {userDisplayName}!</> : <>Welcome!</>}
           </Card.Title>
           <p>Please introduce yourself to join the conversation.</p>
+          <p>
+            This participation requirement helps initiate meaningful connections
+            and promotes safety in the active community in accordance with our
+            "no lurking" policy.
+          </p>
+          <p>
+            Once you've posted, you'll be welcome to browse{' '}
+            <Link to="/r/general" style={{ color: 'white', fontWeight: 600 }}>
+              r/general
+            </Link>{' '}
+            and reply to posts as much as you like.
+          </p>
         </Card.Body>
       </Card>
     );
