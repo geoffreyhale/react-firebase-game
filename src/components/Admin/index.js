@@ -132,12 +132,12 @@ export default class Admin extends React.Component {
             <Table bordered hover size="sm">
               <thead>
                 <tr>
-                  <td>uid</td>
-                  <td>displayName</td>
-                  <td>email</td>
-                  <td>lastOnline</td>
-                  <td>lastLogin</td>
-                  <td>joined</td>
+                  <td onClick={() => this.sort('uid')}>uid</td>
+                  <td onClick={() => this.sort('displayName')}>displayName</td>
+                  <td onClick={() => this.sort('email')}>email</td>
+                  <td onClick={() => this.sort('lastOnline')}>lastOnline</td>
+                  <td onClick={() => this.sort('lastLogin')}>lastLogin</td>
+                  <td onClick={() => this.sort('joined')}>joined</td>
                 </tr>
               </thead>
               <tbody>
