@@ -18,7 +18,15 @@ export default class Accounting extends React.Component {
   users = () => this.context.users;
 
   componentDidMount() {
-    getAccounting((accounting) => this.setState({ accounting }));
+    getAccounting((accounting) =>
+      this.setState({
+        accounting,
+        totalUsd: Object.values(accounting).reduce(
+          (totalUsd, a) => totalUsd + a.usd,
+          0
+        ),
+      })
+    );
   }
 
   render() {
@@ -50,6 +58,16 @@ export default class Accounting extends React.Component {
                 </tr>
               ))}
             </tbody>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{this.state.totalUsd}</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
           </Table>
         </Card.Body>
       </Card>
