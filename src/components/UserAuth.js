@@ -3,9 +3,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import MyDropdownToggle from './shared/MyDropdownToggle';
 import { UserPhoto } from './shared/User';
 
-export const LogInButton = ({ login }) => (
-  <Button variant="primary" onClick={login}>
-    Log In
+export const LogInButton = ({ children, login, style }) => (
+  <Button variant="primary" onClick={login} style={style}>
+    {children || 'Log In'}
   </Button>
 );
 
