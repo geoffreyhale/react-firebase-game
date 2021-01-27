@@ -57,7 +57,7 @@ const Funnel = ({ usersArray }) => {
     {
       id: 'countPremium',
       value: countPremium,
-      label: 'Premium',
+      label: `Premium ${Math.round((countPremium / countTotal) * 100)}%`,
     },
   ];
 
