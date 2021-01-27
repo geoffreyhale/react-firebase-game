@@ -25,17 +25,24 @@ export default class UserProfile extends React.Component {
 
   render() {
     const { user } = this.state;
-    // console.log(user);
     return (
       <Card>
         <Card.Body>
-          <UserPhoto uid={user.uid} size={96} />
-          <Card.Title>{user.displayName}</Card.Title>
+          <UserPhoto uid={user.uid} presence={user.presence} size={96} />
+          <Card.Title>
+            {user.displayName}
+            {/* {user.admin && (
+              <>
+                <br />
+                <small className="text-muted">Role: Admin</small>
+              </>
+            )} */}
+          </Card.Title>
           <ListGroup>
-            {/* <ListGroup.Item>
+            <ListGroup.Item>
               <strong>Last Online: </strong>
               {friendlyTimestamp(user.lastOnline)}
-            </ListGroup.Item> */}
+            </ListGroup.Item>
             <ListGroup.Item>
               <strong>Last Login: </strong>
               {friendlyTimestamp(getMillisFromDifferingTypes(user.lastLogin))}

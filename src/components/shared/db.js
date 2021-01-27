@@ -100,9 +100,16 @@ export const getUser = (uid, callback) => {
       if (doc.exists) {
         const user = doc.data();
         user.uid = doc.id;
-        callback(user);
+        firebase
+          .database()
+          .ref('users/' + user.uid)
+          .once('value', (snapshot) => {
+            const realtimeUser = snapshot.val();
+            const mergedUser = Object.assign(user, realtimeUser);
+            callback(mergedUser);
+          });
       } else {
-        console.error('No such document!');
+        console.error('User not found! uid: ', uid);
       }
     });
 };
