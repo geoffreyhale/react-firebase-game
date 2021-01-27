@@ -21,7 +21,7 @@ import {
   getUnseenFeed,
 } from './Feed';
 import { RoomsMenu } from '../Rooms';
-import { isLurker, NoLurking } from './Lurking';
+import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../shared/PremiumSaleCard';
 
 import './index.css';
@@ -73,7 +73,7 @@ class Posts extends Component {
     super();
     this.state = {
       loading: true,
-      lurker: null,
+      lurkerStatus: null,
       posts: {},
       feed: FEED.HOT,
       postsFilter: {
@@ -93,7 +93,7 @@ class Posts extends Component {
     const userId = this.user().uid;
     isLurker({
       userId,
-      callback: (isLurker) => this.setState({ lurker: isLurker }),
+      callback: (lurkerStatus) => this.setState({ lurkerStatus }),
     });
 
     let postsRef = null;
@@ -124,8 +124,9 @@ class Posts extends Component {
     const isSinglePostPage = !!postId;
 
     const users = this.users();
+    const { lurkerStatus } = this.state;
     // TODO fix this will spin erroneously for a room with legitimately 0 posts
-    if (!users || this.state.loading || this.state.lurker === null) {
+    if (!users || this.state.loading || lurkerStatus === null) {
       return <Spinner />;
     }
 
@@ -134,7 +135,7 @@ class Posts extends Component {
     let post = {};
     let posts = [];
     if (
-      !this.state.lurker &&
+      lurkerStatus === LURKER.NO &&
       this.state.posts &&
       this.state.posts.length !== 0
     ) {
@@ -216,8 +217,11 @@ class Posts extends Component {
         </Col>
         <Col sm={8} className="col-posts">
           {isSinglePostPage ? (
-            this.state.lurker ? (
-              <NoLurking userDisplayName={this.user().displayName} />
+            lurkerStatus !== LURKER.NO ? (
+              <NoLurking
+                userDisplayName={this.user().displayName}
+                lurkerStatus={lurkerStatus}
+              />
             ) : (
               <Card>
                 {post ? (
@@ -249,8 +253,11 @@ class Posts extends Component {
           ) : (
             <>
               <NewTopLevelPostCard hackRoom={this.props.room} />
-              {this.state.lurker ? (
-                <NoLurking userDisplayName={this.user().displayName} />
+              {lurkerStatus !== LURKER.NO ? (
+                <NoLurking
+                  userDisplayName={this.user().displayName}
+                  lurkerStatus={lurkerStatus}
+                />
               ) : (
                 <>
                   <FeedNav

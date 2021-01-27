@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 const PremiumSaleCard = () => {
   const premiumSaleCardVariants = [
-    'primary',
     'success',
     'danger',
     'warning',
