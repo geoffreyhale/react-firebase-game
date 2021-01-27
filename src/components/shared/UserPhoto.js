@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
 import isPremium from './isPremium';
 
@@ -42,7 +43,8 @@ const UserPhoto = ({ size = 48, presence, uid }) => {
     return null;
   }
   return (
-    <div
+    <Link
+      to={`/u/${user.uid}`}
       key={user.uid}
       style={{ position: 'relative', display: 'inline-block' }}
     >
@@ -53,7 +55,7 @@ const UserPhoto = ({ size = 48, presence, uid }) => {
       />
       {isPremium({ premium: user.premium }) && <PremiumIcon size={size} />}
       {presence === 'online' && <PresenceIcon size={size} />}
-    </div>
+    </Link>
   );
 };
 
