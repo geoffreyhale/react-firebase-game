@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -31,14 +30,7 @@ class App extends Component {
       if (authUser) {
         const uid = authUser.uid;
 
-        getUser(uid, (dbUser) => {
-          const user = {
-            uid: uid,
-            admin: dbUser.admin,
-            displayName: dbUser.displayName,
-            email: dbUser.email,
-            photoURL: dbUser.photoURL,
-          };
+        getUser(uid, (user) => {
           this.setState({ loading: false, user });
         });
 
@@ -93,28 +85,21 @@ class App extends Component {
   login() {
     auth.signInWithPopup(provider).then((result) => {
       const authUser = result.user;
-      const user = {
-        uid: authUser.uid,
-        displayName: authUser.displayName,
-        email: authUser.email,
-        photoURL: authUser.photoURL,
-      };
-      this.setState(
+      updateUser(
         {
-          user: user,
+          uid: authUser.uid,
+          user: {
+            displayName: authUser.displayName,
+            email: authUser.email,
+            photoURL: authUser.photoURL,
+            joined: new Date(parseInt(authUser.metadata.a)),
+            lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+          },
         },
-        () => {
-          updateUser({
-            uid: authUser.uid,
-            user: {
-              displayName: authUser.displayName,
-              email: authUser.email,
-              photoURL: authUser.photoURL,
-              joined: new Date(parseInt(authUser.metadata.a)),
-              lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-            },
-          });
-        }
+        () =>
+          getUser(authUser.uid, (user) => {
+            this.setState({ loading: false, user });
+          })
       );
     });
   }

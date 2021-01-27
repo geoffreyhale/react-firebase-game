@@ -137,8 +137,9 @@ export const getUsersRealtimeDatabase = (callback) => {
   });
 };
 
-export const updateUser = ({ uid, user }) => {
+export const updateUser = ({ uid, user }, then) => {
   db.collection('users').doc(uid).set(user, { merge: true });
+  then();
 };
 
 export const toggleUpvote = ({ postId, userId }) => {
