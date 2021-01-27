@@ -30,9 +30,11 @@ const AppHeaderTitle = () => {
           <span className="ml-2">xBook</span>
         </span>
       </Link>
-      {/* <span className="text-muted ml-2 d-xs-none">
-        <small style={{ fontSize: '50%' }}>healthy relating</small>
-      </span> */}
+      <span className="text-muted ml-2 d-xs-none">
+        <small style={{ fontSize: '50%', fontWeight: 300 }}>
+          healthy relating
+        </small>
+      </span>
     </h1>
   );
 };
