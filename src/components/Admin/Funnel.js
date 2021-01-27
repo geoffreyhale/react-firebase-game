@@ -35,6 +35,7 @@ const HorizontalLabels = ({ data }) => (
 
 const Funnel = ({ usersArray }) => {
   const countTotal = usersArray.length;
+  const hasJoined = usersArray.filter((user) => user.joined).length;
   const hasLastLogin = usersArray.filter((user) => user.lastLogin).length;
   const hasLastOnline = usersArray.filter((user) => user.lastOnline).length;
   const countPremium = usersArray.filter((user) => user.isPremium).length;
@@ -106,11 +107,11 @@ const Funnel = ({ usersArray }) => {
       value: countTotal,
       label: 'Total',
     },
-    // {
-    //   id: 'hasJoined',
-    //   value: hasJoined,
-    //   label: 'hasJoined',
-    // },
+    {
+      id: 'hasJoined',
+      value: hasJoined,
+      label: 'hasJoined',
+    },
     {
       id: 'hasLastLogin',
       value: hasLastLogin,
