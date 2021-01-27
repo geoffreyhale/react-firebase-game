@@ -116,6 +116,19 @@ export const getUser = (uid, callback) => {
     });
 };
 
+export const getAccounting = (callback) => {
+  const accounting = {};
+  db.collection('accounting')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        accounting[doc.id] = doc.data();
+        accounting[doc.id].id = doc.id;
+      });
+      callback(accounting);
+    });
+};
+
 export const getUsers = (callback) => {
   const users = {};
   db.collection('users')
