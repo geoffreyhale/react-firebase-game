@@ -15,6 +15,9 @@
 
 # TODO
 
+- ever-present welcome non-premium to purchase premium
+- better document.title tab titles like for rooms and user profiles
+- really cleanup Posts/index.js; it handles many things and the view logic is outrageous
 - favorite posts
 - editor's choice posts
 - room specific upvoting etc
