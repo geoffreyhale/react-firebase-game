@@ -49,30 +49,18 @@ const AppHeader = ({ user, login, logout }) => (
         </div>
       </Card.Body>
     </Card>
-    <Card className="mt-1">
-      <Card.Body
-        style={{
-          paddingBottom: '0.25rem',
-          paddingTop: '0.25rem',
-        }}
-      >
-        {user ? (
-          <>
-            <AppNav admin={user.admin} />
-          </>
-        ) : (
-          <div>
-            <small className="text-muted">
-              <em>
-                New online community that will never sell your data.
-                <br />
-                Join the discussion now for free.
-              </em>
-            </small>
-          </div>
-        )}
-      </Card.Body>
-    </Card>
+    {user && (
+      <Card className="mt-1">
+        <Card.Body
+          style={{
+            paddingBottom: '0.25rem',
+            paddingTop: '0.25rem',
+          }}
+        >
+          <AppNav admin={user.admin} />
+        </Card.Body>
+      </Card>
+    )}
   </header>
 );
 
