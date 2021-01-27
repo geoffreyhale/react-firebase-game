@@ -20,7 +20,7 @@ const NewTopLevelPostCard = ({ hackRoom }) => {
         )}
         <Card.Title>
           <UserPhoto uid={user.uid} />
-          {user.displayName}
+          <span className="ml-2">{user.displayName}</span>
           <small className="text-muted ml-2">&#127757; Public</small>
         </Card.Title>
         <NewPostForm
