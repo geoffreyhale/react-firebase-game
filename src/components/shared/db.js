@@ -99,6 +99,7 @@ export const getUser = (uid, callback) => {
     .then((doc) => {
       if (doc.exists) {
         const user = doc.data();
+        user.uid = doc.id;
         callback(user);
       } else {
         console.error('No such document!');

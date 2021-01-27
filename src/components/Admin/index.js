@@ -30,7 +30,7 @@ const Posts = ({ posts }) => {
   );
 };
 
-const getMillisFromDifferingTypes = (lastLogin) =>
+export const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
 
 export default class Admin extends React.Component {
