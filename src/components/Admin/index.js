@@ -3,11 +3,32 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
-import { getUsersRealtimeDatabase } from '../shared/db';
+import { getPosts, getUsersRealtimeDatabase } from '../shared/db';
 import Spinner from '../shared/Spinner';
 import isPremium from '../shared/isPremium';
 import Funnel from './Funnel';
-// import { } from './archive/';
+
+const Posts = ({ posts }) => {
+  Object.keys(posts).map((key) => {
+    posts[key].id = key;
+  });
+  const count = Object.keys(posts).length;
+  const postsWithNoRoom = Object.values(posts).filter((post) => !post.room);
+  const countNoRoom = postsWithNoRoom.length;
+  return (
+    <Card>
+      <Card.Body>
+        <Card.Title>Posts</Card.Title>
+        <div>count: {count}</div>
+        <div>orphans (undefined room): {countNoRoom}</div>
+        {postsWithNoRoom.map((post) => (
+          <div>id: {post.id}</div>
+        ))}
+        <Card></Card>
+      </Card.Body>
+    </Card>
+  );
+};
 
 const getMillisFromDifferingTypes = (lastLogin) =>
   typeof lastLogin === 'object' ? lastLogin.toMillis() : lastLogin;
@@ -16,6 +37,7 @@ export default class Admin extends React.Component {
   constructor() {
     super();
     this.state = {
+      posts: {},
       users: {},
       sortKey: 'lastOnline',
     };
@@ -31,6 +53,9 @@ export default class Admin extends React.Component {
       this.setState({
         users,
       });
+    });
+    getPosts((posts) => {
+      this.setState({ posts });
     });
   }
 
@@ -104,7 +129,8 @@ export default class Admin extends React.Component {
 
     return (
       <>
-        <Card>
+        <Posts posts={this.state.posts} />
+        <Card className={'mt-3'}>
           <Card.Body>
             <Funnel usersArray={usersArray} />
           </Card.Body>

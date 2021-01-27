@@ -85,6 +85,13 @@ export const deletePost = ({ postId }) => {
   // decrementNotifications({ postId: replyToId, myUserId }); // TODO
 };
 
+export const getPosts = (callback) => {
+  postsRef().once('value', (snapshot) => {
+    const posts = snapshot.val();
+    callback(posts);
+  });
+};
+
 export const getUser = (uid, callback) => {
   db.collection('users')
     .doc(uid)
