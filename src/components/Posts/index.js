@@ -264,11 +264,8 @@ class Posts extends Component {
                     },
                   })
                 }
+                feedSubtext={feedSubtext}
               />
-
-              {feedSubtext ? (
-                <small className="text-muted">{feedSubtext}</small>
-              ) : null}
 
               <PostsFeed
                 posts={posts}

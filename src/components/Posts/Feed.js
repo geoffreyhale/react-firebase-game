@@ -183,67 +183,76 @@ export const getUnseenFeed = ({ flatPostsArray, posts, userId }) => {
   ];
 };
 
-export const FeedNav = ({ currentFeed, setFeed, setPostsFilter }) => {
+export const FeedNav = ({
+  currentFeed,
+  setFeed,
+  setPostsFilter,
+  feedSubtext,
+}) => {
   const { user } = useContext(AppContext);
   return (
-    <Nav variant="tabs" className="justify-content-center mt-2">
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.HOT}
-          onClick={() => {
-            setFeed(FEED.HOT);
-            setPostsFilter([], []);
-          }}
-        >
-          Hot
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.POPULAR}
-          onClick={() => {
-            setFeed(FEED.POPULAR);
-            setPostsFilter([], []);
-          }}
-        >
-          Upvotes
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.UNSEEN}
-          onClick={() => {
-            setFeed(FEED.UNSEEN);
-            setPostsFilter([], []);
-          }}
-        >
-          Unseen
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          active={currentFeed === FEED.ALL}
-          onClick={() => {
-            setFeed(FEED.ALL);
-            setPostsFilter([], []);
-          }}
-        >
-          All
-        </Nav.Link>
-      </Nav.Item>
-      {user.admin && (
+    <>
+      <Nav variant="tabs" className="justify-content-center mt-2">
         <Nav.Item>
           <Nav.Link
-            active={currentFeed === FEED.FILTER_BY_TAGS}
+            active={currentFeed === FEED.HOT}
             onClick={() => {
-              setFeed(FEED.FILTER_BY_TAGS);
-              setPostsFilter(['feature request'], ['done', 'closed']);
+              setFeed(FEED.HOT);
+              setPostsFilter([], []);
             }}
           >
-            Feature Requests
+            Hot
           </Nav.Link>
         </Nav.Item>
-      )}
-    </Nav>
+        <Nav.Item>
+          <Nav.Link
+            active={currentFeed === FEED.POPULAR}
+            onClick={() => {
+              setFeed(FEED.POPULAR);
+              setPostsFilter([], []);
+            }}
+          >
+            Upvotes
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            active={currentFeed === FEED.UNSEEN}
+            onClick={() => {
+              setFeed(FEED.UNSEEN);
+              setPostsFilter([], []);
+            }}
+          >
+            Unseen
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            active={currentFeed === FEED.ALL}
+            onClick={() => {
+              setFeed(FEED.ALL);
+              setPostsFilter([], []);
+            }}
+          >
+            All
+          </Nav.Link>
+        </Nav.Item>
+        {user.admin && (
+          <Nav.Item>
+            <Nav.Link
+              active={currentFeed === FEED.FILTER_BY_TAGS}
+              onClick={() => {
+                setFeed(FEED.FILTER_BY_TAGS);
+                setPostsFilter(['feature request'], ['done', 'closed']);
+              }}
+            >
+              Feature Requests
+            </Nav.Link>
+          </Nav.Item>
+        )}
+      </Nav>
+
+      {feedSubtext ? <small className="text-muted">{feedSubtext}</small> : null}
+    </>
   );
 };
