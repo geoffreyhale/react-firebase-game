@@ -4,12 +4,20 @@ import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import { createNewPost } from '../shared/db';
 import UserPhoto from '../shared/UserPhoto';
+import { PostHeaderRoom } from './Post';
 
 const NewTopLevelPostCard = ({ hackRoom }) => {
   const { user } = useContext(AppContext);
+  const hackHackRoom = hackRoom || 'general';
   return (
     <Card>
       <Card.Body>
+        {!hackRoom && (
+          <div className="float-right">
+            <small className="text-muted">posting to:</small>
+            <PostHeaderRoom room={hackHackRoom} />
+          </div>
+        )}
         <Card.Title>
           <UserPhoto uid={user.uid} />
           {user.displayName}
@@ -19,7 +27,7 @@ const NewTopLevelPostCard = ({ hackRoom }) => {
           onSubmit={createNewPost}
           multiline={true}
           placeholder={'How are you really feeling?'}
-          hackRoom={hackRoom}
+          hackRoom={hackHackRoom}
         />
       </Card.Body>
     </Card>

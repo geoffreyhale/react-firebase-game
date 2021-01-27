@@ -112,6 +112,12 @@ const PostActionsDropdown = ({ deletePost }) => (
   </Dropdown>
 );
 
+export const PostHeaderRoom = ({ room }) => (
+  <div className="small text-muted mb-1">
+    <Link to={`/r/${room}`}>{`r/${room}`}</Link>
+  </div>
+);
+
 export const PostHeader = ({
   small,
   post,
@@ -128,11 +134,7 @@ export const PostHeader = ({
 
   return (
     <>
-      {hackRoom && !small && (
-        <div className="small text-muted mb-1">
-          <Link to={`/r/${hackRoom}`}>{`r/${hackRoom}`}</Link>
-        </div>
-      )}
+      {hackRoom && !small && <PostHeaderRoom room={hackRoom} />}
       <div style={{ fontSize: small ? '85%' : null }}>
         {post.userId ? (
           <div className="float-left mr-2">

@@ -249,9 +249,7 @@ class Posts extends Component {
             </Card>
           ) : (
             <>
-              {this.props.room && (
-                <NewTopLevelPostCard hackRoom={this.props.room} />
-              )}
+              <NewTopLevelPostCard hackRoom={this.props.room} />
 
               <FeedNav
                 currentFeed={this.state.feed}
