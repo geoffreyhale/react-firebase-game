@@ -15,7 +15,6 @@ export default class UserProfile extends React.Component {
 
   static contextType = AppContext;
   user = () => this.context.user;
-  users = () => this.context.users;
 
   componentDidMount() {
     getUser(this.user().uid, (user) => {
@@ -25,6 +24,7 @@ export default class UserProfile extends React.Component {
 
   render() {
     const { user } = this.state;
+
     return (
       <Card>
         <Card.Body>
