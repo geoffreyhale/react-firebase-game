@@ -39,6 +39,34 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
   return null;
 };
 
+const PostsFeed = ({ posts, isUnseenFeed = false }) => (
+  <table>
+    <tbody>
+      {Object.entries(posts).map(([key, post]) => {
+        return (
+          <tr key={post.id}>
+            <td>
+              <Card className="mt-4">
+                <Card.Body>
+                  <Post post={post} hackRoom={post.room} />
+                </Card.Body>
+                {isUnseenFeed ? (
+                  <Card.Footer>
+                    <div className="float-right">
+                      <MarkAsSeenButton postId={post.id} />
+                    </div>
+                    <div style={{ clear: 'both' }}></div>
+                  </Card.Footer>
+                ) : null}
+              </Card>
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+);
+
 class Posts extends Component {
   constructor() {
     super();
@@ -160,33 +188,7 @@ class Posts extends Component {
       // TODO these display without any context
       // ie replies display without links to higher level posts
       // at least just add link headers to the replyToId post single post page
-      return (
-        <table>
-          <tbody>
-            {Object.entries(posts).map(([key, post]) => {
-              return (
-                <tr key={post.id}>
-                  <td>
-                    <Card className="mt-4">
-                      <Card.Body>
-                        <Post post={post} hackRoom={post.room} />
-                      </Card.Body>
-                      {this.state.feed === FEED.UNSEEN ? (
-                        <Card.Footer>
-                          <div className="float-right">
-                            <MarkAsSeenButton postId={post.id} />
-                          </div>
-                          <div style={{ clear: 'both' }}></div>
-                        </Card.Footer>
-                      ) : null}
-                    </Card>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      );
+      return <PostsFeed posts={posts} />;
     }
 
     return (
@@ -268,31 +270,10 @@ class Posts extends Component {
                 <small className="text-muted">{feedSubtext}</small>
               ) : null}
 
-              <table>
-                <tbody>
-                  {Object.entries(posts).map(([key, post]) => {
-                    return (
-                      <tr key={post.id}>
-                        <td>
-                          <Card className="mt-4">
-                            <Card.Body>
-                              <Post post={post} hackRoom={post.room} />
-                            </Card.Body>
-                            {this.state.feed === FEED.UNSEEN ? (
-                              <Card.Footer>
-                                <div className="float-right">
-                                  <MarkAsSeenButton postId={post.id} />
-                                </div>
-                                <div style={{ clear: 'both' }}></div>
-                              </Card.Footer>
-                            ) : null}
-                          </Card>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <PostsFeed
+                posts={posts}
+                isUnseenFeed={this.state.feed === FEED.UNSEEN}
+              />
             </>
           )}
         </Col>
