@@ -1,5 +1,5 @@
 import firebase, { db } from '../firebase.js';
-import isPremium from './isPremium';
+import { isPremium } from './User';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');

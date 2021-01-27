@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
-import isPremium from './isPremium';
+
+// TODO write tests for this
+export const isPremium = ({ premium }) =>
+  premium && premium.seconds && premium.seconds - Date.now() / 1000 > 0;
 
 const PremiumIcon = ({ size }) => (
   <div

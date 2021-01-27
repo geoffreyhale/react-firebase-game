@@ -6,10 +6,9 @@ import { AppContext } from '../AppProvider';
 import { getPosts, getUsersRealtimeDatabase } from '../shared/db';
 import Spinner from '../shared/Spinner';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
-import isPremium from '../shared/isPremium';
 import Funnel from './Funnel';
 import Accounting from './Accounting';
-import { User } from '../shared/User';
+import { isPremium, User } from '../shared/User';
 
 const Posts = ({ posts }) => {
   Object.keys(posts).map((key) => {
