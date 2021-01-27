@@ -59,12 +59,12 @@ class UserProfile extends React.Component {
                   <strong>Last Online: </strong>
                   {friendlyTimestamp(user.lastOnline)}
                 </ListGroup.Item>
-                <ListGroup.Item>
+                {/* <ListGroup.Item>
                   <strong>Last Login: </strong>
                   {friendlyTimestamp(
                     getMillisFromDifferingTypes(user.lastLogin)
                   )}
-                </ListGroup.Item>
+                </ListGroup.Item> */}
                 <ListGroup.Item>
                   <strong>Joined: </strong>
                   {friendlyTimestamp(getMillisFromDifferingTypes(user.joined))}
