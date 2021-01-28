@@ -54,16 +54,16 @@ export const RoomsMenu = () => (
     <Card.Body>
       <Card.Title>Rooms</Card.Title>
       <ul id="rooms">
-        <li>
+        {/* <li>
           <Link to={'/r/dev'}>r/dev</Link>
-        </li>
+        </li> */}
         <li>
           <Link to={'/r/general'}>r/general</Link>
         </li>
         <li>
           <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
         </li>
-        <li>
+        {/* <li>
           <span className="text-muted" to={'/r/proven'}>
             r/provensafe
           </span>
@@ -77,7 +77,7 @@ export const RoomsMenu = () => (
           <span className="text-muted" to={'/r/proven'}>
             r/topsecret
           </span>
-        </li>
+        </li> */}
       </ul>
     </Card.Body>
   </Card>
