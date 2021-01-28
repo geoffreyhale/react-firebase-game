@@ -245,7 +245,6 @@ class Posts extends Component {
                     <Card.Body>
                       <Post
                         post={post}
-                        myPhotoURL={this.user().photoURL}
                         hackRoom={post.room} // TODO use context instead?
                         hackIsSinglePostPage={isSinglePostPage}
                       />
