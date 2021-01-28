@@ -3,7 +3,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
-import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';
 import Mosaic from './Mosaic';
 import Stats from './Stats';
@@ -39,21 +38,6 @@ export default class CommunityPage extends Component {
     if (!users) {
       <Spinner />;
     }
-
-    const flatPostsArray = Object.entries(this.state.rawPosts).map(
-      ([id, post]) => {
-        post.id = id;
-        return post;
-      }
-    );
-
-    let filteredPosts = flatPostsArray;
-
-    const postsTree = postsTreeFromRawPosts({
-      flatPostsArray: filteredPosts,
-      users,
-    });
-    let { posts } = postsTree;
 
     return (
       <>
