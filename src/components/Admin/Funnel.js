@@ -64,7 +64,7 @@ const Funnel = ({ usersArray }) => {
     {
       id: 'countPremium',
       value: countPremium,
-      label: `Premium ${Math.round((countPremium / countTotal) * 100)}%`,
+      label: `Premium (${Math.round((countPremium / countTotal) * 100)}%)`,
     },
   ];
 
@@ -77,27 +77,27 @@ const Funnel = ({ usersArray }) => {
     {
       id: 'active1y',
       value: active1y,
-      label: 'Active (1y)',
+      label: `Active 1y (${Math.round((active1y / countTotal) * 100)}%)`,
     },
     {
       id: 'active1m',
       value: active1m,
-      label: 'Active (1m)',
+      label: `Active 1m (${Math.round((active1m / countTotal) * 100)}%)`,
     },
     {
       id: 'active1w',
       value: active1w,
-      label: 'Active (1w)',
+      label: `Active 1w (${Math.round((active1w / countTotal) * 100)}%)`,
     },
     {
       id: 'active1d',
       value: active1d,
-      label: 'Active (1d)',
+      label: `Active 1d (${Math.round((active1d / countTotal) * 100)}%)`,
     },
     {
       id: 'active1h',
       value: active1h,
-      label: 'Active (1h)',
+      label: `Active 1h (${Math.round((active1h / countTotal) * 100)}%)`,
     },
   ];
 
