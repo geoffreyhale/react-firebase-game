@@ -3,12 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
 import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';
-import MarkAsSeenButton from './MarkAsSeenButton';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import Post from './Post';
@@ -27,31 +25,6 @@ import PremiumFeature from '../shared/PremiumFeature';
 
 import './index.css';
 
-const SinglePostCard = ({ post, hackIsSinglePostPage, room }) => {
-  return (
-    <Card>
-      {post ? (
-        <>
-          <Card.Header>
-            {room && post.replyToId && (
-              <Link to={`/r/${room}/posts/${post.replyToId}`}>&#8598;...</Link>
-            )}
-          </Card.Header>
-          <Card.Body>
-            <Post
-              post={post}
-              hackRoom={post.room} // TODO use context instead?
-              hackIsSinglePostPage={hackIsSinglePostPage}
-            />
-          </Card.Body>
-        </>
-      ) : (
-        <Card.Body>Post not found!</Card.Body>
-      )}
-    </Card>
-  );
-};
-
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;
@@ -66,33 +39,14 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
   return null;
 };
 
-const PostsFeed = ({ posts, isUnseenFeed = false }) => (
-  <table>
-    <tbody>
-      {Object.entries(posts).map(([key, post]) => {
-        return (
-          <tr key={post.id}>
-            <td>
-              <Card className="mb-4">
-                <Card.Body>
-                  <Post post={post} hackRoom={post.room} />
-                </Card.Body>
-                {isUnseenFeed ? (
-                  <Card.Footer>
-                    <div className="float-right">
-                      <MarkAsSeenButton postId={post.id} />
-                    </div>
-                    <div style={{ clear: 'both' }}></div>
-                  </Card.Footer>
-                ) : null}
-              </Card>
-            </td>
-          </tr>
-        );
-      })}
-    </tbody>
-  </table>
-);
+const PostsFeed = ({ posts, isUnseenFeed = false }) =>
+  Object.entries(posts).map(([key, post]) => {
+    return (
+      <div className="mb-4" key={post.id}>
+        <Post post={post} hackRoom={post.room} isUnseenFeed={isUnseenFeed} />
+      </div>
+    );
+  });
 
 class Posts extends Component {
   constructor() {
@@ -255,10 +209,11 @@ class Posts extends Component {
                 lurkerStatus={lurkerStatus}
               />
             ) : (
-              <SinglePostCard
+              <Post
                 post={post}
                 hackIsSinglePostPage={isSinglePostPage}
-                room={this.props.room}
+                hackRoom={this.props.room}
+                showHeaderLinkToParent={true}
               />
             )
           ) : (

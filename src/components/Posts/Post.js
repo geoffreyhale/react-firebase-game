@@ -11,6 +11,7 @@ import firebase from '../firebase.js';
 import Tag from '../shared/Tag';
 import { createNewPost, deletePost } from '../shared/db';
 import { UserPhoto } from '../shared/User';
+import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
 
 const redditRed = '#fd5828';
@@ -263,87 +264,120 @@ const countAncestors = (node) => {
   return thisCount + 1;
 };
 
-const Post = ({ post, small, hackRoom, hackIsSinglePostPage }) => {
+const Post = ({
+  post,
+  small,
+  hackRoom,
+  hackIsSinglePostPage,
+  showHeaderLinkToParent,
+  isUnseenFeed,
+}) => {
   const [tagFormCollapsed, setTagFormCollapsed] = useState(true);
   const [repliesCollapsed, setRepliesCollapsed] = useState(
     !hackIsSinglePostPage
   );
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
+  if (!post) {
+    return (
+      <Card>
+        <Card.Body>Post not found!</Card.Body>
+      </Card>
+    );
+  }
   if (!post.id) {
     return <>Waiting for post.id</>;
   }
   const replyCount = countAncestors(post) - 1;
   return (
-    <>
-      <PostHeader post={post} small={small} hackRoom={hackRoom} />
-      <PostContent>{post.content}</PostContent>
-      <hr style={{ margin: '1rem 0 .5rem' }} />
-      <div>
-        <div className="mb-2">
-          <Tags post={post} />
-        </div>
-        <div className="mb-2">
-          {!tagFormCollapsed && (
-            <NewPostForm
-              onSubmit={(content, replyToId, successCallback, userId) => {
-                addTag(post.id, content, successCallback, userId);
-              }}
-              placeholder={'add tag'}
-              hideSubmitButton={true}
-              small={true}
-              characterLimit={25}
+    <Card className="mt-1">
+      {hackIsSinglePostPage && showHeaderLinkToParent && (
+        <Card.Header>
+          {hackRoom && post.replyToId && (
+            <Link to={`/r/${hackRoom}/posts/${post.replyToId}`}>
+              &#8598;...
+            </Link>
+          )}
+        </Card.Header>
+      )}
+      <Card.Body>
+        <PostHeader post={post} small={small} hackRoom={hackRoom} />
+        <PostContent>{post.content}</PostContent>
+        <hr style={{ margin: '1rem 0 .5rem' }} />
+        <div>
+          <div className="mb-2">
+            <Tags post={post} />
+          </div>
+          <div className="mb-2">
+            {!tagFormCollapsed && (
+              <NewPostForm
+                onSubmit={(content, replyToId, successCallback, userId) => {
+                  addTag(post.id, content, successCallback, userId);
+                }}
+                placeholder={'add tag'}
+                hideSubmitButton={true}
+                small={true}
+                characterLimit={25}
+                hackRoom={hackRoom}
+              />
+            )}
+          </div>
+          <div>
+            <Upvote postId={post.id} />
+            {/* // TODO replies icon active if you've replied to the thread */}
+            <PostMenuBarItem
+              onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+            >
+              &#128488;&#65039; {replyCount}
+            </PostMenuBarItem>
+            <PostMenuBarItem
+              onClick={() => setTagFormCollapsed(!tagFormCollapsed)}
+              active={!tagFormCollapsed}
+            >
+              Tag
+            </PostMenuBarItem>
+            <PostMenuBarItem
+              onClick={() => setReplyFormCollapsed(!replyFormCollapsed)}
+              active={!replyFormCollapsed}
+            >
+              Reply
+            </PostMenuBarItem>
+          </div>
+          {repliesCollapsed && replyCount > 0 && (
+            // TODO abuse of card-footer class
+            <div
+              className="mt-2 card-footer"
+              onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+            >
+              <PostMenuBarItem>&#128488;&#65039; {replyCount}</PostMenuBarItem>
+            </div>
+          )}
+          {!replyFormCollapsed && (
+            <ReplyForm
+              replyToPostId={post.id}
+              onSuccess={() => setReplyFormCollapsed(true)}
               hackRoom={hackRoom}
             />
           )}
         </div>
-        <div>
-          <Upvote postId={post.id} />
-          {/* // TODO replies icon active if you've replied to the thread */}
-          <PostMenuBarItem
-            onClick={() => setRepliesCollapsed(!repliesCollapsed)}
-          >
-            &#128488;&#65039; {replyCount}
-          </PostMenuBarItem>
-          <PostMenuBarItem
-            onClick={() => setTagFormCollapsed(!tagFormCollapsed)}
-            active={!tagFormCollapsed}
-          >
-            Tag
-          </PostMenuBarItem>
-          <PostMenuBarItem
-            onClick={() => setReplyFormCollapsed(!replyFormCollapsed)}
-            active={!replyFormCollapsed}
-          >
-            Reply
-          </PostMenuBarItem>
-        </div>
-        {repliesCollapsed && replyCount > 0 && (
-          // TODO abuse of card-footer class
-          <div
-            className="mt-2 card-footer"
-            onClick={() => setRepliesCollapsed(!repliesCollapsed)}
-          >
-            <PostMenuBarItem>&#128488;&#65039; {replyCount}</PostMenuBarItem>
+        {!repliesCollapsed && post.childNodes.length > 0 && (
+          <div className="mt-2">
+            <Replies
+              post={post}
+              hackRoom={hackRoom}
+              hackIsSinglePostPage={hackIsSinglePostPage}
+            />
           </div>
         )}
-        {!replyFormCollapsed && (
-          <ReplyForm
-            replyToPostId={post.id}
-            onSuccess={() => setReplyFormCollapsed(true)}
-            hackRoom={hackRoom}
-          />
-        )}
-      </div>
-      {!repliesCollapsed && post.childNodes.length > 0 && (
-        <div className="mt-2">
-          <Replies
-            post={post}
-            hackRoom={hackRoom}
-            hackIsSinglePostPage={hackIsSinglePostPage}
-          />
-        </div>
+      </Card.Body>
+      {isUnseenFeed && (
+        <Card.Footer>
+          <div className="float-right">
+            <MarkAsSeenButton postId={post.id} />
+          </div>
+          <div style={{ clear: 'both' }}></div>
+        </Card.Footer>
       )}
-    </>
+    </Card>
   );
 };
 
@@ -351,15 +385,11 @@ export default Post;
 
 const ReplyPostCard = ({ post, hackRoom, hackIsSinglePostPage }) => {
   return (
-    <Card className="mt-1">
-      <Card.Body>
-        <Post
-          post={post}
-          small={true}
-          hackRoom={hackRoom}
-          hackIsSinglePostPage={hackIsSinglePostPage}
-        />
-      </Card.Body>
-    </Card>
+    <Post
+      post={post}
+      small={true}
+      hackRoom={hackRoom}
+      hackIsSinglePostPage={hackIsSinglePostPage}
+    />
   );
 };
