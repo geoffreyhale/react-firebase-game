@@ -98,9 +98,9 @@ class Posts extends Component {
     postsRef.on('value', (postsSnapshot) => {
       let posts = postsSnapshot.val();
 
-      if (this.props.uid) {
+      if (this.props.userFeedUid) {
         posts = Object.keys(posts)
-          .filter((key) => posts[key].userId === this.props.uid)
+          .filter((key) => posts[key].userId === this.props.userFeedUid)
           .reduce((res, key) => ((res[key] = posts[key]), res), {});
         this.setState({ feed: FEED.ALL });
       }
@@ -113,9 +113,6 @@ class Posts extends Component {
     if (!this.user().isPremium && this.props.roomRequiresPremium) {
       return <PremiumFeature featureName={'Premium rooms'} />;
     }
-
-    const hackIsUserFeed = this.props.uid;
-    const hackOnlyShowThePostsColumn = hackIsUserFeed;
 
     const postId = this.props.match.params.postId;
     const isSinglePostPage = !!postId;
@@ -183,7 +180,7 @@ class Posts extends Component {
       }
     }
 
-    if (hackOnlyShowThePostsColumn) {
+    if (this.props.userFeedUid) {
       // TODO these display without any context
       // ie replies display without links to higher level posts
       // at least just add link headers to the replyToId post single post page

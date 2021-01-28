@@ -87,7 +87,11 @@ class UserProfile extends React.Component {
               </ListGroup>
             </Col>
             <Col md={6}>
-              {user && user.uid ? <Posts uid={user.uid} /> : <Spinner />}
+              {user && user.uid ? (
+                <Posts userFeedUid={user.uid} />
+              ) : (
+                <Spinner />
+              )}
             </Col>
           </Row>
         </Card.Body>
