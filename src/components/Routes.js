@@ -25,55 +25,52 @@ const Routes = () => {
 
   return (
     <Switch>
-      {user
-        ? [
-            <Route exact path="/" key={location.pathname}>
-              <Rooms />
-            </Route>,
-            <Route exact path="/r/:roomId" key={location.pathname}>
-              <Rooms />
-            </Route>,
-            <Route path="/r/:roomId/posts/:postId" key={location.pathname}>
-              <Rooms />
-            </Route>,
-            <Route path="/u/:userId" key={location.pathname}>
-              <UserProfile />
-            </Route>,
-            <Route path="/about" key="/about">
-              <About />
-            </Route>,
-            <Route path="/community" key="/community">
-              <Community />
-            </Route>,
-            <Route
-              path="/incremental-clicker-game"
-              key="/incremental-clicker-game"
-            >
-              <IncrementalClickerGame />
-            </Route>,
-            <Route path="/groups" key="/groups">
-              <Groups />
-            </Route>,
-            <Route path="/tictactoe" key="/tictactoe">
-              <TicTacToe />
-            </Route>,
-            <Route path="/chess" key="/chess">
-              <Chess />
-            </Route>,
-            <Route path="/admin" key="/admin">
-              <Admin />
-            </Route>,
-          ]
-        : null}
+      {user.admin && (
+        <Route path="/admin" key="/admin">
+          <Admin />
+        </Route>
+      )}
+      {user && [
+        <Route exact path="/" key={location.pathname}>
+          <Rooms />
+        </Route>,
+        <Route exact path="/r/:roomId" key={location.pathname}>
+          <Rooms />
+        </Route>,
+        <Route path="/r/:roomId/posts/:postId" key={location.pathname}>
+          <Rooms />
+        </Route>,
+        <Route path="/u/:userId" key={location.pathname}>
+          <UserProfile />
+        </Route>,
+        <Route path="/community" key="/community">
+          <Community />
+        </Route>,
+        <Route path="/incremental-clicker-game" key="/incremental-clicker-game">
+          <IncrementalClickerGame />
+        </Route>,
+        <Route path="/groups" key="/groups">
+          <Groups />
+        </Route>,
+        <Route path="/tictactoe" key="/tictactoe">
+          <TicTacToe />
+        </Route>,
+        <Route path="/chess" key="/chess">
+          <Chess />
+        </Route>,
+        <Route path="/scorekeeper" key="/scorekeeper">
+          <Scorekeeper />
+        </Route>,
+      ]}
       [
-      <Route path="/scorekeeper" key="/scorekeeper">
-        <Scorekeeper />
+      <Route path="/about" key="/about">
+        <About />
       </Route>
       ,
       <Route path="/sandbox" key="/sandbox">
         <Sandbox />
       </Route>
-      , ]
+      ,]
     </Switch>
   );
 };
