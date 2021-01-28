@@ -25,7 +25,7 @@ const Routes = () => {
 
   return (
     <Switch>
-      {user.admin && (
+      {user && user.admin && (
         <Route path="/admin" key="/admin">
           <Admin />
         </Route>
