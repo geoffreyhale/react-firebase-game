@@ -43,6 +43,7 @@ const PostsFeed = ({
   posts,
   isUnseenFeed = false,
   showHeaderLinkToParent = false,
+  hackHideRepliesCount,
 }) =>
   Object.entries(posts).map(([key, post]) => {
     return (
@@ -52,6 +53,7 @@ const PostsFeed = ({
           hackRoom={post.room}
           isUnseenFeed={isUnseenFeed}
           showHeaderLinkToParent={showHeaderLinkToParent}
+          hackHideRepliesCount={hackHideRepliesCount}
         />
       </div>
     );
@@ -185,7 +187,13 @@ class Posts extends Component {
       // TODO these display without any context
       // ie replies display without links to higher level posts
       // at least just add link headers to the replyToId post single post page
-      return <PostsFeed posts={posts} showHeaderLinkToParent={true} />;
+      return (
+        <PostsFeed
+          posts={posts}
+          showHeaderLinkToParent={true}
+          hackHideRepliesCount={true}
+        />
+      );
     }
 
     return (

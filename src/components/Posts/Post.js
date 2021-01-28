@@ -271,6 +271,7 @@ const Post = ({
   hackIsSinglePostPage,
   showHeaderLinkToParent,
   isUnseenFeed,
+  hackHideRepliesCount,
 }) => {
   const [tagFormCollapsed, setTagFormCollapsed] = useState(true);
   const [repliesCollapsed, setRepliesCollapsed] = useState(
@@ -324,11 +325,13 @@ const Post = ({
           <div>
             <Upvote postId={post.id} />
             {/* // TODO replies icon active if you've replied to the thread */}
-            <PostMenuBarItem
-              onClick={() => setRepliesCollapsed(!repliesCollapsed)}
-            >
-              &#128488;&#65039; {replyCount}
-            </PostMenuBarItem>
+            {!hackHideRepliesCount && (
+              <PostMenuBarItem
+                onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+              >
+                &#128488;&#65039; {replyCount}
+              </PostMenuBarItem>
+            )}
             <PostMenuBarItem
               onClick={() => setTagFormCollapsed(!tagFormCollapsed)}
               active={!tagFormCollapsed}
