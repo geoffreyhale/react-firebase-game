@@ -35,10 +35,8 @@ const rooms = {
     description: (
       <small className="text-muted">
         <ul>
-          <li>
-            This is a public room for discussing and practicing healthy
-            relating.
-          </li>
+          <li>This is a premium room. &#11088;</li>
+          <li>This room is for discussing and practicing healthy relating.</li>
           <li>
             This room is also for discussing xbk.io features to support healthy
             relating.
