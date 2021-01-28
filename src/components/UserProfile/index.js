@@ -42,9 +42,9 @@ class UserProfile extends React.Component {
       <Card>
         <Card.Body>
           <Row>
-            <Col>
+            <Col md={6}>
               <UserPhoto uid={user.uid} presence={user.presence} size={96} />
-              <Card.Title>{user.displayName}</Card.Title>
+              <Card.Title className="mt-3">{user.displayName}</Card.Title>
               <ListGroup>
                 <ListGroup.Item>
                   <strong>Last Online: </strong>
@@ -62,7 +62,7 @@ class UserProfile extends React.Component {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col>
+            <Col md={6}>
               {user && user.uid ? <Posts uid={user.uid} /> : <Spinner />}
             </Col>
           </Row>
