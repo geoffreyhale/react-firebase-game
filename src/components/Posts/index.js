@@ -22,6 +22,7 @@ import { RoomsMenu } from '../Rooms';
 import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../shared/PremiumSaleCard';
 import PremiumFeature from '../shared/PremiumFeature';
+import Mosaic from '../Community/Mosaic';
 
 import './index.css';
 
@@ -194,15 +195,22 @@ class Posts extends Component {
       <Row>
         <Col>
           {this.props.room && (
-            <Card
-              className="mb-3"
-              style={{ backgroundColor: this.props.roomColor || 'inherit' }}
-            >
-              <Card.Body>
-                <Card.Title>r/{this.props.room}</Card.Title>
-                {this.props.roomDescription}
-              </Card.Body>
-            </Card>
+            <>
+              <Card
+                className="mb-3"
+                style={{ backgroundColor: this.props.roomColor || 'inherit' }}
+              >
+                <Card.Body>
+                  <Card.Title>r/{this.props.room}</Card.Title>
+                  {this.props.roomDescription}
+                </Card.Body>
+              </Card>
+              {this.props.room === 'healthyrelating' && (
+                <div className="mb-3">
+                  <Mosaic room={this.props.room} size={48} title={'Members'} />
+                </div>
+              )}
+            </>
           )}
           {!this.user().isPremium && <PremiumSaleCard />}
           <div className="mb-3">
