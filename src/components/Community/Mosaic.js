@@ -97,6 +97,7 @@ export default class Mosaic extends Component {
       // use lastOnline
       return b.lastOnline - a.lastOnline;
     });
+    const size = 96;
     return (
       <Card>
         <Card.Body>
@@ -104,8 +105,8 @@ export default class Mosaic extends Component {
           <div
             style={{
               display: 'inline-block',
-              height: 48,
-              width: 48,
+              height: size,
+              width: size,
               verticalAlign: 'middle',
               backgroundColor: '#209cee',
             }}
@@ -115,14 +116,14 @@ export default class Mosaic extends Component {
               style={{
                 color: 'whitesmoke',
                 fontWeight: 900,
-                fontSize: 20,
+                fontSize: (size * 20) / 48,
               }}
             >
               {usersArray.length}
             </span>
           </div>
           {usersArray.map((user, i) => (
-            <UserPhoto uid={user.uid} size={48} presence={user.presence} />
+            <UserPhoto uid={user.uid} size={size} presence={user.presence} />
           ))}
         </Card.Body>
       </Card>
