@@ -137,6 +137,7 @@ export const getUsers = (callback) => {
       querySnapshot.forEach((doc) => {
         users[doc.id] = doc.data();
         users[doc.id].uid = doc.id;
+        users[doc.id].isPremium = isPremium({ premium: users[doc.id].premium });
       });
       callback(users);
     });
