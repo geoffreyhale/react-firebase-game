@@ -39,11 +39,20 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
   return null;
 };
 
-const PostsFeed = ({ posts, isUnseenFeed = false }) =>
+const PostsFeed = ({
+  posts,
+  isUnseenFeed = false,
+  showHeaderLinkToParent = false,
+}) =>
   Object.entries(posts).map(([key, post]) => {
     return (
       <div className="mb-4" key={post.id}>
-        <Post post={post} hackRoom={post.room} isUnseenFeed={isUnseenFeed} />
+        <Post
+          post={post}
+          hackRoom={post.room}
+          isUnseenFeed={isUnseenFeed}
+          showHeaderLinkToParent={showHeaderLinkToParent}
+        />
       </div>
     );
   });
@@ -176,7 +185,7 @@ class Posts extends Component {
       // TODO these display without any context
       // ie replies display without links to higher level posts
       // at least just add link headers to the replyToId post single post page
-      return <PostsFeed posts={posts} />;
+      return <PostsFeed posts={posts} showHeaderLinkToParent={true} />;
     }
 
     return (

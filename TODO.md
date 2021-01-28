@@ -15,7 +15,6 @@
 
 # TODO
 
-- user profile posts with parents link to their reply
 - user profile posts don't show inacurate reply count
 - in Hot Score, reduce replies value relative to upvotes, upvotes should hold more weight
 - (my) user profile is so slow

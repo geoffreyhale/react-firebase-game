@@ -290,7 +290,7 @@ const Post = ({
   const replyCount = countAncestors(post) - 1;
   return (
     <Card className="mt-1">
-      {hackIsSinglePostPage && showHeaderLinkToParent && (
+      {showHeaderLinkToParent && (
         <Card.Header>
           {hackRoom && post.replyToId && (
             <Link to={`/r/${hackRoom}/posts/${post.replyToId}`}>
