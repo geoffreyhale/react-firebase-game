@@ -22,13 +22,6 @@ const AppNav = ({ admin }) => {
         </Nav.Link>
       </Nav.Item>
       <NavDropdown title="&#8943;">
-        {admin && (
-          <NavDropdown.Item>
-            <Nav.Link as={NavLink} to="/admin">
-              Admin
-            </Nav.Link>
-          </NavDropdown.Item>
-        )}
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/chess">
@@ -56,6 +49,13 @@ const AppNav = ({ admin }) => {
           </Nav.Link>
         </NavDropdown.Item>
       </NavDropdown>
+      {admin && (
+        <Nav.Item>
+          <Nav.Link as={NavLink} to="/admin">
+            Admin
+          </Nav.Link>
+        </Nav.Item>
+      )}
     </Nav>
   );
 };
