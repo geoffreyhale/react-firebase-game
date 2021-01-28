@@ -39,8 +39,8 @@ export default class Accounting extends React.Component {
           <Table>
             <thead>
               <tr>
-                <th>id</th>
-                <th>uid</th>
+                {/* <th>id</th> */}
+                {/* <th>uid</th> */}
                 <th>user</th>
                 <th>usd</th>
                 <th>via</th>
@@ -50,8 +50,8 @@ export default class Accounting extends React.Component {
             <tbody>
               {Object.values(accounting).map((a) => (
                 <tr key={a.id}>
-                  <td>{a.id}</td>
-                  <td>{a.uid}</td>
+                  {/* <td>{a.id}</td> */}
+                  {/* <td>{a.uid}</td> */}
                   <td>
                     <User
                       uid={a.uid}
@@ -66,8 +66,8 @@ export default class Accounting extends React.Component {
             </tbody>
             <tfoot>
               <tr>
-                <td></td>
-                <td></td>
+                {/* <td></td> */}
+                {/* <td></td> */}
                 <td></td>
                 <td>{this.state.totalUsd}</td>
                 <td></td>
