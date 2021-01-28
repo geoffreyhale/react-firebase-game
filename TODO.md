@@ -17,7 +17,6 @@
 
 - showHeaderLinkToParent Card.Header could have more helpful informations
 - show accurate reply count on user profile posts
-- in Hot Score, reduce replies value relative to upvotes, upvotes should hold more weight
 - (my) user profile is so slow
 - something to let premium members know all they're getting for their money, maybe like the PremiumSaleCard for premium members somewhere
 - better document.title tab titles like for rooms and user profiles

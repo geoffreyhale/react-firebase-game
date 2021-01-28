@@ -22,7 +22,7 @@ export const hotScore = ({ post }) => {
 
   const upvotes = post.upvote ? Object.keys(post.upvote).length : 0;
   const firstChildren = post.childNodes ? post.childNodes.length : 0;
-  const upvotesPlusFirstChildren = upvotes + firstChildren + 1; // + 1 avoids exceptional 0 case
+  const upvotesPlusFirstChildren = upvotes + firstChildren / 2 + 1; // + 1 avoids exceptional 0 case
 
   const { timestamp } = post;
   const t = elapsedDuration({ timestamp });
