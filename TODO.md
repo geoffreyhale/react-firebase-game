@@ -15,6 +15,7 @@
 
 # TODO
 
+- (my) user profile is so slow
 - something to let premium members know all they're getting for their money, maybe like the PremiumSaleCard for premium members somewhere
 - better document.title tab titles like for rooms and user profiles
 - cleanup Posts/index.js
