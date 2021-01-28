@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import Image from 'react-bootstrap/Image';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
 
@@ -33,7 +34,12 @@ const PresenceIcon = ({ size }) => (
   </div>
 );
 
-export const UserPhoto = ({ size = 48, presence, uid }) => {
+export const UserPhoto = ({
+  size = 48,
+  presence,
+  uid,
+  roundedCircle = false,
+}) => {
   const { users } = useContext(AppContext);
   if (!users) {
     console.warn('UserPhoto used before users context available');
@@ -50,11 +56,20 @@ export const UserPhoto = ({ size = 48, presence, uid }) => {
       key={user.uid}
       style={{ position: 'relative', display: 'inline-block' }}
     >
-      <img
-        src={user.photoURL}
-        alt="user"
-        style={{ height: size, width: size }}
-      />
+      {roundedCircle ? (
+        <Image
+          roundedCircle
+          src={user.photoURL}
+          alt="user"
+          style={{ height: size, width: size }}
+        ></Image>
+      ) : (
+        <img
+          src={user.photoURL}
+          alt="user"
+          style={{ height: size, width: size }}
+        />
+      )}
       {isPremium({ premium: user.premium }) && <PremiumIcon size={size} />}
       {presence === 'online' && <PresenceIcon size={size} />}
     </Link>

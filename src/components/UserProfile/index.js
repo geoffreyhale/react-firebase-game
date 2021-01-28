@@ -41,10 +41,34 @@ class UserProfile extends React.Component {
     return (
       <Card>
         <Card.Body>
+          <Row className="mb-4">
+            <Col style={{ textAlign: 'center' }}>
+              <Card>
+                <Card.Img
+                  src={user.photoURL}
+                  style={{
+                    height: '12rem',
+                    objectPosition: 'middle',
+                    objectFit: 'cover',
+                    opacity: 0.1,
+                  }}
+                />
+                <Card.ImgOverlay>
+                  <UserPhoto
+                    uid={user.uid}
+                    presence={user.presence}
+                    size={96}
+                    roundedCircle
+                  />
+                  <Card.Title className="mt-3" style={{ fontSize: '200%' }}>
+                    {user.displayName}
+                  </Card.Title>
+                </Card.ImgOverlay>
+              </Card>
+            </Col>
+          </Row>
           <Row>
-            <Col md={6}>
-              <UserPhoto uid={user.uid} presence={user.presence} size={96} />
-              <Card.Title className="mt-3">{user.displayName}</Card.Title>
+            <Col md={6} className="mb-4">
               <ListGroup>
                 <ListGroup.Item>
                   <strong>Last Online: </strong>
