@@ -34,7 +34,7 @@ class UserProfile extends React.Component {
 
   render() {
     if (!this.user().isPremium) {
-      return <PremiumFeature />;
+      return <PremiumFeature featureName={'Viewing user profiles '} />;
     }
 
     const { user } = this.state;
