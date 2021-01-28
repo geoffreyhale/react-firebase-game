@@ -27,6 +27,31 @@ import PremiumFeature from '../shared/PremiumFeature';
 
 import './index.css';
 
+const SinglePostCard = ({ post, hackIsSinglePostPage, room }) => {
+  return (
+    <Card>
+      {post ? (
+        <>
+          <Card.Header>
+            {room && post.replyToId && (
+              <Link to={`/r/${room}/posts/${post.replyToId}`}>&#8598;...</Link>
+            )}
+          </Card.Header>
+          <Card.Body>
+            <Post
+              post={post}
+              hackRoom={post.room} // TODO use context instead?
+              hackIsSinglePostPage={hackIsSinglePostPage}
+            />
+          </Card.Body>
+        </>
+      ) : (
+        <Card.Body>Post not found!</Card.Body>
+      )}
+    </Card>
+  );
+};
+
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;
@@ -230,30 +255,11 @@ class Posts extends Component {
                 lurkerStatus={lurkerStatus}
               />
             ) : (
-              <Card>
-                {post ? (
-                  <>
-                    <Card.Header>
-                      {post.replyToId ? (
-                        <Link
-                          to={`/r/${this.props.room}/posts/${post.replyToId}`}
-                        >
-                          &#8598;...
-                        </Link>
-                      ) : null}
-                    </Card.Header>
-                    <Card.Body>
-                      <Post
-                        post={post}
-                        hackRoom={post.room} // TODO use context instead?
-                        hackIsSinglePostPage={isSinglePostPage}
-                      />
-                    </Card.Body>
-                  </>
-                ) : (
-                  <Card.Body>Post not found!</Card.Body>
-                )}
-              </Card>
+              <SinglePostCard
+                post={post}
+                hackIsSinglePostPage={isSinglePostPage}
+                room={this.props.room}
+              />
             )
           ) : (
             <>
