@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
-import { getUsers } from '../shared/db';
 import { UserPhoto } from '../shared/User';
 import firebase from '../firebase';
 import Spinner from '../shared/Spinner';
@@ -40,7 +39,13 @@ export default class Mosaic extends Component {
   users = () => this.context.users;
 
   componentDidMount() {
-    const users = this.users();
+    let users = this.users();
+    if (this.props.room === 'healthyrelating') {
+      users = Object.keys(users)
+        .filter((key) => users[key].isPremium)
+        .reduce((res, key) => ((res[key] = users[key]), res), {});
+    }
+
     firebase
       .database()
       .ref('users')
@@ -103,11 +108,11 @@ export default class Mosaic extends Component {
       // use lastOnline
       return b.lastOnline - a.lastOnline;
     });
-    const size = 96;
+    const size = this.props.size || 96;
     return (
       <Card>
         <Card.Body>
-          {/* <Card.Title>Community Mosaic</Card.Title> */}
+          {this.props.title && <Card.Title>{this.props.title}</Card.Title>}
           <div
             style={{
               display: 'inline-block',
