@@ -181,9 +181,6 @@ class Posts extends Component {
     }
 
     if (this.props.userFeedUid) {
-      // TODO these display without any context
-      // ie replies display without links to higher level posts
-      // at least just add link headers to the replyToId post single post page
       return (
         <PostsFeed
           posts={posts}

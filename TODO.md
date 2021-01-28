@@ -15,6 +15,7 @@
 
 # TODO
 
+- showHeaderLinkToParent Card.Header could have more helpful informations
 - show accurate reply count on user profile posts
 - in Hot Score, reduce replies value relative to upvotes, upvotes should hold more weight
 - (my) user profile is so slow
