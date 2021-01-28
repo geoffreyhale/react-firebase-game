@@ -4,6 +4,7 @@ import { getUsers } from '../shared/db';
 import { UserPhoto } from '../shared/User';
 import firebase from '../firebase';
 import Spinner from '../shared/Spinner';
+import { AppContext } from '../AppProvider';
 
 // Fisher-Yates (aka Knuth) Shuffle
 // https://stackoverflow.com/a/2450976/1438029
@@ -34,10 +35,16 @@ export default class Mosaic extends Component {
       users: {},
     };
   }
+
+  static contextType = AppContext;
+  users = () => this.context.users;
+
   componentDidMount() {
-    getUsers((users) => {
-      const usersRef = firebase.database().ref('users');
-      usersRef.on('value', (snapshot) => {
+    const users = this.users();
+    firebase
+      .database()
+      .ref('users')
+      .on('value', (snapshot) => {
         const usersRD = snapshot.val();
         Object.keys(usersRD).forEach((uid) => {
           if (users[uid]) {
@@ -49,7 +56,6 @@ export default class Mosaic extends Component {
           users,
         });
       });
-    }, true);
   }
   render() {
     // TODO prioritize recently online and premium users in sort
