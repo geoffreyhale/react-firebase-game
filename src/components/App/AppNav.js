@@ -12,6 +12,11 @@ const AppNav = ({ admin }) => {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
+        <Nav.Link as={NavLink} to="/community">
+          Community
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         <Nav.Link as={NavLink} to="/about">
           About
         </Nav.Link>
@@ -24,11 +29,6 @@ const AppNav = ({ admin }) => {
             </Nav.Link>
           </NavDropdown.Item>
         )}
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/community">
-            Community
-          </Nav.Link>
-        </NavDropdown.Item>
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/chess">
