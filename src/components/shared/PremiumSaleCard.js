@@ -21,6 +21,7 @@ const PremiumSaleCard = () => {
         <p>Join us for just $1/mo!</p>
         <h5>Features</h5>
         <ul>
+          <li>Access to premium rooms</li>
           <li>View user profiles</li>
           <li>Community Page</li>
           <li>Remove this ad</li>

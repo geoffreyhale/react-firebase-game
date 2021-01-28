@@ -23,6 +23,7 @@ import {
 import { RoomsMenu } from '../Rooms';
 import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../shared/PremiumSaleCard';
+import PremiumFeature from '../shared/PremiumFeature';
 
 import './index.css';
 
@@ -97,7 +98,9 @@ class Posts extends Component {
     });
 
     let postsRef = null;
-    if (this.props.room) {
+    if (!this.user().isPremium) {
+      postsRef = this.postsRef().orderByChild('room').equalTo('general');
+    } else if (this.props.room) {
       postsRef = this.postsRef().orderByChild('room').equalTo(this.props.room);
     } else {
       postsRef = this.postsRef();
@@ -117,6 +120,10 @@ class Posts extends Component {
   }
 
   render() {
+    if (!this.user().isPremium && this.props.roomRequiresPremium) {
+      return <PremiumFeature featureName={'Premium rooms'} />;
+    }
+
     const hackIsUserFeed = this.props.uid;
     const hackOnlyShowThePostsColumn = hackIsUserFeed;
 

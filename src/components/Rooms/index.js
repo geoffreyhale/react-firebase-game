@@ -28,6 +28,7 @@ const rooms = {
         </ul>
       </small>
     ),
+    doesNotRequirePremium: true,
   },
   healthyrelating: {
     color: 'MistyRose',
@@ -93,14 +94,15 @@ class Rooms extends React.Component {
   // TODO maybe more robust to use a room context instead of prop-drilling this room stuff
   render() {
     const { roomId } = this.props.match.params;
-    const room = roomId === undefined ? null : rooms[roomId];
+    const homeRoom = roomId === undefined;
+    const room = homeRoom ? null : rooms[roomId];
 
     if (roomId && !room) {
       return (
         <Card>
           <Card.Body>
-            <Card.Title>Insufficient Access</Card.Title>
-            <p>You do not yet have access to this room.</p>
+            <Card.Title>Room Does Not Exist</Card.Title>
+            <p>Want this room to exist? Ask for it in r/general.</p>
           </Card.Body>
         </Card>
       );
@@ -111,6 +113,7 @@ class Rooms extends React.Component {
         room={roomId}
         roomColor={room && room.color}
         roomDescription={room && room.description}
+        roomRequiresPremium={!homeRoom && !room?.doesNotRequirePremium}
       />
     );
   }
