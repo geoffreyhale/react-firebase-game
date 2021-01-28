@@ -15,6 +15,9 @@
 
 # TODO
 
+- user profile posts with parents link to their reply
+- user profile posts don't show inacurate reply count
+- in Hot Score, reduce replies value relative to upvotes, upvotes should hold more weight
 - (my) user profile is so slow
 - something to let premium members know all they're getting for their money, maybe like the PremiumSaleCard for premium members somewhere
 - better document.title tab titles like for rooms and user profiles
