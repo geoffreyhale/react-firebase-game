@@ -191,7 +191,7 @@ export const FeedNav = ({
 }) => {
   const { user } = useContext(AppContext);
   return (
-    <>
+    <div className="mb-3">
       <Nav variant="tabs" className="justify-content-center mt-2">
         <Nav.Item>
           <Nav.Link
@@ -253,6 +253,6 @@ export const FeedNav = ({
       </Nav>
 
       {feedSubtext ? <small className="text-muted">{feedSubtext}</small> : null}
-    </>
+    </div>
   );
 };

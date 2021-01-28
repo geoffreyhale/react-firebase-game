@@ -48,7 +48,7 @@ const PostsFeed = ({ posts, isUnseenFeed = false }) => (
         return (
           <tr key={post.id}>
             <td>
-              <Card className="mt-4">
+              <Card className="mb-4">
                 <Card.Body>
                   <Post post={post} hackRoom={post.room} />
                 </Card.Body>
