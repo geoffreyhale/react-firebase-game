@@ -22,7 +22,8 @@ const PremiumSaleCard = () => {
         <h5>Features</h5>
         <ul>
           <li>View user profiles</li>
-          <li>Remove this promotion</li>
+          <li>Community Page</li>
+          <li>Remove this ad</li>
           <li>Support your friend (me)</li>
           <li>More coming soon</li>
         </ul>

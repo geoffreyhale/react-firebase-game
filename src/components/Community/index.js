@@ -7,6 +7,7 @@ import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';
 import Mosaic from './Mosaic';
 import Stats from './Stats';
+import PremiumFeature from '../shared/PremiumFeature';
 
 export default class CommunityPage extends Component {
   constructor() {
@@ -30,6 +31,10 @@ export default class CommunityPage extends Component {
   }
 
   render() {
+    if (!this.user().isPremium) {
+      return <PremiumFeature featureName={'Community Page'} />;
+    }
+
     const users = this.users();
     if (!users) {
       <Spinner />;
