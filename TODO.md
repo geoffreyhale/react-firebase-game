@@ -15,13 +15,13 @@
 
 # TODO
 
+- something to let premium members know all they're getting for their money, maybe like the PremiumSaleCard for premium members somewhere
 - better document.title tab titles like for rooms and user profiles
 - cleanup Posts/index.js
 - favorite posts
 - editor's choice posts
 - room specific upvoting etc
 - watchout for posts that get added without a room; they can be fixed but are lost without a room field
-- hot should include comments in equation
 - cross site search
 - room-specifics like stats, users here now, etc
 - manually fix old post links, there's not many of them
