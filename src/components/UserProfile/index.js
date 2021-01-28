@@ -11,6 +11,7 @@ import { UserPhoto } from '../shared/User';
 import Spinner from '../shared/Spinner';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import Posts from '../Posts';
+import PremiumFeature from '../shared/PremiumFeature';
 
 class UserProfile extends React.Component {
   constructor() {
@@ -33,19 +34,9 @@ class UserProfile extends React.Component {
 
   render() {
     if (!this.user().isPremium) {
-      return (
-        <Card>
-          <Card.Body>
-            <Card.Title>Premium Feature</Card.Title>
-            <p>
-              Viewing user profiles is a premium feature available to paying
-              users.
-            </p>
-            <p>Please subscribe now to enjoy premium features.</p>
-          </Card.Body>
-        </Card>
-      );
+      return <PremiumFeature />;
     }
+
     const { user } = this.state;
     return (
       <Card>
