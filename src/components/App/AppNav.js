@@ -32,11 +32,11 @@ const AppNav = () => {
             Chess
           </Nav.Link>
         </NavDropdown.Item>
-        <NavDropdown.Item>
+        {/* <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/groups">
             Groups
           </Nav.Link>
-        </NavDropdown.Item>
+        </NavDropdown.Item> */}
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/incremental-clicker-game">
             Incremental Clicker
