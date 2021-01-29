@@ -210,30 +210,6 @@ const Stats = ({ posts }) => {
 
   return (
     <>
-      {user.admin && (
-        /* <StatsTable
-        title={'Upvotes Per Post'}
-        subtitle={'Quality'}
-        statsByUser={statsByUser}
-        statKey={'upvotesPerPost'}
-        key={'upvotesPerPost'}
-      /> */
-        <StatsTable
-          title={'Upvotes Received Per Post'}
-          subtitle={'Social Quality'}
-          statsByUser={statsByUser}
-          statKey={'upvotesNotSelfPerPost'}
-          key={'upvotesNotSelfPerPost'}
-          footer={'Does not include your upvotes to your own posts.'}
-        />
-      )}
-      <StatsTable
-        title={'Total Upvotes'}
-        subtitle={'Popular'}
-        statsByUser={statsByUser}
-        statKey={'upvotes'}
-        key={'upvotes'}
-      />
       <StatsTable
         title={'Upvotes Received'}
         subtitle={'Good Karma'}
@@ -260,20 +236,48 @@ const Stats = ({ posts }) => {
         footer={'Does not include your replies to your own posts.'}
       />
       <StatsTable
-        title={'Top Posters'}
-        statsByUser={statsByUser}
-        statKey={'postCount'}
-        key={'top-posters'}
-        footer={'Includes posts and replies.'}
-      />
-      <StatsTable
         title={'Top Taggers'}
+        subtitle={'Abstract Graffiti'}
         statsByUser={statsByUser}
         statKey={'tags'}
         key={'top-taggers'}
         footer={'Includes tags on your own posts.'}
       />
       <TagStatsTable statsByTag={statsByTag} key={'tags'} />
+      {user.admin && (
+        <div>
+          <h1>Admin Only</h1>
+          <StatsTable
+            title={'Upvotes Per Post'}
+            subtitle={'Quality'}
+            statsByUser={statsByUser}
+            statKey={'upvotesPerPost'}
+            key={'upvotesPerPost'}
+          />
+          <StatsTable
+            title={'Upvotes Received Per Post'}
+            subtitle={'Social Quality'}
+            statsByUser={statsByUser}
+            statKey={'upvotesNotSelfPerPost'}
+            key={'upvotesNotSelfPerPost'}
+            footer={'Does not include your upvotes to your own posts.'}
+          />
+          <StatsTable
+            title={'Total Upvotes'}
+            subtitle={'Popular'}
+            statsByUser={statsByUser}
+            statKey={'upvotes'}
+            key={'upvotes'}
+          />
+          <StatsTable
+            title={'Top Posters'}
+            statsByUser={statsByUser}
+            statKey={'postCount'}
+            key={'top-posters'}
+            footer={'Includes posts and replies.'}
+          />
+        </div>
+      )}
     </>
   );
 };
