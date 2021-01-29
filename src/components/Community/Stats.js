@@ -14,6 +14,8 @@ const createUserStatsZeroObject = ({ userId }) => ({
   tags: 0,
   upvotes: 0,
   upvotesNotSelf: 0,
+  upvotesPerPost: 0,
+  upvotesNotSelfPerPost: 0,
 });
 
 // TODO refactor: build stats.users etc object first, then iterate posts
@@ -83,6 +85,13 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
         }
       });
     }
+  });
+
+  Object.entries(result.users).forEach(([key, user]) => {
+    result.users[key].upvotesPerPost =
+      Math.round((user.upvotes / user.postCount) * 10) / 10;
+    result.users[key].upvotesNotSelfPerPost =
+      Math.round((user.upvotesNotSelf / user.postCount) * 10) / 10;
   });
 
   return result;
@@ -180,7 +189,7 @@ const StatsTable = ({ title, subtitle, footer, statsByUser, statKey }) => (
 );
 
 const Stats = ({ posts }) => {
-  const { users } = useContext(AppContext);
+  const { user, users } = useContext(AppContext);
   if (!posts) {
     console.error('Stats did not receive any posts');
     return null;
@@ -201,6 +210,23 @@ const Stats = ({ posts }) => {
 
   return (
     <>
+      {user.admin && (
+        /* <StatsTable
+        title={'Upvotes Per Post'}
+        subtitle={'Quality'}
+        statsByUser={statsByUser}
+        statKey={'upvotesPerPost'}
+        key={'upvotesPerPost'}
+      /> */
+        <StatsTable
+          title={'Upvotes Received Per Post'}
+          subtitle={'Social Quality'}
+          statsByUser={statsByUser}
+          statKey={'upvotesNotSelfPerPost'}
+          key={'upvotesNotSelfPerPost'}
+          footer={'Does not include your upvotes to your own posts.'}
+        />
+      )}
       <StatsTable
         title={'Total Upvotes'}
         subtitle={'Popular'}
