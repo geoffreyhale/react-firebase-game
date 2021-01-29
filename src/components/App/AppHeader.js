@@ -57,7 +57,7 @@ const AppHeader = ({ user, login, logout }) => (
             paddingTop: '0.25rem',
           }}
         >
-          <AppNav admin={user.admin} />
+          <AppNav />
         </Card.Body>
       </Card>
     )}

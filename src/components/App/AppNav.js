@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink } from 'react-router-dom';
+import { AppContext } from '../AppProvider';
 
-const AppNav = ({ admin }) => {
+const AppNav = () => {
+  const { user } = useContext(AppContext);
+  const { admin, isPremium } = user;
+  console.log(user);
   return (
     <Nav className="justify-content-center">
       <Nav.Item>
