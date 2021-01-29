@@ -7,7 +7,6 @@ import { AppContext } from '../AppProvider';
 const AppNav = () => {
   const { user } = useContext(AppContext);
   const { admin, isPremium } = user;
-  console.log(user);
   return (
     <Nav className="justify-content-center">
       <Nav.Item>
@@ -25,18 +24,18 @@ const AppNav = () => {
           About
         </Nav.Link>
       </Nav.Item>
-      <NavDropdown title="&#8943;" disabled={!isPremium}>
+      {/* <NavDropdown title="&#8943;" disabled={!isPremium}>
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/chess">
             Chess
           </Nav.Link>
         </NavDropdown.Item>
-        {/* <NavDropdown.Item>
+        <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/groups">
             Groups
           </Nav.Link>
-        </NavDropdown.Item> */}
+        </NavDropdown.Item>
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/incremental-clicker-game">
             Incremental Clicker
@@ -52,7 +51,7 @@ const AppNav = () => {
             Tic-tac-toe
           </Nav.Link>
         </NavDropdown.Item>
-      </NavDropdown>
+      </NavDropdown> */}
       {admin && (
         <Nav.Item>
           <Nav.Link as={NavLink} to="/admin">
