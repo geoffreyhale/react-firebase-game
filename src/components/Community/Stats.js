@@ -13,6 +13,7 @@ const createUserStatsZeroObject = ({ userId }) => ({
   replyCount: 0,
   tags: 0,
   upvotes: 0,
+  upvotesNotSelf: 0,
 });
 
 // TODO refactor: build stats.users etc object first, then iterate posts
@@ -37,6 +38,9 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
 
     if (typeof post.upvote === 'object') {
       result.users[userId].upvotes += Object.keys(post.upvote).length;
+      Object.keys(post.upvote).forEach(
+        (key) => key !== userId && result.users[userId].upvotesNotSelf++
+      );
     }
 
     // Replies
@@ -198,19 +202,27 @@ const Stats = ({ posts }) => {
   return (
     <>
       <StatsTable
-        title={'Most Upvotes Received'}
-        subtitle={'Good Karma'}
+        title={'Total Upvotes'}
+        subtitle={'Popular'}
         statsByUser={statsByUser}
         statKey={'upvotes'}
         key={'upvotes'}
       />
       <StatsTable
-        title={'Most Replies Received'}
+        title={'Upvotes Received'}
+        subtitle={'Good Karma'}
+        statsByUser={statsByUser}
+        statKey={'upvotesNotSelf'}
+        key={'upvotesNotSelf'}
+        footer={'Does not include your upvotes to your own posts.'}
+      />
+      <StatsTable
+        title={'Replies Received'}
         subtitle={'Conversation Starters'}
         statsByUser={statsByUser}
         statKey={'repliesReceivedNotSelf'}
         key={'top-replies-received'}
-        footer={'Does not include replies to your own posts.'}
+        footer={'Does not include your replies to your own posts.'}
       />
       {/* TODO "First Responders" */}
       <StatsTable
@@ -219,7 +231,7 @@ const Stats = ({ posts }) => {
         statsByUser={statsByUser}
         statKey={'repliesSentNotSelf'}
         key={'top-repliers'}
-        footer={'Does not include replies to your own posts.'}
+        footer={'Does not include your replies to your own posts.'}
       />
       <StatsTable
         title={'Top Posters'}
