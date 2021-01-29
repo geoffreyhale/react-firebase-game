@@ -25,7 +25,7 @@ const AppNav = () => {
           About
         </Nav.Link>
       </Nav.Item>
-      <NavDropdown title="&#8943;">
+      <NavDropdown title="&#8943;" disabled={!isPremium}>
         <NavDropdown.Header>Under Construction</NavDropdown.Header>
         <NavDropdown.Item>
           <Nav.Link as={NavLink} to="/chess">

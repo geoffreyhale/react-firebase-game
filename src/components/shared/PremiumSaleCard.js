@@ -24,6 +24,7 @@ const PremiumSaleCard = () => {
           <li>Access to premium rooms</li>
           <li>View user profiles</li>
           <li>Community Page</li>
+          <li>Extras Menu</li>
           <li>Remove this ad</li>
           <li>Support your friend (me)</li>
           <li>More coming soon</li>
