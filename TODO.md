@@ -6,6 +6,7 @@
    - do not query all posts, do not return all posts; chunks please
 2. performance
 3. features
+   - build for activity, connection, safety and depth
    - build for constructive conversation
    - healthy relating, productivity, health
 4. activity
@@ -13,8 +14,16 @@
    - hundred daily users
    - ten thousand registered users
 
+## ...
+
+1. user quantity
+2. user activity
+3. app unique value
+4. sales
+
 # TODO
 
+- fix Google auth from apps like Facebook that use embedded browsers
 - pin posts/conversations/threads
 - save posts/conversations/threads
 - favorite posts/conversations/threads
@@ -26,7 +35,6 @@
 - cleanup Posts/index.js
 - editor's choice posts
 - room specific upvoting etc
-- watchout for posts that get added without a room; they can be fixed but are lost without a room field
 - cross site search
 - room-specifics like stats, users here now, etc
 - manually fix old post links, there's not many of them
@@ -49,10 +57,8 @@
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
 - buggish: Feature Requests feed allows replies now but does't show them
 - accounting tools
-- urls are clickable hyperlinks
 - what is "healthy relating"? what are the expectations here, how do i play?
 - map out what is healthy relating
-- sort replies by upvotes/karma too
 - 'Add Tags' to new top level post
 - downvotes, or flagging or something
 - lowercase all tags ?
@@ -83,10 +89,7 @@
 - auto-curated feed universal and personal, eg most active recent posts
 - view posts feed by filters: user, tag
 - groups -> rooms / post feeds / chat rooms
-- healthy intimacy dating called Tender XD
 - round tables, eg 5 closest friends, 5 best friends, 5 friends I want to be more like, etc
-- scorekeeper as part of rooms
-- humans game modeling reality, eg mood meter
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
 - abstract posts' and collections' functions into models and utils etc
@@ -97,6 +100,9 @@
 
 ## APPS
 
+- healthy intimacy dating called Tender XD
+- scorekeeper as part of rooms
+- humans game modeling reality, eg mood meter
 - event pages
 - cooperative mind map
 - jom's productivity tracker
