@@ -4,9 +4,30 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 import Row from 'react-bootstrap/Row';
 import About from '../About';
 import { LogInButton } from '../UserAuth';
+
+const Login403DisallowedUseragent = () => (
+  <Jumbotron className="mt-3" style={{ font: 'consolas' }}>
+    <h2>Login not working?</h2>
+    <p>
+      <strong>Problem:</strong> Did you see{' '}
+      <strong>403 disallowed_useragent</strong> when trying to login?
+    </p>
+    <p>
+      <strong>Solution:</strong> Open xbk.io in a browser.
+    </p>
+    <p>
+      <strong>Explanation:</strong> As of April 20, 2017, Google has blocked
+      OAuth authorization requests via web views aka embedded browsers. You will
+      see <strong>403 disallowed_useragent</strong> and be unable to login if
+      you opened xbk.io from Facebook or any other app utilizing embedded
+      browsers.
+    </p>
+  </Jumbotron>
+);
 
 const FrontPage = ({ login }) => (
   <>
@@ -42,6 +63,7 @@ const FrontPage = ({ login }) => (
             >
               Start Here
             </LogInButton>
+            <Login403DisallowedUseragent />
           </Card.Body>
         </Card>
       </Col>
