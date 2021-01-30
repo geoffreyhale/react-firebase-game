@@ -20,10 +20,12 @@ export const createDataTree = (dataset) => {
 const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
   const postsByTimestamp = {};
   flatPostsArray.forEach((post) => {
-    post.userDisplayName =
-      (users[post.userId] && users[post.userId].displayName) || 'Loading...';
-    post.userPhotoURL =
-      (users[post.userId] && users[post.userId].photoURL) || null;
+    if (users) {
+      post.userDisplayName =
+        (users[post.userId] && users[post.userId].displayName) || 'Loading...';
+      post.userPhotoURL =
+        (users[post.userId] && users[post.userId].photoURL) || null;
+    }
 
     postsByTimestamp[post.timestamp] = post;
   });
