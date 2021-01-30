@@ -3,12 +3,37 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
+import countWords from '../shared/countWords';
 import { getPosts, getUsersRealtimeDatabase } from '../shared/db';
-import Spinner from '../shared/Spinner';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
-import Funnel from './Funnel';
-import Accounting from './Accounting';
+import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
+import Spinner from '../shared/Spinner';
 import { isPremium, User } from '../shared/User';
+import Accounting from './Accounting';
+import Funnel from './Funnel';
+// import MyScatterPlot from './MyScatterPlot';
+
+const pushReplyCountWordCountObjects = (
+  post,
+  replyCountByWordCountObjectsArray
+) => {
+  if (post.childNodes?.length > 0) {
+    post.childNodes.forEach((post) =>
+      pushReplyCountWordCountObjects(post, replyCountByWordCountObjectsArray)
+    );
+  }
+  if (post.content) {
+    const replyCount = post.childNodes?.length || 0;
+    const wordCount = countWords(post.content);
+    // if (replyCount !== 0 && wordCount !== 0) {
+    const replyCountByWordCountObject = {
+      replyCount,
+      wordCount,
+    };
+    replyCountByWordCountObjectsArray.push(replyCountByWordCountObject);
+    // }
+  }
+};
 
 const Posts = ({ posts }) => {
   Object.keys(posts).map((key) => {
@@ -17,6 +42,27 @@ const Posts = ({ posts }) => {
   const count = Object.keys(posts).length;
   const postsWithNoRoom = Object.values(posts).filter((post) => !post.room);
   const countNoRoom = postsWithNoRoom.length;
+
+  const replyCountByWordCountObjectsArray = [];
+  const postsTree = postsTreeFromRawPosts({
+    flatPostsArray: Object.values(posts),
+    // users,
+  });
+  pushReplyCountWordCountObjects(
+    { childNodes: postsTree.posts },
+    replyCountByWordCountObjectsArray
+  );
+
+  const dataForScatterPlot = [
+    {
+      id: 'reply count per word count',
+      data: replyCountByWordCountObjectsArray.map((data) => ({
+        x: data.wordCount,
+        y: data.replyCount,
+      })),
+    },
+  ];
+
   return (
     <Card>
       <Card.Body>
@@ -26,7 +72,7 @@ const Posts = ({ posts }) => {
         {postsWithNoRoom.map((post) => (
           <div>id: {post.id}</div>
         ))}
-        <Card></Card>
+        {/* <MyScatterPlot data={dataForScatterPlot} /> */}
       </Card.Body>
     </Card>
   );
@@ -119,8 +165,8 @@ export default class Admin extends React.Component {
 
     return (
       <>
-        <Accounting users={this.state.users} />
         <Posts posts={this.state.posts} />
+        <Accounting users={this.state.users} />
         <Card className={'mt-3'}>
           <Card.Body>
             <Funnel usersArray={usersArray} />
