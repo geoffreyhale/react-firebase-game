@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AppContext } from '../AppProvider';
+
+const countWords = (value) => value?.match(/\S+/g)?.length || 0;
+const WordCount = ({ words }) => {
+  const [show, setShow] = useState(false);
+  return (
+    <span onClick={() => setShow(!show)}>
+      {show ? countWords(words) : <>&#x1f9ee;</>}
+    </span>
+  );
+};
 
 export default class NewPostForm extends React.Component {
   constructor() {
@@ -16,15 +26,19 @@ export default class NewPostForm extends React.Component {
   user = () => this.context.user;
 
   handleChange(event) {
-    const newValue = event.target.value;
+    const content = event.target.value;
     if (
       this.props.characterLimit &&
-      newValue.length > this.props.characterLimit
+      content.length > this.props.characterLimit
     ) {
       return;
     }
-    this.setState({ content: newValue });
+
+    this.setState({
+      content: content,
+    });
   }
+
   render() {
     return (
       <Form
@@ -65,6 +79,9 @@ export default class NewPostForm extends React.Component {
             autoFocus={true}
           />
         )}
+        <span className="float-right text-muted">
+          <WordCount words={this.state.content} />
+        </span>
         {!this.props.hideSubmitButton && (
           <Button
             className="mt-1"

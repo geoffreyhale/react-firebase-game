@@ -64,7 +64,7 @@
 - lowercase all tags ?
 - save user preferred feed ?
 - remove hackFunctions
-- character or word counts and maybe time to read length indicators maybe on Read More link
+- character and maybe time to read length indicators maybe on Read More link
 - daily scorecard app w limited visibility for habits etc and accountability
 - fix double render (still happening? / use more loading)
 - clean out Posts index
