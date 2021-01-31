@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import firebase, { auth, provider } from '../firebase.js';
 import Routes from '../Routes';
 import AppProvider from '../AppProvider';
-import { getUser, getUsers, updateUser } from '../shared/db';
+import { getUser, getUsers, updateUser } from '../../api/index';
 import Spinner from '../shared/Spinner';
 import FrontPage from '../FrontPage';
 import AppHeader from './AppHeader';

@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
 import countWords from '../shared/countWords';
-import { getPosts, getUsersRealtimeDatabase } from '../shared/db';
+import { getPosts, getUsersRealtimeDatabase } from '../../api/index';
 import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
 import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
 import Spinner from '../shared/Spinner';

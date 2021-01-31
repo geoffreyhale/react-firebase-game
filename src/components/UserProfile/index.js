@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { withRouter } from 'react-router';
 import { AppContext } from '../AppProvider';
-import { getUser } from '../shared/db';
+import { getUser } from '../../api/index';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { UserPhoto } from '../shared/User';
 import Spinner from '../shared/Spinner';

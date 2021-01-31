@@ -8,7 +8,7 @@ import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import Tag from '../shared/Tag';
-import { addTag, createPost, deletePost, editPost } from '../shared/db';
+import { addTag, createPost, deletePost, editPost } from '../../api/index';
 import { UserPhoto } from '../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';

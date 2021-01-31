@@ -1,5 +1,5 @@
-import firebase, { db } from '../firebase.js';
-import { isPremium } from './User';
+import firebase, { db } from '../components/firebase.js';
+import { isPremium } from '../components/shared/User';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');

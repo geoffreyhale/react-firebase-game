@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { AppContext } from '../AppProvider';
-import { getAccounting } from '../shared/db';
+import { getAccounting } from '../../api/index';
 import { User } from '../shared/User';
 
 export default class Accounting extends React.Component {

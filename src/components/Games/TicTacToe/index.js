@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { AppContext } from '../../AppProvider';
 import firebase, { auth } from '../../firebase.js';
-import { getUsers } from '../../shared/db';
+import { getUsers } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 
 import './index.css';

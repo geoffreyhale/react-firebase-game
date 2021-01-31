@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppContext } from '../AppProvider';
-import { hasMyUpvote, upvoteCount, toggleUpvote } from '../shared/db';
+import { hasMyUpvote, upvoteCount, toggleUpvote } from '../../api/index';
 import { PostMenuBarItem } from './Post';
 
 export class Upvote extends React.Component {

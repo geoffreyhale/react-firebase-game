@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/Table';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../firebase.js';
 import { AppContext } from '../AppProvider';
-import { getUsers, removeNotification } from '../shared/db';
+import { getUsers, removeNotification } from '../../api/index';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
 import { UserPhoto } from '../shared/User';
 
