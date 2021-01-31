@@ -154,30 +154,28 @@ export const PostHeader = ({
           </div>
         ) : null}
         <>
-          <div>
-            <div>
-              <Link
-                style={{ color: 'inherit', display: 'inline-block' }}
-                to={`/u/${post.userId}`}
-              >
-                <strong style={{ fontWeight: 600 }}>{displayName}</strong>
-              </Link>
-              {hackRoom && !small && (
-                <span>
-                  {' '}
-                  &#8250; <PostHeaderRoom room={hackRoom} />
-                </span>
-              )}
+          {hideActionsAndTimestamp ? null : (
+            <div className="float-right">
+              {showActions ? (
+                <PostActionsDropdown
+                  deletePost={() => deletePost({ postId: post.id })}
+                  editPost={() => setEditMode(true)}
+                />
+              ) : null}
             </div>
-            {hideActionsAndTimestamp ? null : (
-              <div className="float-right">
-                {showActions ? (
-                  <PostActionsDropdown
-                    deletePost={() => deletePost({ postId: post.id })}
-                    editPost={() => setEditMode(true)}
-                  />
-                ) : null}
-              </div>
+          )}
+          <div>
+            <Link
+              style={{ color: 'inherit', display: 'inline-block' }}
+              to={`/u/${post.userId}`}
+            >
+              <strong style={{ fontWeight: 600 }}>{displayName}</strong>
+            </Link>
+            {hackRoom && !small && (
+              <span>
+                {' '}
+                &#8250; <PostHeaderRoom room={hackRoom} />
+              </span>
             )}
           </div>
           {hideActionsAndTimestamp ? null : (
