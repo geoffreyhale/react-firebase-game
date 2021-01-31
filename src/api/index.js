@@ -42,22 +42,6 @@ const addNotifications = ({ postId, myUserId }) => {
     });
 };
 
-// post w id postId lost a reply
-// decrement notifications for the user who authored the post
-const decrementNotifications = ({ postId, myUserId }) => {
-  postRef(postId)
-    .once('value')
-    .then((snapshot) => {
-      const post = snapshot.val();
-      const userId = post.userId;
-      if (userId !== myUserId) {
-        notificationsRef({ userId }).update({
-          [postId]: firebase.database.ServerValue.increment(-1), // TODO if results in 0, remove notification
-        });
-      }
-    });
-};
-
 // TODO get rid of old count notifiations and should always require userId here
 export const removeNotification = ({ postId, myUserId, userId = null }) => {
   if (userId) {
