@@ -54,6 +54,7 @@ const NotificationItem = ({ content, postId, url, userId }) => {
   return (
     <tr
       style={{ backgroundColor: active ? bootstrapTableHoverColor : 'inherit' }}
+      key={postId + userId}
     >
       <td
         // onClick doesn't allow right-click on anchor functionality

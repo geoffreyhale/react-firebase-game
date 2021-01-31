@@ -12,6 +12,19 @@ const upvoteUserRef = ({ postId, userId }) =>
 const upvoteRef = ({ postId }) =>
   firebase.database().ref('posts/' + postId + '/upvote');
 
+export const addTag = (postId, tagContent, successCallback, myUserId) => {
+  const postRef = firebase.database().ref('posts/' + postId);
+  const key = postRef.child('tags').push().key;
+  postRef
+    .child('tags')
+    .child(key)
+    .update({
+      type: tagContent,
+      userId: myUserId,
+    })
+    .then(successCallback());
+};
+
 // post w id postId received a reply
 // add a notification for the user who authored the post
 const addNotifications = ({ postId, myUserId }) => {

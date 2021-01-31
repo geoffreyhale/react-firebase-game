@@ -7,9 +7,8 @@ import friendlyTimestamp from '../shared/friendlyTimestamp';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
-import firebase from '../firebase.js';
 import Tag from '../shared/Tag';
-import { createPost, deletePost, editPost } from '../shared/db';
+import { addTag, createPost, deletePost, editPost } from '../shared/db';
 import { UserPhoto } from '../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
@@ -30,19 +29,6 @@ export const PostMenuBarItem = ({ active = false, children, onClick }) => {
       {children}
     </small>
   );
-};
-
-const addTag = (postId, tagContent, successCallback, myUserId) => {
-  const postRef = firebase.database().ref('posts/' + postId);
-  const key = postRef.child('tags').push().key;
-  postRef
-    .child('tags')
-    .child(key)
-    .update({
-      type: tagContent,
-      userId: myUserId,
-    })
-    .then(successCallback());
 };
 
 const Tags = ({ post }) => {
@@ -341,8 +327,8 @@ const Post = ({
           <div className="mb-2">
             {!tagFormCollapsed && (
               <NewPostForm
-                onSubmit={(content, replyToId, successCallback, userId) => {
-                  addTag(post.id, content, successCallback, userId);
+                onSubmit={({ content, replyToId, successCallback, uid }) => {
+                  addTag(post.id, content, successCallback, uid);
                 }}
                 placeholder={'add tag'}
                 hideSubmitButton={true}
