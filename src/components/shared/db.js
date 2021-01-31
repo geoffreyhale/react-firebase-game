@@ -63,14 +63,13 @@ export const editPost = ({ id, content, successCallback }) => {
     .then(successCallback());
 };
 
-// TODO should take a keyed object
-export const createNewPost = (
-  newPostContent,
+export const createNewPost = ({
+  content,
   replyToId,
   successCallback,
-  myUserId,
-  room
-) => {
+  uid,
+  room,
+}) => {
   if (!room) {
     console.error('createNewPost must receive value for room');
     return;
@@ -79,13 +78,13 @@ export const createNewPost = (
   postsRef()
     .child(key)
     .update({
-      content: newPostContent,
+      content,
       timestamp: firebase.database.ServerValue.TIMESTAMP,
-      userId: myUserId,
+      userId: uid,
       replyToId: replyToId,
       room: room,
     })
-    .then(replyToId && addNotifications({ postId: replyToId, myUserId }))
+    .then(replyToId && addNotifications({ postId: replyToId, myUserId: uid }))
     .then(successCallback());
 };
 

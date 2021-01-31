@@ -67,13 +67,13 @@ export default class NewPostForm extends React.Component {
               successCallback: successCallback,
             });
           } else {
-            this.props.onSubmit(
-              this.state.content,
-              this.props.replyToId || null,
+            this.props.onSubmit({
+              content: this.state.content,
+              replyToId: this.props.replyToId || null,
               successCallback,
-              this.user().uid,
-              this.props.hackRoom
-            );
+              uid: this.user().uid,
+              room: this.props.hackRoom,
+            });
           }
         }}
       >
