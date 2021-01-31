@@ -56,6 +56,27 @@ export const removeNotification = ({ postId, myUserId, userId = null }) => {
 };
 
 // TODO should take a keyed object
+export const editPost = (
+  id,
+  content,
+  // replyToId,
+  successCallback
+  // myUserId,
+  // room
+) => {
+  postRef(id)
+    .update({
+      content,
+      // timestamp: firebase.database.ServerValue.TIMESTAMP,
+      // userId: myUserId,
+      // replyToId: replyToId,
+      // room: room,
+    })
+    // .then(replyToId && addNotifications({ postId: replyToId, myUserId }))
+    .then(successCallback());
+};
+
+// TODO should take a keyed object
 export const createNewPost = (
   newPostContent,
   replyToId,

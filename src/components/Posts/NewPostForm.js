@@ -13,6 +13,7 @@ const WordCount = ({ words }) => {
   );
 };
 
+// TODO rename cuz this handles editPost now too
 export default class NewPostForm extends React.Component {
   constructor() {
     super();
@@ -24,6 +25,10 @@ export default class NewPostForm extends React.Component {
 
   static contextType = AppContext;
   user = () => this.context.user;
+
+  componentDidMount() {
+    this.props.content && this.setState({ content: this.props.content });
+  }
 
   handleChange(event) {
     const content = event.target.value;
@@ -51,13 +56,25 @@ export default class NewPostForm extends React.Component {
             this.setState({ content: '' });
             this.props.onSuccess && this.props.onSuccess();
           };
-          this.props.onSubmit(
-            this.state.content,
-            this.props.replyToId || null,
-            successCallback,
-            this.user().uid,
-            this.props.hackRoom
-          );
+          if (
+            !this.props.onSubmit &&
+            this.props.onSubmitEditHack &&
+            this.props.editPostIdHack
+          ) {
+            this.props.onSubmitEditHack(
+              this.props.editPostIdHack,
+              this.state.content,
+              successCallback
+            );
+          } else {
+            this.props.onSubmit(
+              this.state.content,
+              this.props.replyToId || null,
+              successCallback,
+              this.user().uid,
+              this.props.hackRoom
+            );
+          }
         }}
       >
         {this.props.multiline ? (

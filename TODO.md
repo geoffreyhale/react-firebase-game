@@ -82,7 +82,6 @@
 - ability to share pictures
 - Ability to delete your own tags
 - confirm prompt for delete post
-- ability to edit your existing posts
 - better handling for orphan posts; how handle deleting posts?
 - stats for top tag getters esp by tag type
 - invite codes and family-tree displays and stats for top inviters ?

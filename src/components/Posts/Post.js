@@ -9,7 +9,7 @@ import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import firebase from '../firebase.js';
 import Tag from '../shared/Tag';
-import { createNewPost, deletePost } from '../shared/db';
+import { createNewPost, deletePost, editPost } from '../shared/db';
 import { UserPhoto } from '../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
@@ -102,16 +102,27 @@ const ReplyForm = ({ replyToPostId, onSuccess, hackRoom }) => {
   );
 };
 
-const PostActionsDropdown = ({ deletePost }) => (
-  <Dropdown>
-    <MyDropdownToggle />
-    <Dropdown.Menu>
-      <Dropdown.Item as="button" onClick={deletePost}>
-        Delete
-      </Dropdown.Item>
-    </Dropdown.Menu>
-  </Dropdown>
-);
+const PostActionsDropdown = ({ deletePost, editPost }) => {
+  const { user } = useContext(AppContext);
+  return (
+    <Dropdown>
+      <MyDropdownToggle />
+      <Dropdown.Menu>
+        {user.isPremium && (
+          <>
+            <Dropdown.Item as="button" onClick={editPost}>
+              Edit
+            </Dropdown.Item>
+            <Dropdown.Divider />
+          </>
+        )}
+        <Dropdown.Item as="button" onClick={deletePost}>
+          Delete
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+};
 
 export const PostHeaderRoom = ({ room }) => (
   <Link to={`/r/${room}`} style={{ color: 'inherit' }}>
@@ -124,6 +135,7 @@ export const PostHeader = ({
   post,
   hideActionsAndTimestamp,
   hackRoom,
+  setEditMode,
 }) => {
   const { user } = useContext(AppContext);
   const displayName = post.userDisplayName;
@@ -162,6 +174,7 @@ export const PostHeader = ({
                 {showActions ? (
                   <PostActionsDropdown
                     deletePost={() => deletePost({ postId: post.id })}
+                    editPost={() => setEditMode(true)}
                   />
                 ) : null}
               </div>
@@ -278,6 +291,7 @@ const Post = ({
     !hackIsSinglePostPage
   );
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   if (!post) {
     return (
       <Card>
@@ -301,8 +315,26 @@ const Post = ({
         </Card.Header>
       )}
       <Card.Body>
-        <PostHeader post={post} small={small} hackRoom={hackRoom} />
-        <PostContent>{post.content}</PostContent>
+        <PostHeader
+          post={post}
+          small={small}
+          hackRoom={hackRoom}
+          setEditMode={setEditMode}
+        />
+        {editMode ? (
+          <NewPostForm
+            onSubmit={false}
+            editPostIdHack={post.id}
+            onSubmitEditHack={editPost}
+            onSuccess={() => setEditMode(false)}
+            multiline={true}
+            // placeholder={'How are you really feeling?'}
+            content={post.content}
+            // hackRoom={hackRoom}
+          />
+        ) : (
+          <PostContent>{post.content}</PostContent>
+        )}
         <hr style={{ margin: '1rem 0 .5rem' }} />
         <div>
           <div className="mb-2">
