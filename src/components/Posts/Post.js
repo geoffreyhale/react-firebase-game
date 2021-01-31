@@ -327,8 +327,8 @@ const Post = ({
           <div className="mb-2">
             {!tagFormCollapsed && (
               <NewPostForm
-                onSubmit={({ content, replyToId, successCallback, uid }) => {
-                  addTag(post.id, content, successCallback, uid);
+                onSubmit={({ content, successCallback, uid }) => {
+                  addTag({ postId: post.id, content, successCallback, uid });
                 }}
                 placeholder={'add tag'}
                 hideSubmitButton={true}

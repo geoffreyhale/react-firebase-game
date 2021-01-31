@@ -12,15 +12,15 @@ const upvoteUserRef = ({ postId, userId }) =>
 const upvoteRef = ({ postId }) =>
   firebase.database().ref('posts/' + postId + '/upvote');
 
-export const addTag = (postId, tagContent, successCallback, myUserId) => {
+export const addTag = ({ postId, content, successCallback, uid }) => {
   const postRef = firebase.database().ref('posts/' + postId);
   const key = postRef.child('tags').push().key;
   postRef
     .child('tags')
     .child(key)
     .update({
-      type: tagContent,
-      userId: myUserId,
+      type: content,
+      userId: uid,
     })
     .then(successCallback());
 };
