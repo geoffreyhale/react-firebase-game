@@ -59,12 +59,7 @@ export const editPost = ({ id, content, successCallback }) => {
   postRef(id)
     .update({
       content,
-      // timestamp: firebase.database.ServerValue.TIMESTAMP,
-      // userId: myUserId,
-      // replyToId: replyToId,
-      // room: room,
     })
-    // .then(replyToId && addNotifications({ postId: replyToId, myUserId }))
     .then(successCallback());
 };
 
