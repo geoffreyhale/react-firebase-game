@@ -63,7 +63,7 @@ export const editPost = ({ id, content, successCallback }) => {
     .then(successCallback());
 };
 
-export const createNewPost = ({
+export const createPost = ({
   content,
   replyToId,
   successCallback,
@@ -71,7 +71,7 @@ export const createNewPost = ({
   room,
 }) => {
   if (!room) {
-    console.error('createNewPost must receive value for room');
+    console.error('createPost must receive value for room');
     return;
   }
   const key = postsRef().push().key;

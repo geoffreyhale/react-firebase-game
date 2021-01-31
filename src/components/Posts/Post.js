@@ -9,7 +9,7 @@ import NewPostForm from './NewPostForm';
 import { AppContext } from '../AppProvider';
 import firebase from '../firebase.js';
 import Tag from '../shared/Tag';
-import { createNewPost, deletePost, editPost } from '../shared/db';
+import { createPost, deletePost, editPost } from '../shared/db';
 import { UserPhoto } from '../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
@@ -88,7 +88,7 @@ const ReplyForm = ({ replyToPostId, onSuccess, hackRoom }) => {
           </div>
           <div style={{ flexGrow: 1 }}>
             <NewPostForm
-              onSubmit={createNewPost}
+              onSubmit={createPost}
               onSuccess={onSuccess}
               placeholder="Write a reply..."
               replyToId={replyToPostId}
