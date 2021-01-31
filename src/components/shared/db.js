@@ -55,15 +55,7 @@ export const removeNotification = ({ postId, myUserId, userId = null }) => {
   }
 };
 
-// TODO should take a keyed object
-export const editPost = (
-  id,
-  content,
-  // replyToId,
-  successCallback
-  // myUserId,
-  // room
-) => {
+export const editPost = ({ id, content, successCallback }) => {
   postRef(id)
     .update({
       content,

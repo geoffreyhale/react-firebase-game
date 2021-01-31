@@ -61,11 +61,11 @@ export default class NewPostForm extends React.Component {
             this.props.onSubmitEditHack &&
             this.props.editPostIdHack
           ) {
-            this.props.onSubmitEditHack(
-              this.props.editPostIdHack,
-              this.state.content,
-              successCallback
-            );
+            this.props.onSubmitEditHack({
+              id: this.props.editPostIdHack,
+              content: this.state.content,
+              successCallback: successCallback,
+            });
           } else {
             this.props.onSubmit(
               this.state.content,
