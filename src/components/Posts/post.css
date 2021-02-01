@@ -1,0 +1,19 @@
+.post .card {
+  border-right: none;
+  border-bottom: none;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left-width: 2px;
+}
+
+.post .card-body {
+  padding-right: 0;
+}
+
+.post > div {
+  margin-right: 1.25rem;
+}
+.post > .card-body > .post {
+  margin-right: -1.25rem;
+}

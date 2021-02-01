@@ -13,6 +13,8 @@ import { UserPhoto } from '../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
 
+import './post.css';
+
 const redditRed = '#fd5828';
 
 export const PostMenuBarItem = ({ active = false, children, onClick }) => {
@@ -177,7 +179,7 @@ export const PostHeader = ({
 };
 
 const PostContent = ({ children, small }) => {
-  const startCollapsed = typeof children === 'string' && children.length > 1000;
+  const startCollapsed = typeof children === 'string' && children.length > 600;
   const [collapsed, setCollapsed] = useState(startCollapsed);
 
   const collapsedContent = (
@@ -191,7 +193,7 @@ const PostContent = ({ children, small }) => {
           },
         }}
       >
-        {children.substring(0, 500)}
+        {children.substring(0, 400)}
       </Linkify>
       {'... '}
       <span
@@ -288,7 +290,7 @@ const Post = ({
   }
   const replyCount = countAncestors(post) - 1;
   return (
-    <Card className="mt-1">
+    <Card className="mt-3 post">
       {showHeaderLinkToParent && (
         <Card.Header>
           {hackRoom && post.replyToId && (
@@ -305,21 +307,23 @@ const Post = ({
           hackRoom={hackRoom}
           setEditMode={setEditMode}
         />
-        {editMode ? (
-          <NewPostForm
-            onSubmit={false}
-            editPostIdHack={post.id}
-            onSubmitEditHack={editPost}
-            onSuccess={() => setEditMode(false)}
-            multiline={true}
-            // placeholder={'How are you really feeling?'}
-            content={post.content}
-            // hackRoom={hackRoom}
-          />
-        ) : (
-          <PostContent>{post.content}</PostContent>
-        )}
-        <hr style={{ margin: '1rem 0 .5rem' }} />
+        <div className="content mb-2">
+          {editMode ? (
+            <NewPostForm
+              onSubmit={false}
+              editPostIdHack={post.id}
+              onSubmitEditHack={editPost}
+              onSuccess={() => setEditMode(false)}
+              multiline={true}
+              // placeholder={'How are you really feeling?'}
+              content={post.content}
+              // hackRoom={hackRoom}
+            />
+          ) : (
+            <PostContent>{post.content}</PostContent>
+          )}
+        </div>
+        {/* <hr style={{ margin: '1rem 0 .5rem' }} /> */}
         <div>
           <div className="mb-2">
             <Tags post={post} />
@@ -379,13 +383,13 @@ const Post = ({
           )}
         </div>
         {!repliesCollapsed && post.childNodes.length > 0 && (
-          <div className="mt-2">
-            <Replies
-              post={post}
-              hackRoom={hackRoom}
-              hackIsSinglePostPage={hackIsSinglePostPage}
-            />
-          </div>
+          // <div className="mt-2">
+          <Replies
+            post={post}
+            hackRoom={hackRoom}
+            hackIsSinglePostPage={hackIsSinglePostPage}
+          />
+          // </div>
         )}
       </Card.Body>
       {isUnseenFeed && (
