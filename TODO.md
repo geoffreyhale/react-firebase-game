@@ -23,7 +23,6 @@
 
 # TODO
 
-- fix tests
 - fix Google auth from apps like Facebook that use embedded browsers
 - pin posts/conversations/threads
 - save posts/conversations/threads

@@ -88,10 +88,12 @@ export const statsFromPostsAndUsers = ({ posts, users }) => {
   });
 
   Object.entries(result.users).forEach(([key, user]) => {
-    result.users[key].upvotesPerPost =
-      Math.round((user.upvotes / user.postCount) * 10) / 10;
-    result.users[key].upvotesNotSelfPerPost =
-      Math.round((user.upvotesNotSelf / user.postCount) * 10) / 10;
+    result.users[key].upvotesPerPost = user.postCount
+      ? Math.round((user.upvotes / user.postCount) * 10) / 10
+      : 0;
+    result.users[key].upvotesNotSelfPerPost = user.postCount
+      ? Math.round((user.upvotesNotSelf / user.postCount) * 10) / 10
+      : 0;
   });
 
   return result;
