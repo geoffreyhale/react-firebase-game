@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Linkify from 'linkifyjs/react';
 import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import friendlyTimestamp from '../shared/friendlyTimestamp';
@@ -124,6 +125,7 @@ export const PostHeader = ({
   hideActionsAndTimestamp,
   hackRoom,
   setEditMode,
+  ToggleCollapseBranchButton,
 }) => {
   const { user } = useContext(AppContext);
   const displayName = post.userDisplayName;
@@ -142,16 +144,17 @@ export const PostHeader = ({
           </div>
         ) : null}
         <>
-          {hideActionsAndTimestamp ? null : (
-            <div className="float-right">
-              {showActions ? (
+          <div className="float-right">
+            {ToggleCollapseBranchButton}
+            {!hideActionsAndTimestamp && showActions && (
+              <div style={{ display: 'inline-block' }}>
                 <PostActionsDropdown
                   deletePost={() => deletePost({ postId: post.id })}
                   editPost={() => setEditMode(true)}
                 />
-              ) : null}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
           <div>
             <Link
               style={{ color: 'inherit', display: 'inline-block' }}
@@ -278,6 +281,8 @@ const Post = ({
   );
   const [replyFormCollapsed, setReplyFormCollapsed] = useState(true);
   const [editMode, setEditMode] = useState(false);
+  const [branchCollapsed, setBranchCollapsed] = useState(false);
+  const [contentCollapsed, setContentCollapsed] = useState(false);
   if (!post) {
     return (
       <Card>
@@ -306,90 +311,128 @@ const Post = ({
           small={small}
           hackRoom={hackRoom}
           setEditMode={setEditMode}
+          ToggleCollapseBranchButton={
+            <Button
+              size="sm"
+              variant="light"
+              onClick={() => setBranchCollapsed(!branchCollapsed)}
+            >
+              {branchCollapsed ? 'Show Branch' : 'Collapse Branch'}
+            </Button>
+          }
         />
-        <div className="content mb-2">
-          {editMode ? (
-            <NewPostForm
-              onSubmit={false}
-              editPostIdHack={post.id}
-              onSubmitEditHack={editPost}
-              onSuccess={() => setEditMode(false)}
-              multiline={true}
-              // placeholder={'How are you really feeling?'}
-              content={post.content}
-              // hackRoom={hackRoom}
-            />
-          ) : (
-            <PostContent>{post.content}</PostContent>
-          )}
-        </div>
-        {/* <hr style={{ margin: '1rem 0 .5rem' }} /> */}
-        <div>
-          <div className="mb-2">
-            <Tags post={post} />
-          </div>
-          <div className="mb-2">
-            {!tagFormCollapsed && (
-              <NewPostForm
-                onSubmit={({ content, successCallback, uid }) => {
-                  addTag({ postId: post.id, content, successCallback, uid });
-                }}
-                placeholder={'add tag'}
-                hideSubmitButton={true}
-                small={true}
-                characterLimit={25}
-                hackRoom={hackRoom}
-              />
-            )}
-          </div>
-          <div>
-            <Upvote postId={post.id} />
-            {/* // TODO replies icon active if you've replied to the thread */}
-            {!hackHideRepliesCount && (
-              <PostMenuBarItem
-                onClick={() => setRepliesCollapsed(!repliesCollapsed)}
-              >
-                &#128488;&#65039; {replyCount}
-              </PostMenuBarItem>
-            )}
-            <PostMenuBarItem
-              onClick={() => setTagFormCollapsed(!tagFormCollapsed)}
-              active={!tagFormCollapsed}
-            >
-              Tag
-            </PostMenuBarItem>
-            <PostMenuBarItem
-              onClick={() => setReplyFormCollapsed(!replyFormCollapsed)}
-              active={!replyFormCollapsed}
-            >
-              Reply
-            </PostMenuBarItem>
-          </div>
-          {repliesCollapsed && replyCount > 0 && (
-            // TODO abuse of card-footer class
-            <div
-              className="mt-2 card-footer"
-              onClick={() => setRepliesCollapsed(!repliesCollapsed)}
-            >
-              <PostMenuBarItem>&#128488;&#65039; {replyCount}</PostMenuBarItem>
+        {!branchCollapsed && (
+          <>
+            <div className="content mb-2">
+              {editMode ? (
+                <NewPostForm
+                  onSubmit={false}
+                  editPostIdHack={post.id}
+                  onSubmitEditHack={editPost}
+                  onSuccess={() => setEditMode(false)}
+                  multiline={true}
+                  // placeholder={'How are you really feeling?'}
+                  content={post.content}
+                  // hackRoom={hackRoom}
+                />
+              ) : (
+                !contentCollapsed && (
+                  // <div onClick={() => setBranchCollapsed(!branchCollapsed)}>
+                  <PostContent>{post.content}</PostContent>
+                )
+                // </div>
+              )}
             </div>
-          )}
-          {!replyFormCollapsed && (
-            <ReplyForm
-              replyToPostId={post.id}
-              onSuccess={() => setReplyFormCollapsed(true)}
-              hackRoom={hackRoom}
-            />
-          )}
-        </div>
-        {!repliesCollapsed && post.childNodes.length > 0 && (
-          // <div className="mt-2">
-          <Replies
-            post={post}
-            hackRoom={hackRoom}
-            hackIsSinglePostPage={hackIsSinglePostPage}
-          />
-          // </div>
+            {/* <hr style={{ margin: '1rem 0 .5rem' }} /> */}
+            <div>
+              {!contentCollapsed && (
+                <div className="mb-2">
+                  <Tags post={post} />
+                </div>
+              )}
+              <div className="mb-2">
+                {!tagFormCollapsed && (
+                  <NewPostForm
+                    onSubmit={({ content, successCallback, uid }) => {
+                      addTag({
+                        postId: post.id,
+                        content,
+                        successCallback,
+                        uid,
+                      });
+                    }}
+                    placeholder={'add tag'}
+                    hideSubmitButton={true}
+                    small={true}
+                    characterLimit={25}
+                    hackRoom={hackRoom}
+                  />
+                )}
+              </div>
+              <div>
+                <Upvote postId={post.id} />
+                {/* // TODO replies icon active if you've replied to the thread */}
+                {!hackHideRepliesCount && (
+                  <PostMenuBarItem
+                    onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+                  >
+                    &#128488;&#65039; {replyCount}
+                  </PostMenuBarItem>
+                )}
+                <PostMenuBarItem
+                  onClick={() => setTagFormCollapsed(!tagFormCollapsed)}
+                  active={!tagFormCollapsed}
+                >
+                  Tag
+                </PostMenuBarItem>
+                <PostMenuBarItem
+                  onClick={() => setReplyFormCollapsed(!replyFormCollapsed)}
+                  active={!replyFormCollapsed}
+                >
+                  Reply
+                </PostMenuBarItem>
+                <PostMenuBarItem
+                  onClick={() => setContentCollapsed(!contentCollapsed)}
+                  active={contentCollapsed}
+                >
+                  {contentCollapsed ? 'Show' : 'Collapse Content'}
+                </PostMenuBarItem>
+                {/* <PostMenuBarItem
+                  onClick={() => setBranchCollapsed(!branchCollapsed)}
+                  active={branchCollapsed}
+                >
+                  Collapse Branch
+                </PostMenuBarItem> */}
+              </div>
+              {repliesCollapsed && replyCount > 0 && (
+                // TODO abuse of card-footer class
+                <div
+                  className="mt-2 card-footer"
+                  onClick={() => setRepliesCollapsed(!repliesCollapsed)}
+                >
+                  <PostMenuBarItem>
+                    &#128488;&#65039; {replyCount}
+                  </PostMenuBarItem>
+                </div>
+              )}
+              {!replyFormCollapsed && (
+                <ReplyForm
+                  replyToPostId={post.id}
+                  onSuccess={() => setReplyFormCollapsed(true)}
+                  hackRoom={hackRoom}
+                />
+              )}
+            </div>
+            {!repliesCollapsed && post.childNodes.length > 0 && (
+              // <div className="mt-2">
+              <Replies
+                post={post}
+                hackRoom={hackRoom}
+                hackIsSinglePostPage={hackIsSinglePostPage}
+              />
+              // </div>
+            )}
+          </>
         )}
       </Card.Body>
       {isUnseenFeed && (
