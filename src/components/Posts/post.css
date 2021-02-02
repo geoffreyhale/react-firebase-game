@@ -11,7 +11,7 @@
   padding-right: 0;
 }
 
-.post > div {
+.post > div:not(.card-header) {
   margin-right: 1.25rem;
 }
 .post > .card-body > .post {
