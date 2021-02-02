@@ -20,6 +20,22 @@ yarn start
 yarn deploy
 ```
 
+## Test
+
+Front-End Tests
+
+```
+yarn test
+```
+
+Firebase Unit Tests
+
+```
+firebase emulators:start
+cd test
+npm test
+```
+
 # Testimonials
 
 "It feels like a freer version of Facebook. Like I don’t have to fear being lashed out at for posting how I feel about a subject, big or small simple or weighty. It’s very inviting. Will be a mighty feat of light for the social media world if you can keep it that way!!!!" - JH 2/1/2021
