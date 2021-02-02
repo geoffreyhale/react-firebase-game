@@ -23,6 +23,7 @@
 
 # TODO
 
+- improve visibility of "hot" topics/posts; get as many eyes/additional-activity on the "hot" (replies etc) as possible
 - sent j a direct link to single post full of comments for her, she didn't know how to see them;; from notifications, j clicks and doesn't think it linked; she saw the blue no lurking box and even if she read it there wasn't a clear way to post/reply/rejoin-the-conversation
 - fix Google auth from apps like Facebook that use embedded browsers
 - pin posts/conversations/threads
