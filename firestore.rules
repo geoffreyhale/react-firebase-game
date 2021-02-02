@@ -4,15 +4,13 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
-    match /readonly/{docId} {
-      allow read: if true;
+    match /accounting/{recordId} {
+      allow read: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true
       allow write: if false;
     }
     match /users/{userId} {
+      allow read: if true; //TODO restrict this
       allow write: if (request.auth.uid == userId);
-    }
-    match /posts/{postId} {
-      allow read: if (resource.data.visibility == "public") || (resource.data.authorId == request.auth.uid);
     }
   }
 }

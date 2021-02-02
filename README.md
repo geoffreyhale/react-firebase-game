@@ -20,6 +20,12 @@ yarn start
 yarn deploy
 ```
 
+Rules only:
+
+```
+firebase deploy --only firestore:rules
+```
+
 ## Test
 
 Front-End Tests
