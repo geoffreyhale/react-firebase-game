@@ -4,7 +4,7 @@
   "description": "Unit testing for xbk.io",
   "main": "test.js",
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha -- database.test.js firestore.test.js --parallel --exit"
   },
   "author": "Geoffrey Hale",
   "license": "ISC",
