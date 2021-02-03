@@ -1,18 +1,12 @@
 # FOCUS
 
 1. security
-   - database security rules should prevent clients from reading any private data
-   - cleanup db calls and looping many calls
-   - do not query all posts, do not return all posts; chunks please
-2. performance
-3. features
-   - build for activity, connection, safety and depth
-   - build for constructive conversation
-   - healthy relating, productivity, health
-4. activity
-   - handful of obsessed users
-   - hundred daily users
-   - ten thousand registered users
+   - do not query all posts, do not return all posts; chunks please, for (1) security and (2) performance
+2. features
+   - Modality feature
+   - build for activity, connection, safety and depth; constructive conversation; healthy relating, productivity, health
+3. activity
+   - handful of obsessed users, hundred daily users, ten thousand registered users
 
 ## ...
 
@@ -22,6 +16,16 @@
 4. sales
 
 # TODO
+
+## Top Tier
+
+- finish database security rules and related tests
+
+## Tier 2
+
+- Modality - healthy relating big-tag, feature set
+
+## Tier 3
 
 - improve visibility of "hot" topics/posts; get as many eyes/additional-activity on the "hot" (replies etc) as possible
 - sent j a direct link to single post full of comments for her, she didn't know how to see them;; from notifications, j clicks and doesn't think it linked; she saw the blue no lurking box and even if she read it there wasn't a clear way to post/reply/rejoin-the-conversation
