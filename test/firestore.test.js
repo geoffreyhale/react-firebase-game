@@ -1,4 +1,4 @@
-const assert = require('assert');
+// const assert = require('assert');
 const firebase = require('@firebase/testing');
 
 const MY_PROJECT_ID = 'react-firebase-2020-aecbd';

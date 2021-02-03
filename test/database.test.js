@@ -1,4 +1,4 @@
-const assert = require('assert');
+// const assert = require('assert');
 const firebase = require('@firebase/testing');
 
 const MY_PROJECT_ID = 'react-firebase-2020-aecbd';
@@ -7,56 +7,56 @@ const myId = 'asdfjkl';
 const theirId = 'zxcvbnm';
 const myAuth = { uid: myId };
 
-beforeEach(async () => {
-  await firebase
+function getDatabase(auth = null) {
+  return firebase
+    .initializeTestApp({
+      databaseName: MY_PROJECT_ID,
+      auth: auth,
+    })
+    .database();
+}
+
+function getAdminDatabase() {
+  return firebase
     .initializeAdminApp({
       databaseName: MY_PROJECT_ID,
     })
-    .database()
-    .ref()
-    .set(null);
+    .database();
+}
+
+function resetDatabase() {
+  return getAdminDatabase().ref().set(null);
+}
+
+beforeEach(async () => {
+  await resetDatabase();
 });
 
 describe('Database', () => {
   describe('Users', () => {
     it('User can read', async () => {
-      const db = firebase
-        .initializeTestApp({
-          databaseName: MY_PROJECT_ID,
-          auth: myAuth,
-        })
-        .database();
-      await firebase.assertSucceeds(db.ref('users').once('value', null));
+      await firebase.assertSucceeds(
+        getDatabase(myAuth).ref('users').once('value', null)
+      );
     });
     describe('Only self can write', async () => {
       it('Cannot overwrite all users', async () => {
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-          })
-          .database();
-        await firebase.assertFails(db.ref('users').set({ foo: 'bar' }));
+        await firebase.assertFails(
+          getDatabase().ref('users').set({ foo: 'bar' })
+        );
       });
       it('Can not write other', async () => {
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
         await firebase.assertFails(
-          db.ref('users/' + theirId).set({ foo: 'bar' })
+          getDatabase(myAuth)
+            .ref('users/' + theirId)
+            .set({ foo: 'bar' })
         );
       });
       it('Can write self', async () => {
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
         await firebase.assertSucceeds(
-          db.ref('users/' + myId).set({ foo: 'bar' })
+          getDatabase(myAuth)
+            .ref('users/' + myId)
+            .set({ foo: 'bar' })
         );
       });
     });
@@ -82,82 +82,53 @@ describe('Database', () => {
       );
       // TODO implement this: add isPremium to realtime database
       it('Can read all posts if user is premium', async () => {
-        const admin = firebase
-          .initializeAdminApp({ databaseName: MY_PROJECT_ID })
-          .database();
-        admin.ref('users/' + myId).set({ isPremium: true });
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
-        await firebase.assertSucceeds(db.ref('posts/').once('value', null));
+        getAdminDatabase()
+          .ref('users/' + myId)
+          .set({ isPremium: true });
+        await firebase.assertSucceeds(
+          getDatabase(myAuth).ref('posts/').once('value', null)
+        );
       });
     });
     describe('Only can write own posts', () => {
       it('Cannot overwrite all posts', async () => {
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
-        await firebase.assertFails(db.ref('posts').set({ foo: 'bar' }));
+        await firebase.assertFails(
+          getDatabase(myAuth).ref('posts').set({ foo: 'bar' })
+        );
       });
+      //TODO flaky, tends to fail first run, then pass most
       it("Cannot write other user's post", async () => {
-        const admin = firebase
-          .initializeAdminApp({ databaseName: MY_PROJECT_ID })
-          .database();
+        const admin = getAdminDatabase();
         const theirPostId = admin.ref('posts').push().key;
         admin.ref('posts/' + theirPostId).set({ userId: theirId });
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
         await firebase.assertFails(
-          db.ref('posts/' + theirPostId).set({ foo: 'bar' })
+          getDatabase(myAuth)
+            .ref('posts/' + theirPostId)
+            .set({ foo: 'bar' })
         );
       });
       it('Can write own new post', async () => {
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
+        const db = getDatabase(myAuth);
         const myPostId = db.ref('posts').push().key;
         await firebase.assertSucceeds(
           db.ref('posts/' + myPostId).set({ foo: 'bar' })
         );
       });
       it('Cannot write new post if no auth', async () => {
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-          })
-          .database();
+        const db = getDatabase();
         const myPostId = db.ref('posts').push().key;
         await firebase.assertFails(
           db.ref('posts/' + myPostId).set({ foo: 'bar' })
         );
       });
       it('Can overwrite own existing post', async () => {
-        const admin = firebase
-          .initializeAdminApp({ databaseName: MY_PROJECT_ID })
-          .database();
+        const admin = getAdminDatabase();
         const myPostId = admin.ref('posts').push().key;
         admin.ref('posts/' + myPostId).set({ userId: myId });
-        const db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
         await firebase.assertSucceeds(
-          db.ref('posts/' + myPostId).set({ foo: 'bar' })
+          getDatabase(myAuth)
+            .ref('posts/' + myPostId)
+            .set({ foo: 'bar' })
         );
       });
     });
@@ -167,9 +138,7 @@ describe('Database', () => {
       const randomTagsKeyForMyId = 'randomTagsKeyForMyId';
       const randomTagsKeyForTheirId = 'randomTagsKeyForTheirId';
       beforeEach(async () => {
-        const admin = firebase
-          .initializeAdminApp({ databaseName: MY_PROJECT_ID })
-          .database();
+        const admin = getAdminDatabase();
         theirPostId = admin.ref('posts').push().key;
         await admin.ref('posts/' + theirPostId).set({
           userId: theirId,
@@ -178,12 +147,7 @@ describe('Database', () => {
             randomTagsKeyForTheirId: { userId: theirId },
           },
         });
-        db = firebase
-          .initializeTestApp({
-            databaseName: MY_PROJECT_ID,
-            auth: myAuth,
-          })
-          .database();
+        db = getDatabase(myAuth);
       });
       it("Can upvote another user's post", async () => {
         await firebase.assertSucceeds(
@@ -238,11 +202,5 @@ describe('Database', () => {
 });
 
 after(async () => {
-  await firebase
-    .initializeAdminApp({
-      databaseName: MY_PROJECT_ID,
-    })
-    .database()
-    .ref()
-    .set(null);
+  await resetDatabase();
 });
