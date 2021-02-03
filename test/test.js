@@ -246,6 +246,9 @@ describe('xbk.io', () => {
             db.ref('posts/' + myPostId).set({ foo: 'bar' })
           );
         });
+        // TODO
+        it('Can upvote, tag, mark seen, etc');
+        it("Can not affect other users' upvote, tag, mark seen, etc");
       });
     });
     describe('Notifications', () => {});

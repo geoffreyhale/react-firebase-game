@@ -11,7 +11,17 @@
       ".read": "auth.uid != null",
       ".write": false,
       "$post_id": {
-        ".write": "auth.uid != null && (!data.exists() || data.child('userId').val() == auth.uid)"
+        ".write": "auth.uid != null"
+        // ".write": "auth.uid != null && (!data.exists() || data.child('userId').val() == auth.uid)",
+        // "tags": {
+        //   ".write": "auth.uid != null"
+        // },
+        // "seen": {
+        //   ".write": "auth.uid != null"
+        // },
+        // "upvote": {
+        //   ".write": "auth.uid != null"
+        // }
       }
     },
     "notifications": {
