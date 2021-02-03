@@ -29,18 +29,24 @@ firebase deploy --only firestore:rules
 
 ## Test
 
-Front-End Tests
+### Front-End Unit Tests
 
 ```
 yarn test
 ```
 
-Firebase Unit Tests
+### Firebase Unit Tests
+
+Once:
 
 ```
 firebase emulators:start
-cd test
-npm test
+```
+
+Run:
+
+```
+(cd test && npm test)
 ```
 
 # Testimonials

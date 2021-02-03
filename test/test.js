@@ -103,7 +103,7 @@ describe('xbk.io', () => {
       });
     });
   });
-  describe.only('Realtime database', () => {
+  describe('Realtime database', () => {
     describe('Users', () => {
       it('User can read', async () => {
         const db = firebase
@@ -246,9 +246,79 @@ describe('xbk.io', () => {
             db.ref('posts/' + myPostId).set({ foo: 'bar' })
           );
         });
-        // TODO
-        it('Can upvote, tag, mark seen, etc');
-        it("Can not affect other users' upvote, tag, mark seen, etc");
+      });
+      describe('Seen, Tags, Upvote', () => {
+        let db = null;
+        let theirPostId = null;
+        const randomTagsKeyForMyId = 'randomTagsKeyForMyId';
+        const randomTagsKeyForTheirId = 'randomTagsKeyForTheirId';
+        beforeEach(async () => {
+          const admin = firebase
+            .initializeAdminApp({ databaseName: MY_PROJECT_ID })
+            .database();
+          theirPostId = admin.ref('posts').push().key;
+          await admin.ref('posts/' + theirPostId).set({
+            userId: theirId,
+            tags: {
+              randomTagsKeyForMyId: { userId: myId },
+              randomTagsKeyForTheirId: { userId: theirId },
+            },
+          });
+          db = firebase
+            .initializeTestApp({
+              databaseName: MY_PROJECT_ID,
+              auth: myAuth,
+            })
+            .database();
+        });
+        it("Can upvote another user's post", async () => {
+          await firebase.assertSucceeds(
+            db.ref('posts/' + theirPostId + '/upvote/' + myId).set(1234567890)
+          );
+        });
+        it("Can not write another user's upvote", async () => {
+          await firebase.assertFails(
+            db
+              .ref('posts/' + theirPostId + '/upvote/' + theirId)
+              .set(1234567890)
+          );
+        });
+        it("Can mark another user's post as seen", async () => {
+          await firebase.assertSucceeds(
+            db.ref('posts/' + theirPostId + '/seen/' + myId).set(1234567890)
+          );
+        });
+        it('Can not write seen for another user', async () => {
+          await firebase.assertFails(
+            db.ref('posts/' + theirPostId + '/seen/' + theirId).set(1234567890)
+          );
+        });
+        it('Can read Seen', async () => {
+          await firebase.assertSucceeds(
+            db.ref('posts/' + theirPostId + '/seen/' + myId).once('value', null)
+          );
+        });
+        it.skip("Can not read another user's Seen", async () => {
+          await firebase.assertFails(
+            db
+              .ref('posts/' + theirPostId + '/seen/' + theirId)
+              .once('value', null)
+          );
+        });
+        it('Can add tags', async () => {
+          await firebase.assertSucceeds(
+            db
+              .ref('posts/' + theirPostId + '/tags/' + randomTagsKeyForMyId)
+              .set({ foo: 'bar' })
+          );
+        });
+        it("Can not write another user's tag", async () => {
+          await firebase.assertFails(
+            db
+              .ref('posts/' + theirPostId + '/tags/' + randomTagsKeyForTheirId)
+              .set({ foo: 'bar' })
+          );
+        });
       });
     });
     describe('Notifications', () => {});
@@ -258,4 +328,11 @@ describe('xbk.io', () => {
 
 after(async () => {
   await firebase.clearFirestoreData({ projectId: MY_PROJECT_ID });
+  await firebase
+    .initializeAdminApp({
+      databaseName: MY_PROJECT_ID,
+    })
+    .database()
+    .ref()
+    .set(null);
 });
