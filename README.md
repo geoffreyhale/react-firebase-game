@@ -23,6 +23,7 @@ yarn deploy
 Rules only:
 
 ```
+firebase deploy --only database:rules
 firebase deploy --only firestore:rules
 ```
 

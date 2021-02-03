@@ -1,0 +1,26 @@
+{
+  "rules": {
+    "users": {
+      ".read": "auth.uid != null",
+      ".write": false,
+      "$user_id": {
+        ".write": "auth.uid != null && $user_id == auth.uid"
+      }
+    },
+    "posts": {
+      ".read": "auth.uid != null",
+      ".write": false,
+      "$post_id": {
+        ".write": "auth.uid != null && (!data.exists() || data.child('userId').val() == auth.uid)"
+      }
+    },
+    "notifications": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null",
+    },
+    "games": {
+      ".read": "auth.uid != null",
+      ".write": "auth.uid != null",
+    }
+  }
+}
