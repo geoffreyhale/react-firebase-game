@@ -5,7 +5,6 @@ import IncrementalClickerGame from './Games/IncrementalClicker';
 import Chess from './Games/Chess';
 import TicTacToe from './Games/TicTacToe';
 import Community from './Community';
-import Groups from './Groups';
 import Admin from './Admin';
 import Sandbox from './Sandbox';
 import About from './About';
@@ -49,9 +48,6 @@ const Routes = () => {
         <Route path="/incremental-clicker-game" key="/incremental-clicker-game">
           <IncrementalClickerGame />
         </Route>,
-        // <Route path="/groups" key="/groups">
-        //   <Groups />
-        // </Route>,
         <Route path="/tictactoe" key="/tictactoe">
           <TicTacToe />
         </Route>,

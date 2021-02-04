@@ -76,7 +76,6 @@
 - clean out Posts index
 - posts feed slowness ?
 - help user to put it on their phone home screen
-- move junk data out of db users, eg groups
 - fix the smart feed active indicator, differently weird on desktop and phone ?
 - phone users may be confused about no submit buttons for tags
 - allow like or heart or read or something on replies or all posts
@@ -93,7 +92,7 @@
 - invite codes and family-tree displays and stats for top inviters ?
 - auto-curated feed universal and personal, eg most active recent posts
 - view posts feed by filters: user, tag
-- groups -> rooms / post feeds / chat rooms
+- chat rooms
 - round tables, eg 5 closest friends, 5 best friends, 5 friends I want to be more like, etc
 - are client-visible userIds a concern?
 - firebase security & permissions deep dive
