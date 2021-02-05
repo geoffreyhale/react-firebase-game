@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { AppContext } from '../AppProvider';
-import countWords from '../shared/countWords';
+import { AppContext } from '../../AppProvider';
+import countWords from '../../shared/countWords';
 
 const WordCount = ({ words }) => {
   const [show, setShow] = useState(false);

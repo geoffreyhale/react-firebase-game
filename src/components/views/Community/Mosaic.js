@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
-import { UserPhoto } from '../shared/User';
-import firebase from '../firebase';
-import Spinner from '../shared/Spinner';
-import { AppContext } from '../AppProvider';
+import { UserPhoto } from '../../shared/User';
+import firebase from '../../firebase';
+import Spinner from '../../shared/Spinner';
+import { AppContext } from '../../AppProvider';
 
 // Fisher-Yates (aka Knuth) Shuffle
 // https://stackoverflow.com/a/2450976/1438029

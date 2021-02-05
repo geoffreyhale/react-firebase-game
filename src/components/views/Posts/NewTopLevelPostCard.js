@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import NewPostForm from './NewPostForm';
-import { AppContext } from '../AppProvider';
-import { createPost } from '../../api/index';
-import { UserPhoto } from '../shared/User';
+import { AppContext } from '../../AppProvider';
+import { createPost } from '../../../api/index';
+import { UserPhoto } from '../../shared/User';
 import { PostHeaderRoom } from './Post';
 
 const NewTopLevelPostCard = ({ hackRoom }) => {

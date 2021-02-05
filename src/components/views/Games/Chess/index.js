@@ -3,8 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { AppContext } from '../../AppProvider';
-import firebase from '../../firebase.js';
+import { AppContext } from '../../../AppProvider';
+import firebase from '../../../firebase.js';
 
 import './index.css';
 

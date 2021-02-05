@@ -4,14 +4,14 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { withRouter } from 'react-router';
-import { AppContext } from '../AppProvider';
-import { getUser } from '../../api/index';
-import friendlyTimestamp from '../shared/friendlyTimestamp';
-import { UserPhoto } from '../shared/User';
-import Spinner from '../shared/Spinner';
-import getMillisFromDifferingTypes from '../shared/getMillisFromDifferingTypes';
+import { AppContext } from '../../AppProvider';
+import { getUser } from '../../../api/index';
+import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import { UserPhoto } from '../../shared/User';
+import Spinner from '../../shared/Spinner';
+import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingTypes';
 import Posts from '../Posts';
-import PremiumFeature from '../shared/PremiumFeature';
+import PremiumFeature from '../../shared/PremiumFeature';
 
 class UserProfile extends React.Component {
   constructor() {

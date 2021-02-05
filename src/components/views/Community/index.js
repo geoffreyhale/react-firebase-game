@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import firebase from '../firebase.js';
-import { AppContext } from '../AppProvider';
-import Spinner from '../shared/Spinner';
+import firebase from '../../firebase.js';
+import { AppContext } from '../../AppProvider';
+import Spinner from '../../shared/Spinner';
 import Mosaic from './Mosaic';
 import Stats from './Stats';
-import PremiumFeature from '../shared/PremiumFeature';
+import PremiumFeature from '../../shared/PremiumFeature';
 
 export default class CommunityPage extends Component {
   constructor() {

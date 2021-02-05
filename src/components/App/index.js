@@ -8,7 +8,7 @@ import Routes from '../Routes';
 import AppProvider from '../AppProvider';
 import { getUser, getUsers, updateUser } from '../../api/index';
 import Spinner from '../shared/Spinner';
-import FrontPage from '../FrontPage';
+import FrontPage from '../views/FrontPage';
 import AppHeader from './AppHeader';
 
 import 'bootstrap/dist/css/bootstrap.min.css';

@@ -3,11 +3,11 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { useHistory, useLocation } from 'react-router-dom';
-import firebase from '../firebase.js';
-import { AppContext } from '../AppProvider';
-import { getUsers, removeNotification } from '../../api/index';
-import friendlyTimestamp from '../shared/friendlyTimestamp';
-import { UserPhoto } from '../shared/User';
+import firebase from '../../firebase.js';
+import { AppContext } from '../../AppProvider';
+import { getUsers, removeNotification } from '../../../api/index';
+import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import { UserPhoto } from '../../shared/User';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {

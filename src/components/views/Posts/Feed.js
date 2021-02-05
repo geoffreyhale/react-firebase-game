@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import Nav from 'react-bootstrap/Nav';
-import { AppContext } from '../AppProvider';
-import Tag from '../shared/Tag';
-import { elapsedDuration } from '../shared/friendlyTimestamp';
+import { AppContext } from '../../AppProvider';
+import Tag from '../../shared/Tag';
+import { elapsedDuration } from '../../shared/friendlyTimestamp';
 
 export const FEED = Object.freeze({
   ALL: 'all',

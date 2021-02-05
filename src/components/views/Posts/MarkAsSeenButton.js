@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import firebase from '../firebase.js';
-import { AppContext } from '../AppProvider';
+import firebase from '../../firebase.js';
+import { AppContext } from '../../AppProvider';
 
 // Mark top-level post and thread as seen
 

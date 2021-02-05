@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import firebase from '../firebase.js';
+import firebase from '../../firebase.js';
 
 export const LURKER = Object.freeze({
   YES: 'yes',

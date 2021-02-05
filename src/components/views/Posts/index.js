@@ -3,10 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
-import firebase from '../firebase.js';
-import { AppContext } from '../AppProvider';
-import postsTreeFromRawPosts from '../shared/postsTreeFromRawPosts';
-import Spinner from '../shared/Spinner';
+import firebase from '../../firebase.js';
+import { AppContext } from '../../AppProvider';
+import postsTreeFromRawPosts from '../../shared/postsTreeFromRawPosts';
+import Spinner from '../../shared/Spinner';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
 import NotificationsFeed from './NotificationsFeed';
 import Post from './Post';
@@ -20,8 +20,8 @@ import {
 } from './Feed';
 import { RoomsMenu } from '../Rooms';
 import { isLurker, LURKER, NoLurking } from './Lurking';
-import PremiumSaleCard from '../shared/PremiumSaleCard';
-import PremiumFeature from '../shared/PremiumFeature';
+import PremiumSaleCard from '../../shared/PremiumSaleCard';
+import PremiumFeature from '../../shared/PremiumFeature';
 import Mosaic from '../Community/Mosaic';
 
 import './index.css';
