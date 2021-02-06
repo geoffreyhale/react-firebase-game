@@ -80,7 +80,7 @@ export default class NewPostForm extends React.Component {
         {this.props.multiline ? (
           <Form.Control
             as="textarea"
-            rows={3}
+            rows={4}
             placeholder={this.props.placeholder}
             value={this.state.content}
             onChange={this.handleChange}
