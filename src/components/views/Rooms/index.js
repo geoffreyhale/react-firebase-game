@@ -7,7 +7,9 @@ import Posts from '../Posts';
 export const ROOMS = Object.freeze({
   dev: {
     id: 'dev',
+    url: '/r/dev',
     color: 'Beige',
+    title: '/r/dev',
     description: (
       <small className="text-muted">
         <ul>
@@ -25,6 +27,7 @@ export const ROOMS = Object.freeze({
     available: true,
     url: '/r/general',
     color: 'AliceBlue',
+    title: '/r/general',
     description: (
       <small className="text-muted">
         <ul>
@@ -38,6 +41,7 @@ export const ROOMS = Object.freeze({
     available: true,
     url: '/r/healthyrelating',
     color: 'MistyRose',
+    title: '/r/healthyrelating',
     description: (
       <small className="text-muted">
         <ul>
@@ -54,6 +58,8 @@ export const ROOMS = Object.freeze({
   },
   home: {
     id: 'home',
+    url: '/',
+    title: 'Home',
   },
 });
 

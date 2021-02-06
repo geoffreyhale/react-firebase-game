@@ -202,7 +202,7 @@ class Posts extends Component {
                 style={{ backgroundColor: this.props.room.color || 'inherit' }}
               >
                 <Card.Body>
-                  <Card.Title>r/{this.props.room.id}</Card.Title>
+                  <Card.Title>{this.props.room.title}</Card.Title>
                   {this.props.room.description}
                 </Card.Body>
               </Card>
