@@ -8,7 +8,7 @@ import { PostHeaderRoom } from './Post';
 
 const NewTopLevelPostCard = ({ hackRoom }) => {
   const { user } = useContext(AppContext);
-  const hackHackRoom = hackRoom !== 'home' || 'general';
+  const hackHackRoom = hackRoom === 'home' ? 'general' : hackRoom;
   return (
     <Card>
       <Card.Body>
