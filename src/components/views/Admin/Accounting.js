@@ -60,7 +60,7 @@ export default class Accounting extends React.Component {
                   </td>
                   <td>{a.usd}</td>
                   <td>{a.via}</td>
-                  <td>{friendlyTimestamp(a.timestamp?.seconds)}</td>
+                  <td>{friendlyTimestamp(a.timestamp?.seconds * 1000)}</td>
                 </tr>
               ))}
             </tbody>
