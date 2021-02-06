@@ -48,21 +48,23 @@ export default class Accounting extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {Object.values(accounting).map((a) => (
-                <tr key={a.id}>
-                  {/* <td>{a.id}</td> */}
-                  {/* <td>{a.uid}</td> */}
-                  <td>
-                    <User
-                      uid={a.uid}
-                      displayName={this.users()[a.uid]?.displayName}
-                    />
-                  </td>
-                  <td>{a.usd}</td>
-                  <td>{a.via}</td>
-                  <td>{friendlyTimestamp(a.timestamp?.seconds * 1000)}</td>
-                </tr>
-              ))}
+              {Object.values(accounting)
+                .sort((a, b) => b.timestamp?.seconds - a.timestamp?.seconds)
+                .map((a) => (
+                  <tr key={a.id}>
+                    {/* <td>{a.id}</td> */}
+                    {/* <td>{a.uid}</td> */}
+                    <td>
+                      <User
+                        uid={a.uid}
+                        displayName={this.users()[a.uid]?.displayName}
+                      />
+                    </td>
+                    <td>{a.usd}</td>
+                    <td>{a.via}</td>
+                    <td>{friendlyTimestamp(a.timestamp?.seconds * 1000)}</td>
+                  </tr>
+                ))}
             </tbody>
             <tfoot>
               <tr>
