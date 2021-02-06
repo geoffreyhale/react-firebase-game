@@ -48,7 +48,6 @@ export const MODALITIES = Object.freeze({
     ),
   },
   ownershiplanguage: {
-    available: true,
     title: 'Ownership Language',
     description: (
       <ul>
@@ -159,6 +158,33 @@ export const MODALITIES = Object.freeze({
           </blockquote>
         </li>
       </ul>
+    ),
+  },
+  istatements: {
+    available: true,
+    title: '"I" Statements',
+    description: (
+      <blockquote>
+        <p>
+          "In many of my classes our teachers have been training us to use “I
+          statements” during discussions. For example, it applies when you fall
+          into the habit of using we, or you, when you actually mean “I” in a
+          statement, as I just did in this sentence. See what I did there? Every
+          time I used we or you in that sentence, I really was referring to how
+          I feel about the subject, but I was not using ownership language."
+        </p>
+        <figcaption>
+          — Beth Lykins,{' '}
+          <cite>
+            <a
+              href="https://www.swc.edu/student-alum-stories/part-1-3-series-ownership-language/"
+              target="_blank"
+            >
+              Part 1 of 3 in a Series About Ownership Language
+            </a>
+          </cite>
+        </figcaption>
+      </blockquote>
     ),
   },
 });
