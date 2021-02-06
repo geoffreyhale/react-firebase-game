@@ -51,26 +51,6 @@ export const ROOMS = Object.freeze({
   },
 });
 
-// unused
-export const RoomsMenu = () => (
-  <Card>
-    <Card.Body>
-      <Card.Title>Rooms</Card.Title>
-      <ul id="rooms">
-        {/* <li>
-          <Link to={'/r/dev'}>r/dev</Link>
-        </li> */}
-        <li>
-          <Link to={'/r/general'}>r/general</Link>
-        </li>
-        <li>
-          <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
-        </li>
-      </ul>
-    </Card.Body>
-  </Card>
-);
-
 class Rooms extends React.Component {
   constructor() {
     super();
