@@ -196,6 +196,32 @@ describe('Database', () => {
         );
       });
     });
+    // TODO improve this section
+    describe('Modality', () => {
+      let db = null;
+      let theirPostId = null;
+      beforeEach(async () => {
+        const admin = getAdminDatabase();
+        theirPostId = admin.ref('posts').push().key;
+        await admin.ref('posts/' + theirPostId).set({
+          userId: theirId,
+          modality: {
+            name: 'healthyrelating',
+            votes: {
+              theirId: true,
+            },
+          },
+        });
+        db = getDatabase(myAuth);
+      });
+      it('Can write modality vote on other user post', async () => {
+        await firebase.assertSucceeds(
+          db.ref('posts/' + theirPostId + '/modality/votes/' + myId).set(true)
+        );
+      });
+      it('Cannot write someone else modality vote');
+      it('Cannot write modality vote on own post'); // want this?
+    });
   });
   describe('Notifications', () => {});
   describe('Games', () => {});

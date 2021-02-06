@@ -1,8 +1,43 @@
 import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
+import { MODALITIES, WriteDescription } from './Modality';
+
+const SelectModality = ({ setModality, modality }) => {
+  // const [modality, setModality] = useState(null);
+  return (
+    <>
+      <DropdownButton
+        id="dropdown-basic-button"
+        title={modality ? MODALITIES[modality].title : 'Select Modality'}
+        variant={modality ? 'warning' : 'outline-warning'}
+      >
+        {Object.entries(MODALITIES).map(([key, MODALITY]) => (
+          <Dropdown.Item
+            as="div" //button would trigger onSubmi
+            onClick={() => setModality(modality === key ? null : key)}
+          >
+            {MODALITY.title}
+          </Dropdown.Item>
+        ))}
+        <Dropdown.Item disabled>Coming soon...</Dropdown.Item>
+      </DropdownButton>
+      {MODALITIES[modality] && (
+        <Card border="warning">
+          <Card.Body>
+            {MODALITIES[modality].description}
+            {WriteDescription}
+          </Card.Body>
+        </Card>
+      )}
+    </>
+  );
+};
 
 const WordCount = ({ words }) => {
   const [show, setShow] = useState(false);
@@ -19,6 +54,7 @@ export default class NewPostForm extends React.Component {
     super();
     this.state = {
       content: '',
+      modality: null,
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -48,6 +84,9 @@ export default class NewPostForm extends React.Component {
     return (
       <Form
         onSubmit={(e) => {
+          console.log('in onSubmit');
+          console.log(this.props);
+          console.log(this.state);
           e.preventDefault();
           if (this.state.content === '') {
             return;
@@ -73,29 +112,42 @@ export default class NewPostForm extends React.Component {
               successCallback,
               uid: this.user().uid,
               room: this.props.hackRoom,
+              modality: this.state.modality,
             });
           }
         }}
       >
-        {this.props.multiline ? (
-          <Form.Control
-            as="textarea"
-            rows={4}
-            placeholder={this.props.placeholder}
-            value={this.state.content}
-            onChange={this.handleChange}
-            autoFocus={true}
-          />
-        ) : (
-          <Form.Control
-            type="text"
-            placeholder={this.props.placeholder}
-            value={this.state.content}
-            onChange={this.handleChange}
-            size={this.props.small ? 'sm' : null}
-            autoFocus={true}
-          />
-        )}
+        {this.props.multiline &&
+          this.props.hackRoom === 'healthyrelating' &&
+          !this.props.replyToId && (
+            <SelectModality
+              setModality={(modality) => {
+                this.setState({ modality });
+              }}
+              modality={this.state.modality}
+            />
+          )}
+        <div className="mt-1">
+          {this.props.multiline ? (
+            <Form.Control
+              as="textarea"
+              rows={4}
+              placeholder={this.props.placeholder}
+              value={this.state.content}
+              onChange={this.handleChange}
+              autoFocus={true}
+            />
+          ) : (
+            <Form.Control
+              type="text"
+              placeholder={this.props.placeholder}
+              value={this.state.content}
+              onChange={this.handleChange}
+              size={this.props.small ? 'sm' : null}
+              autoFocus={true}
+            />
+          )}
+        </div>
         <span className="float-right text-muted">
           <WordCount words={this.state.content} />
         </span>

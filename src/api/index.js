@@ -12,6 +12,10 @@ const upvoteUserRef = ({ postId, userId }) =>
 const upvoteRef = ({ postId }) =>
   firebase.database().ref('posts/' + postId + '/upvote');
 
+export const setModalityVote = ({ postId, vote, uid }) => {
+  postRef(postId).child('modality').child('votes').child(uid).set(vote);
+};
+
 export const addTag = ({ postId, content, successCallback, uid }) => {
   const key = postRef(postId).child('tags').push().key;
   postRef(postId)
@@ -65,6 +69,7 @@ export const createPost = ({
   successCallback,
   uid,
   room,
+  modality,
 }) => {
   if (!room) {
     console.error('createPost must receive value for room');
@@ -79,6 +84,7 @@ export const createPost = ({
       userId: uid,
       replyToId: replyToId,
       room: room,
+      modality: { name: modality },
     })
     .then(replyToId && addNotifications({ postId: replyToId, myUserId: uid }))
     .then(successCallback());

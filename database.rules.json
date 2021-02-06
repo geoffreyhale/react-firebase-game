@@ -27,6 +27,13 @@
           "$upvote_id":{
             ".write": "auth.uid != null && $upvote_id == auth.uid"
           }
+        },
+        "modality": {
+          "votes": {
+            "$vote_id": {
+              ".write":"auth.uid != null && $vote_id == auth.uid"  
+            }
+          }
         }
       }
     },
