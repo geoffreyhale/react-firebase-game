@@ -86,9 +86,6 @@ export default class NewPostForm extends React.Component {
     return (
       <Form
         onSubmit={(e) => {
-          console.log('in onSubmit');
-          console.log(this.props);
-          console.log(this.state);
           e.preventDefault();
           if (this.state.content === '') {
             return;
