@@ -49,6 +49,9 @@ export const ROOMS = Object.freeze({
       </small>
     ),
   },
+  home: {
+    doesNotRequirePremium: true,
+  },
 });
 
 const RoomDoesNotExist = () => (
@@ -71,19 +74,18 @@ class Rooms extends React.Component {
   // TODO maybe more robust to use a room context instead of prop-drilling this room stuff
   render() {
     const { roomId } = this.props.match.params;
-    const homeRoom = roomId === undefined;
-    const room = homeRoom ? null : ROOMS[roomId];
+    const room = ROOMS[roomId] || ROOMS['home'];
 
-    if (roomId && !room) {
+    if (!room) {
       return <RoomDoesNotExist />;
     }
 
     return (
       <Posts
         room={roomId}
-        roomColor={room && room.color}
-        roomDescription={room && room.description}
-        roomRequiresPremium={!homeRoom && !room?.doesNotRequirePremium}
+        roomColor={room.color}
+        roomDescription={room.description}
+        roomRequiresPremium={!room.doesNotRequirePremium}
       />
     );
   }
