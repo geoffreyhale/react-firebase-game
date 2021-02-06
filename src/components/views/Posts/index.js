@@ -90,10 +90,14 @@ class Posts extends Component {
     let postsRef = null;
     if (!this.user().isPremium) {
       postsRef = this.postsRef().orderByChild('room').equalTo('general');
-    } else if (this.props.room) {
-      postsRef = this.postsRef().orderByChild('room').equalTo(this.props.room);
-    } else {
+    } else if (this.props.roomId === 'home') {
       postsRef = this.postsRef();
+    } else if (this.props.roomId) {
+      postsRef = this.postsRef()
+        .orderByChild('room')
+        .equalTo(this.props.roomId);
+    } else {
+      return;
     }
     postsRef.on('value', (postsSnapshot) => {
       let posts = postsSnapshot.val();
@@ -193,20 +197,24 @@ class Posts extends Component {
     return (
       <Row>
         <Col>
-          {this.props.room && (
+          {this.props.roomId && (
             <>
               <Card
                 className="mb-3"
                 style={{ backgroundColor: this.props.roomColor || 'inherit' }}
               >
                 <Card.Body>
-                  <Card.Title>r/{this.props.room}</Card.Title>
+                  <Card.Title>r/{this.props.roomId}</Card.Title>
                   {this.props.roomDescription}
                 </Card.Body>
               </Card>
-              {this.props.room === 'healthyrelating' && (
+              {this.props.roomId === 'healthyrelating' && (
                 <div className="mb-3">
-                  <Mosaic room={this.props.room} size={48} title={'Members'} />
+                  <Mosaic
+                    room={this.props.roomId}
+                    size={48}
+                    title={'Members'}
+                  />
                 </div>
               )}
             </>
@@ -227,13 +235,13 @@ class Posts extends Component {
               <Post
                 post={post}
                 hackIsSinglePostPage={isSinglePostPage}
-                hackRoom={this.props.room}
+                hackRoom={this.props.roomId}
                 showHeaderLinkToParent={true}
               />
             )
           ) : (
             <>
-              <NewTopLevelPostCard hackRoom={this.props.room} />
+              <NewTopLevelPostCard hackRoom={this.props.roomId} />
               {lurkerStatus !== LURKER.NO ? (
                 <NoLurking
                   userDisplayName={this.user().displayName}
