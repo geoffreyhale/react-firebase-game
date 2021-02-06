@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 import Posts from '../Posts';
 
 export const ROOMS = Object.freeze({
+  home: {
+    available: true,
+    id: 'home',
+    url: '/',
+    title: 'Home',
+  },
   dev: {
     id: 'dev',
     url: '/r/dev',
@@ -55,11 +61,6 @@ export const ROOMS = Object.freeze({
       </small>
     ),
     requiresPremium: true,
-  },
-  home: {
-    id: 'home',
-    url: '/',
-    title: 'Home',
   },
 });
 
