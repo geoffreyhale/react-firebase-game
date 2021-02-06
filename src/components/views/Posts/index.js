@@ -18,7 +18,6 @@ import {
   getPopularFeed,
   getUnseenFeed,
 } from './Feed';
-import { RoomsMenu } from '../Rooms';
 import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../../shared/PremiumSaleCard';
 import PremiumFeature from '../../shared/PremiumFeature';
@@ -213,9 +212,6 @@ class Posts extends Component {
             </>
           )}
           {!this.user().isPremium && <PremiumSaleCard />}
-          <div className="mb-3">
-            <RoomsMenu />
-          </div>
           <div className="notifications mb-3">
             <NotificationsFeed />
           </div>

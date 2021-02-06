@@ -47,6 +47,7 @@ const rooms = {
   },
 };
 
+// unused
 export const RoomsMenu = () => (
   <Card>
     <Card.Body>
@@ -61,21 +62,6 @@ export const RoomsMenu = () => (
         <li>
           <Link to={'/r/healthyrelating'}>r/healthyrelating</Link>
         </li>
-        {/* <li>
-          <span className="text-muted" to={'/r/proven'}>
-            r/provensafe
-          </span>
-        </li>
-        <li>
-          <span className="text-muted" to={'/r/proven'}>
-            r/elitedeepend
-          </span>
-        </li>
-        <li>
-          <span className="text-muted" to={'/r/proven'}>
-            r/topsecret
-          </span>
-        </li> */}
       </ul>
     </Card.Body>
   </Card>

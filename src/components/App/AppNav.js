@@ -9,11 +9,28 @@ const AppNav = () => {
   const { admin, isPremium } = user;
   return (
     <Nav className="justify-content-center">
-      <Nav.Item>
+      {/* <Nav.Item>
         <Nav.Link as={NavLink} to="/" exact>
           Home
         </Nav.Link>
-      </Nav.Item>
+      </Nav.Item> */}
+      <NavDropdown title="Rooms">
+        <NavDropdown.Item>
+          <Nav.Link as={NavLink} to="/">
+            Home
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link as={NavLink} to="/r/general">
+            r/general
+          </Nav.Link>
+        </NavDropdown.Item>
+        <NavDropdown.Item>
+          <Nav.Link as={NavLink} to="/r/healthyrelating">
+            r/healthyrelating
+          </Nav.Link>
+        </NavDropdown.Item>
+      </NavDropdown>
       <Nav.Item>
         <Nav.Link as={NavLink} to="/community">
           Community
