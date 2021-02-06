@@ -90,7 +90,7 @@ class Posts extends Component {
     let postsRef = null;
     if (!this.user().isPremium) {
       postsRef = this.postsRef().orderByChild('room').equalTo('general');
-    } else if (this.props.room.id === 'home') {
+    } else if (this.props.userFeedUid || this.props.room.id === 'home') {
       postsRef = this.postsRef();
     } else if (this.props.room.id) {
       postsRef = this.postsRef()
