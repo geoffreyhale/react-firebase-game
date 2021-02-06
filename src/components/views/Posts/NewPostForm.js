@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
 import { MODALITIES, WriteDescription } from './Modality';
 
 const SelectModality = ({ setModality, modality }) => {
-  // const [modality, setModality] = useState(null);
   return (
     <>
       <DropdownButton
@@ -17,21 +17,23 @@ const SelectModality = ({ setModality, modality }) => {
         title={modality ? MODALITIES[modality].title : 'Select Modality'}
         variant={modality ? 'warning' : 'outline-warning'}
       >
-        {Object.entries(MODALITIES).map(([key, MODALITY]) => (
-          <Dropdown.Item
-            as="div" //button would trigger onSubmi
-            onClick={() => setModality(modality === key ? null : key)}
-          >
-            {MODALITY.title}
-          </Dropdown.Item>
-        ))}
-        <Dropdown.Item disabled>Coming soon...</Dropdown.Item>
+        {Object.entries(MODALITIES)
+          .filter(([key, MODALITY]) => MODALITY.available)
+          .map(([key, MODALITY]) => (
+            <Dropdown.Item
+              as="div" //"button" would trigger onSubmit
+              onClick={() => setModality(modality === key ? null : key)}
+            >
+              {MODALITY.title}
+            </Dropdown.Item>
+          ))}
       </DropdownButton>
       {MODALITIES[modality] && (
         <Card border="warning">
           <Card.Body>
+            <Jumbotron>{WriteDescription}</Jumbotron>
+            <h3>{MODALITIES[modality].title}</h3>
             {MODALITIES[modality].description}
-            {WriteDescription}
           </Card.Body>
         </Card>
       )}
