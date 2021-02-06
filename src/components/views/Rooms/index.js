@@ -6,6 +6,7 @@ import Posts from '../Posts';
 
 export const ROOMS = Object.freeze({
   dev: {
+    id: 'dev',
     color: 'Beige',
     description: (
       <small className="text-muted">
@@ -20,6 +21,7 @@ export const ROOMS = Object.freeze({
     ),
   },
   general: {
+    id: 'general',
     available: true,
     url: '/r/general',
     color: 'AliceBlue',
@@ -30,9 +32,9 @@ export const ROOMS = Object.freeze({
         </ul>
       </small>
     ),
-    doesNotRequirePremium: true,
   },
   healthyrelating: {
+    id: 'healthyrelating',
     available: true,
     url: '/r/healthyrelating',
     color: 'MistyRose',
@@ -48,9 +50,10 @@ export const ROOMS = Object.freeze({
         </ul>
       </small>
     ),
+    requiresPremium: true,
   },
   home: {
-    doesNotRequirePremium: true,
+    id: 'home',
   },
 });
 
@@ -81,14 +84,7 @@ class Rooms extends React.Component {
       return <RoomDoesNotExist />;
     }
 
-    return (
-      <Posts
-        roomId={roomId}
-        roomColor={room.color}
-        roomDescription={room.description}
-        roomRequiresPremium={!room.doesNotRequirePremium}
-      />
-    );
+    return <Posts room={room} />;
   }
 }
 

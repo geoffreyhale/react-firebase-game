@@ -90,14 +90,12 @@ class Posts extends Component {
     let postsRef = null;
     if (!this.user().isPremium) {
       postsRef = this.postsRef().orderByChild('room').equalTo('general');
-    } else if (this.props.roomId === 'home') {
+    } else if (this.props.room.id === 'home') {
       postsRef = this.postsRef();
-    } else if (this.props.roomId) {
+    } else if (this.props.room.id) {
       postsRef = this.postsRef()
         .orderByChild('room')
-        .equalTo(this.props.roomId);
-    } else {
-      return;
+        .equalTo(this.props.room.id);
     }
     postsRef.on('value', (postsSnapshot) => {
       let posts = postsSnapshot.val();
@@ -114,7 +112,7 @@ class Posts extends Component {
   }
 
   render() {
-    if (!this.user().isPremium && this.props.roomRequiresPremium) {
+    if (!this.user().isPremium && this.props.room.requiresPremium) {
       return <PremiumFeature featureName={'Premium rooms'} />;
     }
 
@@ -197,21 +195,21 @@ class Posts extends Component {
     return (
       <Row>
         <Col>
-          {this.props.roomId && (
+          {this.props.room.id && (
             <>
               <Card
                 className="mb-3"
-                style={{ backgroundColor: this.props.roomColor || 'inherit' }}
+                style={{ backgroundColor: this.props.room.color || 'inherit' }}
               >
                 <Card.Body>
-                  <Card.Title>r/{this.props.roomId}</Card.Title>
-                  {this.props.roomDescription}
+                  <Card.Title>r/{this.props.room.id}</Card.Title>
+                  {this.props.room.description}
                 </Card.Body>
               </Card>
-              {this.props.roomId === 'healthyrelating' && (
+              {this.props.room.id === 'healthyrelating' && (
                 <div className="mb-3">
                   <Mosaic
-                    room={this.props.roomId}
+                    room={this.props.room.id}
                     size={48}
                     title={'Members'}
                   />
@@ -235,13 +233,13 @@ class Posts extends Component {
               <Post
                 post={post}
                 hackIsSinglePostPage={isSinglePostPage}
-                hackRoom={this.props.roomId}
+                hackRoom={this.props.room.id}
                 showHeaderLinkToParent={true}
               />
             )
           ) : (
             <>
-              <NewTopLevelPostCard hackRoom={this.props.roomId} />
+              <NewTopLevelPostCard hackRoom={this.props.room.id} />
               {lurkerStatus !== LURKER.NO ? (
                 <NoLurking
                   userDisplayName={this.user().displayName}
