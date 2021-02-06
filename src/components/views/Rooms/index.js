@@ -10,12 +10,26 @@ export const ROOMS = Object.freeze({
     id: 'home',
     url: '/',
     title: 'Home',
+    description: (
+      <small className="text-muted">
+        <ul>
+          <li>
+            This is view of all of the posts you have access to all in one
+            place.
+          </li>
+          <li>
+            Writing a new post from here will post to{' '}
+            <Link to={'/r/general'}>r/general</Link> room.
+          </li>
+        </ul>
+      </small>
+    ),
   },
   dev: {
     id: 'dev',
     url: '/r/dev',
     color: 'Beige',
-    title: '/r/dev',
+    title: 'r/dev',
     description: (
       <small className="text-muted">
         <ul>
@@ -33,7 +47,7 @@ export const ROOMS = Object.freeze({
     available: true,
     url: '/r/general',
     color: 'AliceBlue',
-    title: '/r/general',
+    title: 'r/general',
     description: (
       <small className="text-muted">
         <ul>
@@ -47,7 +61,7 @@ export const ROOMS = Object.freeze({
     available: true,
     url: '/r/healthyrelating',
     color: 'MistyRose',
-    title: '/r/healthyrelating',
+    title: 'r/healthyrelating',
     description: (
       <small className="text-muted">
         <ul>
