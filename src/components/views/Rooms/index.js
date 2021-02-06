@@ -51,6 +51,15 @@ export const ROOMS = Object.freeze({
   },
 });
 
+const RoomDoesNotExist = () => (
+  <Card>
+    <Card.Body>
+      <Card.Title>Room Does Not Exist</Card.Title>
+      <p>Want this room to exist? Ask for it in r/general.</p>
+    </Card.Body>
+  </Card>
+);
+
 class Rooms extends React.Component {
   constructor() {
     super();
@@ -66,14 +75,7 @@ class Rooms extends React.Component {
     const room = homeRoom ? null : ROOMS[roomId];
 
     if (roomId && !room) {
-      return (
-        <Card>
-          <Card.Body>
-            <Card.Title>Room Does Not Exist</Card.Title>
-            <p>Want this room to exist? Ask for it in r/general.</p>
-          </Card.Body>
-        </Card>
-      );
+      return <RoomDoesNotExist />;
     }
 
     return (
