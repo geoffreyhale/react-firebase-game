@@ -31,7 +31,7 @@
         "modality": {
           "votes": {
             "$vote_id": {
-              ".write":"auth.uid != null && $vote_id == auth.uid"  
+              ".write":"auth.uid != null && $vote_id == auth.uid && root.child('posts/' + $post_id + '/userId').val() != auth.uid"  //TODO this won't work because higher level rule is more lenient
             }
           }
         }

@@ -199,6 +199,7 @@ describe('Database', () => {
     // TODO improve this section
     describe('Modality', () => {
       let db = null;
+      let myPostId = null;
       let theirPostId = null;
       beforeEach(async () => {
         const admin = getAdminDatabase();
@@ -207,9 +208,15 @@ describe('Database', () => {
           userId: theirId,
           modality: {
             name: 'healthyrelating',
-            votes: {
-              theirId: true,
-            },
+            votes: {},
+          },
+        });
+        myPostId = admin.ref('posts').push().key;
+        await admin.ref('posts/' + myPostId).set({
+          userId: myId,
+          modality: {
+            name: 'healthyrelating',
+            votes: { theirId: true },
           },
         });
         db = getDatabase(myAuth);
@@ -220,7 +227,12 @@ describe('Database', () => {
         );
       });
       it('Cannot write someone else modality vote');
-      it('Cannot write modality vote on own post'); // want this?
+      // TODO
+      it.skip('Cannot write modality vote on own post', async () => {
+        await firebase.assertFails(
+          db.ref('posts/' + myPostId + '/modality/votes/' + myId).set(true)
+        );
+      });
     });
   });
   describe('Notifications', () => {});
