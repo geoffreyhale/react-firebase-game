@@ -3,33 +3,28 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
+import { ROOMS } from '../views/Rooms';
 
 const AppNav = () => {
   const { user } = useContext(AppContext);
   const { admin, isPremium } = user;
   return (
     <Nav className="justify-content-center">
-      {/* <Nav.Item>
-        <Nav.Link as={NavLink} to="/" exact>
-          Home
-        </Nav.Link>
-      </Nav.Item> */}
       <NavDropdown title="Rooms">
         <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/">
+          <Nav.Link as={NavLink} to="/" exact>
             Home
           </Nav.Link>
         </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/r/general">
-            r/general
-          </Nav.Link>
-        </NavDropdown.Item>
-        <NavDropdown.Item>
-          <Nav.Link as={NavLink} to="/r/healthyrelating">
-            r/healthyrelating
-          </Nav.Link>
-        </NavDropdown.Item>
+        {Object.values(ROOMS)
+          .filter((room) => room.available)
+          .map((room) => (
+            <NavDropdown.Item>
+              <Nav.Link as={NavLink} to={room.url}>
+                {room.url}
+              </Nav.Link>
+            </NavDropdown.Item>
+          ))}
       </NavDropdown>
       <Nav.Item>
         <Nav.Link as={NavLink} to="/community">

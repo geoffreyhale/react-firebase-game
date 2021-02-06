@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import Posts from '../Posts';
 
-const rooms = {
+export const ROOMS = Object.freeze({
   dev: {
     color: 'Beige',
     description: (
@@ -20,6 +20,8 @@ const rooms = {
     ),
   },
   general: {
+    available: true,
+    url: '/r/general',
     color: 'AliceBlue',
     description: (
       <small className="text-muted">
@@ -31,6 +33,8 @@ const rooms = {
     doesNotRequirePremium: true,
   },
   healthyrelating: {
+    available: true,
+    url: '/r/healthyrelating',
     color: 'MistyRose',
     description: (
       <small className="text-muted">
@@ -45,7 +49,7 @@ const rooms = {
       </small>
     ),
   },
-};
+});
 
 // unused
 export const RoomsMenu = () => (
@@ -79,7 +83,7 @@ class Rooms extends React.Component {
   render() {
     const { roomId } = this.props.match.params;
     const homeRoom = roomId === undefined;
-    const room = homeRoom ? null : rooms[roomId];
+    const room = homeRoom ? null : ROOMS[roomId];
 
     if (roomId && !room) {
       return (
