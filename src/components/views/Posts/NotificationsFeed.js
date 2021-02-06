@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
+import Accordion from 'react-bootstrap/Accordion';
+import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../../AppProvider';
-import { getUsers, removeNotification } from '../../../api/index';
+import { removeNotification } from '../../../api/index';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { UserPhoto } from '../../shared/User';
 
@@ -150,32 +152,43 @@ export default class NotificationsFeed extends React.Component {
     const notifications = this.state.notifications;
     const hasNotifications = notifications && notifications.length > 0;
     return (
-      <Card>
-        <Card.Body>
-          <Card.Title>Notifications</Card.Title>
-          {hasNotifications ? null : 'None'}
-          <Table hover>
-            <tbody>
-              {hasNotifications
-                ? this.state.notifications.map((notification) => (
-                    <NotificationItem
-                      key={Math.random()}
-                      content={notification.content}
-                      postId={notification.postId}
-                      userId={notification.userId}
-                      url={
-                        '/r/' +
-                        notification.room +
-                        '/posts/' +
-                        notification.postId
-                      }
-                    />
-                  ))
-                : null}
-            </tbody>
-          </Table>
-        </Card.Body>
-      </Card>
+      <Accordion>
+        <Card>
+          <Card.Body>
+            <Accordion.Toggle as={Card.Title} eventKey="0">
+              Notifications{' '}
+              <Badge variant="secondary">
+                {hasNotifications ? notifications.length : 0}
+              </Badge>
+            </Accordion.Toggle>
+            <Accordion.Collapse eventKey="0">
+              <>
+                {hasNotifications ? null : 'None'}
+                <Table hover>
+                  <tbody>
+                    {hasNotifications
+                      ? notifications.map((notification) => (
+                          <NotificationItem
+                            key={Math.random()}
+                            content={notification.content}
+                            postId={notification.postId}
+                            userId={notification.userId}
+                            url={
+                              '/r/' +
+                              notification.room +
+                              '/posts/' +
+                              notification.postId
+                            }
+                          />
+                        ))
+                      : null}
+                  </tbody>
+                </Table>
+              </>
+            </Accordion.Collapse>
+          </Card.Body>
+        </Card>
+      </Accordion>
     );
   }
 }
