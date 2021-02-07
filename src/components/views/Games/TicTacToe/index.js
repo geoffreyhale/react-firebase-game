@@ -48,6 +48,51 @@ const MostRecent = ({ mostRecent }) => (
   </div>
 );
 
+const penteSet = (value) => {
+  firebase.database().ref('games/tictactoe/pente').set(value);
+};
+
+const penteBoardUpdate = ({ i, j, uid }) => {
+  const boardRef = firebase.database().ref('games/tictactoe/board');
+  boardRef.once('value', (snapshot) => {
+    const board = snapshot.val();
+
+    [
+      [i - 1, j + 1, i - 2, j + 2, i - 3, j + 3],
+      [i - 1, j - 1, i - 2, j - 2, i - 3, j - 3],
+      [i - 1, j - 0, i - 2, j - 0, i - 3, j - 0],
+      [i + 1, j - 1, i + 2, j - 2, i + 3, j - 3],
+      [i + 1, j - 0, i + 2, j - 0, i + 3, j - 0],
+      [i + 1, j + 1, i + 2, j + 2, i + 3, j + 3],
+      [i - 0, j - 1, i - 0, j - 2, i - 0, j - 3],
+      [i - 0, j + 1, i - 0, j + 2, i - 0, j + 3],
+    ].forEach(([i1, j1, i2, j2, i3, j3]) => {
+      if (
+        board[i1] &&
+        board[i1][j1] &&
+        board[i1][j1].userId &&
+        board[i1][j1].userId != uid
+      ) {
+        const oneAwayUserId = board[i1][j1].userId;
+        if (board[i2] && board[i2][j2] && board[i2][j2].userId) {
+          if (oneAwayUserId == board[i2][j2].userId) {
+            if (board[i3] && board[i3][j3] && board[i3][j3].userId == uid) {
+              firebase
+                .database()
+                .ref(`games/tictactoe/board/${i1}/${j1}`)
+                .set('');
+              firebase
+                .database()
+                .ref(`games/tictactoe/board/${i2}/${j2}`)
+                .set('');
+            }
+          }
+        }
+      }
+    });
+  });
+};
+
 export default class TicTacToe extends Component {
   constructor() {
     super();
@@ -80,6 +125,7 @@ export default class TicTacToe extends Component {
       }
     });
   }
+
   handleClickCell(i, j) {
     const tictactoeBoardCellRef = firebase
       .database()
@@ -118,6 +164,8 @@ export default class TicTacToe extends Component {
         j: j,
       });
     });
+
+    penteBoardUpdate({ i, j, uid: this.user().uid });
   }
   save(board) {
     const tictactoeBoardRef = firebase.database().ref(`games/tictactoe/board`);
