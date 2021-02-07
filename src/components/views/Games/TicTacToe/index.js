@@ -9,6 +9,13 @@ import { UserPhoto } from '../../../shared/User';
 
 import './index.css';
 
+const tictactoeRef = () => firebase.database().ref('games/tictactoe');
+const mostRecentRef = () =>
+  firebase.database().ref(`games/tictactoe/mostRecent`);
+const boardRef = () => firebase.database().ref(`games/tictactoe/board`);
+const cellRef = (i, j) =>
+  firebase.database().ref(`games/tictactoe/board/${i}/${j}`);
+
 const BoardButtons = ({ board, expandBoard, reduceBoard }) => (
   <div style={{ display: 'inline-block' }}>
     <Button
@@ -48,13 +55,8 @@ const MostRecent = ({ mostRecent }) => (
   </div>
 );
 
-const penteSet = (value) => {
-  firebase.database().ref('games/tictactoe/pente').set(value);
-};
-
 const penteBoardUpdate = ({ i, j, uid }) => {
-  const boardRef = firebase.database().ref('games/tictactoe/board');
-  boardRef.once('value', (snapshot) => {
+  boardRef().once('value', (snapshot) => {
     const board = snapshot.val();
 
     [
@@ -77,14 +79,8 @@ const penteBoardUpdate = ({ i, j, uid }) => {
         if (board[i2] && board[i2][j2] && board[i2][j2].userId) {
           if (oneAwayUserId == board[i2][j2].userId) {
             if (board[i3] && board[i3][j3] && board[i3][j3].userId == uid) {
-              firebase
-                .database()
-                .ref(`games/tictactoe/board/${i1}/${j1}`)
-                .set('');
-              firebase
-                .database()
-                .ref(`games/tictactoe/board/${i2}/${j2}`)
-                .set('');
+              cellRef(i1, j1).set('');
+              cellRef(i2, j2).set('');
             }
           }
         }
@@ -109,8 +105,7 @@ export default class TicTacToe extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        const tictactoeRef = firebase.database().ref('games/tictactoe');
-        tictactoeRef.on('value', (snapshot) => {
+        tictactoeRef().on('value', (snapshot) => {
           let tictactoe = snapshot.val();
           this.setState({
             board: tictactoe.board,
@@ -127,11 +122,7 @@ export default class TicTacToe extends Component {
   }
 
   handleClickCell(i, j) {
-    const tictactoeBoardCellRef = firebase
-      .database()
-      .ref(`games/tictactoe/board/${i}/${j}`);
-
-    tictactoeBoardCellRef.once('value', (snapshot) => {
+    cellRef(i, j).once('value', (snapshot) => {
       const existingCell = snapshot.val();
       const cellOccupiedByOther =
         existingCell &&
@@ -149,15 +140,12 @@ export default class TicTacToe extends Component {
         photoURL: this.user().photoURL,
       };
       if (cellOccupiedBySelf) {
-        tictactoeBoardCellRef.set('');
+        cellRef(i, j).set('');
       } else {
-        tictactoeBoardCellRef.set(cell);
+        cellRef(i, j).set(cell);
       }
 
-      const mostRecentRef = firebase
-        .database()
-        .ref(`games/tictactoe/mostRecent`);
-      mostRecentRef.set({
+      mostRecentRef().set({
         userId: this.user().uid,
         photoURL: this.user().photoURL,
         i: i,
@@ -168,8 +156,7 @@ export default class TicTacToe extends Component {
     penteBoardUpdate({ i, j, uid: this.user().uid });
   }
   save(board) {
-    const tictactoeBoardRef = firebase.database().ref(`games/tictactoe/board`);
-    tictactoeBoardRef.update(board);
+    boardRef().update(board);
   }
   expandBoard() {
     const board = this.state.board;
@@ -203,7 +190,7 @@ export default class TicTacToe extends Component {
       board[i].fill('');
     }
     this.save(board);
-    firebase.database().ref(`games/tictactoe/mostRecent`).set(null);
+    mostRecentRef().set(null);
   }
   render() {
     return (
