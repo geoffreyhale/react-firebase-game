@@ -6,6 +6,7 @@ import { AppContext } from '../../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
 import { getUsers } from '../../../../api/index';
 import { UserPhoto } from '../../../shared/User';
+import friendlyTimestamp from '../../../shared/friendlyTimestamp';
 
 import './index.css';
 
@@ -15,6 +16,31 @@ const mostRecentRef = () =>
 const boardRef = () => firebase.database().ref(`games/tictactoe/board`);
 const cellRef = (i, j) =>
   firebase.database().ref(`games/tictactoe/board/${i}/${j}`);
+const logRef = (key = null) =>
+  firebase.database().ref(`games/tictactoe/log${key ? '/' + key : ''}`);
+
+const addLog = (msg) => {
+  const key = logRef().push().key;
+  logRef(key).set({ t: firebase.database.ServerValue.TIMESTAMP, msg });
+};
+
+const Log = ({ log }) =>
+  log &&
+  typeof log === 'object' && (
+    <table>
+      {Object.values(log)
+        .sort((a, b) => b.t - a.t)
+        .map((entry) => (
+          <tr>
+            <td>{entry.t}</td>
+            <td style={{ textAlign: 'right' }}>
+              ({friendlyTimestamp(entry.t, ' ago')}):
+            </td>
+            <td>{entry.msg}</td>
+          </tr>
+        ))}
+    </table>
+  );
 
 const BoardButtons = ({ board, expandBoard, reduceBoard }) => (
   <div style={{ display: 'inline-block' }}>
@@ -92,7 +118,7 @@ const penteBoardUpdate = ({ i, j, uid }) => {
 export default class TicTacToe extends Component {
   constructor() {
     super();
-    this.state = { board: [], users: {}, mostRecent: {} };
+    this.state = { board: [], users: {}, mostRecent: {}, log: {} };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
     this.resetGame = this.resetGame.bind(this);
@@ -105,10 +131,16 @@ export default class TicTacToe extends Component {
     auth.onAuthStateChanged((user) => {
       if (user) {
         tictactoeRef().on('value', (snapshot) => {
-          let tictactoe = snapshot.val();
+          const tictactoe = snapshot.val();
           this.setState({
             board: tictactoe.board,
             mostRecent: tictactoe.mostRecent,
+          });
+        });
+        logRef().on('value', (snapshot) => {
+          const log = snapshot.val();
+          this.setState({
+            log,
           });
         });
         getUsers((users) =>
@@ -140,8 +172,10 @@ export default class TicTacToe extends Component {
       };
       if (cellOccupiedBySelf) {
         cellRef(i, j).set('');
+        addLog(`${this.user().displayName} removed ${i},${j}`);
       } else {
         cellRef(i, j).set(cell);
+        addLog(`${this.user().displayName} put ${i},${j}`);
       }
 
       mostRecentRef().set({
@@ -187,6 +221,7 @@ export default class TicTacToe extends Component {
     }
     boardRef().update(board);
     mostRecentRef().set(null);
+    logRef().set(null);
   }
   render() {
     return (
@@ -281,6 +316,7 @@ export default class TicTacToe extends Component {
             Reset Game
           </Button>
         </div>
+        <Log log={this.state.log} />
       </>
     );
   }
