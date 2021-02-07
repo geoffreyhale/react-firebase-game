@@ -10,6 +10,7 @@ import { getUser, getUsers, updateUser } from '../../api/index';
 import Spinner from '../shared/Spinner';
 import FrontPage from '../views/FrontPage';
 import AppHeader from './AppHeader';
+import SmartGuide from '../SmartGuide';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -124,6 +125,7 @@ class App extends Component {
                     login={this.login}
                     logout={this.logout}
                   />
+                  {/* <SmartGuide /> */}
                   {this.state.loading ? (
                     <Spinner />
                   ) : (
