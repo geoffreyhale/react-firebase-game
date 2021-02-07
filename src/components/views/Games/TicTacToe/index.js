@@ -251,7 +251,12 @@ export default class TicTacToe extends Component {
                             }}
                           >
                             {cell.userId ? (
-                              <UserPhoto uid={cell.userId} size={45} />
+                              <UserPhoto
+                                uid={cell.userId}
+                                size={45}
+                                roundedCircle={true}
+                                noLink={true}
+                              />
                             ) : null}
                           </td>
                         );

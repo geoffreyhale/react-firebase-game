@@ -39,6 +39,7 @@ export const UserPhoto = ({
   presence,
   uid,
   roundedCircle = false,
+  noLink = false,
 }) => {
   const { users } = useContext(AppContext);
   if (!users) {
@@ -49,6 +50,28 @@ export const UserPhoto = ({
   if (!user) {
     console.warn('UserPhoto unable to find uid in global users');
     return null;
+  }
+  if (noLink) {
+    return (
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        {roundedCircle ? (
+          <Image
+            roundedCircle
+            src={user.photoURL}
+            alt="user"
+            style={{ height: size, width: size }}
+          ></Image>
+        ) : (
+          <img
+            src={user.photoURL}
+            alt="user"
+            style={{ height: size, width: size }}
+          />
+        )}
+        {isPremium({ premium: user.premium }) && <PremiumIcon size={size} />}
+        {presence === 'online' && <PresenceIcon size={size} />}
+      </div>
+    );
   }
   return (
     <Link
