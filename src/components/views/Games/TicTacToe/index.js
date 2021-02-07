@@ -203,6 +203,7 @@ export default class TicTacToe extends Component {
       board[i].fill('');
     }
     this.save(board);
+    firebase.database().ref(`games/tictactoe/mostRecent`).set(null);
   }
   render() {
     return (
@@ -243,6 +244,7 @@ export default class TicTacToe extends Component {
                             key={j}
                             onClick={() => this.handleClickCell(i, j)}
                             className={
+                              this.state.mostRecent &&
                               this.state.mostRecent.i === i &&
                               this.state.mostRecent.j === j
                                 ? 'most-recent'
