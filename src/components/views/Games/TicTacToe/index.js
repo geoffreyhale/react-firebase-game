@@ -96,7 +96,6 @@ export default class TicTacToe extends Component {
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
     this.resetGame = this.resetGame.bind(this);
-    this.save = this.save.bind(this);
   }
 
   static contextType = AppContext;
@@ -155,9 +154,6 @@ export default class TicTacToe extends Component {
 
     penteBoardUpdate({ i, j, uid: this.user().uid });
   }
-  save(board) {
-    boardRef().update(board);
-  }
   expandBoard() {
     const board = this.state.board;
     if (board.length >= 19) {
@@ -169,7 +165,7 @@ export default class TicTacToe extends Component {
     });
     // add new row
     board.push(new Array(this.state.board[0].length).fill(''));
-    this.save(board);
+    boardRef().update(board);
   }
   reduceBoard() {
     const board = this.state.board;
@@ -182,14 +178,14 @@ export default class TicTacToe extends Component {
     board.forEach((row, i) => {
       board[i].pop();
     });
-    this.save(board);
+    boardRef().update(board);
   }
   resetGame() {
     const board = this.state.board;
     for (let i = 0; i < board.length; i++) {
       board[i].fill('');
     }
-    this.save(board);
+    boardRef().update(board);
     mostRecentRef().set(null);
   }
   render() {
