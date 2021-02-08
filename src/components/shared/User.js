@@ -43,12 +43,12 @@ export const UserPhoto = ({
 }) => {
   const { users } = useContext(AppContext);
   if (!users) {
-    console.warn('UserPhoto used before users context available');
+    // console.warn('UserPhoto used before users context available');
     return null;
   }
   const user = users[uid];
   if (!user) {
-    console.warn('UserPhoto unable to find uid in global users');
+    // console.warn('UserPhoto unable to find uid in global users');
     return null;
   }
   if (noLink) {
