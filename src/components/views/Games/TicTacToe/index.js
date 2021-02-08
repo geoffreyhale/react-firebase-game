@@ -24,12 +24,13 @@ const addLog = (msg) => {
   logRef(key).set({ t: firebase.database.ServerValue.TIMESTAMP, msg });
 };
 
-const Log = ({ log }) =>
+const Log = ({ log, showCount }) =>
   log &&
   typeof log === 'object' && (
     <table>
       {Object.values(log)
         .sort((a, b) => b.t - a.t)
+        .slice(0, showCount)
         .map((entry) => (
           <tr>
             <td>{entry.t}</td>
@@ -39,6 +40,11 @@ const Log = ({ log }) =>
             <td>{entry.msg}</td>
           </tr>
         ))}
+      {Object.keys(log).length > showCount && (
+        <tr>
+          <td>...</td>
+        </tr>
+      )}
     </table>
   );
 
@@ -248,43 +254,54 @@ export default class TicTacToe extends Component {
         </Card>
         <Card>
           <Card.Body>
-            <table id="tictactoe">
-              <tbody>
-                {this.state.board.map((row, i) => {
-                  const emptyFixedRow = Array.from(row, (item) =>
-                    typeof item === 'undefined' ? '' : item
-                  );
-                  return (
-                    <tr key={i}>
-                      {emptyFixedRow.map((cell, j) => {
-                        return (
-                          <td
-                            key={j}
-                            onClick={() => this.handleClickCell(i, j)}
-                            className={
-                              this.state.mostRecent &&
-                              this.state.mostRecent.i === i &&
-                              this.state.mostRecent.j === j
-                                ? 'most-recent'
-                                : null
-                            }
-                          >
-                            {cell.userId ? (
-                              <UserPhoto
-                                uid={cell.userId}
-                                size={45}
-                                roundedCircle={true}
-                                noLink={true}
-                              />
-                            ) : null}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <div style={{ display: 'inline-block' }}>
+              <table id="tictactoe">
+                <tbody>
+                  {this.state.board.map((row, i) => {
+                    const emptyFixedRow = Array.from(row, (item) =>
+                      typeof item === 'undefined' ? '' : item
+                    );
+                    return (
+                      <tr key={i}>
+                        {emptyFixedRow.map((cell, j) => {
+                          return (
+                            <td
+                              key={j}
+                              onClick={() => this.handleClickCell(i, j)}
+                              className={
+                                this.state.mostRecent &&
+                                this.state.mostRecent.i === i &&
+                                this.state.mostRecent.j === j
+                                  ? 'most-recent'
+                                  : null
+                              }
+                            >
+                              {cell.userId ? (
+                                <UserPhoto
+                                  uid={cell.userId}
+                                  size={45}
+                                  roundedCircle={true}
+                                  noLink={true}
+                                />
+                              ) : null}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <div
+              className="ml-3"
+              style={{ display: 'inline-block', verticalAlign: 'top' }}
+            >
+              <Log
+                log={this.state.log}
+                showCount={(this.state.board.length * 39) / 19}
+              />
+            </div>
           </Card.Body>
         </Card>
         <Card>
@@ -316,7 +333,6 @@ export default class TicTacToe extends Component {
             Reset Game
           </Button>
         </div>
-        <Log log={this.state.log} />
       </>
     );
   }
