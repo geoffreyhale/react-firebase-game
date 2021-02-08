@@ -98,9 +98,9 @@ const MostRecent = ({ mostRecent }) => (
 );
 
 const penteBoardUpdate = ({ i, j, uid }) => {
+  let captureOccurred = false;
   boardRef().once('value', (snapshot) => {
     const board = snapshot.val();
-
     [
       [i - 1, j + 1, i - 2, j + 2, i - 3, j + 3],
       [i - 1, j - 1, i - 2, j - 2, i - 3, j - 3],
@@ -123,12 +123,14 @@ const penteBoardUpdate = ({ i, j, uid }) => {
             if (board[i3] && board[i3][j3] && board[i3][j3].userId == uid) {
               cellRef(i1, j1).set('');
               cellRef(i2, j2).set('');
+              captureOccurred = true;
             }
           }
         }
       }
     });
   });
+  return captureOccurred;
 };
 
 export default class TicTacToe extends Component {
@@ -200,7 +202,8 @@ export default class TicTacToe extends Component {
       });
     });
 
-    penteBoardUpdate({ i, j, uid: this.user().uid });
+    const captureOccured = penteBoardUpdate({ i, j, uid: this.user().uid });
+    captureOccured && addLog(`${this.user().displayName} captured 2`);
   }
   expandBoard() {
     const board = this.state.board;
@@ -272,16 +275,17 @@ export default class TicTacToe extends Component {
                     return (
                       <tr key={i}>
                         {emptyFixedRow.map((cell, j) => {
+                          const { mostRecent } = this.state;
+                          const thisCellIsMostRecent =
+                            mostRecent &&
+                            mostRecent.i === i &&
+                            mostRecent.j === j;
                           return (
                             <td
                               key={j}
                               onClick={() => this.handleClickCell(i, j)}
                               className={
-                                this.state.mostRecent &&
-                                this.state.mostRecent.i === i &&
-                                this.state.mostRecent.j === j
-                                  ? 'most-recent'
-                                  : null
+                                thisCellIsMostRecent ? 'most-recent' : null
                               }
                             >
                               {cell.userId ? (
