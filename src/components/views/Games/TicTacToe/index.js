@@ -184,7 +184,6 @@ export default class TicTacToe extends Component {
 
       const cell = {
         userId: this.user().uid,
-        photoURL: this.user().photoURL,
       };
       if (cellOccupiedBySelf) {
         cellRef(i, j).set('');
@@ -196,7 +195,6 @@ export default class TicTacToe extends Component {
 
       mostRecentRef().set({
         userId: this.user().uid,
-        photoURL: this.user().photoURL,
         i: i,
         j: j,
       });
