@@ -10,6 +10,16 @@ import friendlyTimestamp from '../../../shared/friendlyTimestamp';
 
 import './index.css';
 
+/**
+ * TODO
+ * - indicate when someone won
+ * - toggle for pente capture 2 rule on/off
+ * - better indicators when it's your turn
+ * - optional beginner mode indicate 4-in-a-row and/or 3-in-a-row-unanswered
+ * - cleanup janky ui
+ * - sit down to play (enables deeper features)
+ */
+
 const tictactoeRef = () => firebase.database().ref('games/tictactoe');
 const mostRecentRef = () =>
   firebase.database().ref(`games/tictactoe/mostRecent`);
