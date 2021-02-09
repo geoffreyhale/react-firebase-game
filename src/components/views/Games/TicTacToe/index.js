@@ -293,6 +293,15 @@ export default class TicTacToe extends Component {
       } else {
         cellRef(i, j).set(cell);
         addLog(`${this.user().displayName} put ${i},${j}`);
+
+        if (this.state.capture2) {
+          const captureOccured = penteBoardUpdate({
+            i,
+            j,
+            uid: this.user().uid,
+          });
+          captureOccured && addLog(`${this.user().displayName} captured 2`);
+        }
       }
 
       mostRecentRef().set({
@@ -301,11 +310,6 @@ export default class TicTacToe extends Component {
         j: j,
       });
     });
-
-    if (this.state.capture2) {
-      const captureOccured = penteBoardUpdate({ i, j, uid: this.user().uid });
-      captureOccured && addLog(`${this.user().displayName} captured 2`);
-    }
   }
   expandBoard() {
     const board = this.state.board;
