@@ -14,7 +14,6 @@ import './index.css';
  * TODO
  * - better indicators when it's your turn
  * - optional beginner mode indicate 4-in-a-row and/or 3-in-a-row-unanswered
- * - cleanup janky ui
  * - sit down to play (enables deeper features)
  * - user uid instead of userId
  */
@@ -357,20 +356,42 @@ export default class TicTacToe extends Component {
             </h2>
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="mt-2">
           <Card.Body>
-            {` Size: ${this.state.board.length} x ${this.state.board.length}`}
-            <div className="ml-2">
-              <BoardButtons
-                board={this.state.board}
-                expandBoard={this.expandBoard}
-                reduceBoard={this.reduceBoard}
-              />
-            </div>
-            <Capture2Toggle value={this.state.capture2} />
+            <Card.Title>Dashbaord</Card.Title>
+            <Card style={{ display: 'inline-block', verticalAlign: 'top' }}>
+              <Card.Body>
+                <Card.Title>Rules</Card.Title>
+                <Capture2Toggle value={this.state.capture2} />
+              </Card.Body>
+            </Card>
+            <Card style={{ display: 'inline-block', verticalAlign: 'top' }}>
+              <Card.Body>
+                <Card.Title>Board</Card.Title>
+                {` Size: ${this.state.board.length} x ${this.state.board.length}`}
+                <div className="ml-2">
+                  <BoardButtons
+                    board={this.state.board}
+                    expandBoard={this.expandBoard}
+                    reduceBoard={this.reduceBoard}
+                  />
+                </div>
+              </Card.Body>
+            </Card>
+            <Card
+              className="float-right"
+              style={{ display: 'inline-block', verticalAlign: 'top' }}
+            >
+              <Card.Body>
+                <Card.Title>Reset Button</Card.Title>
+                <Button onClick={this.resetGame} variant="danger" size="sm">
+                  Reset Game
+                </Button>
+              </Card.Body>
+            </Card>
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="mt-2">
           <Card.Body>
             <div style={{ display: 'inline-block' }}>
               <table id="tictactoe">
@@ -425,9 +446,14 @@ export default class TicTacToe extends Component {
             </div>
           </Card.Body>
         </Card>
-        <Card>
+        <Card className="mt-2">
           <Card.Body>
+            <Card.Title>Most Recent</Card.Title>
             <MostRecent mostRecent={this.state.mostRecent} />
+          </Card.Body>
+        </Card>
+        <Card className="mt-2">
+          <Card.Body>
             <Card.Title>Count</Card.Title>
             <Table>
               <tbody>
@@ -449,11 +475,6 @@ export default class TicTacToe extends Component {
             </Table>
           </Card.Body>
         </Card>
-        <div className="mt-5 float-right">
-          <Button onClick={this.resetGame} variant="danger" size="sm">
-            Reset Game
-          </Button>
-        </div>
       </>
     );
   }
