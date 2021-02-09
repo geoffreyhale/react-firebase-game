@@ -18,17 +18,21 @@ import './index.css';
  */
 
 const tictactoeRef = () => firebase.database().ref('games/tictactoe');
-const mostRecentRef = () =>
-  firebase.database().ref(`games/tictactoe/mostRecent`);
 const boardRef = () => firebase.database().ref(`games/tictactoe/board`);
 const cellRef = (i, j) =>
   firebase.database().ref(`games/tictactoe/board/${i}/${j}`);
 const logRef = (key = null) =>
   firebase.database().ref(`games/tictactoe/log${key ? '/' + key : ''}`);
 
-const addLog = (msg) => {
+const addLog = ({ i, j, uid, msg }) => {
   const key = logRef().push().key;
-  logRef(key).set({ t: firebase.database.ServerValue.TIMESTAMP, msg });
+  logRef(key).set({
+    t: firebase.database.ServerValue.TIMESTAMP,
+    msg,
+    i,
+    j,
+    uid,
+  });
 };
 
 const capture2Ref = () => firebase.database().ref(`games/tictactoe/capture2`);
@@ -104,10 +108,7 @@ const count = (tictactoe) => {
 
 const MostRecent = ({ mostRecent }) => (
   <div>
-    Most Recent Move By:{' '}
-    {mostRecent && mostRecent.uid ? (
-      <UserPhoto uid={mostRecent.uid} size={45} />
-    ) : null}
+    {mostRecent && mostRecent.uid ? <UserPhoto uid={mostRecent.uid} /> : null}
   </div>
 );
 
@@ -220,7 +221,7 @@ export default class TicTacToe extends Component {
       if (user) {
         tictactoeRef().on('value', (snapshot) => {
           const tictactoe = snapshot.val();
-          const { board, mostRecent } = tictactoe;
+          const { board } = tictactoe;
           const arrayOfArraysOfFiveInARowCells = getArrayOfArraysOfFiveInARowCells(
             board
           );
@@ -244,13 +245,15 @@ export default class TicTacToe extends Component {
 
           this.setState({
             board,
-            mostRecent,
           });
         });
         logRef().on('value', (snapshot) => {
           const log = snapshot.val();
+          const mostRecent =
+            log && Object.values(log)[Object.keys(log).length - 1];
           this.setState({
             log,
+            mostRecent,
           });
         });
         capture2Ref().on('value', (snapshot) => {
@@ -287,10 +290,20 @@ export default class TicTacToe extends Component {
       };
       if (cellOccupiedBySelf) {
         cellRef(i, j).set('');
-        addLog(`${this.user().displayName} removed ${i},${j}`);
+        addLog({
+          msg: `${this.user().displayName} removed ${i},${j}`,
+          i,
+          j,
+          uid: this.user().uid,
+        });
       } else {
         cellRef(i, j).set(cell);
-        addLog(`${this.user().displayName} put ${i},${j}`);
+        addLog({
+          msg: `${this.user().displayName} put ${i},${j}`,
+          i,
+          j,
+          uid: this.user().uid,
+        });
 
         if (this.state.capture2) {
           const captureOccured = penteBoardUpdate({
@@ -298,15 +311,15 @@ export default class TicTacToe extends Component {
             j,
             uid: this.user().uid,
           });
-          captureOccured && addLog(`${this.user().displayName} captured 2`);
+          captureOccured &&
+            addLog({
+              msg: `${this.user().displayName} captured 2`,
+              i,
+              j,
+              uid: this.user().uid,
+            });
         }
       }
-
-      mostRecentRef().set({
-        uid: this.user().uid,
-        i: i,
-        j: j,
-      });
     });
   }
   expandBoard() {
@@ -341,7 +354,6 @@ export default class TicTacToe extends Component {
       board[i].fill('');
     }
     boardRef().update(board);
-    mostRecentRef().set(null);
     logRef().set(null);
   }
   render() {
@@ -438,17 +450,16 @@ export default class TicTacToe extends Component {
               className="ml-3"
               style={{ display: 'inline-block', verticalAlign: 'top' }}
             >
+              <Card style={{ display: 'inline-block', verticalAlign: 'top' }}>
+                <Card.Body>
+                  <MostRecent mostRecent={this.state.mostRecent} />
+                </Card.Body>
+              </Card>
               <Log
                 log={this.state.log}
                 showCount={(this.state.board.length * 39) / 19}
               />
             </div>
-          </Card.Body>
-        </Card>
-        <Card className="mt-2">
-          <Card.Body>
-            <Card.Title>Most Recent</Card.Title>
-            <MostRecent mostRecent={this.state.mostRecent} />
           </Card.Body>
         </Card>
         <Card className="mt-2">
