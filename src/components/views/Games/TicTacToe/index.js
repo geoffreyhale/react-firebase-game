@@ -15,7 +15,6 @@ import './index.css';
  * - better indicators when it's your turn
  * - optional beginner mode indicate 4-in-a-row and/or 3-in-a-row-unanswered
  * - sit down to play (enables deeper features)
- * - user uid instead of userId
  */
 
 const tictactoeRef = () => firebase.database().ref('games/tictactoe');
@@ -97,7 +96,7 @@ const count = (tictactoe) => {
   const count = {};
   tictactoe.forEach((row, i) => {
     tictactoe[i].forEach((cell, j) => {
-      count[cell.userId] ? (count[cell.userId] += 1) : (count[cell.userId] = 1);
+      count[cell.uid] ? (count[cell.uid] += 1) : (count[cell.uid] = 1);
     });
   });
   return count;
@@ -106,8 +105,8 @@ const count = (tictactoe) => {
 const MostRecent = ({ mostRecent }) => (
   <div>
     Most Recent Move By:{' '}
-    {mostRecent && mostRecent.userId ? (
-      <UserPhoto uid={mostRecent.userId} size={45} />
+    {mostRecent && mostRecent.uid ? (
+      <UserPhoto uid={mostRecent.uid} size={45} />
     ) : null}
   </div>
 );
@@ -129,13 +128,13 @@ const penteBoardUpdate = ({ i, j, uid }) => {
       if (
         board[i1] &&
         board[i1][j1] &&
-        board[i1][j1].userId &&
-        board[i1][j1].userId !== uid
+        board[i1][j1].uid &&
+        board[i1][j1].uid !== uid
       ) {
-        const oneAwayUserId = board[i1][j1].userId;
-        if (board[i2] && board[i2][j2] && board[i2][j2].userId) {
-          if (oneAwayUserId === board[i2][j2].userId) {
-            if (board[i3] && board[i3][j3] && board[i3][j3].userId === uid) {
+        const oneAwayUid = board[i1][j1].uid;
+        if (board[i2] && board[i2][j2] && board[i2][j2].uid) {
+          if (oneAwayUid === board[i2][j2].uid) {
+            if (board[i3] && board[i3][j3] && board[i3][j3].uid === uid) {
               cellRef(i1, j1).set('');
               cellRef(i2, j2).set('');
               captureOccurred = true;
@@ -164,15 +163,15 @@ const getArrayOfArraysOfFiveInARowCells = (board) => {
         [i, j, i + 1, j - 0, i + 2, j - 0, i + 3, j - 0, i + 4, j - 0],
       ].forEach(([i0, j0, i1, j1, i2, j2, i3, j3, i4, j4]) => {
         const cellIsOccupiedWithUid0 =
-          board[i0] && board[i0][j0] && board[i0][j0].userId;
+          board[i0] && board[i0][j0] && board[i0][j0].uid;
         const cellIsOccupiedWithUid1 =
-          board[i1] && board[i1][j1] && board[i1][j1].userId;
+          board[i1] && board[i1][j1] && board[i1][j1].uid;
         const cellIsOccupiedWithUid2 =
-          board[i2] && board[i2][j2] && board[i2][j2].userId;
+          board[i2] && board[i2][j2] && board[i2][j2].uid;
         const cellIsOccupiedWithUid3 =
-          board[i3] && board[i3][j3] && board[i3][j3].userId;
+          board[i3] && board[i3][j3] && board[i3][j3].uid;
         const cellIsOccupiedWithUid4 =
-          board[i4] && board[i4][j4] && board[i4][j4].userId;
+          board[i4] && board[i4][j4] && board[i4][j4].uid;
         if (
           cellIsOccupiedWithUid0 &&
           cellIsOccupiedWithUid1 &&
@@ -274,17 +273,17 @@ export default class TicTacToe extends Component {
       const existingCell = snapshot.val();
       const cellOccupiedByOther =
         existingCell &&
-        existingCell.userId &&
-        existingCell.userId !== this.user().uid;
+        existingCell.uid &&
+        existingCell.uid !== this.user().uid;
       const cellOccupiedBySelf =
-        existingCell && existingCell.userId === this.user().uid;
+        existingCell && existingCell.uid === this.user().uid;
 
       if (cellOccupiedByOther) {
         return;
       }
 
       const cell = {
-        userId: this.user().uid,
+        uid: this.user().uid,
       };
       if (cellOccupiedBySelf) {
         cellRef(i, j).set('');
@@ -304,7 +303,7 @@ export default class TicTacToe extends Component {
       }
 
       mostRecentRef().set({
-        userId: this.user().uid,
+        uid: this.user().uid,
         i: i,
         j: j,
       });
@@ -418,9 +417,9 @@ export default class TicTacToe extends Component {
                                 (cell.isAWinningCell ? 'win' : null)
                               }
                             >
-                              {cell.userId ? (
+                              {cell.uid ? (
                                 <UserPhoto
-                                  uid={cell.userId}
+                                  uid={cell.uid}
                                   size={45}
                                   roundedCircle={true}
                                   noLink={true}
@@ -460,12 +459,12 @@ export default class TicTacToe extends Component {
                 {Object.entries(count(this.state.board))
                   .sort((a, b) => b[1] - a[1])
                   .map((count, index) => {
-                    const userId = count[0];
+                    const uid = count[0];
                     const amount = count[1];
                     return (
                       <tr>
                         <td>
-                          {userId ? <UserPhoto uid={userId} size={48} /> : null}
+                          {uid ? <UserPhoto uid={uid} size={48} /> : null}
                         </td>
                         <td>{amount}</td>
                       </tr>
