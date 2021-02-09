@@ -9,6 +9,8 @@
 }
 
 #tictactoe td.most-recent {
-  /* border: 2px solid deepskyblue; */
   background: rgba(0, 191, 255, 0.5);
+}
+#tictactoe td.win {
+  background: rgba(255, 0, 255, 0.8);
 }

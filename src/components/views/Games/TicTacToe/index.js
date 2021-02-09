@@ -18,6 +18,7 @@ import './index.css';
  * - optional beginner mode indicate 4-in-a-row and/or 3-in-a-row-unanswered
  * - cleanup janky ui
  * - sit down to play (enables deeper features)
+ * - user uid instead of userId
  */
 
 const tictactoeRef = () => firebase.database().ref('games/tictactoe');
@@ -115,12 +116,12 @@ const penteBoardUpdate = ({ i, j, uid }) => {
         board[i1] &&
         board[i1][j1] &&
         board[i1][j1].userId &&
-        board[i1][j1].userId != uid
+        board[i1][j1].userId !== uid
       ) {
         const oneAwayUserId = board[i1][j1].userId;
         if (board[i2] && board[i2][j2] && board[i2][j2].userId) {
-          if (oneAwayUserId == board[i2][j2].userId) {
-            if (board[i3] && board[i3][j3] && board[i3][j3].userId == uid) {
+          if (oneAwayUserId === board[i2][j2].userId) {
+            if (board[i3] && board[i3][j3] && board[i3][j3].userId === uid) {
               cellRef(i1, j1).set('');
               cellRef(i2, j2).set('');
               captureOccurred = true;
@@ -133,10 +134,65 @@ const penteBoardUpdate = ({ i, j, uid }) => {
   return captureOccurred;
 };
 
+// TODO this can many ways be optimized
+const getArrayOfArraysOfFiveInARowCells = (board) => {
+  const winningCells = [];
+  board.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      [
+        [i, j, i - 1, j - 1, i - 2, j - 2, i - 3, j - 3, i - 4, j - 4],
+        [i, j, i - 0, j - 1, i - 0, j - 2, i - 0, j - 3, i - 0, j - 4],
+        [i, j, i + 1, j - 1, i + 2, j - 2, i + 3, j - 3, i + 4, j - 4],
+        [i, j, i - 1, j - 0, i - 2, j - 0, i - 3, j - 0, i - 4, j - 0],
+        [i, j, i - 1, j - 1, i - 2, j - 2, i - 3, j - 3, i - 4, j - 4],
+        [i, j, i - 1, j + 1, i - 2, j + 2, i - 3, j + 3, i - 4, j + 4],
+        [i, j, i + 1, j + 1, i + 2, j + 2, i + 3, j + 3, i + 4, j + 4],
+        [i, j, i + 1, j - 0, i + 2, j - 0, i + 3, j - 0, i + 4, j - 0],
+      ].forEach(([i0, j0, i1, j1, i2, j2, i3, j3, i4, j4]) => {
+        const cellIsOccupiedWithUid0 =
+          board[i0] && board[i0][j0] && board[i0][j0].userId;
+        const cellIsOccupiedWithUid1 =
+          board[i1] && board[i1][j1] && board[i1][j1].userId;
+        const cellIsOccupiedWithUid2 =
+          board[i2] && board[i2][j2] && board[i2][j2].userId;
+        const cellIsOccupiedWithUid3 =
+          board[i3] && board[i3][j3] && board[i3][j3].userId;
+        const cellIsOccupiedWithUid4 =
+          board[i4] && board[i4][j4] && board[i4][j4].userId;
+        if (
+          cellIsOccupiedWithUid0 &&
+          cellIsOccupiedWithUid1 &&
+          cellIsOccupiedWithUid2 &&
+          cellIsOccupiedWithUid3 &&
+          cellIsOccupiedWithUid4 &&
+          cellIsOccupiedWithUid0 === cellIsOccupiedWithUid1 &&
+          cellIsOccupiedWithUid0 === cellIsOccupiedWithUid2 &&
+          cellIsOccupiedWithUid0 === cellIsOccupiedWithUid3 &&
+          cellIsOccupiedWithUid0 === cellIsOccupiedWithUid4
+        ) {
+          winningCells.push([
+            { i: i0, j: j0 },
+            { i: i1, j: j1 },
+            { i: i2, j: j2 },
+            { i: i3, j: j3 },
+            { i: i4, j: j4 },
+          ]);
+        }
+      });
+    });
+  });
+  return winningCells;
+};
+
 export default class TicTacToe extends Component {
   constructor() {
     super();
-    this.state = { board: [], users: {}, mostRecent: {}, log: {} };
+    this.state = {
+      board: [],
+      users: {},
+      mostRecent: {},
+      log: {},
+    };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
     this.resetGame = this.resetGame.bind(this);
@@ -150,9 +206,31 @@ export default class TicTacToe extends Component {
       if (user) {
         tictactoeRef().on('value', (snapshot) => {
           const tictactoe = snapshot.val();
+          const { board, mostRecent } = tictactoe;
+          const arrayOfArraysOfFiveInARowCells = getArrayOfArraysOfFiveInARowCells(
+            board
+          );
+
+          board.forEach((row, i) =>
+            row.forEach((cell, j) => {
+              //TODO don't use empty strings anymore as placeholders for empty cells
+              if (typeof board[i][j] === 'object') {
+                board[i][j].isAWinningCell =
+                  arrayOfArraysOfFiveInARowCells &&
+                  !!arrayOfArraysOfFiveInARowCells.some(
+                    (arrayOfFiveInARowCells) =>
+                      arrayOfFiveInARowCells.some(
+                        (winningCell) =>
+                          winningCell.i === i && winningCell.j === j
+                      )
+                  );
+              }
+            })
+          );
+
           this.setState({
-            board: tictactoe.board,
-            mostRecent: tictactoe.mostRecent,
+            board,
+            mostRecent,
           });
         });
         logRef().on('value', (snapshot) => {
@@ -285,7 +363,9 @@ export default class TicTacToe extends Component {
                               key={j}
                               onClick={() => this.handleClickCell(i, j)}
                               className={
-                                thisCellIsMostRecent ? 'most-recent' : null
+                                (thisCellIsMostRecent ? 'most-recent' : null) +
+                                ' ' +
+                                (cell.isAWinningCell ? 'win' : null)
                               }
                             >
                               {cell.userId ? (
