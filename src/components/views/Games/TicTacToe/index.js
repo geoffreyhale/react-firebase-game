@@ -12,9 +12,10 @@ import './index.css';
 
 /**
  * TODO
- * - better indicators when it's your turn
  * - optional beginner mode indicate 4-in-a-row and/or 3-in-a-row-unanswered
  * - sit down to play (enables deeper features)
+ * - log should store data, let ui handle messages
+ * - log should add capture to same entry
  */
 
 const tictactoeRef = () => firebase.database().ref('games/tictactoe');
@@ -106,11 +107,28 @@ const count = (tictactoe) => {
   return count;
 };
 
-const MostRecent = ({ mostRecent }) => (
-  <div>
-    {mostRecent && mostRecent.uid ? <UserPhoto uid={mostRecent.uid} /> : null}
-  </div>
-);
+const MostRecentCard = ({ mostRecent, uid }) => {
+  if (!mostRecent) return null;
+  const yourTurn = uid !== mostRecent.uid;
+  return (
+    <Card
+      style={{
+        display: 'inline-block',
+        verticalAlign: 'top',
+        background: yourTurn ? 'green' : 'red',
+      }}
+    >
+      <Card.Body>
+        {mostRecent && mostRecent.uid ? (
+          <UserPhoto uid={mostRecent.uid} />
+        ) : null}
+        <span className="ml-3">
+          {yourTurn ? 'Your turn!' : 'Wait your turn...'}
+        </span>
+      </Card.Body>
+    </Card>
+  );
+};
 
 const penteBoardUpdate = ({ i, j, uid }) => {
   let captureOccurred = false;
@@ -450,14 +468,13 @@ export default class TicTacToe extends Component {
               className="ml-3"
               style={{ display: 'inline-block', verticalAlign: 'top' }}
             >
-              <Card style={{ display: 'inline-block', verticalAlign: 'top' }}>
-                <Card.Body>
-                  <MostRecent mostRecent={this.state.mostRecent} />
-                </Card.Body>
-              </Card>
+              <MostRecentCard
+                mostRecent={this.state.mostRecent}
+                uid={this.user().uid}
+              />
               <Log
                 log={this.state.log}
-                showCount={(this.state.board.length * 39) / 19}
+                showCount={(this.state.board.length * 35) / 19}
               />
             </div>
           </Card.Body>
