@@ -91,7 +91,8 @@ export const createPost = ({
 };
 
 export const deletePost = ({ postId }) => {
-  postsRef().child(postId).remove();
+  //TODO can delete if hasn't received any replies
+  postsRef().child(postId).update({ deleted: true });
   // decrementNotifications({ postId: replyToId, myUserId }); // TODO
 };
 

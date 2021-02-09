@@ -197,7 +197,7 @@ const PostContent = ({ children, small }) => {
           },
         }}
       >
-        {children.substring(0, 400)}
+        {typeof children === 'string' && children.substring(0, 400)}
       </Linkify>
       {'... '}
       <span
@@ -332,16 +332,18 @@ const Post = ({
                   onSubmitEditHack={editPost}
                   onSuccess={() => setEditMode(false)}
                   multiline={true}
-                  // placeholder={'How are you really feeling?'}
                   content={post.content}
-                  // hackRoom={hackRoom}
                 />
               ) : (
                 !contentCollapsed && (
-                  // <div onClick={() => setBranchCollapsed(!branchCollapsed)}>
-                  <PostContent>{post.content}</PostContent>
+                  <PostContent>
+                    {post.deleted ? (
+                      <small className="text-muted">[DELETED BY USER]</small>
+                    ) : (
+                      post.content
+                    )}
+                  </PostContent>
                 )
-                // </div>
               )}
             </div>
             {/* <hr style={{ margin: '1rem 0 .5rem' }} /> */}
