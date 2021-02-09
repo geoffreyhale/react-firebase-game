@@ -12,8 +12,6 @@ import './index.css';
 
 /**
  * TODO
- * - indicate when someone won
- * - toggle for pente capture 2 rule on/off
  * - better indicators when it's your turn
  * - optional beginner mode indicate 4-in-a-row and/or 3-in-a-row-unanswered
  * - cleanup janky ui
@@ -33,6 +31,23 @@ const logRef = (key = null) =>
 const addLog = (msg) => {
   const key = logRef().push().key;
   logRef(key).set({ t: firebase.database.ServerValue.TIMESTAMP, msg });
+};
+
+const capture2Ref = () => firebase.database().ref(`games/tictactoe/capture2`);
+const Capture2Toggle = ({ value }) => {
+  return (
+    <>
+      <input
+        id="capture2"
+        type="checkbox"
+        checked={!!value}
+        onChange={() => capture2Ref().set(!value)}
+      />
+      <label htmlFor="capture2" className="ml-2">
+        Capture 2
+      </label>
+    </>
+  );
 };
 
 const Log = ({ log, showCount }) =>
@@ -192,6 +207,7 @@ export default class TicTacToe extends Component {
       users: {},
       mostRecent: {},
       log: {},
+      capture2: null,
     };
     this.expandBoard = this.expandBoard.bind(this);
     this.reduceBoard = this.reduceBoard.bind(this);
@@ -239,6 +255,12 @@ export default class TicTacToe extends Component {
             log,
           });
         });
+        capture2Ref().on('value', (snapshot) => {
+          const capture2 = snapshot.val();
+          this.setState({
+            capture2,
+          });
+        });
         getUsers((users) =>
           this.setState({
             users,
@@ -280,8 +302,10 @@ export default class TicTacToe extends Component {
       });
     });
 
-    const captureOccured = penteBoardUpdate({ i, j, uid: this.user().uid });
-    captureOccured && addLog(`${this.user().displayName} captured 2`);
+    if (this.state.capture2) {
+      const captureOccured = penteBoardUpdate({ i, j, uid: this.user().uid });
+      captureOccured && addLog(`${this.user().displayName} captured 2`);
+    }
   }
   expandBoard() {
     const board = this.state.board;
@@ -339,6 +363,7 @@ export default class TicTacToe extends Component {
                 reduceBoard={this.reduceBoard}
               />
             </div>
+            <Capture2Toggle value={this.state.capture2} />
           </Card.Body>
         </Card>
         <Card>
