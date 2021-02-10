@@ -83,6 +83,8 @@ export default class NewPostForm extends React.Component {
   }
 
   render() {
+    const isPostForm = this.props.multiline;
+    const isTagForm = !this.props.multiline;
     return (
       <Form
         onSubmit={(e) => {
@@ -116,7 +118,7 @@ export default class NewPostForm extends React.Component {
           }
         }}
       >
-        {this.props.multiline &&
+        {isPostForm &&
           this.props.hackRoom === 'healthyrelating' &&
           !this.props.replyToId && (
             <SelectModality
@@ -127,7 +129,7 @@ export default class NewPostForm extends React.Component {
             />
           )}
         <div className="mt-1">
-          {this.props.multiline ? (
+          {isPostForm && (
             <Form.Control
               as="textarea"
               rows={4}
@@ -136,7 +138,8 @@ export default class NewPostForm extends React.Component {
               onChange={this.handleChange}
               autoFocus={true}
             />
-          ) : (
+          )}
+          {isTagForm && (
             <Form.Control
               type="text"
               placeholder={this.props.placeholder}
