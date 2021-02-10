@@ -212,6 +212,76 @@ export const MODALITIES = Object.freeze({
       </>
     ),
   },
+  reflection: {
+    available: true,
+    room: 'productivity',
+    title: 'Reflection',
+    description: (
+      <>
+        <ul>
+          <li>
+            <blockquote>
+              <p>
+                ...if you and your team stop working 15-minutes before you walk
+                out the office door or log off your computer and reflect on what
+                you learned, you can boost productivity over 20 percent.
+              </p>
+              <ul>
+                <li>
+                  Boosts productivity quickly — In just 10 days it increases
+                  performance double digits.
+                </li>
+                <li>
+                  Has a lasting impact — A month later the employees still had a
+                  noticeably higher level of productivity.
+                </li>
+              </ul>
+              <ul>
+                <li>Translating experiences into practical wisdom</li>
+                <li>Building confidence and motivation</li>
+              </ul>
+              <p>15 minutes daily, what few lessons have you learned today?</p>
+              <figcaption>
+                — Ben Fanning{' '}
+                <cite>
+                  <a
+                    href="https://www.benfanning.com/boost-team-productivity/"
+                    target="_blank"
+                  >
+                    This Counterintuitive Work Strategy Boosts Productivity Over
+                    20%
+                  </a>
+                </cite>
+              </figcaption>
+            </blockquote>
+          </li>
+          <li>
+            <blockquote>
+              <ul>
+                <li>Question 1: What’s working that you can do more of?</li>
+                <li>
+                  Question 2: What’s not working and would you like to do
+                  differently?
+                </li>
+                <li>Question 3: What’s one thing you’ve learned?</li>
+              </ul>
+              <figcaption>
+                — Ben Fanning{' '}
+                <cite>
+                  <a
+                    href="https://gravitywerks.com/a-somatic-check-in-anyone-can-do/"
+                    target="_blank"
+                  >
+                    A Somatic Check-in Anyone Can Do
+                  </a>
+                </cite>
+              </figcaption>
+            </blockquote>
+          </li>
+        </ul>
+      </>
+    ),
+  },
 });
 
 export const Modality = ({ modality, postId }) => {
