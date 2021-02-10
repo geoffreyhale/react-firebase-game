@@ -9,7 +9,8 @@ import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
 import { MODALITIES, WriteDescription } from './Modality';
 
-const SelectModality = ({ setModality, modality }) => {
+const SelectModality = ({ setModality, modality, room }) => {
+  if (room !== 'healthyrelating') return null;
   return (
     <>
       <DropdownButton
@@ -118,16 +119,15 @@ export default class NewPostForm extends React.Component {
           }
         }}
       >
-        {isPostForm &&
-          this.props.hackRoom === 'healthyrelating' &&
-          !this.props.replyToId && (
-            <SelectModality
-              setModality={(modality) => {
-                this.setState({ modality });
-              }}
-              modality={this.state.modality}
-            />
-          )}
+        {isPostForm && !this.props.replyToId && (
+          <SelectModality
+            room={this.props.hackRoom}
+            setModality={(modality) => {
+              this.setState({ modality });
+            }}
+            modality={this.state.modality}
+          />
+        )}
         <div className="mt-1">
           {isPostForm && (
             <Form.Control
