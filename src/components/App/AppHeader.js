@@ -32,7 +32,7 @@ const AppHeaderTitle = () => {
       </Link>
       <span className="text-muted ml-2 d-xs-none">
         <small style={{ fontSize: '50%', fontWeight: 300 }}>
-          healthy relating
+          healthy community
         </small>
       </span>
     </h1>

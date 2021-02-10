@@ -15,16 +15,11 @@ const About = () => (
             <Link to="/" style={{ color: 'inherit', fontWeight: '500' }}>
               xBook
             </Link>{' '}
-            is a new online social network for{' '}
-            <Link
-              to="/r/healthyrelating"
-              style={{ color: 'inherit', fontWeight: '500' }}
-            >
-              healthy relating
-            </Link>
-            .
+            is the #1 social network for{' '}
+            <Link to="/r/healthyrelating">healthy relating</Link> and{' '}
+            <Link to="/r/productivity">productivity</Link>.
           </p>
-          <p>xBook focuses on safety and meaningful connection.</p>
+          <p>xBook focuses on meaningful connection and self work together.</p>
           {/* <p>xBook will never sell your data.</p> */}
           {/* <p>
             We value respectful, considerate participation. We value rationality
@@ -39,7 +34,8 @@ const About = () => (
           </p>
           <p>
             Join premium for $1/mo and join us in{' '}
-            <Link to="/r/healthyrelating">r/healthyrelating</Link>.
+            <Link to="/r/healthyrelating">r/healthyrelating</Link> and{' '}
+            <Link to="/r/productivity">productivity</Link>.
           </p>
           {/* <h2>How do I pay?</h2>
           <p>
@@ -48,7 +44,9 @@ const About = () => (
           </p> */}
           <h2>Who are we?</h2>
           <p>
-            We build an online social networking platform for healthy relating.
+            We build an online social networking platform for{' '}
+            <Link to="/r/healthyrelating">healthy relating</Link> and{' '}
+            <Link to="/r/productivity">productivity</Link>.
           </p>
           <p>
             We were founded in 2020 by{' '}
@@ -58,7 +56,9 @@ const About = () => (
             >
               Geoffrey Hale
             </Link>
-            , an engineer passionate about healthy relating.
+            , an engineer passionate about{' '}
+            <Link to="/r/healthyrelating">healthy relating</Link> and{' '}
+            <Link to="/r/productivity">productivity</Link>.
           </p>
           {/* <p>
             If you'd like to know more you can ask us anything in{' '}
