@@ -76,6 +76,24 @@ export const ROOMS = Object.freeze({
     ),
     requiresPremium: true,
   },
+  productivity: {
+    id: 'productivity',
+    available: true,
+    url: '/r/productivity',
+    title: '/r/productivity',
+    description: (
+      <small className="text-muted">
+        <ul>
+          <li>This is a premium room. &#11088;</li>
+          <li>
+            This room is for discussing productivity hacks, lessons learned, and
+            celebrating success.
+          </li>
+        </ul>
+      </small>
+    ),
+    requiresPremium: true,
+  },
 });
 
 const RoomDoesNotExist = () => (
