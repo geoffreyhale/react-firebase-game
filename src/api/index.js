@@ -103,6 +103,41 @@ export const getPosts = (callback) => {
   });
 };
 
+const getModalityPostsArrayForUser = ({ uid }, callback) => {
+  getPosts((posts) => {
+    const modalityPosts = Object.values(posts).filter(
+      (post) => post.userId === uid && post.modality
+    );
+    callback(modalityPosts);
+  });
+};
+
+const getMostRecentModalityPostForUser = ({ uid }, callback) => {
+  getModalityPostsArrayForUser({ uid }, (modalityPostsArray) => {
+    const mostRecentModalityPost =
+      modalityPostsArray.length > 0 &&
+      modalityPostsArray.reduce((prev, current) =>
+        prev.timestamp > current.timestamp ? prev : current
+      );
+    callback(mostRecentModalityPost);
+  });
+};
+
+export const getMostRecentModalityPostTimestampForUser = (
+  { uid },
+  callback
+) => {
+  getModalityPostsArrayForUser({ uid }, (modalityPostsArray) => {
+    const mostRecentModalityPostTimestamp =
+      modalityPostsArray.length > 0 &&
+      Math.max.apply(
+        Math,
+        modalityPostsArray.map((post) => post.timestamp)
+      );
+    callback(mostRecentModalityPostTimestamp);
+  });
+};
+
 export const getUser = (uid, callback) => {
   db.collection('users')
     .doc(uid)
