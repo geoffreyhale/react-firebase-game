@@ -150,9 +150,11 @@ export default class NewPostForm extends React.Component {
             />
           )}
         </div>
-        <span className="float-right text-muted">
-          <WordCount words={this.state.content} />
-        </span>
+        {isPostForm && (
+          <span className="float-right text-muted">
+            <WordCount words={this.state.content} />
+          </span>
+        )}
         {!this.props.hideSubmitButton && (
           <Button
             className="mt-1"
