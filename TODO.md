@@ -40,7 +40,6 @@
 ## Tier 3
 
 - better handling for delete posts
-- better document.title tab titles like for rooms and user profiles
 - use context for room, remove roomHack
 - lift notifications out of rooms in ui/ux
 - add (#) count to browser tab

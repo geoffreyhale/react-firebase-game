@@ -80,7 +80,7 @@ export const ROOMS = Object.freeze({
     id: 'productivity',
     available: true,
     url: '/r/productivity',
-    title: '/r/productivity',
+    title: 'r/productivity',
     description: (
       <small className="text-muted">
         <ul>
@@ -108,16 +108,24 @@ const RoomDoesNotExist = () => (
 class Rooms extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = { room: null };
   }
 
-  componentDidMount() {}
-
-  // TODO maybe more robust to use a room context instead of prop-drilling this room stuff
-  render() {
+  componentDidMount() {
     const { roomId = 'home' } = this.props.match.params;
 
     const room = ROOMS[roomId];
+
+    if (room && room.title) {
+      document.title = `${room.title} | xBook`;
+    }
+
+    this.setState({ room });
+  }
+
+  // TODO maybe more robust to use a room context instead of prop-drilling this room stuff
+  render() {
+    const { room } = this.state;
 
     if (!room) {
       return <RoomDoesNotExist />;

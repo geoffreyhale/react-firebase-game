@@ -28,6 +28,7 @@ class UserProfile extends React.Component {
     }
     const { userId } = this.props.match.params;
     getUser(userId, (user) => {
+      document.title = `${user.displayName} | xBook`;
       this.setState({ user });
     });
   }

@@ -10,6 +10,7 @@ import Sandbox from './views/Sandbox';
 import About from './views/About';
 import Rooms from './views/Rooms';
 import { AppContext } from './AppProvider';
+import Page from './Page';
 import UserProfile from './views/UserProfile';
 
 const Routes = () => {
@@ -25,47 +26,122 @@ const Routes = () => {
   return (
     <Switch>
       {user && user.admin && (
-        <Route path="/admin" key="/admin">
-          <Admin />
-        </Route>
+        <Route
+          path="/admin"
+          key="/admin"
+          render={(props) => (
+            <Page title="Admin | xBook">
+              <Admin {...props} />
+            </Page>
+          )}
+        />
       )}
       {user && [
-        <Route exact path="/" key={location.pathname}>
-          <Rooms />
-        </Route>,
-        <Route exact path="/r/:roomId" key={location.pathname}>
-          <Rooms />
-        </Route>,
-        <Route path="/r/:roomId/posts/:postId" key={location.pathname}>
-          <Rooms />
-        </Route>,
-        <Route path="/u/:userId" key={location.pathname}>
-          <UserProfile />
-        </Route>,
-        <Route path="/community" key="/community">
-          <Community />
-        </Route>,
-        <Route path="/incremental-clicker-game" key="/incremental-clicker-game">
-          <IncrementalClickerGame />
-        </Route>,
-        <Route path="/tictactoe" key="/tictactoe">
-          <TicTacToe />
-        </Route>,
-        <Route path="/chess" key="/chess">
-          <Chess />
-        </Route>,
-        <Route path="/scorekeeper" key="/scorekeeper">
-          <Scorekeeper />
-        </Route>,
+        <Route
+          exact
+          path="/"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="xBook">
+              <Rooms {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          exact
+          path="/r/:roomId"
+          key={location.pathname}
+          render={(props) => (
+            <Page>
+              <Rooms {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/r/:roomId/posts/:postId"
+          key={location.pathname}
+          render={(props) => (
+            //TODO title = post author's display name (like fb) ?
+            <Page title="xBook">
+              <Rooms {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/u/:userId"
+          key={location.pathname}
+          render={(props) => (
+            <Page>
+              <UserProfile {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/community"
+          key="/community"
+          render={(props) => (
+            <Page title="Community | xBook">
+              <Community {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/incremental-clicker-game"
+          key="/incremental-clicker-game"
+          render={(props) => (
+            <Page title="Incremental Clicker Game | xBook">
+              <IncrementalClickerGame {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/tictactoe"
+          key="/tictactoe"
+          render={(props) => (
+            <Page title="Pente | xBook">
+              <TicTacToe {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/chess"
+          key="/chess"
+          render={(props) => (
+            <Page title="Chess | xBook">
+              <Chess {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/scorekeeper"
+          key="/scorekeeper"
+          render={(props) => (
+            <Page title="Score Keeper | xBook">
+              <Scorekeeper {...props} />
+            </Page>
+          )}
+        />,
       ]}
       [
-      <Route path="/about" key="/about">
-        <About />
-      </Route>
+      <Route
+        path="/about"
+        key="/about"
+        render={(props) => (
+          <Page title="About | xBook">
+            <About {...props} />
+          </Page>
+        )}
+      />
       ,
-      <Route path="/sandbox" key="/sandbox">
-        <Sandbox />
-      </Route>
+      <Route
+        path="/sandbox"
+        key="/sandbox"
+        render={(props) => (
+          <Page title="Sandbox | xBook">
+            <Sandbox {...props} />
+          </Page>
+        )}
+      />
       ,]
     </Switch>
   );
