@@ -38,6 +38,7 @@ const VoteDescription = (
 
 export const MODALITIES = Object.freeze({
   healthyrelating: {
+    room: 'healthyrelating',
     title: 'Healthy Relating',
     description: (
       <p>
@@ -48,6 +49,7 @@ export const MODALITIES = Object.freeze({
     ),
   },
   ownershiplanguage: {
+    room: 'healthyrelating',
     title: 'Ownership Language',
     description: (
       <ul>
@@ -162,6 +164,7 @@ export const MODALITIES = Object.freeze({
   },
   istatements: {
     available: true,
+    room: 'healthyrelating',
     title: '"I" Statements',
     description: (
       <blockquote>
@@ -189,6 +192,7 @@ export const MODALITIES = Object.freeze({
   },
   somaticcheckin: {
     available: true,
+    room: 'healthyrelating',
     title: 'Somatic Check-In',
     description: (
       <>

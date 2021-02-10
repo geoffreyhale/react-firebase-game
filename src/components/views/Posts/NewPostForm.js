@@ -10,11 +10,13 @@ import countWords from '../../shared/countWords';
 import { MODALITIES, WriteDescription } from './Modality';
 
 const SelectModality = ({ setModality, modality, room }) => {
-  if (room !== 'healthyrelating') return null;
-
   const arrayOfAvailableModalities = Object.entries(MODALITIES).filter(
-    ([key, MODALITY]) => MODALITY.available
+    ([key, MODALITY]) => MODALITY.available && MODALITY.room === room
   );
+
+  if (!arrayOfAvailableModalities || !arrayOfAvailableModalities.length > 0) {
+    return null;
+  }
 
   return (
     <>
