@@ -11,6 +11,11 @@ import { MODALITIES, WriteDescription } from './Modality';
 
 const SelectModality = ({ setModality, modality, room }) => {
   if (room !== 'healthyrelating') return null;
+
+  const arrayOfAvailableModalities = Object.entries(MODALITIES).filter(
+    ([key, MODALITY]) => MODALITY.available
+  );
+
   return (
     <>
       <DropdownButton
@@ -18,16 +23,14 @@ const SelectModality = ({ setModality, modality, room }) => {
         title={modality ? MODALITIES[modality].title : 'Select Modality'}
         variant={modality ? 'warning' : 'outline-warning'}
       >
-        {Object.entries(MODALITIES)
-          .filter(([key, MODALITY]) => MODALITY.available)
-          .map(([key, MODALITY]) => (
-            <Dropdown.Item
-              as="div" //"button" would trigger onSubmit
-              onClick={() => setModality(modality === key ? null : key)}
-            >
-              {MODALITY.title}
-            </Dropdown.Item>
-          ))}
+        {arrayOfAvailableModalities.map(([key, MODALITY]) => (
+          <Dropdown.Item
+            as="div" //"button" would trigger onSubmit
+            onClick={() => setModality(modality === key ? null : key)}
+          >
+            {MODALITY.title}
+          </Dropdown.Item>
+        ))}
       </DropdownButton>
       {MODALITIES[modality] && (
         <Card border="warning">
