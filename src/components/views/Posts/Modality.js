@@ -187,6 +187,27 @@ export const MODALITIES = Object.freeze({
       </blockquote>
     ),
   },
+  somaticcheckin: {
+    available: true,
+    title: 'Somatic Check-In',
+    description: (
+      <>
+        <p>Relating to the body, especially as distinct from the mind.</p>
+        <p>Notice how you are feeling right now in your body.</p>
+        <p>More:</p>
+        <ul>
+          <li>
+            <a
+              href="https://gravitywerks.com/a-somatic-check-in-anyone-can-do/"
+              target="_blank"
+            >
+              A Somatic Check-in Anyone Can Do
+            </a>
+          </li>
+        </ul>
+      </>
+    ),
+  },
 });
 
 export const Modality = ({ modality, postId }) => {
