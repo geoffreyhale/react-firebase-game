@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -12,18 +12,42 @@ import { AppContext } from '../../../AppProvider';
 import { setModalityVote } from '../../../../api';
 import MODALITIES from './MODALITIES';
 
-const WriteDescription = (
-  <>
-    <p>
-      You have selected a modality that you'd like to learn and practice. Read
-      the description below. Write and submit a post. Other users provide
-      feedback and vote on your proficiency in the modality. You get real
-      practice, real feedback, and earn proficiency points in the modality.
-      Proficiency points can be used to determine eligibility for safer, deeper
-      relating rooms.
-    </p>
-  </>
+const PreSelectDescription = (
+  <p>Select a modality that you'd like to learn about or practice.</p>
 );
+
+const WriteDescription = () => {
+  const [collapsed, setCollapsed] = useState(true);
+  return (
+    <>
+      <p>You have selected a modality that you'd like to learn and practice.</p>
+      {collapsed ? (
+        <p>
+          <span
+            onClick={() => setCollapsed(false)}
+            style={{ fontWeight: 600, cursor: 'pointer' }}
+          >
+            See More
+          </span>
+        </p>
+      ) : (
+        <>
+          <p>Read the description below.</p>
+          <p>Then, write and submit a post.</p>
+          <p>
+            Other users will provide feedback and vote on your proficiency in
+            the modality
+          </p>
+          <p>
+            You get real practice, real feedback, and earn proficiency points in
+            the modality. Proficiency points can be used to determine
+            eligibility for safer, deeper relating rooms.
+          </p>
+        </>
+      )}
+    </>
+  );
+};
 
 const VoteDescription = (
   <>
@@ -81,13 +105,10 @@ const ModalityDescription = () => {
   if (!modality) return null;
 
   return (
-    <Card border="warning">
-      <Card.Body>
-        <Jumbotron>{WriteDescription}</Jumbotron>
-        <h3>{modality.title}</h3>
-        {modality.description}
-      </Card.Body>
-    </Card>
+    <>
+      <h3>{modality.title}</h3>
+      {modality.description}
+    </>
   );
 };
 
@@ -110,10 +131,20 @@ export const Modality = ({ room }) => {
       <Card>
         <Card.Header>Modality Trainer</Card.Header>
         <Card.Body>
+          {!modality && (
+            <Card bg="light" className="mb-3">
+              <Card.Body>{PreSelectDescription}</Card.Body>
+            </Card>
+          )}
           <SelectModality room={room} />
+          {modality && (
+            <Jumbotron className="mt-3">
+              <WriteDescription />
+            </Jumbotron>
+          )}
+          <ModalityDescription />
         </Card.Body>
       </Card>
-      <ModalityDescription />
     </>
   );
 };
