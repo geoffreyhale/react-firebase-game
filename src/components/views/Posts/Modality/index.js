@@ -53,7 +53,7 @@ export const ModalityCard = ({ modalityKey }) => {
   );
 };
 
-export const Modality = ({ modality, postId }) => {
+export const ModalityVoteButton = ({ modality, postId }) => {
   const { user } = useContext(AppContext);
   const { uid } = user;
   const myExistingVote = modality.votes ? modality.votes[uid] : null;

@@ -13,7 +13,7 @@ import { addTag, createPost, deletePost, editPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
-import { Modality } from './Modality';
+import { ModalityVoteButton } from './Modality';
 
 import './post.css';
 
@@ -409,7 +409,10 @@ const Post = ({
               </div>
               {post.modality && (
                 <div className="mt-2">
-                  <Modality modality={post.modality} postId={post.id} />
+                  <ModalityVoteButton
+                    modality={post.modality}
+                    postId={post.id}
+                  />
                 </div>
               )}
               {repliesCollapsed && replyCount > 0 && (
