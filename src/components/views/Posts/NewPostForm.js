@@ -11,6 +11,20 @@ import { WriteDescription } from './Modality';
 import MODALITIES from './Modality/MODALITIES';
 import EmotionalAwareness from './Modality/EmotionalAwareness';
 
+const ModalityCard = ({ modalityKey }) => {
+  const modality = MODALITIES[modalityKey];
+  if (!modality) return null;
+  return (
+    <Card border="warning">
+      <Card.Body>
+        <Jumbotron>{WriteDescription}</Jumbotron>
+        <h3>{modality.title}</h3>
+        {modality.description}
+      </Card.Body>
+    </Card>
+  );
+};
+
 const SelectModality = ({ setModality, modality, room }) => {
   const arrayOfAvailableModalities = Object.entries(MODALITIES)
     .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
@@ -41,15 +55,7 @@ const SelectModality = ({ setModality, modality, room }) => {
           </Dropdown.Item>
         ))}
       </DropdownButton>
-      {MODALITIES[modality] && (
-        <Card border="warning">
-          <Card.Body>
-            <Jumbotron>{WriteDescription}</Jumbotron>
-            <h3>{MODALITIES[modality].title}</h3>
-            {MODALITIES[modality].description}
-          </Card.Body>
-        </Card>
-      )}
+      <ModalityCard modalityKey={modality} />
     </>
   );
 };
