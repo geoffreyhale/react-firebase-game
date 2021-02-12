@@ -75,7 +75,7 @@ export default class NewPostForm extends React.Component {
     super();
     this.state = {
       content: '',
-      modality: null,
+      modality: null, //TODO get rid of state for modality, use context
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -143,6 +143,7 @@ export default class NewPostForm extends React.Component {
               <SelectModality
                 room={this.props.hackRoom}
                 setModality={(modality) => {
+                  this.context.setModality(modality);
                   this.setState({ modality });
                 }}
                 modality={this.state.modality}
