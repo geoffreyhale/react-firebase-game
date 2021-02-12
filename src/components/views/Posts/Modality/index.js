@@ -151,3 +151,5 @@ export const ModalityVoteButton = ({ modality, postId }) => {
     </ButtonGroup>
   );
 };
+
+export default Modality;
