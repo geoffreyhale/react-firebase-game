@@ -7,7 +7,8 @@ import Form from 'react-bootstrap/Form';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
-import { MODALITIES, WriteDescription } from './Modality';
+import { WriteDescription } from './Modality';
+import MODALITIES from './Modality/MODALITIES';
 
 const SelectModality = ({ setModality, modality, room }) => {
   const arrayOfAvailableModalities = Object.entries(MODALITIES).filter(
