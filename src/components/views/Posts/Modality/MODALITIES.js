@@ -204,7 +204,7 @@ const MODALITIES = Object.freeze({
               </ul>
               <p>15 minutes daily, what few lessons have you learned today?</p>
               <figcaption>
-                — Ben Fanning{' '}
+                — Ben Fanning,{' '}
                 <cite>
                   <a
                     href="https://www.benfanning.com/boost-team-productivity/"
@@ -228,7 +228,7 @@ const MODALITIES = Object.freeze({
                 <li>Question 3: What’s one thing you’ve learned?</li>
               </ul>
               <figcaption>
-                — Ben Fanning{' '}
+                — Ben Fanning,{' '}
                 <cite>
                   <a
                     href="https://gravitywerks.com/a-somatic-check-in-anyone-can-do/"
@@ -241,6 +241,37 @@ const MODALITIES = Object.freeze({
             </blockquote>
           </li>
         </ul>
+      </>
+    ),
+  },
+  emotionalawareness: {
+    available: true,
+    room: 'healthyrelating',
+    title: 'Emotional Awareness',
+    description: (
+      <>
+        <p>This tool seeks to increase our emotional awareness.</p>
+        <p>
+          Emotion words in the card below will turn bold if you type them in
+          your post.
+        </p>
+        <p>This is a proof of concept, under construction.</p>
+        <blockquote>
+          "four categories, namely happy, sad, fear/surprise (i.e.,
+          fast-approaching danger) and disgust/anger (i.e., stationary danger)"
+          <figcaption>
+            — Rachael E. Jack,{' '}
+            <cite>
+              <a
+                href="https://www.cell.com/current-biology/fulltext/S0960-9822(13)01519-4"
+                target="_blank"
+              >
+                Dynamic Facial Expressions of Emotion Transmit an Evolving
+                Hierarchy of Signals over Time
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
       </>
     ),
   },

@@ -9,6 +9,7 @@ import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
 import { WriteDescription } from './Modality';
 import MODALITIES from './Modality/MODALITIES';
+import EmotionalAwareness from './Modality/EmotionalAwareness';
 
 const SelectModality = ({ setModality, modality, room }) => {
   const arrayOfAvailableModalities = Object.entries(MODALITIES)
@@ -98,85 +99,96 @@ export default class NewPostForm extends React.Component {
     const isPostForm = this.props.multiline;
     const isTagForm = !this.props.multiline;
     return (
-      <Form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (this.state.content === '') {
-            return;
-          }
-          const successCallback = () => {
-            this.setState({ content: '' });
-            this.props.onSuccess && this.props.onSuccess();
-          };
-          if (
-            !this.props.onSubmit &&
-            this.props.onSubmitEditHack &&
-            this.props.editPostIdHack
-          ) {
-            this.props.onSubmitEditHack({
-              id: this.props.editPostIdHack,
-              content: this.state.content,
-              successCallback: successCallback,
-            });
-          } else {
-            this.props.onSubmit({
-              content: this.state.content,
-              replyToId: this.props.replyToId || null,
-              successCallback,
-              uid: this.user().uid,
-              room: this.props.hackRoom,
-              modality: this.state.modality,
-            });
-          }
-        }}
-      >
-        {isPostForm && !this.props.replyToId && (
-          <SelectModality
-            room={this.props.hackRoom}
-            setModality={(modality) => {
-              this.setState({ modality });
-            }}
-            modality={this.state.modality}
-          />
-        )}
-        <div className="mt-1">
+      <>
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (this.state.content === '') {
+              return;
+            }
+            const successCallback = () => {
+              this.setState({ content: '' });
+              this.props.onSuccess && this.props.onSuccess();
+            };
+            if (
+              !this.props.onSubmit &&
+              this.props.onSubmitEditHack &&
+              this.props.editPostIdHack
+            ) {
+              this.props.onSubmitEditHack({
+                id: this.props.editPostIdHack,
+                content: this.state.content,
+                successCallback: successCallback,
+              });
+            } else {
+              this.props.onSubmit({
+                content: this.state.content,
+                replyToId: this.props.replyToId || null,
+                successCallback,
+                uid: this.user().uid,
+                room: this.props.hackRoom,
+                modality: this.state.modality,
+              });
+            }
+          }}
+        >
+          {isPostForm && !this.props.replyToId && (
+            <>
+              <SelectModality
+                room={this.props.hackRoom}
+                setModality={(modality) => {
+                  this.setState({ modality });
+                }}
+                modality={this.state.modality}
+              />
+              {this.state.modality === 'emotionalawareness' && (
+                <Card>
+                  <Card.Body>
+                    <EmotionalAwareness content={this.state.content} />
+                  </Card.Body>
+                </Card>
+              )}
+            </>
+          )}
+          <div className="mt-1">
+            {isPostForm && (
+              <Form.Control
+                as="textarea"
+                rows={4}
+                placeholder={this.props.placeholder}
+                value={this.state.content}
+                onChange={this.handleChange}
+                autoFocus={true}
+              />
+            )}
+            {isTagForm && (
+              <Form.Control
+                type="text"
+                placeholder={this.props.placeholder}
+                value={this.state.content}
+                onChange={this.handleChange}
+                size={this.props.small ? 'sm' : null}
+                autoFocus={true}
+              />
+            )}
+          </div>
           {isPostForm && (
-            <Form.Control
-              as="textarea"
-              rows={4}
-              placeholder={this.props.placeholder}
-              value={this.state.content}
-              onChange={this.handleChange}
-              autoFocus={true}
-            />
+            <span className="float-right text-muted">
+              <WordCount words={this.state.content} />
+            </span>
           )}
-          {isTagForm && (
-            <Form.Control
-              type="text"
-              placeholder={this.props.placeholder}
-              value={this.state.content}
-              onChange={this.handleChange}
-              size={this.props.small ? 'sm' : null}
-              autoFocus={true}
-            />
+          {!this.props.hideSubmitButton && (
+            <Button
+              className="mt-1"
+              variant="primary"
+              type="submit"
+              // disabled={this.state.content === ''}
+            >
+              Post
+            </Button>
           )}
-        </div>
-        {isPostForm && (
-          <span className="float-right text-muted">
-            <WordCount words={this.state.content} />
-          </span>
-        )}
-        {!this.props.hideSubmitButton && (
-          <Button
-            className="mt-1"
-            variant="primary"
-            type="submit"
-            // disabled={this.state.content === ''}
-          >
-            Post
-          </Button>
-        )}
-      </Form>
+        </Form>
+      </>
     );
   }
 }
