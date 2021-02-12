@@ -273,7 +273,7 @@ class Posts extends Component {
           )}
         </Col>
         <Col>
-          <Modality />
+          <Modality room={this.props.room.id} />
         </Col>
       </Row>
     );

@@ -74,9 +74,12 @@ export const SelectModality = ({ room }) => {
   );
 };
 
-export const Modality = () => {
-  const modality = MODALITIES[useContext(AppContext).modality];
+const ModalityDescription = () => {
+  const { modality: modalityKey } = useContext(AppContext);
+  const modality = MODALITIES[modalityKey];
+
   if (!modality) return null;
+
   return (
     <Card border="warning">
       <Card.Body>
@@ -85,6 +88,33 @@ export const Modality = () => {
         {modality.description}
       </Card.Body>
     </Card>
+  );
+};
+
+export const Modality = ({ room }) => {
+  const { modality: modalityKey, setModality } = useContext(AppContext);
+  const modality = MODALITIES[modalityKey];
+
+  const roomsWithAvailableModalities = Object.values(MODALITIES)
+    .filter((MODALITY) => MODALITY.available === true)
+    .map((MODALITY) => MODALITY.room);
+  if (!roomsWithAvailableModalities.includes(room)) return null;
+
+  //TODO this is a hack; changing room should clear context modality value
+  if (modality && modality.room !== room) {
+    setModality(null);
+  }
+
+  return (
+    <>
+      <Card>
+        <Card.Header>Modality Trainer</Card.Header>
+        <Card.Body>
+          <SelectModality room={room} />
+        </Card.Body>
+      </Card>
+      <ModalityDescription />
+    </>
   );
 };
 
