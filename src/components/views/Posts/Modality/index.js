@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import Card from 'react-bootstrap/Card';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -10,7 +12,7 @@ import { AppContext } from '../../../AppProvider';
 import { setModalityVote } from '../../../../api';
 import MODALITIES from './MODALITIES';
 
-export const WriteDescription = (
+const WriteDescription = (
   <>
     <p>
       You have selected a modality that you'd like to learn and practice. Read
@@ -38,6 +40,39 @@ const VoteDescription = (
     </p>
   </>
 );
+
+export const SelectModality = ({ room }) => {
+  const { modality, setModality } = useContext(AppContext);
+  const arrayOfAvailableModalities = Object.entries(MODALITIES)
+    .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
+    .sort(
+      ([aKey, a], [bKey, b]) =>
+        a.title &&
+        b.title &&
+        a.title.localeCompare(b.title, undefined, { ignorePunctuation: true })
+    );
+
+  if (!arrayOfAvailableModalities || !arrayOfAvailableModalities.length > 0) {
+    return null;
+  }
+
+  return (
+    <DropdownButton
+      id="dropdown-basic-button"
+      title={modality ? MODALITIES[modality].title : 'Select Modality'}
+      variant={modality ? 'warning' : 'outline-warning'}
+    >
+      {arrayOfAvailableModalities.map(([key, MODALITY]) => (
+        <Dropdown.Item
+          as="div" //"button" would trigger onSubmit
+          onClick={() => setModality(modality === key ? null : key)}
+        >
+          {MODALITY.title}
+        </Dropdown.Item>
+      ))}
+    </DropdownButton>
+  );
+};
 
 export const ModalityCard = ({ modalityKey }) => {
   const modality = MODALITIES[modalityKey];

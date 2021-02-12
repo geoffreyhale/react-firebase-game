@@ -1,46 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
 import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
-import MODALITIES from './Modality/MODALITIES';
+import { SelectModality } from './Modality';
 import EmotionalAwareness from './Modality/EmotionalAwareness';
-
-const SelectModality = ({ room }) => {
-  const { modality, setModality } = useContext(AppContext);
-  const arrayOfAvailableModalities = Object.entries(MODALITIES)
-    .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
-    .sort(
-      ([aKey, a], [bKey, b]) =>
-        a.title &&
-        b.title &&
-        a.title.localeCompare(b.title, undefined, { ignorePunctuation: true })
-    );
-
-  if (!arrayOfAvailableModalities || !arrayOfAvailableModalities.length > 0) {
-    return null;
-  }
-
-  return (
-    <DropdownButton
-      id="dropdown-basic-button"
-      title={modality ? MODALITIES[modality].title : 'Select Modality'}
-      variant={modality ? 'warning' : 'outline-warning'}
-    >
-      {arrayOfAvailableModalities.map(([key, MODALITY]) => (
-        <Dropdown.Item
-          as="div" //"button" would trigger onSubmit
-          onClick={() => setModality(modality === key ? null : key)}
-        >
-          {MODALITY.title}
-        </Dropdown.Item>
-      ))}
-    </DropdownButton>
-  );
-};
 
 const WordCount = ({ words }) => {
   const [show, setShow] = useState(false);
