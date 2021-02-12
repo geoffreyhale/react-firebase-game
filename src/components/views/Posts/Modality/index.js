@@ -4,8 +4,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import { AppContext } from '../../AppProvider';
-import { setModalityVote } from '../../../api';
+import { AppContext } from '../../../AppProvider';
+import { setModalityVote } from '../../../../api';
 
 export const WriteDescription = (
   <>
