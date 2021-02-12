@@ -17,7 +17,6 @@
 
 # TODO
 
-- posts without replies (or anything) that are deleted should delete completely
 - fix ModalityCard ui for mobile
 
 ## Top Tier

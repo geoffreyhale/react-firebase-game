@@ -96,9 +96,19 @@ export const createPost = ({
 };
 
 export const deletePost = ({ postId }) => {
-  //TODO can delete if hasn't received any replies
-  postsRef().child(postId).update({ deleted: true });
-  // decrementNotifications({ postId: replyToId, myUserId }); // TODO
+  const postRef = postsRef().child(postId);
+  postsRef()
+    .orderByChild('replyToId')
+    .equalTo(postId)
+    .once('value', (snapshot) => {
+      const replies = snapshot.val();
+      if (!replies) {
+        postRef.remove();
+      } else {
+        postRef.update({ deleted: true });
+      }
+      // decrementNotifications({ postId: replyToId, myUserId }); // TODO
+    });
 };
 
 export const getPosts = (callback) => {
