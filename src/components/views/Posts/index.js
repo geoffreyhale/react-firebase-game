@@ -22,7 +22,7 @@ import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../../shared/PremiumSaleCard';
 import PremiumFeature from '../../shared/PremiumFeature';
 import Mosaic from '../Community/Mosaic';
-import { ModalityCard } from './NewPostForm';
+import { ModalityCard } from './Modality';
 
 import './index.css';
 

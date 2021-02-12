@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Card from 'react-bootstrap/Card';
+import Jumbotron from 'react-bootstrap/Jumbotron';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { AppContext } from '../../../AppProvider';
@@ -36,6 +38,20 @@ const VoteDescription = (
     </p>
   </>
 );
+
+export const ModalityCard = ({ modalityKey }) => {
+  const modality = MODALITIES[modalityKey];
+  if (!modality) return null;
+  return (
+    <Card border="warning">
+      <Card.Body>
+        <Jumbotron>{WriteDescription}</Jumbotron>
+        <h3>{modality.title}</h3>
+        {modality.description}
+      </Card.Body>
+    </Card>
+  );
+};
 
 export const Modality = ({ modality, postId }) => {
   const { user } = useContext(AppContext);

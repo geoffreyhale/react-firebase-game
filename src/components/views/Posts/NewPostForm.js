@@ -4,26 +4,10 @@ import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
-import Jumbotron from 'react-bootstrap/Jumbotron';
 import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
-import { WriteDescription } from './Modality';
 import MODALITIES from './Modality/MODALITIES';
 import EmotionalAwareness from './Modality/EmotionalAwareness';
-
-export const ModalityCard = ({ modalityKey }) => {
-  const modality = MODALITIES[modalityKey];
-  if (!modality) return null;
-  return (
-    <Card border="warning">
-      <Card.Body>
-        <Jumbotron>{WriteDescription}</Jumbotron>
-        <h3>{modality.title}</h3>
-        {modality.description}
-      </Card.Body>
-    </Card>
-  );
-};
 
 const SelectModality = ({ setModality, modality, room }) => {
   const arrayOfAvailableModalities = Object.entries(MODALITIES)
