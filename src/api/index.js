@@ -75,17 +75,22 @@ export const createPost = ({
     console.error('createPost must receive value for room');
     return;
   }
+  const post = {
+    content,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
+    userId: uid,
+    replyToId: replyToId,
+    room: room,
+    modality: { name: modality },
+  };
+  //hacky fix to prevent replies from having a modality
+  if (replyToId) {
+    delete post.modality;
+  }
   const key = postsRef().push().key;
   postsRef()
     .child(key)
-    .update({
-      content,
-      timestamp: firebase.database.ServerValue.TIMESTAMP,
-      userId: uid,
-      replyToId: replyToId,
-      room: room,
-      modality: { name: modality },
-    })
+    .update(post)
     .then(replyToId && addNotifications({ postId: replyToId, myUserId: uid }))
     .then(successCallback());
 };

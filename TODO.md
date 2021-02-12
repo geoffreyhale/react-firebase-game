@@ -18,7 +18,6 @@
 # TODO
 
 - posts without replies (or anything) that are deleted should delete completely
-- didn't mean to allow reply posts to have modalities (yet?)
 - fix ModalityCard ui for mobile
 
 ## Top Tier
