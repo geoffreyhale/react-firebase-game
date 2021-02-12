@@ -17,6 +17,8 @@
 
 # TODO
 
+- fix ModalityCard ui for mobile
+
 ## Top Tier
 
 - finish database security rules and related tests
