@@ -56,12 +56,12 @@ export default class NewPostForm extends React.Component {
     super();
     this.state = {
       content: '',
-      modality: null, //TODO get rid of state for modality, use context
     };
     this.handleChange = this.handleChange.bind(this);
   }
 
   static contextType = AppContext;
+  modality = () => this.context.modality;
   user = () => this.context.user;
 
   componentDidMount() {
@@ -114,7 +114,7 @@ export default class NewPostForm extends React.Component {
                 successCallback,
                 uid: this.user().uid,
                 room: this.props.hackRoom,
-                modality: this.state.modality,
+                modality: this.modality(),
               });
             }
           }}
@@ -125,11 +125,10 @@ export default class NewPostForm extends React.Component {
                 room={this.props.hackRoom}
                 setModality={(modality) => {
                   this.context.setModality(modality);
-                  this.setState({ modality });
                 }}
-                modality={this.state.modality}
+                modality={this.modality()}
               />
-              {this.state.modality === 'emotionalawareness' && (
+              {this.modality() === 'emotionalawareness' && (
                 <Card>
                   <Card.Body>
                     <EmotionalAwareness content={this.state.content} />
