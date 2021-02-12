@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -9,7 +9,8 @@ import countWords from '../../shared/countWords';
 import MODALITIES from './Modality/MODALITIES';
 import EmotionalAwareness from './Modality/EmotionalAwareness';
 
-const SelectModality = ({ setModality, modality, room }) => {
+const SelectModality = ({ room }) => {
+  const { modality, setModality } = useContext(AppContext);
   const arrayOfAvailableModalities = Object.entries(MODALITIES)
     .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
     .sort(
@@ -121,13 +122,7 @@ export default class NewPostForm extends React.Component {
         >
           {isPostForm && !this.props.replyToId && (
             <>
-              <SelectModality
-                room={this.props.hackRoom}
-                setModality={(modality) => {
-                  this.context.setModality(modality);
-                }}
-                modality={this.modality()}
-              />
+              <SelectModality room={this.props.hackRoom} />
               {this.modality() === 'emotionalawareness' && (
                 <Card>
                   <Card.Body>
