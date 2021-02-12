@@ -11,7 +11,7 @@ import { WriteDescription } from './Modality';
 import MODALITIES from './Modality/MODALITIES';
 import EmotionalAwareness from './Modality/EmotionalAwareness';
 
-const ModalityCard = ({ modalityKey }) => {
+export const ModalityCard = ({ modalityKey }) => {
   const modality = MODALITIES[modalityKey];
   if (!modality) return null;
   return (
@@ -40,23 +40,20 @@ const SelectModality = ({ setModality, modality, room }) => {
   }
 
   return (
-    <>
-      <DropdownButton
-        id="dropdown-basic-button"
-        title={modality ? MODALITIES[modality].title : 'Select Modality'}
-        variant={modality ? 'warning' : 'outline-warning'}
-      >
-        {arrayOfAvailableModalities.map(([key, MODALITY]) => (
-          <Dropdown.Item
-            as="div" //"button" would trigger onSubmit
-            onClick={() => setModality(modality === key ? null : key)}
-          >
-            {MODALITY.title}
-          </Dropdown.Item>
-        ))}
-      </DropdownButton>
-      <ModalityCard modalityKey={modality} />
-    </>
+    <DropdownButton
+      id="dropdown-basic-button"
+      title={modality ? MODALITIES[modality].title : 'Select Modality'}
+      variant={modality ? 'warning' : 'outline-warning'}
+    >
+      {arrayOfAvailableModalities.map(([key, MODALITY]) => (
+        <Dropdown.Item
+          as="div" //"button" would trigger onSubmit
+          onClick={() => setModality(modality === key ? null : key)}
+        >
+          {MODALITY.title}
+        </Dropdown.Item>
+      ))}
+    </DropdownButton>
   );
 };
 

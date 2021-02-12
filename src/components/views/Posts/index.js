@@ -22,6 +22,7 @@ import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../../shared/PremiumSaleCard';
 import PremiumFeature from '../../shared/PremiumFeature';
 import Mosaic from '../Community/Mosaic';
+import { ModalityCard } from './NewPostForm';
 
 import './index.css';
 
@@ -75,8 +76,10 @@ class Posts extends Component {
   }
 
   static contextType = AppContext;
+  modality = () => this.context.modality;
   user = () => this.context.user;
   users = () => this.context.users;
+
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
 
@@ -269,7 +272,9 @@ class Posts extends Component {
             </>
           )}
         </Col>
-        <Col></Col>
+        <Col>
+          <ModalityCard modalityKey={this.modality()} />
+        </Col>
       </Row>
     );
   }
