@@ -11,9 +11,14 @@ import { WriteDescription } from './Modality';
 import MODALITIES from './Modality/MODALITIES';
 
 const SelectModality = ({ setModality, modality, room }) => {
-  const arrayOfAvailableModalities = Object.entries(MODALITIES).filter(
-    ([key, MODALITY]) => MODALITY.available && MODALITY.room === room
-  );
+  const arrayOfAvailableModalities = Object.entries(MODALITIES)
+    .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
+    .sort(
+      ([aKey, a], [bKey, b]) =>
+        a.title &&
+        b.title &&
+        a.title.localeCompare(b.title, undefined, { ignorePunctuation: true })
+    );
 
   if (!arrayOfAvailableModalities || !arrayOfAvailableModalities.length > 0) {
     return null;
