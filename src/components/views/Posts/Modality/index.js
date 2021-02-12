@@ -74,8 +74,8 @@ export const SelectModality = ({ room }) => {
   );
 };
 
-export const ModalityCard = ({ modalityKey }) => {
-  const modality = MODALITIES[modalityKey];
+export const Modality = () => {
+  const modality = MODALITIES[useContext(AppContext).modality];
   if (!modality) return null;
   return (
     <Card border="warning">
