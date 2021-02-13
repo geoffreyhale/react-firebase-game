@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { withRouter } from 'react-router';
 import { AppContext } from '../../AppProvider';
-import { getUser } from '../../../api/index';
+import { getPosts, getUser } from '../../../api/index';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { UserPhoto } from '../../shared/User';
 import Spinner from '../../shared/Spinner';
@@ -37,6 +37,37 @@ const UserProfilePhotoBanner = ({ user }) => (
     </Card.ImgOverlay>
   </Card>
 );
+
+// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
+const modalityPointsReceivedFromOthers = ({ uid }) => {
+  let modalityPointsReceivedFromOthers = null;
+  getPosts((posts) => {
+    posts &&
+      typeof posts === 'object' &&
+      Object.values(posts)
+        .filter((post) => post.userId === uid && post.modality)
+        .forEach((post) => {
+          if (post.modality.votes && typeof post.modality.votes === 'object') {
+            const trueVotesFromOthers = Object.entries(
+              post.modality.votes
+            ).filter(([key, vote]) => key !== uid && vote === true);
+            modalityPointsReceivedFromOthers += trueVotesFromOthers.length;
+          }
+        });
+  });
+  return modalityPointsReceivedFromOthers;
+};
+
+const UserStats = ({ user }) => {
+  return (
+    <ListGroup>
+      <ListGroup.Item>
+        <strong>Modality Points Received From Others: </strong>
+        {modalityPointsReceivedFromOthers({ uid: user.uid })}
+      </ListGroup.Item>
+    </ListGroup>
+  );
+};
 
 const UserProfileTimes = ({ user }) => (
   <ListGroup>
@@ -91,6 +122,9 @@ class UserProfile extends React.Component {
           </Row>
           <Row>
             <Col md={6} className="mb-4">
+              <div className="mb-4">
+                <UserStats user={user} />
+              </div>
               <UserProfileTimes user={user} />
             </Col>
             <Col md={6}>
