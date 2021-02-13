@@ -141,12 +141,6 @@ const ScoreListGroupItem = ({ description, title, value, variant }) => (
   </ListGroup.Item>
 );
 
-/**
- * Profiling
- * With before: 23s
- * Without before: 10s/11s
- * With after refactor: 10s
- */
 class UserStats extends React.Component {
   constructor() {
     super();
