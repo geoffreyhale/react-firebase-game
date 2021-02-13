@@ -12,6 +12,7 @@ import Rooms from './views/Rooms';
 import { AppContext } from './AppProvider';
 import Page from './Page';
 import UserProfile from './views/UserProfile';
+import Settings from './views/Settings';
 
 const Routes = () => {
   const { setModality, user } = useContext(AppContext);
@@ -85,6 +86,15 @@ const Routes = () => {
           render={(props) => (
             <Page title="Community | xBook">
               <Community {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/settings"
+          key="/settings"
+          render={(props) => (
+            <Page title="Settings | xBook">
+              <Settings {...props} />
             </Page>
           )}
         />,
