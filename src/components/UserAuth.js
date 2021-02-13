@@ -33,16 +33,17 @@ export const LogInButton = ({ children, login, style }) => (
   </Button>
 );
 
-const UserAuth = ({ user, login, logout }) => {
-  if (user) {
-    return (
-      <>
-        <UserPhoto uid={user.uid} />
-        <AccountDropdownMenu logout={logout} />
-      </>
-    );
+const UserAuth = ({ login, logout }) => {
+  const { user } = useContext(AppContext);
+  if (!user) {
+    return <LogInButton login={login} />;
   }
-  return <LogInButton login={login} />;
+  return (
+    <>
+      <UserPhoto uid={user.uid} />
+      <AccountDropdownMenu logout={logout} />
+    </>
+  );
 };
 
 export default UserAuth;

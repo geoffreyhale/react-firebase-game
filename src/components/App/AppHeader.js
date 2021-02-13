@@ -45,7 +45,7 @@ const AppHeader = ({ user, login, logout }) => (
       <Card.Body>
         <AppHeaderTitle />
         <div style={{ float: 'right' }}>
-          <UserAuth user={user} login={login} logout={logout} />
+          <UserAuth login={login} logout={logout} />
         </div>
       </Card.Body>
     </Card>
