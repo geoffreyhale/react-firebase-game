@@ -132,6 +132,21 @@ const uniqueDaysPosted = ({ posts, uid }) => {
   }
 };
 
+const modalityVotesSubmittedForOthers = ({ posts, uid }) => {
+  // TODO dry this type check out of these functions
+  if (posts && typeof posts === 'object') {
+    return Object.values(posts).filter(
+      (post) =>
+        post.userId !== uid &&
+        !post.deleted &&
+        post.modality &&
+        post.modality.votes &&
+        typeof post.modality.votes === 'object' && //TODO do this elsewhere also
+        Object.keys(post.modality.votes).includes(uid)
+    ).length;
+  }
+};
+
 const ScoreListGroupItem = ({ description, title, value, variant }) => (
   <ListGroup.Item key={title} variant={variant}>
     <OverlayTrigger placement="top" overlay={<Tooltip>{description}</Tooltip>}>
@@ -170,18 +185,22 @@ class UserStats extends React.Component {
       uid,
     });
     const uniqueDaysPostedScore = uniqueDaysPosted({ posts, uid });
+    const modalityVotesSubmittedForOthersScore = modalityVotesSubmittedForOthers(
+      { posts, uid }
+    );
 
     const xBookScore =
       modalityPointsReceivedFromOthersScore * 10 +
       upvotesReceivedFromOthersScore +
       directRepliesReceivedFromOthersScore +
       repliesUpvotedByRecipientScore +
-      uniqueDaysPostedScore;
+      uniqueDaysPostedScore +
+      modalityVotesSubmittedForOthersScore * 5;
 
     return (
       <ListGroup>
         <ScoreListGroupItem
-          description="modality * 10 + upvotes + replies + replies upvoted + days posted"
+          description="modality * 10 + upvotes + replies + replies upvoted + days posted + modalityVotesSubmittedForOthersScore * 5"
           title="Score"
           value={xBookScore}
           variant="light"
@@ -210,6 +229,11 @@ class UserStats extends React.Component {
           description="Unique Days Posted"
           title="Days Posted"
           value={uniqueDaysPostedScore}
+        />
+        <ScoreListGroupItem
+          description="Modality Votes Submitted For Others"
+          title="Modality Votes Submitted"
+          value={modalityVotesSubmittedForOthersScore}
         />
       </ListGroup>
     );
