@@ -45,7 +45,7 @@ const modalityPointsReceivedFromOthers = ({ uid }) => {
     posts &&
       typeof posts === 'object' &&
       Object.values(posts)
-        .filter((post) => post.userId === uid && post.modality)
+        .filter((post) => post.userId === uid && post.modality && !post.deleted)
         .forEach((post) => {
           if (post.modality.votes && typeof post.modality.votes === 'object') {
             const trueVotesFromOthers = Object.entries(
@@ -65,7 +65,7 @@ const upvotesReceivedFromOthers = ({ uid }) => {
     posts &&
       typeof posts === 'object' &&
       Object.values(posts)
-        .filter((post) => post.userId === uid && post.upvote)
+        .filter((post) => post.userId === uid && post.upvote && !post.deleted)
         .forEach((post) => {
           if (typeof post.upvote === 'object') {
             const upvotesFromOthers = Object.entries(post.upvote).filter(
@@ -78,6 +78,25 @@ const upvotesReceivedFromOthers = ({ uid }) => {
   return upvotesReceivedFromOthers;
 };
 
+// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
+const directRepliesReceivedFromOthers = ({ uid }) => {
+  let directRepliesReceivedFromOthers = null;
+  getPosts((posts) => {
+    if (posts && typeof posts === 'object') {
+      const userPostsIds = Object.entries(posts)
+        .filter(([id, post]) => post.userId === uid && !post.deleted)
+        .map(([id, post]) => id);
+      directRepliesReceivedFromOthers += Object.values(posts).filter(
+        (post) =>
+          post.userId !== uid &&
+          !post.deleted &&
+          userPostsIds.includes(post.replyToId)
+      ).length;
+    }
+  });
+  return directRepliesReceivedFromOthers;
+};
+
 const UserStats = ({ user }) => {
   return (
     <ListGroup>
@@ -88,6 +107,10 @@ const UserStats = ({ user }) => {
       <ListGroup.Item key="upvotes">
         <strong>Upvotes Received From Others: </strong>
         {upvotesReceivedFromOthers({ uid: user.uid })}
+      </ListGroup.Item>
+      <ListGroup.Item key="replies">
+        <strong>Replies Received From Others: </strong>
+        {directRepliesReceivedFromOthers({ uid: user.uid })}
       </ListGroup.Item>
     </ListGroup>
   );
