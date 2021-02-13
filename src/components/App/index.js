@@ -20,8 +20,8 @@ class App extends Component {
     super();
     this.state = {
       loading: true,
-      user: null,
-      users: null,
+      user: null, //TODO store this in context only
+      users: null, //TODO store this in context only
     };
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
@@ -120,11 +120,7 @@ class App extends Component {
             <Container fluid>
               <Row>
                 <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
-                  <AppHeader
-                    user={this.state.user}
-                    login={this.login}
-                    logout={this.logout}
-                  />
+                  <AppHeader login={this.login} logout={this.logout} />
                   {/* <SmartGuide /> */}
                   {this.state.loading ? (
                     <Spinner />

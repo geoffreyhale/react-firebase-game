@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import UserAuth from '../UserAuth';
 import AppNav from './AppNav';
 import logoImg from './logo192.png';
+import { AppContext } from '../AppProvider';
 
 const AppHeaderTitle = () => {
   // const taglines = [
@@ -39,29 +40,33 @@ const AppHeaderTitle = () => {
   );
 };
 
-const AppHeader = ({ user, login, logout }) => (
-  <header>
-    <Card>
-      <Card.Body>
-        <AppHeaderTitle />
-        <div style={{ float: 'right' }}>
-          <UserAuth login={login} logout={logout} />
-        </div>
-      </Card.Body>
-    </Card>
-    {user && (
-      <Card className="mt-1">
-        <Card.Body
-          style={{
-            paddingBottom: '0.25rem',
-            paddingTop: '0.25rem',
-          }}
-        >
-          <AppNav />
+const AppHeader = ({ login, logout }) => {
+  const { user } = useContext(AppContext);
+
+  return (
+    <header>
+      <Card>
+        <Card.Body>
+          <AppHeaderTitle />
+          <div style={{ float: 'right' }}>
+            <UserAuth login={login} logout={logout} />
+          </div>
         </Card.Body>
       </Card>
-    )}
-  </header>
-);
+      {user && (
+        <Card className="mt-1">
+          <Card.Body
+            style={{
+              paddingBottom: '0.25rem',
+              paddingTop: '0.25rem',
+            }}
+          >
+            <AppNav />
+          </Card.Body>
+        </Card>
+      )}
+    </header>
+  );
+};
 
 export default AppHeader;
