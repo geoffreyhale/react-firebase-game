@@ -217,9 +217,6 @@ export default class Admin extends React.Component {
                 </Card.Body>
               </Card>
             </Tab>
-            <Tab eventKey="posts" title="Posts">
-              <Posts posts={this.state.posts} />
-            </Tab>
             <Tab eventKey="accounting" title="Accounting">
               <Accounting
                 accounting={this.state.accounting}
