@@ -39,6 +39,7 @@ const Funnel = ({ usersArray }) => {
   const hasLastLogin = usersArray.filter((user) => user.lastLogin).length;
   const hasLastOnline = usersArray.filter((user) => user.lastOnline).length;
   const countPremium = usersArray.filter((user) => user.isPremium).length;
+  const premiumPercentage = Math.round((countPremium / countTotal) * 100);
   const active1h = usersArray.filter((user) => {
     return user.lastOnline && Date.now() - user.lastOnline < 3600000;
   }).length;
@@ -64,7 +65,7 @@ const Funnel = ({ usersArray }) => {
     {
       id: 'countPremium',
       value: countPremium,
-      label: `Premium (${Math.round((countPremium / countTotal) * 100)}%)`,
+      label: `Premium (${premiumPercentage}%)`,
     },
   ];
 

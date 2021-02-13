@@ -13,6 +13,34 @@ import Accounting from './Accounting';
 import Funnel from './Funnel';
 import Posts from './Posts';
 
+const Users = ({ usersArray, posts }) => {
+  //TODO most of these are duplicated from Funnel
+  const countTotal = usersArray.length;
+  const countPremium = usersArray.filter((user) => user.isPremium).length;
+  const premiumPercentage = Math.round((countPremium / countTotal) * 100);
+  const countUsedModality = Object.values(posts)
+    .filter((post) => !post.deleted && post.modality)
+    .map((post) => post.userId)
+    .filter((uid, i, self) => self.indexOf(uid) === i).length;
+  const usedModalityPercentage = Math.round(
+    (countUsedModality / countTotal) * 100
+  );
+  return (
+    <>
+      <div>
+        <strong>Registered:</strong> {countTotal}
+      </div>
+      <div>
+        <strong>Premium:</strong> {countPremium} ({premiumPercentage}%)
+      </div>
+      <div>
+        <strong>Used Modality:</strong> {countUsedModality} (
+        {usedModalityPercentage}%)
+      </div>
+    </>
+  );
+};
+
 const UsersTable = ({ setSort, usersArray }) => (
   <Table bordered hover size="sm">
     <thead>
@@ -133,10 +161,23 @@ export default class Admin extends React.Component {
       <Card>
         <Card.Body>
           <Card.Title>Admin Dashboard</Card.Title>
-          <div style={{ display: 'inline-block' }} className="mb-3">
-            <Posts posts={this.state.posts} />
+          <div style={{ display: 'inline-block' }}>
+            <Card>
+              <Card.Body>
+                <Card.Title>Users</Card.Title>
+                <Users usersArray={usersArray} posts={this.state.posts} />
+              </Card.Body>
+            </Card>
           </div>
-          <Tabs defaultActiveKey="users" className="mb-3">
+          <div className="ml-3" style={{ display: 'inline-block' }}>
+            <Card>
+              <Card.Body>
+                <Card.Title>Posts</Card.Title>
+                <Posts posts={this.state.posts} />
+              </Card.Body>
+            </Card>
+          </div>
+          <Tabs defaultActiveKey="users" className="my-3">
             <Tab eventKey="users" title="Users">
               <Card className={'mt-3'}>
                 <Card.Body>

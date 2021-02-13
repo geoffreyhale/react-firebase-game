@@ -40,28 +40,25 @@ const Posts = ({ posts }) => {
   });
 
   return (
-    <Card>
-      <Card.Body>
-        <Card.Title>Posts</Card.Title>
-        <div>total posts count: {count}</div>
-        <div>orphans (undefined room): {postsWithNoRoom.length}</div>
-        {postsWithNoRoom.map((post) => (
-          <div>id: {post.id}</div>
-        ))}
-        <div>deleted: {postsDeleted.length}</div>
+    <>
+      <div>total posts count: {count}</div>
+      <div>orphans (undefined room): {postsWithNoRoom.length}</div>
+      {postsWithNoRoom.map((post) => (
+        <div>id: {post.id}</div>
+      ))}
+      <div>deleted: {postsDeleted.length}</div>
+      <div>
+        deleted w no replies (removable): {postsDeletedWithNoReplies.length}
+      </div>
+      {postsDeletedWithNoReplies.map((post) => (
         <div>
-          deleted w no replies (removable): {postsDeletedWithNoReplies.length}
+          id:{' '}
+          <PostLink id={post.id} room={post.room}>
+            {post.id}
+          </PostLink>
         </div>
-        {postsDeletedWithNoReplies.map((post) => (
-          <div>
-            id:{' '}
-            <PostLink id={post.id} room={post.room}>
-              {post.id}
-            </PostLink>
-          </div>
-        ))}
-      </Card.Body>
-    </Card>
+      ))}
+    </>
   );
 };
 
