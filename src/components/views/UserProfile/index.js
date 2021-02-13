@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { withRouter } from 'react-router';
 import { AppContext } from '../../AppProvider';
 import { getPosts, getUser } from '../../../api/index';
@@ -117,9 +119,12 @@ const repliesUpvotedByRecipient = ({ posts, uid }) => {
   return repliesUpvotedByRecipient;
 };
 
-const ScoreListGroupItem = ({ title, value, variant }) => (
+const ScoreListGroupItem = ({ description, title, value, variant }) => (
   <ListGroup.Item key={title} variant={variant}>
-    <strong>{title}:</strong> {value}
+    <OverlayTrigger placement="top" overlay={<Tooltip>{description}</Tooltip>}>
+      <strong>{title}:</strong>
+    </OverlayTrigger>{' '}
+    {value}
   </ListGroup.Item>
 );
 
@@ -167,24 +172,29 @@ class UserStats extends React.Component {
     return (
       <ListGroup>
         <ScoreListGroupItem
+          description="modality * 10 + upvotes + replies + replies upvoted"
           title="xBook Score"
           value={xBookScore}
           variant="light"
         />
         <ScoreListGroupItem
-          title="Modality Points Received From Others"
+          description="Modality Points Received From Others"
+          title="Modality Points Received"
           value={modalityPointsReceivedFromOthersScore}
         />
         <ScoreListGroupItem
-          title="Upvotes Received From Others"
+          description="Upvotes Received From Others"
+          title="Upvotes Received"
           value={upvotesReceivedFromOthersScore}
         />
         <ScoreListGroupItem
-          title="Replies Received From Others"
+          description="Replies Received From Others"
+          title="Replies Received"
           value={directRepliesReceivedFromOthersScore}
         />
         <ScoreListGroupItem
-          title="Replies Upvoted By Recipient"
+          description="Replies Upvoted By Recipient"
+          title="Recipient Upvotes"
           value={repliesUpvotedByRecipientScore}
         />
       </ListGroup>
