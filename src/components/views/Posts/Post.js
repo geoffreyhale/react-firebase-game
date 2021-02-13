@@ -8,6 +8,7 @@ import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import MyDropdownToggle from '../../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../../AppProvider';
+import PostLink from '../../shared/PostLink';
 import Tag from '../../shared/Tag';
 import { addTag, createPost, deletePost, editPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
@@ -134,7 +135,6 @@ export const PostHeader = ({
   const postId = post.id;
   const isMyPost = user.uid === post.userId;
   const showActions = isMyPost;
-  const postUrl = `/r/${hackRoom}/posts/${postId}`;
 
   return (
     <>
@@ -172,7 +172,9 @@ export const PostHeader = ({
           </div>
           {hideActionsAndTimestamp ? null : (
             <div className="small text-muted">
-              <Link to={postUrl}>{friendlyTimestamp(timestamp)}</Link>
+              <PostLink room={hackRoom} id={postId}>
+                {friendlyTimestamp(timestamp)}
+              </PostLink>
             </div>
           )}
         </>
