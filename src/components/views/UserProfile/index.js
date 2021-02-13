@@ -58,12 +58,36 @@ const modalityPointsReceivedFromOthers = ({ uid }) => {
   return modalityPointsReceivedFromOthers;
 };
 
+// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
+const upvotesReceivedFromOthers = ({ uid }) => {
+  let upvotesReceivedFromOthers = null;
+  getPosts((posts) => {
+    posts &&
+      typeof posts === 'object' &&
+      Object.values(posts)
+        .filter((post) => post.userId === uid && post.upvote)
+        .forEach((post) => {
+          if (typeof post.upvote === 'object') {
+            const upvotesFromOthers = Object.entries(post.upvote).filter(
+              ([key, vote]) => key !== uid
+            );
+            upvotesReceivedFromOthers += upvotesFromOthers.length;
+          }
+        });
+  });
+  return upvotesReceivedFromOthers;
+};
+
 const UserStats = ({ user }) => {
   return (
     <ListGroup>
-      <ListGroup.Item>
+      <ListGroup.Item key="modality">
         <strong>Modality Points Received From Others: </strong>
         {modalityPointsReceivedFromOthers({ uid: user.uid })}
+      </ListGroup.Item>
+      <ListGroup.Item key="upvotes">
+        <strong>Upvotes Received From Others: </strong>
+        {upvotesReceivedFromOthers({ uid: user.uid })}
       </ListGroup.Item>
     </ListGroup>
   );
