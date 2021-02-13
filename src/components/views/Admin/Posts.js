@@ -29,16 +29,30 @@ const Posts = ({ posts }) => {
   Object.keys(posts).map((key) => {
     posts[key].id = key;
   });
+
   const count = Object.keys(posts).length;
   const postsWithNoRoom = Object.values(posts).filter((post) => !post.room);
+  const postsDeleted = Object.values(posts).filter(
+    (post) => post.deleted === true
+  );
+  const postsDeletedWithNoReplies = postsDeleted.filter((post) => {
+    return !Object.values(posts).includes((post) => post.replyToId === post.id);
+  });
 
   return (
     <Card>
       <Card.Body>
         <Card.Title>Posts</Card.Title>
-        <div>count: {count}</div>
+        <div>total posts count: {count}</div>
         <div>orphans (undefined room): {postsWithNoRoom.length}</div>
         {postsWithNoRoom.map((post) => (
+          <div>id: {post.id}</div>
+        ))}
+        <div>deleted: {postsDeleted.length}</div>
+        <div>
+          deleted w no replies (removable): {postsDeletedWithNoReplies.length}
+        </div>
+        {postsDeletedWithNoReplies.map((post) => (
           <div>id: {post.id}</div>
         ))}
       </Card.Body>
