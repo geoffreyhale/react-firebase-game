@@ -43,115 +43,102 @@ const UserProfilePhotoBanner = ({ user }) => (
 
 const modalityPointsReceivedFromOthers = ({ posts, uid }) => {
   let modalityPointsReceivedFromOthers = null;
-  posts &&
-    typeof posts === 'object' &&
-    Object.values(posts)
-      .filter(
-        (post) =>
-          post.userId === uid &&
-          post.modality &&
-          !post.deleted &&
-          post.modality.votes &&
-          typeof post.modality.votes === 'object'
-      )
-      .forEach((post) => {
-        modalityPointsReceivedFromOthers += Object.entries(
-          post.modality.votes
-        ).filter(([key, vote]) => key !== uid && vote === true).length;
-      });
+  Object.values(posts)
+    .filter(
+      (post) =>
+        post.userId === uid &&
+        post.modality &&
+        !post.deleted &&
+        post.modality.votes &&
+        typeof post.modality.votes === 'object'
+    )
+    .forEach((post) => {
+      modalityPointsReceivedFromOthers += Object.entries(
+        post.modality.votes
+      ).filter(([key, vote]) => key !== uid && vote === true).length;
+    });
   return modalityPointsReceivedFromOthers;
 };
 
 const upvotesReceivedFromOthers = ({ posts, uid }) => {
   let upvotesReceivedFromOthers = null;
-  posts &&
-    typeof posts === 'object' &&
-    Object.values(posts)
-      .filter(
-        (post) =>
-          post.userId === uid &&
-          post.upvote &&
-          typeof post.upvote === 'object' &&
-          !post.deleted
-      )
-      .forEach((post) => {
-        upvotesReceivedFromOthers += Object.entries(post.upvote).filter(
-          ([key, vote]) => key !== uid
-        ).length;
-      });
+  Object.values(posts)
+    .filter(
+      (post) =>
+        post.userId === uid &&
+        post.upvote &&
+        typeof post.upvote === 'object' &&
+        !post.deleted
+    )
+    .forEach((post) => {
+      upvotesReceivedFromOthers += Object.entries(post.upvote).filter(
+        ([key, vote]) => key !== uid
+      ).length;
+    });
   return upvotesReceivedFromOthers;
 };
 
 const directRepliesReceivedFromOthers = ({ posts, uid }) => {
   let directRepliesReceivedFromOthers = null;
-  if (posts && typeof posts === 'object') {
-    const userPostsIds = Object.entries(posts)
-      .filter(([id, post]) => post.userId === uid && !post.deleted)
-      .map(([id, post]) => id);
-    directRepliesReceivedFromOthers += Object.values(posts).filter(
-      (post) =>
-        post.userId !== uid &&
-        !post.deleted &&
-        userPostsIds.includes(post.replyToId)
-    ).length;
-  }
+  const userPostsIds = Object.entries(posts)
+    .filter(([id, post]) => post.userId === uid && !post.deleted)
+    .map(([id, post]) => id);
+  directRepliesReceivedFromOthers += Object.values(posts).filter(
+    (post) =>
+      post.userId !== uid &&
+      !post.deleted &&
+      userPostsIds.includes(post.replyToId)
+  ).length;
   return directRepliesReceivedFromOthers;
 };
 
 const repliesUpvotedByRecipient = ({ posts, uid }) => {
   let repliesUpvotedByRecipient = null;
-  if (posts && typeof posts === 'object') {
-    const otherUsersPosts = Object.entries(posts)
-      .filter(([id, post]) => post.userId !== uid && !post.deleted)
-      .map(([id, post]) => {
-        post.id = id;
-        return post;
-      });
-    repliesUpvotedByRecipient += Object.values(posts).filter((post) => {
-      const otherUsersPost = otherUsersPosts.find(
-        (otherUserPost) => otherUserPost.id === post.replyToId
-      );
-      return (
-        post.userId === uid &&
-        !post.deleted &&
-        otherUsersPost &&
-        typeof post.upvote === 'object' &&
-        Object.keys(post.upvote).includes(otherUsersPost.userId)
-      );
-    }).length;
-  }
+  const otherUsersPosts = Object.entries(posts)
+    .filter(([id, post]) => post.userId !== uid && !post.deleted)
+    .map(([id, post]) => {
+      post.id = id;
+      return post;
+    });
+  repliesUpvotedByRecipient += Object.values(posts).filter((post) => {
+    const otherUsersPost = otherUsersPosts.find(
+      (otherUserPost) => otherUserPost.id === post.replyToId
+    );
+    return (
+      post.userId === uid &&
+      !post.deleted &&
+      otherUsersPost &&
+      typeof post.upvote === 'object' &&
+      Object.keys(post.upvote).includes(otherUsersPost.userId)
+    );
+  }).length;
   return repliesUpvotedByRecipient;
 };
 
 const uniqueDaysPosted = ({ posts, uid }) => {
-  if (posts && typeof posts === 'object') {
-    const uniqueDays = [];
-    const userPosts = Object.values(posts)
-      .filter((post) => post.userId === uid && !post.deleted)
-      .forEach((post) => {
-        if (
-          !uniqueDays.some((timestamp) => isSameDay(timestamp, post.timestamp))
-        ) {
-          uniqueDays.push(post.timestamp);
-        }
-      });
-    return uniqueDays.length;
-  }
+  const uniqueDays = [];
+  const userPosts = Object.values(posts)
+    .filter((post) => post.userId === uid && !post.deleted)
+    .forEach((post) => {
+      if (
+        !uniqueDays.some((timestamp) => isSameDay(timestamp, post.timestamp))
+      ) {
+        uniqueDays.push(post.timestamp);
+      }
+    });
+  return uniqueDays.length;
 };
 
 const modalityVotesSubmittedForOthers = ({ posts, uid }) => {
-  // TODO dry this type check out of these functions
-  if (posts && typeof posts === 'object') {
-    return Object.values(posts).filter(
-      (post) =>
-        post.userId !== uid &&
-        !post.deleted &&
-        post.modality &&
-        post.modality.votes &&
-        typeof post.modality.votes === 'object' &&
-        Object.keys(post.modality.votes).includes(uid)
-    ).length;
-  }
+  return Object.values(posts).filter(
+    (post) =>
+      post.userId !== uid &&
+      !post.deleted &&
+      post.modality &&
+      post.modality.votes &&
+      typeof post.modality.votes === 'object' &&
+      Object.keys(post.modality.votes).includes(uid)
+  ).length;
 };
 
 const ScoreListGroupItem = ({ description, title, value, variant }) => (
@@ -166,7 +153,7 @@ const ScoreListGroupItem = ({ description, title, value, variant }) => (
 class UserStats extends React.Component {
   constructor() {
     super();
-    this.state = { posts: {} };
+    this.state = { posts: null };
   }
 
   componentDidMount() {
@@ -176,6 +163,14 @@ class UserStats extends React.Component {
   render() {
     const { uid } = this.props.user;
     const { posts } = this.state;
+
+    if (!posts || typeof posts !== 'object') {
+      return (
+        <ListGroup>
+          <Spinner />
+        </ListGroup>
+      );
+    }
 
     const modalityPointsReceivedFromOthersScore = modalityPointsReceivedFromOthers(
       { posts, uid }
