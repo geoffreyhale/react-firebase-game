@@ -5,11 +5,15 @@ import Table from 'react-bootstrap/Table';
 import Tabs from 'react-bootstrap/Tabs';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { AppContext } from '../../AppProvider';
-import { getPosts, getUsersRealtimeDatabase } from '../../../api/index';
+import {
+  getAccounting,
+  getPosts,
+  getUsersRealtimeDatabase,
+} from '../../../api/index';
 import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingTypes';
 import Spinner from '../../shared/Spinner';
 import { isPremium, User } from '../../shared/User';
-import Accounting from './Accounting';
+import Accounting, { AccountingMiniCard } from './Accounting';
 import Funnel from './Funnel';
 import Posts from './Posts';
 
@@ -79,6 +83,7 @@ export default class Admin extends React.Component {
   constructor() {
     super();
     this.state = {
+      accounting: {},
       posts: {},
       users: {},
       sortKey: 'lastOnline',
@@ -99,6 +104,11 @@ export default class Admin extends React.Component {
     getPosts((posts) => {
       this.setState({ posts });
     });
+    getAccounting((accounting) =>
+      this.setState({
+        accounting,
+      })
+    );
   }
 
   sort(propertyName) {
@@ -180,6 +190,17 @@ export default class Admin extends React.Component {
               </Card.Body>
             </Card>
           </div>
+          <div className="ml-3" style={{ display: 'inline-block' }}>
+            <Card>
+              <Card.Body>
+                <Card.Title>Accounting</Card.Title>
+                <AccountingMiniCard
+                  accounting={this.state.accounting}
+                  users={this.state.users}
+                />
+              </Card.Body>
+            </Card>
+          </div>
           <Tabs defaultActiveKey="users" className="my-3">
             <Tab eventKey="users" title="Users">
               <Card className={'mt-3'}>
@@ -200,7 +221,10 @@ export default class Admin extends React.Component {
               <Posts posts={this.state.posts} />
             </Tab>
             <Tab eventKey="accounting" title="Accounting">
-              <Accounting users={this.state.users} />
+              <Accounting
+                accounting={this.state.accounting}
+                users={this.state.users}
+              />
             </Tab>
           </Tabs>
         </Card.Body>
