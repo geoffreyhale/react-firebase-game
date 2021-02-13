@@ -5,6 +5,21 @@ import { Link } from 'react-router-dom';
 import MyDropdownToggle from './shared/MyDropdownToggle';
 import { UserPhoto } from './shared/User';
 
+const AccountDropdownMenu = ({ logout }) => (
+  <Dropdown className="float-right">
+    <MyDropdownToggle />
+    <Dropdown.Menu>
+      <Dropdown.Item as={Link} to="/settings">
+        Settings
+      </Dropdown.Item>
+      <Dropdown.Divider />
+      <Dropdown.Item as="button" onClick={logout}>
+        Log Out
+      </Dropdown.Item>
+    </Dropdown.Menu>
+  </Dropdown>
+);
+
 export const LogInButton = ({ children, login, style }) => (
   <Button variant="primary" onClick={login} style={style}>
     {children || 'Log In'}
@@ -17,18 +32,7 @@ const UserAuth = ({ user, login, logout }) => {
     return (
       <>
         <UserPhoto uid={user.uid} />
-        <Dropdown className="float-right">
-          <MyDropdownToggle />
-          <Dropdown.Menu>
-            <Dropdown.Item as={Link} to="/settings">
-              Settings
-            </Dropdown.Item>
-            <Dropdown.Divider />
-            <Dropdown.Item as="button" onClick={logout}>
-              Log Out
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        <AccountDropdownMenu logout={logout} />
       </>
     );
   }
