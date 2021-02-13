@@ -41,14 +41,21 @@ const Posts = ({ posts }) => {
 
   return (
     <>
-      <div>total posts count: {count}</div>
-      <div>orphans (undefined room): {postsWithNoRoom.length}</div>
+      <div>
+        <strong>Total:</strong> {count}
+      </div>
+      <div title="posts w undefined room">
+        <strong>Room Orphans:</strong> {postsWithNoRoom.length}
+      </div>
       {postsWithNoRoom.map((post) => (
         <div>id: {post.id}</div>
       ))}
-      <div>deleted: {postsDeleted.length}</div>
       <div>
-        deleted w no replies (removable): {postsDeletedWithNoReplies.length}
+        <strong>Deleted:</strong> {postsDeleted.length}
+      </div>
+      <div>
+        <strong title="deleted w no replies">Removable:</strong>
+        {postsDeletedWithNoReplies.length}
       </div>
       {postsDeletedWithNoReplies.map((post) => (
         <div>
