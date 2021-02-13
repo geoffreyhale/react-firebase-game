@@ -1,3 +1,4 @@
+import isSameDay from 'date-fns/isSameDay';
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -40,7 +41,6 @@ const UserProfilePhotoBanner = ({ user }) => (
   </Card>
 );
 
-// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
 const modalityPointsReceivedFromOthers = ({ posts, uid }) => {
   let modalityPointsReceivedFromOthers = null;
   posts &&
@@ -58,7 +58,6 @@ const modalityPointsReceivedFromOthers = ({ posts, uid }) => {
   return modalityPointsReceivedFromOthers;
 };
 
-// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
 const upvotesReceivedFromOthers = ({ posts, uid }) => {
   let upvotesReceivedFromOthers = null;
   posts &&
@@ -76,7 +75,6 @@ const upvotesReceivedFromOthers = ({ posts, uid }) => {
   return upvotesReceivedFromOthers;
 };
 
-// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
 const directRepliesReceivedFromOthers = ({ posts, uid }) => {
   let directRepliesReceivedFromOthers = null;
   if (posts && typeof posts === 'object') {
@@ -93,7 +91,6 @@ const directRepliesReceivedFromOthers = ({ posts, uid }) => {
   return directRepliesReceivedFromOthers;
 };
 
-// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
 const repliesUpvotedByRecipient = ({ posts, uid }) => {
   let repliesUpvotedByRecipient = null;
   if (posts && typeof posts === 'object') {
@@ -117,6 +114,22 @@ const repliesUpvotedByRecipient = ({ posts, uid }) => {
     }).length;
   }
   return repliesUpvotedByRecipient;
+};
+
+const uniqueDaysPosted = ({ posts, uid }) => {
+  if (posts && typeof posts === 'object') {
+    const uniqueDays = [];
+    const userPosts = Object.values(posts)
+      .filter((post) => post.userId === uid && !post.deleted)
+      .forEach((post) => {
+        if (
+          !uniqueDays.some((timestamp) => isSameDay(timestamp, post.timestamp))
+        ) {
+          uniqueDays.push(post.timestamp);
+        }
+      });
+    return uniqueDays.length;
+  }
 };
 
 const ScoreListGroupItem = ({ description, title, value, variant }) => (
@@ -162,17 +175,19 @@ class UserStats extends React.Component {
       posts,
       uid,
     });
+    const uniqueDaysPostedScore = uniqueDaysPosted({ posts, uid });
 
     const xBookScore =
       modalityPointsReceivedFromOthersScore * 10 +
       upvotesReceivedFromOthersScore +
       directRepliesReceivedFromOthersScore +
-      repliesUpvotedByRecipientScore;
+      repliesUpvotedByRecipientScore +
+      uniqueDaysPostedScore;
 
     return (
       <ListGroup>
         <ScoreListGroupItem
-          description="modality * 10 + upvotes + replies + replies upvoted"
+          description="modality * 10 + upvotes + replies + replies upvoted + days posted"
           title="Score"
           value={xBookScore}
           variant="light"
@@ -196,6 +211,11 @@ class UserStats extends React.Component {
           description="Replies Upvoted By Recipient"
           title="Recipient Upvotes"
           value={repliesUpvotedByRecipientScore}
+        />
+        <ScoreListGroupItem
+          description="Unique Days Posted"
+          title="Days Posted"
+          value={uniqueDaysPostedScore}
         />
       </ListGroup>
     );
