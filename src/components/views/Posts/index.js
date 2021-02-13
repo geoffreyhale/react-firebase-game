@@ -281,9 +281,7 @@ class Posts extends Component {
             </>
           )}
         </Col>
-        <Col>
-          <Modality room={this.props.room.id} />
-        </Col>
+        <Col>{!isSinglePostPage && <Modality room={this.props.room.id} />}</Col>
       </Row>
     );
   }
