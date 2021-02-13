@@ -1,12 +1,13 @@
 # FOCUS
 
 1. security
-   - do not query all posts, do not return all posts; chunks please, for (1) security and (2) performance
+   - database rules
 2. features
-   - Modality feature
-   - build for activity, connection, safety and depth; constructive conversation; healthy relating, productivity, health
 3. activity
-   - handful of obsessed users, hundred daily users, ten thousand registered users
+   - handful of obsessed users
+   - hundred daily users
+4. performance
+   - do not query all posts
 
 ## ...
 
@@ -14,6 +15,11 @@
 2. user activity
 3. app unique value
 4. sales
+
+# TODO
+
+- Smart Guide prototype
+- consolidate stats, store them, update them selectively for performance, competitive gamification
 
 ## Top Tier
 
