@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import countWords from '../../shared/countWords';
 import postsTreeFromRawPosts from '../../shared/postsTreeFromRawPosts';
-// import MyScatterPlot from './MyScatterPlot';
 
 const pushReplyCountWordCountObjects = (
   post,
@@ -33,26 +32,6 @@ const Posts = ({ posts }) => {
   const count = Object.keys(posts).length;
   const postsWithNoRoom = Object.values(posts).filter((post) => !post.room);
 
-  // const replyCountByWordCountObjectsArray = [];
-  // const postsTree = postsTreeFromRawPosts({
-  //   flatPostsArray: Object.values(posts),
-  //   // users,
-  // });
-  // pushReplyCountWordCountObjects(
-  //   { childNodes: postsTree.posts },
-  //   replyCountByWordCountObjectsArray
-  // );
-  //
-  // const dataForScatterPlot = [
-  //   {
-  //     id: 'reply count per word count',
-  //     data: replyCountByWordCountObjectsArray.map((data) => ({
-  //       x: data.wordCount,
-  //       y: data.replyCount,
-  //     })),
-  //   },
-  // ];
-
   return (
     <Card>
       <Card.Body>
@@ -62,7 +41,6 @@ const Posts = ({ posts }) => {
         {postsWithNoRoom.map((post) => (
           <div>id: {post.id}</div>
         ))}
-        {/* <MyScatterPlot data={dataForScatterPlot} /> */}
       </Card.Body>
     </Card>
   );
