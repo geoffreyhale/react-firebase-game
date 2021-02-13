@@ -36,7 +36,7 @@ const Posts = ({ posts }) => {
     (post) => post.deleted === true
   );
   const postsDeletedWithNoReplies = postsDeleted.filter((post) => {
-    return !Object.values(posts).includes((post) => post.replyToId === post.id);
+    return !Object.values(posts).some((p) => p.replyToId === post.id);
   });
 
   return (
