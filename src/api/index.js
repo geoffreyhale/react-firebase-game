@@ -3,12 +3,12 @@ import { isPremium } from '../components/shared/User';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 const postsRef = () => firebase.database().ref('posts');
-const notificationUserPostRef = ({ userId, postId }) =>
-  firebase.database().ref('notifications/' + userId + '/' + postId);
-const notificationsRef = ({ userId }) =>
-  firebase.database().ref('notifications/' + userId);
-const upvoteUserRef = ({ postId, userId }) =>
-  firebase.database().ref('posts/' + postId + '/upvote/' + userId);
+const notificationUserPostRef = ({ uid, postId }) =>
+  firebase.database().ref('notifications/' + uid + '/' + postId);
+const notificationsRef = ({ uid }) =>
+  firebase.database().ref('notifications/' + uid);
+const upvoteUserRef = ({ postId, uid }) =>
+  firebase.database().ref('posts/' + postId + '/upvote/' + uid);
 const upvoteRef = ({ postId }) =>
   firebase.database().ref('posts/' + postId + '/upvote');
 
@@ -30,28 +30,28 @@ export const addTag = ({ postId, content, successCallback, uid }) => {
 
 // post w id postId received a reply
 // add a notification for the user who authored the post
-const addNotifications = ({ postId, myUserId }) => {
+const addNotifications = ({ postId, uid }) => {
   postRef(postId)
     .once('value')
     .then((snapshot) => {
       const post = snapshot.val();
-      const userId = post.userId;
-      if (userId === myUserId) {
+      const postUserId = post.userId;
+      if (postUserId === uid) {
         // do not notify user of post from themselves
         return;
       }
-      notificationUserPostRef({ userId, postId }).update({
-        [myUserId]: firebase.database.ServerValue.TIMESTAMP,
+      notificationUserPostRef({ uid: postUserId, postId }).update({
+        [uid]: firebase.database.ServerValue.TIMESTAMP,
       });
     });
 };
 
 // TODO get rid of old count notifiations and should always require userId here
-export const removeNotification = ({ postId, myUserId, userId = null }) => {
+export const removeNotification = ({ postId, uid, userId = null }) => {
   if (userId) {
-    notificationsRef({ userId: myUserId }).child(postId).child(userId).remove();
+    notificationsRef({ uid }).child(postId).child(userId).remove();
   } else {
-    notificationsRef({ userId: myUserId }).child(postId).remove();
+    notificationsRef({ uid }).child(postId).remove();
   }
 };
 
@@ -91,9 +91,9 @@ export const createPost = ({
   postsRef()
     .child(key)
     .update(post)
-    .then(replyToId && addNotifications({ postId: replyToId, myUserId: uid }))
+    .then(replyToId && addNotifications({ postId: replyToId, uid }))
     .then(successCallback());
-  toggleUpvote({ postId: key, userId: uid });
+  toggleUpvote({ postId: key, uid });
 };
 
 export const deletePost = ({ postId }) => {
@@ -217,23 +217,23 @@ export const updateUser = ({ uid, user }, then) => {
   then();
 };
 
-export const toggleUpvote = ({ postId, userId }) => {
-  upvoteUserRef({ postId, userId })
+export const toggleUpvote = ({ postId, uid }) => {
+  upvoteUserRef({ postId, uid })
     .once('value')
     .then((snapshot) => {
       const upvoteExists = !!snapshot.val();
       if (upvoteExists) {
-        upvoteUserRef({ postId, userId }).remove();
+        upvoteUserRef({ postId, uid }).remove();
       } else {
-        upvoteUserRef({ postId, userId }).set(
+        upvoteUserRef({ postId, uid }).set(
           firebase.database.ServerValue.TIMESTAMP
         );
       }
     });
 };
 
-export const hasMyUpvote = ({ postId, userId }, callback) => {
-  upvoteUserRef({ postId, userId }).on('value', (snapshot) => {
+export const hasMyUpvote = ({ postId, uid }, callback) => {
+  upvoteUserRef({ postId, uid }).on('value', (snapshot) => {
     const upvoteExists = !!snapshot.val();
     callback(upvoteExists);
   });

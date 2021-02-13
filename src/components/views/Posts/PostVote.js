@@ -17,9 +17,9 @@ export class Upvote extends React.Component {
 
   componentDidMount() {
     const { postId } = this.props;
-    const userId = this.user().uid;
+    const uid = this.user().uid;
 
-    hasMyUpvote({ postId, userId }, (hasMyUpvote) =>
+    hasMyUpvote({ postId, uid }, (hasMyUpvote) =>
       this.setState({
         hasMyUpvote,
       })
@@ -34,11 +34,11 @@ export class Upvote extends React.Component {
 
   render() {
     const { postId } = this.props;
-    const userId = this.user().uid;
+    const uid = this.user().uid;
 
     return (
       <PostMenuBarItem
-        onClick={() => toggleUpvote({ postId, userId })}
+        onClick={() => toggleUpvote({ postId, uid })}
         active={this.state.hasMyUpvote}
       >
         &#8593; {this.state.count}

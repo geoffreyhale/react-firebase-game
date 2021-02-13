@@ -38,7 +38,7 @@ const RemoveNotificationButton = ({ postId, userId }) => {
       onClick={() =>
         removeNotification({
           postId: postId,
-          myUserId: user.uid,
+          uid: user.uid,
           userId: userId,
         })
       }

@@ -76,6 +76,7 @@
 - manually fix old post links, there's not many of them
 - the mark-post/thread-as-seen button should be more like a universal hide-until-new-stuff; Unseen feed should be obsolute, just a layer available on any other feed
 - a top level post (without replyToId) is akin to a thread-head; a thread would keep useful meta-data, eg whether anyone had replied to any message in the thread since you last visited it
+- change post 'userId' to 'uid'
 - change db 'upvote' to 'upvotes'
 - https://www.robinwieruch.de/react-firebase-realtime-database
 - move Tag Stats to home / Posts page
