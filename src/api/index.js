@@ -93,6 +93,7 @@ export const createPost = ({
     .update(post)
     .then(replyToId && addNotifications({ postId: replyToId, myUserId: uid }))
     .then(successCallback());
+  toggleUpvote({ postId: key, userId: uid });
 };
 
 export const deletePost = ({ postId }) => {
