@@ -39,114 +39,126 @@ const UserProfilePhotoBanner = ({ user }) => (
 );
 
 // TODO this is inefficient, calls getsPosts, calls it without orderBy filter
-const modalityPointsReceivedFromOthers = ({ uid }) => {
+const modalityPointsReceivedFromOthers = ({ posts, uid }) => {
   let modalityPointsReceivedFromOthers = null;
-  getPosts((posts) => {
-    posts &&
-      typeof posts === 'object' &&
-      Object.values(posts)
-        .filter((post) => post.userId === uid && post.modality && !post.deleted)
-        .forEach((post) => {
-          if (post.modality.votes && typeof post.modality.votes === 'object') {
-            const trueVotesFromOthers = Object.entries(
-              post.modality.votes
-            ).filter(([key, vote]) => key !== uid && vote === true);
-            modalityPointsReceivedFromOthers += trueVotesFromOthers.length;
-          }
-        });
-  });
+  posts &&
+    typeof posts === 'object' &&
+    Object.values(posts)
+      .filter((post) => post.userId === uid && post.modality && !post.deleted)
+      .forEach((post) => {
+        if (post.modality.votes && typeof post.modality.votes === 'object') {
+          const trueVotesFromOthers = Object.entries(
+            post.modality.votes
+          ).filter(([key, vote]) => key !== uid && vote === true);
+          modalityPointsReceivedFromOthers += trueVotesFromOthers.length;
+        }
+      });
   return modalityPointsReceivedFromOthers;
 };
 
 // TODO this is inefficient, calls getsPosts, calls it without orderBy filter
-const upvotesReceivedFromOthers = ({ uid }) => {
+const upvotesReceivedFromOthers = ({ posts, uid }) => {
   let upvotesReceivedFromOthers = null;
-  getPosts((posts) => {
-    posts &&
-      typeof posts === 'object' &&
-      Object.values(posts)
-        .filter((post) => post.userId === uid && post.upvote && !post.deleted)
-        .forEach((post) => {
-          if (typeof post.upvote === 'object') {
-            const upvotesFromOthers = Object.entries(post.upvote).filter(
-              ([key, vote]) => key !== uid
-            );
-            upvotesReceivedFromOthers += upvotesFromOthers.length;
-          }
-        });
-  });
+  posts &&
+    typeof posts === 'object' &&
+    Object.values(posts)
+      .filter((post) => post.userId === uid && post.upvote && !post.deleted)
+      .forEach((post) => {
+        if (typeof post.upvote === 'object') {
+          const upvotesFromOthers = Object.entries(post.upvote).filter(
+            ([key, vote]) => key !== uid
+          );
+          upvotesReceivedFromOthers += upvotesFromOthers.length;
+        }
+      });
   return upvotesReceivedFromOthers;
 };
 
 // TODO this is inefficient, calls getsPosts, calls it without orderBy filter
-const directRepliesReceivedFromOthers = ({ uid }) => {
+const directRepliesReceivedFromOthers = ({ posts, uid }) => {
   let directRepliesReceivedFromOthers = null;
-  getPosts((posts) => {
-    if (posts && typeof posts === 'object') {
-      const userPostsIds = Object.entries(posts)
-        .filter(([id, post]) => post.userId === uid && !post.deleted)
-        .map(([id, post]) => id);
-      directRepliesReceivedFromOthers += Object.values(posts).filter(
-        (post) =>
-          post.userId !== uid &&
-          !post.deleted &&
-          userPostsIds.includes(post.replyToId)
-      ).length;
-    }
-  });
+  if (posts && typeof posts === 'object') {
+    const userPostsIds = Object.entries(posts)
+      .filter(([id, post]) => post.userId === uid && !post.deleted)
+      .map(([id, post]) => id);
+    directRepliesReceivedFromOthers += Object.values(posts).filter(
+      (post) =>
+        post.userId !== uid &&
+        !post.deleted &&
+        userPostsIds.includes(post.replyToId)
+    ).length;
+  }
   return directRepliesReceivedFromOthers;
 };
 
 // TODO this is inefficient, calls getsPosts, calls it without orderBy filter
-const repliesUpvotedByRecipient = ({ uid }) => {
+const repliesUpvotedByRecipient = ({ posts, uid }) => {
   let repliesUpvotedByRecipient = null;
-  getPosts((posts) => {
-    if (posts && typeof posts === 'object') {
-      const otherUsersPosts = Object.entries(posts)
-        .filter(([id, post]) => post.userId !== uid && !post.deleted)
-        .map(([id, post]) => {
-          post.id = id;
-          return post;
-        });
-      repliesUpvotedByRecipient += Object.values(posts).filter((post) => {
-        const otherUsersPost = otherUsersPosts.find(
-          (otherUserPost) => otherUserPost.id === post.replyToId
-        );
-        return (
-          post.userId === uid &&
-          !post.deleted &&
-          otherUsersPost &&
-          typeof post.upvote === 'object' &&
-          Object.keys(post.upvote).includes(otherUsersPost.userId)
-        );
-      }).length;
-    }
-  });
+  if (posts && typeof posts === 'object') {
+    const otherUsersPosts = Object.entries(posts)
+      .filter(([id, post]) => post.userId !== uid && !post.deleted)
+      .map(([id, post]) => {
+        post.id = id;
+        return post;
+      });
+    repliesUpvotedByRecipient += Object.values(posts).filter((post) => {
+      const otherUsersPost = otherUsersPosts.find(
+        (otherUserPost) => otherUserPost.id === post.replyToId
+      );
+      return (
+        post.userId === uid &&
+        !post.deleted &&
+        otherUsersPost &&
+        typeof post.upvote === 'object' &&
+        Object.keys(post.upvote).includes(otherUsersPost.userId)
+      );
+    }).length;
+  }
   return repliesUpvotedByRecipient;
 };
 
-const UserStats = ({ user }) => {
-  return (
-    <ListGroup>
-      <ListGroup.Item key="modalityPointsReceivedFromOthers">
-        <strong>Modality Points Received From Others: </strong>
-        {modalityPointsReceivedFromOthers({ uid: user.uid })}
-      </ListGroup.Item>
-      <ListGroup.Item key="upvotesReceivedFromOthers">
-        <strong>Upvotes Received From Others: </strong>
-        {upvotesReceivedFromOthers({ uid: user.uid })}
-      </ListGroup.Item>
-      <ListGroup.Item key="directRepliesReceivedFromOthers">
-        <strong>Replies Received From Others: </strong>
-        {directRepliesReceivedFromOthers({ uid: user.uid })}
-      </ListGroup.Item>
-      <ListGroup.Item key="repliesUpvotedByRecipient">
-        <strong>Replies Upvoted By Recipient: </strong>
-        {repliesUpvotedByRecipient({ uid: user.uid })}
-      </ListGroup.Item>
-    </ListGroup>
-  );
-};
+/**
+ * Profiling
+ * With before: 23s
+ * Without before: 10s/11s
+ * With after refactor: 10s
+ */
+class UserStats extends React.Component {
+  constructor() {
+    super();
+    this.state = { posts: {} };
+  }
+
+  componentDidMount() {
+    getPosts((posts) => this.setState({ posts }));
+  }
+
+  render() {
+    const { uid } = this.props.user;
+    const { posts } = this.state;
+
+    return (
+      <ListGroup>
+        <ListGroup.Item key="modalityPointsReceivedFromOthers">
+          <strong>Modality Points Received From Others: </strong>
+          {modalityPointsReceivedFromOthers({ posts, uid })}
+        </ListGroup.Item>
+        <ListGroup.Item key="upvotesReceivedFromOthers">
+          <strong>Upvotes Received From Others: </strong>
+          {upvotesReceivedFromOthers({ posts, uid })}
+        </ListGroup.Item>
+        <ListGroup.Item key="directRepliesReceivedFromOthers">
+          <strong>Replies Received From Others: </strong>
+          {directRepliesReceivedFromOthers({ posts, uid })}
+        </ListGroup.Item>
+        <ListGroup.Item key="repliesUpvotedByRecipient">
+          <strong>Replies Upvoted By Recipient: </strong>
+          {repliesUpvotedByRecipient({ posts, uid })}
+        </ListGroup.Item>
+      </ListGroup>
+    );
+  }
+}
 
 const UserProfileTimes = ({ user }) => (
   <ListGroup>
