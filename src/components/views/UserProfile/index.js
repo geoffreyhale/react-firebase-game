@@ -97,20 +97,52 @@ const directRepliesReceivedFromOthers = ({ uid }) => {
   return directRepliesReceivedFromOthers;
 };
 
+// TODO this is inefficient, calls getsPosts, calls it without orderBy filter
+const repliesUpvotedByRecipient = ({ uid }) => {
+  let repliesUpvotedByRecipient = null;
+  getPosts((posts) => {
+    if (posts && typeof posts === 'object') {
+      const otherUsersPosts = Object.entries(posts)
+        .filter(([id, post]) => post.userId !== uid && !post.deleted)
+        .map(([id, post]) => {
+          post.id = id;
+          return post;
+        });
+      repliesUpvotedByRecipient += Object.values(posts).filter((post) => {
+        const otherUsersPost = otherUsersPosts.find(
+          (otherUserPost) => otherUserPost.id === post.replyToId
+        );
+        return (
+          post.userId === uid &&
+          !post.deleted &&
+          otherUsersPost &&
+          typeof post.upvote === 'object' &&
+          Object.keys(post.upvote).includes(otherUsersPost.userId)
+        );
+      }).length;
+    }
+  });
+  return repliesUpvotedByRecipient;
+};
+
 const UserStats = ({ user }) => {
   return (
     <ListGroup>
-      <ListGroup.Item key="modality">
+      <ListGroup.Item key="modalityPointsReceivedFromOthers">
         <strong>Modality Points Received From Others: </strong>
         {modalityPointsReceivedFromOthers({ uid: user.uid })}
       </ListGroup.Item>
-      <ListGroup.Item key="upvotes">
+      <ListGroup.Item key="upvotesReceivedFromOthers">
         <strong>Upvotes Received From Others: </strong>
         {upvotesReceivedFromOthers({ uid: user.uid })}
       </ListGroup.Item>
-      <ListGroup.Item key="replies">
+      <ListGroup.Item key="directRepliesReceivedFromOthers">
         <strong>Replies Received From Others: </strong>
         {directRepliesReceivedFromOthers({ uid: user.uid })}
+      </ListGroup.Item>
+      <ListGroup.Item key="repliesUpvotedByRecipient">
+        <strong>Replies Upvoted By Recipient: </strong>
+        {repliesUpvotedByRecipient({ uid: user.uid })}
       </ListGroup.Item>
     </ListGroup>
   );
