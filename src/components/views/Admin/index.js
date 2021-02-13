@@ -13,6 +13,37 @@ import Accounting from './Accounting';
 import Funnel from './Funnel';
 import Posts from './Posts';
 
+const UsersTable = ({ setSort, usersArray }) => (
+  <Table bordered hover size="sm">
+    <thead>
+      <tr>
+        <td onClick={() => setSort('uid')}>uid</td>
+        <td onClick={() => setSort('displayName')}>displayName</td>
+        <td onClick={() => setSort('email')}>email</td>
+        <td onClick={() => setSort('lastOnline')}>lastOnline</td>
+        <td onClick={() => setSort('lastLogin')}>lastLogin</td>
+        <td onClick={() => setSort('joined')}>joined</td>
+      </tr>
+    </thead>
+    <tbody>
+      {usersArray.map((user) => {
+        return (
+          <tr key={user.uid}>
+            <td>{user.uid}</td>
+            <td>
+              <User uid={user.uid} displayName={user.displayName} />
+            </td>
+            <td>{user.email}</td>
+            <td>{friendlyTimestamp(user.lastOnline)}</td>
+            <td>{friendlyTimestamp(user.lastLogin)}</td>
+            <td>{friendlyTimestamp(user.joined)}</td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </Table>
+);
+
 export default class Admin extends React.Component {
   constructor() {
     super();
@@ -114,43 +145,10 @@ export default class Admin extends React.Component {
               </Card>
               <Card className={'mt-3'}>
                 <Card.Body>
-                  <Table bordered hover size="sm">
-                    <thead>
-                      <tr>
-                        <td onClick={() => this.sort('uid')}>uid</td>
-                        <td onClick={() => this.sort('displayName')}>
-                          displayName
-                        </td>
-                        <td onClick={() => this.sort('email')}>email</td>
-                        <td onClick={() => this.sort('lastOnline')}>
-                          lastOnline
-                        </td>
-                        <td onClick={() => this.sort('lastLogin')}>
-                          lastLogin
-                        </td>
-                        <td onClick={() => this.sort('joined')}>joined</td>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {usersArray.map((user) => {
-                        return (
-                          <tr key={user.uid}>
-                            <td>{user.uid}</td>
-                            <td>
-                              <User
-                                uid={user.uid}
-                                displayName={user.displayName}
-                              />
-                            </td>
-                            <td>{user.email}</td>
-                            <td>{friendlyTimestamp(user.lastOnline)}</td>
-                            <td>{friendlyTimestamp(user.lastLogin)}</td>
-                            <td>{friendlyTimestamp(user.joined)}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
+                  <UsersTable
+                    setSort={(propertyName) => this.sort(propertyName)}
+                    usersArray={usersArray}
+                  />
                 </Card.Body>
               </Card>
             </Tab>
