@@ -173,23 +173,23 @@ class UserStats extends React.Component {
       <ListGroup>
         <ScoreListGroupItem
           description="modality * 10 + upvotes + replies + replies upvoted"
-          title="xBook Score"
+          title="Score"
           value={xBookScore}
           variant="light"
         />
         <ScoreListGroupItem
           description="Modality Points Received From Others"
-          title="Modality Points Received"
+          title="Modality"
           value={modalityPointsReceivedFromOthersScore}
         />
         <ScoreListGroupItem
           description="Upvotes Received From Others"
-          title="Upvotes Received"
+          title="Upvotes"
           value={upvotesReceivedFromOthersScore}
         />
         <ScoreListGroupItem
           description="Replies Received From Others"
-          title="Replies Received"
+          title="Replies"
           value={directRepliesReceivedFromOthersScore}
         />
         <ScoreListGroupItem
