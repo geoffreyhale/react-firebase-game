@@ -14,7 +14,7 @@ import Page from './Page';
 import UserProfile from './views/UserProfile';
 
 const Routes = () => {
-  const { user } = useContext(AppContext);
+  const { setModality, user } = useContext(AppContext);
   const history = useHistory();
   const location = useLocation();
 
@@ -22,6 +22,9 @@ const Routes = () => {
   if (location.pathname.startsWith('/posts/')) {
     history.push('/r/general' + location.pathname);
   }
+
+  // if route changes, unset modality
+  history.listen(() => setModality(null));
 
   return (
     <Switch>

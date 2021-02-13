@@ -121,11 +121,6 @@ export const Modality = ({ room }) => {
     .map((MODALITY) => MODALITY.room);
   if (!roomsWithAvailableModalities.includes(room)) return null;
 
-  //TODO this is a hack; changing room should clear context modality value
-  if (modality && modality.room !== room) {
-    setModality(null);
-  }
-
   return (
     <>
       <Card>
