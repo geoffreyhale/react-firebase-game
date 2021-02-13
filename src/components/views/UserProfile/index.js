@@ -137,23 +137,48 @@ class UserStats extends React.Component {
     const { uid } = this.props.user;
     const { posts } = this.state;
 
+    const modalityPointsReceivedFromOthersScore = modalityPointsReceivedFromOthers(
+      { posts, uid }
+    );
+    const upvotesReceivedFromOthersScore = upvotesReceivedFromOthers({
+      posts,
+      uid,
+    });
+    const directRepliesReceivedFromOthersScore = directRepliesReceivedFromOthers(
+      { posts, uid }
+    );
+    const repliesUpvotedByRecipientScore = repliesUpvotedByRecipient({
+      posts,
+      uid,
+    });
+
+    const xBookScore =
+      modalityPointsReceivedFromOthersScore * 10 +
+      upvotesReceivedFromOthersScore +
+      directRepliesReceivedFromOthersScore +
+      repliesUpvotedByRecipientScore;
+
     return (
       <ListGroup>
+        <ListGroup.Item key="score" variant="light">
+          <strong>xBook Score: </strong>
+          {xBookScore}
+        </ListGroup.Item>
         <ListGroup.Item key="modalityPointsReceivedFromOthers">
           <strong>Modality Points Received From Others: </strong>
-          {modalityPointsReceivedFromOthers({ posts, uid })}
+          {modalityPointsReceivedFromOthersScore}
         </ListGroup.Item>
         <ListGroup.Item key="upvotesReceivedFromOthers">
           <strong>Upvotes Received From Others: </strong>
-          {upvotesReceivedFromOthers({ posts, uid })}
+          {upvotesReceivedFromOthersScore}
         </ListGroup.Item>
         <ListGroup.Item key="directRepliesReceivedFromOthers">
           <strong>Replies Received From Others: </strong>
-          {directRepliesReceivedFromOthers({ posts, uid })}
+          {directRepliesReceivedFromOthersScore}
         </ListGroup.Item>
         <ListGroup.Item key="repliesUpvotedByRecipient">
           <strong>Replies Upvoted By Recipient: </strong>
-          {repliesUpvotedByRecipient({ posts, uid })}
+          {repliesUpvotedByRecipientScore}
         </ListGroup.Item>
       </ListGroup>
     );
