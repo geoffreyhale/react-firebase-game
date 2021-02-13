@@ -195,6 +195,8 @@ class Posts extends Component {
       );
     }
 
+    const isLurker = lurkerStatus !== LURKER.NO;
+
     return (
       <Row>
         <Col>
@@ -226,49 +228,56 @@ class Posts extends Component {
           </div>
         </Col>
         <Col sm={8} className="col-posts">
-          {isSinglePostPage ? (
-            lurkerStatus !== LURKER.NO ? (
-              <NoLurking
-                userDisplayName={this.user().displayName}
-                lurkerStatus={lurkerStatus}
-              />
-            ) : (
-              <Post
-                post={post}
-                hackIsSinglePostPage={isSinglePostPage}
-                hackRoom={this.props.room.id}
-                showHeaderLinkToParent={true}
-              />
-            )
-          ) : (
+          {isSinglePostPage && (
             <>
-              <NewTopLevelPostCard hackRoom={this.props.room.id} />
-              {lurkerStatus !== LURKER.NO ? (
+              {isLurker && (
                 <NoLurking
                   userDisplayName={this.user().displayName}
                   lurkerStatus={lurkerStatus}
                 />
-              ) : (
-                <>
-                  <FeedNav
-                    currentFeed={this.state.feed}
-                    setFeed={(feed) => this.setState({ feed: feed })}
-                    setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                      this.setState({
-                        postsFilter: {
-                          requiredTags: requiredTags,
-                          forbiddenTagsByMe: forbiddenTagsByMe,
-                        },
-                      })
-                    }
-                    feedSubtext={feedSubtext}
-                  />
-                  <PostsFeed
-                    posts={posts}
-                    isUnseenFeed={this.state.feed === FEED.UNSEEN}
-                  />
-                </>
               )}
+              {!isLurker && (
+                <Post
+                  post={post}
+                  hackIsSinglePostPage={isSinglePostPage}
+                  hackRoom={this.props.room.id}
+                  showHeaderLinkToParent={true}
+                />
+              )}
+            </>
+          )}
+          {!isSinglePostPage && (
+            <>
+              <NewTopLevelPostCard hackRoom={this.props.room.id} />
+              <>
+                {isLurker && (
+                  <NoLurking
+                    userDisplayName={this.user().displayName}
+                    lurkerStatus={lurkerStatus}
+                  />
+                )}
+                {!isLurker && (
+                  <>
+                    <FeedNav
+                      currentFeed={this.state.feed}
+                      setFeed={(feed) => this.setState({ feed: feed })}
+                      setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                        this.setState({
+                          postsFilter: {
+                            requiredTags: requiredTags,
+                            forbiddenTagsByMe: forbiddenTagsByMe,
+                          },
+                        })
+                      }
+                      feedSubtext={feedSubtext}
+                    />
+                    <PostsFeed
+                      posts={posts}
+                      isUnseenFeed={this.state.feed === FEED.UNSEEN}
+                    />
+                  </>
+                )}
+              </>
             </>
           )}
         </Col>
