@@ -18,10 +18,13 @@ const Users = ({ usersArray, posts }) => {
   const countTotal = usersArray.length;
   const countPremium = usersArray.filter((user) => user.isPremium).length;
   const premiumPercentage = Math.round((countPremium / countTotal) * 100);
-  const countUsedModality = Object.values(posts)
-    .filter((post) => !post.deleted && post.modality)
-    .map((post) => post.userId)
-    .filter((uid, i, self) => self.indexOf(uid) === i).length;
+  const countUsedModality =
+    posts &&
+    typeof posts === 'object' &&
+    Object.values(posts)
+      .filter((post) => !post.deleted && post.modality)
+      .map((post) => post.userId)
+      .filter((uid, i, self) => self.indexOf(uid) === i).length;
   const usedModalityPercentage = Math.round(
     (countUsedModality / countTotal) * 100
   );
@@ -181,7 +184,7 @@ export default class Admin extends React.Component {
             <Tab eventKey="users" title="Users">
               <Card className={'mt-3'}>
                 <Card.Body>
-                  <Funnel usersArray={usersArray} />
+                  <Funnel usersArray={usersArray} posts={this.state.posts} />
                 </Card.Body>
               </Card>
               <Card className={'mt-3'}>

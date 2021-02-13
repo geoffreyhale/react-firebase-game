@@ -33,13 +33,23 @@ const HorizontalLabels = ({ data }) => (
   </ul>
 );
 
-const Funnel = ({ usersArray }) => {
+const Funnel = ({ usersArray, posts }) => {
   const countTotal = usersArray.length;
   const hasJoined = usersArray.filter((user) => user.joined).length;
   const hasLastLogin = usersArray.filter((user) => user.lastLogin).length;
   const hasLastOnline = usersArray.filter((user) => user.lastOnline).length;
   const countPremium = usersArray.filter((user) => user.isPremium).length;
   const premiumPercentage = Math.round((countPremium / countTotal) * 100);
+  const countUsedModality =
+    posts &&
+    typeof posts === 'object' &&
+    Object.values(posts)
+      .filter((post) => !post.deleted && post.modality)
+      .map((post) => post.userId)
+      .filter((uid, i, self) => self.indexOf(uid) === i).length;
+  const usedModalityPercentage = Math.round(
+    (countUsedModality / countTotal) * 100
+  );
   const active1h = usersArray.filter((user) => {
     return user.lastOnline && Date.now() - user.lastOnline < 3600000;
   }).length;
@@ -66,6 +76,11 @@ const Funnel = ({ usersArray }) => {
       id: 'countPremium',
       value: countPremium,
       label: `Premium (${premiumPercentage}%)`,
+    },
+    {
+      id: 'countUsedModality',
+      value: countUsedModality,
+      label: `Used Modality (${usedModalityPercentage}%)`,
     },
   ];
 
