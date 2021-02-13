@@ -13,6 +13,31 @@ import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingType
 import Posts from '../Posts';
 import PremiumFeature from '../../shared/PremiumFeature';
 
+const UserProfilePhotoBanner = ({ user }) => (
+  <Card>
+    <Card.Img
+      src={user.photoURL}
+      style={{
+        height: '12rem',
+        objectPosition: 'middle',
+        objectFit: 'cover',
+        opacity: 0.1,
+      }}
+    />
+    <Card.ImgOverlay>
+      <UserPhoto
+        uid={user.uid}
+        presence={user.presence}
+        size={96}
+        roundedCircle
+      />
+      <Card.Title className="mt-3" style={{ fontSize: '200%' }}>
+        {user.displayName}
+      </Card.Title>
+    </Card.ImgOverlay>
+  </Card>
+);
+
 class UserProfile extends React.Component {
   constructor() {
     super();
@@ -44,28 +69,7 @@ class UserProfile extends React.Component {
         <Card.Body>
           <Row className="mb-4">
             <Col style={{ textAlign: 'center' }}>
-              <Card>
-                <Card.Img
-                  src={user.photoURL}
-                  style={{
-                    height: '12rem',
-                    objectPosition: 'middle',
-                    objectFit: 'cover',
-                    opacity: 0.1,
-                  }}
-                />
-                <Card.ImgOverlay>
-                  <UserPhoto
-                    uid={user.uid}
-                    presence={user.presence}
-                    size={96}
-                    roundedCircle
-                  />
-                  <Card.Title className="mt-3" style={{ fontSize: '200%' }}>
-                    {user.displayName}
-                  </Card.Title>
-                </Card.ImgOverlay>
-              </Card>
+              <UserProfilePhotoBanner user={user} />
             </Col>
           </Row>
           <Row>
