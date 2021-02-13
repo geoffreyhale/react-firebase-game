@@ -38,6 +38,23 @@ const UserProfilePhotoBanner = ({ user }) => (
   </Card>
 );
 
+const UserProfileTimes = ({ user }) => (
+  <ListGroup>
+    <ListGroup.Item>
+      <strong>Last Online: </strong>
+      {friendlyTimestamp(user.lastOnline)}
+    </ListGroup.Item>
+    {/* <ListGroup.Item>
+      <strong>Last Login: </strong>
+      {friendlyTimestamp(getMillisFromDifferingTypes(user.lastLogin))}
+    </ListGroup.Item> */}
+    <ListGroup.Item>
+      <strong>Joined: </strong>
+      {friendlyTimestamp(getMillisFromDifferingTypes(user.joined))}
+    </ListGroup.Item>
+  </ListGroup>
+);
+
 class UserProfile extends React.Component {
   constructor() {
     super();
@@ -74,22 +91,7 @@ class UserProfile extends React.Component {
           </Row>
           <Row>
             <Col md={6} className="mb-4">
-              <ListGroup>
-                <ListGroup.Item>
-                  <strong>Last Online: </strong>
-                  {friendlyTimestamp(user.lastOnline)}
-                </ListGroup.Item>
-                {/* <ListGroup.Item>
-                  <strong>Last Login: </strong>
-                  {friendlyTimestamp(
-                    getMillisFromDifferingTypes(user.lastLogin)
-                  )}
-                </ListGroup.Item> */}
-                <ListGroup.Item>
-                  <strong>Joined: </strong>
-                  {friendlyTimestamp(getMillisFromDifferingTypes(user.joined))}
-                </ListGroup.Item>
-              </ListGroup>
+              <UserProfileTimes user={user} />
             </Col>
             <Col md={6}>
               {user && user.uid ? (
