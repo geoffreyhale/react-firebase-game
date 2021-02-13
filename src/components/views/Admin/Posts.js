@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import countWords from '../../shared/countWords';
-import postsTreeFromRawPosts from '../../shared/postsTreeFromRawPosts';
+import PostLink from '../../shared/PostLink';
 
 const pushReplyCountWordCountObjects = (
   post,
@@ -53,7 +53,12 @@ const Posts = ({ posts }) => {
           deleted w no replies (removable): {postsDeletedWithNoReplies.length}
         </div>
         {postsDeletedWithNoReplies.map((post) => (
-          <div>id: {post.id}</div>
+          <div>
+            id:{' '}
+            <PostLink id={post.id} room={post.room}>
+              {post.id}
+            </PostLink>
+          </div>
         ))}
       </Card.Body>
     </Card>
