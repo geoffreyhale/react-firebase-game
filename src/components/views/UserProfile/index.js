@@ -117,6 +117,12 @@ const repliesUpvotedByRecipient = ({ posts, uid }) => {
   return repliesUpvotedByRecipient;
 };
 
+const ScoreListGroupItem = ({ title, value, variant }) => (
+  <ListGroup.Item key={title} variant={variant}>
+    <strong>{title}:</strong> {value}
+  </ListGroup.Item>
+);
+
 /**
  * Profiling
  * With before: 23s
@@ -160,26 +166,27 @@ class UserStats extends React.Component {
 
     return (
       <ListGroup>
-        <ListGroup.Item key="score" variant="light">
-          <strong>xBook Score: </strong>
-          {xBookScore}
-        </ListGroup.Item>
-        <ListGroup.Item key="modalityPointsReceivedFromOthers">
-          <strong>Modality Points Received From Others: </strong>
-          {modalityPointsReceivedFromOthersScore}
-        </ListGroup.Item>
-        <ListGroup.Item key="upvotesReceivedFromOthers">
-          <strong>Upvotes Received From Others: </strong>
-          {upvotesReceivedFromOthersScore}
-        </ListGroup.Item>
-        <ListGroup.Item key="directRepliesReceivedFromOthers">
-          <strong>Replies Received From Others: </strong>
-          {directRepliesReceivedFromOthersScore}
-        </ListGroup.Item>
-        <ListGroup.Item key="repliesUpvotedByRecipient">
-          <strong>Replies Upvoted By Recipient: </strong>
-          {repliesUpvotedByRecipientScore}
-        </ListGroup.Item>
+        <ScoreListGroupItem
+          title="xBook Score"
+          value={xBookScore}
+          variant="light"
+        />
+        <ScoreListGroupItem
+          title="Modality Points Received From Others"
+          value={modalityPointsReceivedFromOthersScore}
+        />
+        <ScoreListGroupItem
+          title="Upvotes Received From Others"
+          value={upvotesReceivedFromOthersScore}
+        />
+        <ScoreListGroupItem
+          title="Replies Received From Others"
+          value={directRepliesReceivedFromOthersScore}
+        />
+        <ScoreListGroupItem
+          title="Replies Upvoted By Recipient"
+          value={repliesUpvotedByRecipientScore}
+        />
       </ListGroup>
     );
   }
