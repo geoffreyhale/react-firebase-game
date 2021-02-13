@@ -275,6 +275,22 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  vulnerability: {
+    available: true,
+    room: 'healthyrelating',
+    title: 'Vulnerability',
+    description: (
+      <>
+        <p>
+          This tool seeks to encourage a courageous practice of vulnerability.
+        </p>
+        <p>
+          This tool seeks to help you be recognized in your courageous acts of
+          vulnerable sharing.
+        </p>
+      </>
+    ),
+  },
 });
 
 export default MODALITIES;
