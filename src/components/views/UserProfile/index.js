@@ -46,14 +46,18 @@ const modalityPointsReceivedFromOthers = ({ posts, uid }) => {
   posts &&
     typeof posts === 'object' &&
     Object.values(posts)
-      .filter((post) => post.userId === uid && post.modality && !post.deleted)
+      .filter(
+        (post) =>
+          post.userId === uid &&
+          post.modality &&
+          !post.deleted &&
+          post.modality.votes &&
+          typeof post.modality.votes === 'object'
+      )
       .forEach((post) => {
-        if (post.modality.votes && typeof post.modality.votes === 'object') {
-          const trueVotesFromOthers = Object.entries(
-            post.modality.votes
-          ).filter(([key, vote]) => key !== uid && vote === true);
-          modalityPointsReceivedFromOthers += trueVotesFromOthers.length;
-        }
+        modalityPointsReceivedFromOthers += Object.entries(
+          post.modality.votes
+        ).filter(([key, vote]) => key !== uid && vote === true).length;
       });
   return modalityPointsReceivedFromOthers;
 };
@@ -63,14 +67,17 @@ const upvotesReceivedFromOthers = ({ posts, uid }) => {
   posts &&
     typeof posts === 'object' &&
     Object.values(posts)
-      .filter((post) => post.userId === uid && post.upvote && !post.deleted)
+      .filter(
+        (post) =>
+          post.userId === uid &&
+          post.upvote &&
+          typeof post.upvote === 'object' &&
+          !post.deleted
+      )
       .forEach((post) => {
-        if (typeof post.upvote === 'object') {
-          const upvotesFromOthers = Object.entries(post.upvote).filter(
-            ([key, vote]) => key !== uid
-          );
-          upvotesReceivedFromOthers += upvotesFromOthers.length;
-        }
+        upvotesReceivedFromOthers += Object.entries(post.upvote).filter(
+          ([key, vote]) => key !== uid
+        ).length;
       });
   return upvotesReceivedFromOthers;
 };
@@ -141,7 +148,7 @@ const modalityVotesSubmittedForOthers = ({ posts, uid }) => {
         !post.deleted &&
         post.modality &&
         post.modality.votes &&
-        typeof post.modality.votes === 'object' && //TODO do this elsewhere also
+        typeof post.modality.votes === 'object' &&
         Object.keys(post.modality.votes).includes(uid)
     ).length;
   }
