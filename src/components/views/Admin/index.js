@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table';
+import Tabs from 'react-bootstrap/Tabs';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { AppContext } from '../../AppProvider';
 import { getPosts, getUsersRealtimeDatabase } from '../../../api/index';
@@ -97,47 +99,70 @@ export default class Admin extends React.Component {
     }
 
     return (
-      <>
-        <Posts posts={this.state.posts} />
-        <Accounting users={this.state.users} />
-        <Card className={'mt-3'}>
-          <Card.Body>
-            <Funnel usersArray={usersArray} />
-          </Card.Body>
-        </Card>
-        <Card className={'mt-3'}>
-          <Card.Body>
-            <Table bordered hover size="sm">
-              <thead>
-                <tr>
-                  <td onClick={() => this.sort('uid')}>uid</td>
-                  <td onClick={() => this.sort('displayName')}>displayName</td>
-                  <td onClick={() => this.sort('email')}>email</td>
-                  <td onClick={() => this.sort('lastOnline')}>lastOnline</td>
-                  <td onClick={() => this.sort('lastLogin')}>lastLogin</td>
-                  <td onClick={() => this.sort('joined')}>joined</td>
-                </tr>
-              </thead>
-              <tbody>
-                {usersArray.map((user) => {
-                  return (
-                    <tr key={user.uid}>
-                      <td>{user.uid}</td>
-                      <td>
-                        <User uid={user.uid} displayName={user.displayName} />
-                      </td>
-                      <td>{user.email}</td>
-                      <td>{friendlyTimestamp(user.lastOnline)}</td>
-                      <td>{friendlyTimestamp(user.lastLogin)}</td>
-                      <td>{friendlyTimestamp(user.joined)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Card.Body>
-        </Card>
-      </>
+      <Card>
+        <Card.Body>
+          <Card.Title>Admin Dashboard</Card.Title>
+          <div style={{ display: 'inline-block' }} className="mb-3">
+            <Posts posts={this.state.posts} />
+          </div>
+          <Tabs defaultActiveKey="users" className="mb-3">
+            <Tab eventKey="users" title="Users">
+              <Card className={'mt-3'}>
+                <Card.Body>
+                  <Funnel usersArray={usersArray} />
+                </Card.Body>
+              </Card>
+              <Card className={'mt-3'}>
+                <Card.Body>
+                  <Table bordered hover size="sm">
+                    <thead>
+                      <tr>
+                        <td onClick={() => this.sort('uid')}>uid</td>
+                        <td onClick={() => this.sort('displayName')}>
+                          displayName
+                        </td>
+                        <td onClick={() => this.sort('email')}>email</td>
+                        <td onClick={() => this.sort('lastOnline')}>
+                          lastOnline
+                        </td>
+                        <td onClick={() => this.sort('lastLogin')}>
+                          lastLogin
+                        </td>
+                        <td onClick={() => this.sort('joined')}>joined</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {usersArray.map((user) => {
+                        return (
+                          <tr key={user.uid}>
+                            <td>{user.uid}</td>
+                            <td>
+                              <User
+                                uid={user.uid}
+                                displayName={user.displayName}
+                              />
+                            </td>
+                            <td>{user.email}</td>
+                            <td>{friendlyTimestamp(user.lastOnline)}</td>
+                            <td>{friendlyTimestamp(user.lastLogin)}</td>
+                            <td>{friendlyTimestamp(user.joined)}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Card.Body>
+              </Card>
+            </Tab>
+            <Tab eventKey="posts" title="Posts">
+              <Posts posts={this.state.posts} />
+            </Tab>
+            <Tab eventKey="accounting" title="Accounting">
+              <Accounting users={this.state.users} />
+            </Tab>
+          </Tabs>
+        </Card.Body>
+      </Card>
     );
   }
 }
