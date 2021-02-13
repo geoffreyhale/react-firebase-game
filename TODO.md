@@ -15,10 +15,6 @@
 3. app unique value
 4. sales
 
-# TODO
-
-- fix ModalityCard ui for mobile
-
 ## Top Tier
 
 - finish database security rules and related tests
