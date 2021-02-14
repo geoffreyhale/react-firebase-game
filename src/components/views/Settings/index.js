@@ -4,10 +4,16 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { AppContext } from '../../AppProvider';
 import { updateUsername } from '../../../api';
+import Spinner from '../../shared/Spinner';
 
 const Username = ({ user }) => {
   const [editMode, setEditMode] = useState(false);
   const [username, setUsername] = useState(user.username);
+  const [loading, setLoading] = useState(false);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   if (editMode) {
     return (
@@ -22,10 +28,12 @@ const Username = ({ user }) => {
           variant="primary"
           size="sm"
           onClick={() => {
-            updateUsername(
-              { uid: user.uid, username } /*, TODO refreshContextUser*/
-            );
+            setLoading(true);
             setEditMode(false);
+            updateUsername(
+              { uid: user.uid, username },
+              setLoading(false) /* TODO also refreshContextUser*/
+            );
           }}
         >
           save
