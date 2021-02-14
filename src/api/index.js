@@ -218,8 +218,12 @@ export const updateUser = ({ uid, user }, then) => {
 };
 
 export const updateUsername = ({ uid, username }, callback) => {
-  db.collection('users').doc(uid).update({ username: username });
-  typeof callback === 'function' && callback();
+  db.collection('users')
+    .doc(uid)
+    .update({ username: username })
+    .then(() => {
+      typeof callback === 'function' && callback();
+    });
 };
 
 export const toggleUpvote = ({ postId, uid }) => {
