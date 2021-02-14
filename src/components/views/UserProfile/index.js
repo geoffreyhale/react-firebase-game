@@ -8,7 +8,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { withRouter } from 'react-router';
 import { AppContext } from '../../AppProvider';
-import { getPosts, getUser } from '../../../api/index';
+import { getPosts, getUser, getUserByUsername } from '../../../api/index';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { UserPhoto } from '../../shared/User';
 import Spinner from '../../shared/Spinner';
@@ -273,10 +273,17 @@ class UserProfile extends React.Component {
       return;
     }
     const { userId } = this.props.match.params;
-    getUser(userId, (user) => {
-      document.title = `${user.displayName} | xBook`;
-      this.setState({ user });
-    });
+    if (userId.startsWith('@')) {
+      getUserByUsername({ username: userId.substring(1) }, (user) => {
+        document.title = `${user.displayName} | xBook`;
+        this.setState({ user });
+      });
+    } else {
+      getUser(userId, (user) => {
+        document.title = `${user.displayName} | xBook`;
+        this.setState({ user });
+      });
+    }
   }
 
   render() {

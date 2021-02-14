@@ -177,6 +177,21 @@ export const getUser = (uid, callback) => {
     });
 };
 
+export const getUserByUsername = ({ username }, callback) => {
+  db.collection('users')
+    .where('username', '==', username)
+    .get()
+    .then((querySnapshot) => {
+      const uidMatchesForUsername = [];
+      querySnapshot.forEach((doc) => {
+        uidMatchesForUsername.push(doc.id);
+      });
+      if (uidMatchesForUsername.length === 1) {
+        getUser(uidMatchesForUsername[0], callback);
+      }
+    });
+};
+
 export const getAccounting = (callback) => {
   const accounting = {};
   db.collection('accounting')
