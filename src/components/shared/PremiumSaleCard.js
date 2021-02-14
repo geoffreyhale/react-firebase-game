@@ -21,14 +21,13 @@ const PremiumSaleCard = () => {
         <p>Join us for just $1/mo!</p>
         <h5>Features</h5>
         <ul>
-          <li>Edit your posts</li>
           <li>View user profiles</li>
-          <li>Access to Community Page</li>
           <li>Access to premium rooms</li>
-          <li>Extras Menu</li>
+          <li>Access to Modality Trainer</li>
+          <li>Access to Community Page</li>
+          <li>Edit your posts</li>
+          <li>Select a username</li>
           <li>Remove this ad</li>
-          <li>Support your friend (me)</li>
-          <li>More coming soon</li>
         </ul>
         <p>
           Ask how to join in <Link to="/r/general">r/general</Link>.

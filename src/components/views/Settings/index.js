@@ -60,9 +60,9 @@ const Username = ({ user }) => {
         className="ml-3"
         variant="link"
         size="sm"
-        onClick={() => setEditMode(true)}
+        onClick={() => user.isPremium && setEditMode(true)}
       >
-        edit
+        {user.isPremium ? 'edit' : 'premium feature'}
       </Button>
     </>
   );
