@@ -37,17 +37,7 @@ yarn test
 
 ### Firebase Unit Tests
 
-Once:
-
-```
-firebase emulators:start
-```
-
-Run:
-
-```
-(cd test && npm test)
-```
+see test dir
 
 # Testimonials
 
