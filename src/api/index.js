@@ -188,6 +188,8 @@ export const getUserByUsername = ({ username }, callback) => {
       });
       if (uidMatchesForUsername.length === 1) {
         getUser(uidMatchesForUsername[0], callback);
+      } else {
+        callback(false);
       }
     });
 };
@@ -233,12 +235,18 @@ export const updateUser = ({ uid, user }, then) => {
 };
 
 export const updateUsername = ({ uid, username }, callback) => {
-  db.collection('users')
-    .doc(uid)
-    .update({ username: username })
-    .then(() => {
-      typeof callback === 'function' && callback();
-    });
+  getUserByUsername({ username }, (userWithUsernameAlreadyExists) => {
+    if (!userWithUsernameAlreadyExists) {
+      db.collection('users')
+        .doc(uid)
+        .update({ username: username })
+        .then(() => {
+          typeof callback === 'function' && callback(true);
+        });
+    } else {
+      callback(false);
+    }
+  });
 };
 
 export const toggleUpvote = ({ postId, uid }) => {

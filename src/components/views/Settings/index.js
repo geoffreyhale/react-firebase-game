@@ -10,6 +10,7 @@ const Username = ({ user }) => {
   const [editMode, setEditMode] = useState(false);
   const [username, setUsername] = useState(user.username);
   const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState(null);
 
   if (loading) {
     return <Spinner />;
@@ -21,7 +22,9 @@ const Username = ({ user }) => {
         <input
           type="text"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+          }}
         />
         <Button
           className="ml-3"
@@ -30,10 +33,13 @@ const Username = ({ user }) => {
           onClick={() => {
             setLoading(true);
             setEditMode(false);
-            updateUsername(
-              { uid: user.uid, username },
-              setLoading(false) /* TODO also refreshContextUser*/
-            );
+            updateUsername({ uid: user.uid, username }, (success) => {
+              if (!success) {
+                setFeedback('sorry username taken');
+              }
+              /* TODO refreshContextUser*/
+              setLoading(false);
+            });
           }}
         >
           save
@@ -60,10 +66,16 @@ const Username = ({ user }) => {
         className="ml-3"
         variant="link"
         size="sm"
-        onClick={() => user.isPremium && setEditMode(true)}
+        onClick={() => {
+          if (user.isPremium) {
+            setEditMode(true);
+            setFeedback(null);
+          }
+        }}
       >
         {user.isPremium ? 'edit' : 'premium feature'}
       </Button>
+      {feedback && <span className="text-danger">{feedback}</span>}
     </>
   );
 };
