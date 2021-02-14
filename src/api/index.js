@@ -217,6 +217,11 @@ export const updateUser = ({ uid, user }, then) => {
   then();
 };
 
+export const updateUsername = ({ uid, username }, callback) => {
+  db.collection('users').doc(uid).update({ username: username });
+  typeof callback === 'function' && callback();
+};
+
 export const toggleUpvote = ({ postId, uid }) => {
   upvoteUserRef({ postId, uid })
     .once('value')
