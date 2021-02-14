@@ -58,6 +58,21 @@ describe('Firestore', () => {
         await firebase.assertFails(theirUserDoc.set({ foo: 'bar' }));
         await firebase.assertFails(theirUserDoc.update({ foo: 'bar' }));
       });
+      // TODO enforce @username uniqueness
+      it.skip('Cannot give themselves a username already used by another user', async () => {
+        const admin = getAdminFirestore();
+        const theirUserDoc = admin.collection('users').doc(theirId);
+        await theirUserDoc.set({ username: 'coolusername' });
+
+        const db = getFirestore(myAuth);
+        const myUserDoc = db.collection('users').doc(myId);
+        await firebase.assertSucceeds(myUserDoc.set({ foo: 'bar' }));
+        await firebase.assertSucceeds(myUserDoc.set({ username: 'bar' }));
+        await firebase.assertFails(
+          myUserDoc.update({ username: 'coolusername' })
+        );
+        await firebase.assertSucceeds(myUserDoc.set({ username: 'bar' }));
+      });
     });
   });
   describe('Accounting', () => {

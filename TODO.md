@@ -24,6 +24,7 @@
 ## Top Tier
 
 - finish database security rules and related tests
+- enforce @username uniqueness
 
 ## Tier 2
 
