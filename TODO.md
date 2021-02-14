@@ -36,7 +36,6 @@
 - improve new member experience, on-boarding
 - what is "healthy relating"? what are the expectations here, how do i play?
 - map out what is healthy relating
-- @usernames
 - change display name
 - optional custom display names?
 - community verification for display names
