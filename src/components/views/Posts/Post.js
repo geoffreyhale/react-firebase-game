@@ -50,7 +50,12 @@ const Tags = ({ post }) => {
         const tagUniqueKey = post.id + tag.userId + tag.type + Math.random();
         if (tag.userId === user.uid) {
           return (
-            <Tag variant="info" key={tagUniqueKey}>
+            <Tag
+              variant="info"
+              key={tagUniqueKey}
+              allowDelete={true}
+              postId={post.id}
+            >
               {tag.type}
             </Tag>
           );

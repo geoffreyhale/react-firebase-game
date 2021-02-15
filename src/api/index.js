@@ -28,6 +28,25 @@ export const addTag = ({ postId, content, successCallback, uid }) => {
     .then(successCallback());
 };
 
+//TODO refactor someday
+export const removeTag = ({ postId, content, uid }) => {
+  postRef(postId)
+    .child('tags')
+    .once('value', (snapshot) => {
+      const tags = snapshot.val();
+      const tag =
+        tags &&
+        typeof tags === 'object' &&
+        Object.entries(tags).filter(
+          ([key, tag]) => tag.userId === uid && tag.type === content
+        );
+      if (tag && tag.length === 1) {
+        const tagKey = tag[0][0];
+        postRef(postId).child('tags').child(tagKey).remove();
+      }
+    });
+};
+
 // post w id postId received a reply
 // add a notification for the user who authored the post
 const addNotifications = ({ postId, uid }) => {
