@@ -1,9 +1,7 @@
 import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Tab from 'react-bootstrap/Tab';
-import Table from 'react-bootstrap/Table';
 import Tabs from 'react-bootstrap/Tabs';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { AppContext } from '../../AppProvider';
 import {
   getAccounting,
@@ -12,83 +10,11 @@ import {
 } from '../../../api/index';
 import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingTypes';
 import Spinner from '../../shared/Spinner';
-import { isPremium, User } from '../../shared/User';
+import { isPremium } from '../../shared/User';
 import Accounting, { AccountingMiniCard } from './Accounting';
 import Funnel from './Funnel';
 import Posts from './Posts';
-
-const Users = ({ usersArray, posts }) => {
-  //TODO most of these are duplicated from Funnel
-  const countTotal = usersArray.length;
-  const countPremium = usersArray.filter((user) => user.isPremium).length;
-  const premiumPercentage = Math.round((countPremium / countTotal) * 100);
-  const countUsedModality =
-    posts &&
-    typeof posts === 'object' &&
-    Object.values(posts)
-      .filter((post) => !post.deleted && post.modality)
-      .map((post) => post.userId)
-      .filter((uid, i, self) => self.indexOf(uid) === i).length;
-  const usedModalityPercentage = Math.round(
-    (countUsedModality / countTotal) * 100
-  );
-  const hasUsername = usersArray.filter((user) => user.username).length;
-  const hasUsernamePercentage = Math.round((hasUsername / countTotal) * 100);
-  const noUsername = usersArray.filter((user) => !user.username).length;
-  const hasNoUsernamePercentage = Math.round((noUsername / countTotal) * 100);
-  return (
-    <>
-      <div>
-        <strong>Registered:</strong> {countTotal}
-      </div>
-      <div>
-        <strong>Premium:</strong> {countPremium} ({premiumPercentage}%)
-      </div>
-      <div>
-        <strong>Used Modality:</strong> {countUsedModality} (
-        {usedModalityPercentage}%)
-      </div>
-      <br />
-      <div>
-        <strong>Username:</strong> {hasUsername} ({hasUsernamePercentage}%)
-      </div>
-      <div>
-        <strong>No Username:</strong> {noUsername} ({hasNoUsernamePercentage}%)
-      </div>
-    </>
-  );
-};
-
-const UsersTable = ({ setSort, usersArray }) => (
-  <Table bordered hover size="sm">
-    <thead>
-      <tr>
-        <td onClick={() => setSort('uid')}>uid</td>
-        <td onClick={() => setSort('displayName')}>displayName</td>
-        <td onClick={() => setSort('email')}>email</td>
-        <td onClick={() => setSort('lastOnline')}>lastOnline</td>
-        <td onClick={() => setSort('lastLogin')}>lastLogin</td>
-        <td onClick={() => setSort('joined')}>joined</td>
-      </tr>
-    </thead>
-    <tbody>
-      {usersArray.map((user) => {
-        return (
-          <tr key={user.uid}>
-            <td>{user.uid}</td>
-            <td>
-              <User uid={user.uid} displayName={user.displayName} />
-            </td>
-            <td>{user.email}</td>
-            <td>{friendlyTimestamp(user.lastOnline)}</td>
-            <td>{friendlyTimestamp(user.lastLogin)}</td>
-            <td>{friendlyTimestamp(user.joined)}</td>
-          </tr>
-        );
-      })}
-    </tbody>
-  </Table>
-);
+import { Users, UsersTable } from './Users';
 
 export default class Admin extends React.Component {
   constructor() {

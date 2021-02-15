@@ -54,7 +54,7 @@ const Posts = ({ posts }) => {
         <strong>Deleted:</strong> {postsDeleted.length}
       </div>
       <div>
-        <strong title="deleted w no replies">Removable:</strong>
+        <strong title="deleted w no replies">Removable:</strong>{' '}
         {postsDeletedWithNoReplies.length}
       </div>
       {postsDeletedWithNoReplies.map((post) => (
