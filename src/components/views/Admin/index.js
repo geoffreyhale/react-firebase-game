@@ -32,6 +32,10 @@ const Users = ({ usersArray, posts }) => {
   const usedModalityPercentage = Math.round(
     (countUsedModality / countTotal) * 100
   );
+  const hasUsername = usersArray.filter((user) => user.username).length;
+  const hasUsernamePercentage = Math.round((hasUsername / countTotal) * 100);
+  const noUsername = usersArray.filter((user) => !user.username).length;
+  const hasNoUsernamePercentage = Math.round((noUsername / countTotal) * 100);
   return (
     <>
       <div>
@@ -43,6 +47,13 @@ const Users = ({ usersArray, posts }) => {
       <div>
         <strong>Used Modality:</strong> {countUsedModality} (
         {usedModalityPercentage}%)
+      </div>
+      <br />
+      <div>
+        <strong>Username:</strong> {hasUsername} ({hasUsernamePercentage}%)
+      </div>
+      <div>
+        <strong>No Username:</strong> {noUsername} ({hasNoUsernamePercentage}%)
       </div>
     </>
   );
