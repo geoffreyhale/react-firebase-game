@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -8,12 +9,17 @@ import { createPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 import { PostHeaderRoom } from './Post';
 
-const Visibility = () => (
+const Visibility = ({ postingToRoom }) => (
   <OverlayTrigger
     placement="right"
     overlay={<Tooltip>Visibility: Logged In Users</Tooltip>}
   >
     <small className="text-muted">
+      {postingToRoom && (
+        <span className="mr-2">
+          <Link to={`r/${postingToRoom}`}>r/{postingToRoom}</Link>
+        </span>
+      )}
       <i class="fas fa-user-check"></i>
     </small>
   </OverlayTrigger>
@@ -36,11 +42,9 @@ const NewTopLevelPostCard = ({ hackRoom }) => {
             <UserPhoto uid={user.uid} />
           </div>
           <div className="ml-2" style={{ display: 'inline-block' }}>
-            <h5 className="mb-1" style={{ marginBottom: 0 }}>
-              {user.displayName}
-            </h5>
+            <h5 style={{ marginBottom: 0 }}>{user.displayName}</h5>
             <div>
-              <Visibility />
+              <Visibility postingToRoom={hackHackRoom} />
             </div>
           </div>
         </div>
