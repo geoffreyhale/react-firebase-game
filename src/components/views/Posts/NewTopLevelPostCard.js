@@ -8,22 +8,37 @@ import { AppContext } from '../../AppProvider';
 import { createPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 import { PostHeaderRoom } from './Post';
+import { premiumRooms } from '../Rooms';
 
-const Visibility = ({ postingToRoom }) => (
-  <OverlayTrigger
-    placement="right"
-    overlay={<Tooltip>Visibility: Logged In Users</Tooltip>}
-  >
-    <small className="text-muted">
-      {postingToRoom && (
-        <span className="mr-2">
-          <Link to={`r/${postingToRoom}`}>r/{postingToRoom}</Link>
-        </span>
-      )}
-      <i class="fas fa-user-check"></i>
-    </small>
-  </OverlayTrigger>
-);
+const VISIBILITIES = Object.freeze({
+  logged: 'Logged In Users',
+  premium: 'Premium Users',
+});
+
+const Visibility = ({ postingToRoom }) => {
+  const visibility = premiumRooms.includes(postingToRoom)
+    ? VISIBILITIES['premium']
+    : VISIBILITIES['logged'];
+
+  return (
+    <OverlayTrigger
+      placement="right"
+      overlay={<Tooltip>Visibility: {visibility}</Tooltip>}
+    >
+      <small className="text-muted">
+        {postingToRoom && (
+          <span className="mr-2">
+            <Link to={`r/${postingToRoom}`}>r/{postingToRoom}</Link>
+          </span>
+        )}
+        {visibility === VISIBILITIES['logged'] && (
+          <i class="fas fa-user-check"></i>
+        )}
+        {visibility === VISIBILITIES['premium'] && <>&#11088;</>}
+      </small>
+    </OverlayTrigger>
+  );
+};
 
 const NewTopLevelPostCard = ({ hackRoom }) => {
   const { user } = useContext(AppContext);
