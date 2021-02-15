@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Row from 'react-bootstrap/Row';
 import About from '../About';
-import { LogInButton } from '../../UserAuth';
+import { LogInButton } from '../../App/AppHeader';
 
 const Login403DisallowedUseragent = () => (
   <Jumbotron className="mt-3" style={{ font: 'consolas' }}>
