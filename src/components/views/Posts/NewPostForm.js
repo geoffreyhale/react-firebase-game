@@ -86,16 +86,16 @@ export default class NewPostForm extends React.Component {
           }}
         >
           {isPostForm && !this.props.replyToId && (
-            <>
+            <div className="mb-2">
               <SelectModality room={this.props.hackRoom} />
               {this.modality() === 'emotionalawareness' && (
-                <Card>
+                <Card className="mt-2">
                   <Card.Body>
                     <EmotionalAwareness content={this.state.content} />
                   </Card.Body>
                 </Card>
               )}
-            </>
+            </div>
           )}
           <div className="mt-1">
             {isPostForm && (

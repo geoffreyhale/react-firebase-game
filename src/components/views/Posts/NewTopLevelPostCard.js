@@ -52,7 +52,7 @@ const NewTopLevelPostCard = ({ hackRoom }) => {
             <PostHeaderRoom room={hackHackRoom} />
           </div>
         )}
-        <div>
+        <div className="mb-2">
           <div style={{ display: 'inline-block', verticalAlign: 'top' }}>
             <UserPhoto uid={user.uid} />
           </div>
