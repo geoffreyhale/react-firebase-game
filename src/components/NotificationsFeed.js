@@ -10,6 +10,7 @@ import { AppContext } from './AppProvider';
 import firebase from './firebase.js';
 import friendlyTimestamp from './shared/friendlyTimestamp';
 import { UserPhoto } from './shared/User';
+import { getPosts } from '../api';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
@@ -135,43 +136,38 @@ export default class NotificationsFeed extends React.Component {
       const notifications = [];
       const postIds = [];
       if (notificationsObject) {
-        //TODO omg db call for each!?
-        Object.entries(notificationsObject).forEach(([key, nItem]) => {
-          const postId = key;
-          postIds.push(postId);
-          if (typeof nItem === 'object') {
-            // TODO this is a hack to get room from post, but could be dup in notifications
-            this.db()
-              .ref('posts/' + postId + '/room')
-              .once('value', (snapshot) => {
-                const room = snapshot.val();
-                if (room) {
-                  Object.entries(nItem).forEach(([userId, timestamp]) => {
-                    notifications.push({
-                      postId,
-                      room,
-                      userId,
-                      content: (
-                        <NotificationItemLinkContent
-                          timestamp={timestamp}
-                          uid={userId}
-                        />
-                      ),
-                      timestamp,
-                    });
-                  });
-                }
+        // TODO this is a hack to get room from post, but could be dup in notifications
+        // TODO posts should be linkable by id alone, no room necessary
+        getPosts((posts) => {
+          Object.entries(notificationsObject).forEach(([postId, nItem]) => {
+            postIds.push(postId);
+            const post = posts[postId];
+            if (typeof nItem === 'object' && post && post.room) {
+              Object.entries(nItem).forEach(([userId, timestamp]) => {
+                notifications.push({
+                  postId,
+                  room: post.room,
+                  userId,
+                  content: (
+                    <NotificationItemLinkContent
+                      timestamp={timestamp}
+                      uid={userId}
+                    />
+                  ),
+                  timestamp,
+                });
               });
-          }
+            }
+          });
+          notifications.sort((a, b) => {
+            return b.timestamp - a.timestamp;
+          });
+          this.setState({
+            notifications: notifications,
+          });
+          postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
         });
       }
-      notifications.sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
-      this.setState({
-        notifications: notifications,
-      });
-      postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
     });
     // TODO removeNotification does't update the feed
   }
