@@ -190,14 +190,29 @@ export default class NotificationsFeed extends React.Component {
           </Popover>
         }
       >
-        <div>
+        <div style={{ position: 'relative' }}>
           <i
-            class="fas fa-bell"
+            class="fas fa-bell fa-fw"
             style={{ verticalAlign: 'middle', fontSize: '35px' }}
           ></i>{' '}
-          <Badge variant="secondary">
-            {hasNotifications ? notifications.length : 0}
-          </Badge>
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              width: '100%',
+              textAlign: 'center',
+            }}
+          >
+            <Badge
+              variant="secondary"
+              style={{
+                backgroundColor: 'rgba(32, 156, 238, 0.95)',
+                backgroundOpacity: '50%',
+              }}
+            >
+              {hasNotifications ? notifications.length : 0}
+            </Badge>
+          </div>
         </div>
       </OverlayTrigger>
     );
