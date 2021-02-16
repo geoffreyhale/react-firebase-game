@@ -23,8 +23,6 @@ import PremiumFeature from '../../shared/PremiumFeature';
 import Mosaic from '../Community/Mosaic';
 import Modality from './Modality';
 
-import './index.css';
-
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;

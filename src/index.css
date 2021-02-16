@@ -25,3 +25,19 @@ a[target='_blank']::after {
 .popover {
   max-width: 360px !important;
 }
+
+.col-left {
+  max-width: 600px !important;
+}
+.col-posts {
+  max-width: 600px !important;
+}
+
+.notifications {
+  min-width: 300px;
+}
+
+ul#rooms {
+  list-style-type: none;
+  padding-left: 0;
+}
