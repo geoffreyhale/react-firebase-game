@@ -8,7 +8,7 @@ import { AppContext } from '../../AppProvider';
 import postsTreeFromRawPosts from '../../shared/postsTreeFromRawPosts';
 import Spinner from '../../shared/Spinner';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
-import NotificationsFeed from './NotificationsFeed';
+import NotificationsFeed from '../../NotificationsFeed';
 import Post from './Post';
 import {
   FEED,
@@ -223,9 +223,6 @@ class Posts extends Component {
             </>
           )}
           {!this.user().isPremium && <PremiumSaleCard />}
-          <div className="notifications mb-3">
-            <NotificationsFeed />
-          </div>
         </Col>
         <Col sm={8} className="col-posts">
           {isSinglePostPage && (

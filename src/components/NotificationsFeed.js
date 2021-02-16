@@ -1,15 +1,15 @@
 import React, { useContext } from 'react';
-import Accordion from 'react-bootstrap/Accordion';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import Table from 'react-bootstrap/Table';
 import { useHistory, useLocation } from 'react-router-dom';
-import firebase from '../../firebase.js';
-import { AppContext } from '../../AppProvider';
-import { removeNotification } from '../../../api/index';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
-import { UserPhoto } from '../../shared/User';
+import { removeNotification } from '../api/index';
+import { AppContext } from './AppProvider';
+import firebase from './firebase.js';
+import friendlyTimestamp from './shared/friendlyTimestamp';
+import { UserPhoto } from './shared/User';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
@@ -108,6 +108,7 @@ export default class NotificationsFeed extends React.Component {
       const notifications = [];
       const postIds = [];
       if (notificationsObject) {
+        //TODO omg db call for each!?
         Object.entries(notificationsObject).forEach(([key, nItem]) => {
           const postId = key;
           postIds.push(postId);
@@ -151,44 +152,54 @@ export default class NotificationsFeed extends React.Component {
   render() {
     const notifications = this.state.notifications;
     const hasNotifications = notifications && notifications.length > 0;
+
+    const Notifications = (
+      <>
+        {hasNotifications ? null : 'None'}
+        <Table hover>
+          <tbody>
+            {hasNotifications
+              ? notifications.map((notification) => (
+                  <NotificationItem
+                    key={Math.random()}
+                    content={notification.content}
+                    postId={notification.postId}
+                    userId={notification.userId}
+                    url={
+                      '/r/' +
+                      notification.room +
+                      '/posts/' +
+                      notification.postId
+                    }
+                  />
+                ))
+              : null}
+          </tbody>
+        </Table>
+      </>
+    );
+
     return (
-      <Accordion>
-        <Card>
-          <Card.Body>
-            <Accordion.Toggle as={Card.Title} eventKey="0">
-              Notifications{' '}
-              <Badge variant="secondary">
-                {hasNotifications ? notifications.length : 0}
-              </Badge>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey="0">
-              <>
-                {hasNotifications ? null : 'None'}
-                <Table hover>
-                  <tbody>
-                    {hasNotifications
-                      ? notifications.map((notification) => (
-                          <NotificationItem
-                            key={Math.random()}
-                            content={notification.content}
-                            postId={notification.postId}
-                            userId={notification.userId}
-                            url={
-                              '/r/' +
-                              notification.room +
-                              '/posts/' +
-                              notification.postId
-                            }
-                          />
-                        ))
-                      : null}
-                  </tbody>
-                </Table>
-              </>
-            </Accordion.Collapse>
-          </Card.Body>
-        </Card>
-      </Accordion>
+      <OverlayTrigger
+        trigger="click"
+        placement="bottom"
+        overlay={
+          <Popover id="popover-basic">
+            <Popover.Title as="h3">Notifications</Popover.Title>
+            <Popover.Content>{Notifications}</Popover.Content>
+          </Popover>
+        }
+      >
+        <div>
+          <i
+            class="fas fa-bell"
+            style={{ verticalAlign: 'middle', fontSize: '35px' }}
+          ></i>{' '}
+          <Badge variant="secondary">
+            {hasNotifications ? notifications.length : 0}
+          </Badge>
+        </div>
+      </OverlayTrigger>
     );
   }
 }

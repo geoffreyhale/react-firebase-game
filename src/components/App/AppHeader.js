@@ -8,6 +8,7 @@ import logoImg from './logo192.png';
 import { AppContext } from '../AppProvider';
 import { UserPhoto } from '../shared/User';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
+import NotificationsFeed from '../NotificationsFeed';
 
 const AccountDropdownMenu = ({ logout }) => {
   const { user } = useContext(AppContext);
@@ -15,7 +16,7 @@ const AccountDropdownMenu = ({ logout }) => {
     return null;
   }
   return (
-    <Dropdown className="float-right">
+    <Dropdown>
       <MyDropdownToggle />
       <Dropdown.Menu>
         <Dropdown.Item as={Link} to="/settings">
@@ -36,16 +37,28 @@ export const LogInButton = ({ children, login, style }) => (
   </Button>
 );
 
-export const UserAuth = ({ login, logout }) => {
+const TopRightMenuItem = ({ children }) => (
+  <div className="ml-3" style={{ display: 'inline-block' }}>
+    {children}
+  </div>
+);
+export const TopRightMenu = ({ login, logout }) => {
   const { user } = useContext(AppContext);
   if (!user) {
     return <LogInButton login={login} />;
   }
   return (
-    <>
-      <UserPhoto uid={user.uid} />
-      <AccountDropdownMenu logout={logout} />
-    </>
+    <div className="float-right">
+      <TopRightMenuItem>
+        <UserPhoto uid={user.uid} />
+      </TopRightMenuItem>
+      <TopRightMenuItem>
+        <NotificationsFeed />
+      </TopRightMenuItem>
+      <TopRightMenuItem>
+        <AccountDropdownMenu logout={logout} />
+      </TopRightMenuItem>
+    </div>
   );
 };
 
@@ -91,9 +104,7 @@ const AppHeader = ({ login, logout }) => {
       <Card>
         <Card.Body>
           <AppHeaderTitle />
-          <div style={{ float: 'right' }}>
-            <UserAuth login={login} logout={logout} />
-          </div>
+          <TopRightMenu login={login} logout={logout} />
         </Card.Body>
       </Card>
       {user && (
