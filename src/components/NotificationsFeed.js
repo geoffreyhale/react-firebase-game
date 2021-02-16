@@ -9,6 +9,7 @@ import { removeNotification } from '../api/index';
 import { AppContext } from './AppProvider';
 import firebase from './firebase.js';
 import friendlyTimestamp from './shared/friendlyTimestamp';
+import Spinner from './shared/Spinner';
 import { UserPhoto } from './shared/User';
 import { getPosts } from '../api';
 
@@ -121,7 +122,7 @@ const NotificationBellIcon = ({ children }) => (
 export default class NotificationsFeed extends React.Component {
   constructor() {
     super();
-    this.state = { notifications: [] };
+    this.state = { loading: true, notifications: [] };
   }
 
   static contextType = AppContext;
@@ -164,6 +165,7 @@ export default class NotificationsFeed extends React.Component {
           });
           this.setState({
             notifications: notifications,
+            loading: false,
           });
           postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
         });
@@ -215,7 +217,13 @@ export default class NotificationsFeed extends React.Component {
       >
         <div>
           <NotificationBellIcon>
-            {hasNotifications ? notifications.length : 0}
+            {this.state.loading ? (
+              <Spinner />
+            ) : hasNotifications ? (
+              notifications.length
+            ) : (
+              0
+            )}
           </NotificationBellIcon>
         </div>
       </OverlayTrigger>
