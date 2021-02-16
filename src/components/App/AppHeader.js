@@ -44,19 +44,25 @@ const TopRightMenuItem = ({ children }) => (
 );
 export const TopRightMenu = ({ login, logout }) => {
   const { user } = useContext(AppContext);
-  if (!user) {
-    return <LogInButton login={login} />;
+  if (user) {
+    return (
+      <div className="float-right">
+        <TopRightMenuItem>
+          <UserPhoto uid={user.uid} />
+        </TopRightMenuItem>
+        <TopRightMenuItem>
+          <Notifications />
+        </TopRightMenuItem>
+        <TopRightMenuItem>
+          <AccountDropdownMenu logout={logout} />
+        </TopRightMenuItem>
+      </div>
+    );
   }
   return (
     <div className="float-right">
       <TopRightMenuItem>
-        <UserPhoto uid={user.uid} />
-      </TopRightMenuItem>
-      <TopRightMenuItem>
-        <Notifications />
-      </TopRightMenuItem>
-      <TopRightMenuItem>
-        <AccountDropdownMenu logout={logout} />
+        <LogInButton login={login} />
       </TopRightMenuItem>
     </div>
   );
