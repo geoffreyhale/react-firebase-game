@@ -198,7 +198,7 @@ class Posts extends Component {
 
     return (
       <Row>
-        <Col>
+        <Col className="col-left">
           {this.props.room.id && (
             <>
               <Card
@@ -217,6 +217,11 @@ class Posts extends Component {
                     size={48}
                     title={'Members'}
                   />
+                </div>
+              )}
+              {!isSinglePostPage && (
+                <div className="mb-3">
+                  <Modality room={this.props.room.id} />
                 </div>
               )}
             </>
@@ -277,7 +282,6 @@ class Posts extends Component {
             </>
           )}
         </Col>
-        <Col>{!isSinglePostPage && <Modality room={this.props.room.id} />}</Col>
       </Row>
     );
   }

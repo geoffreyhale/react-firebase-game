@@ -1,6 +1,10 @@
+.col-left {
+  max-width: 600px !important;
+}
 .col-posts {
   max-width: 600px !important;
 }
+
 .notifications {
   min-width: 300px;
 }
