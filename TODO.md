@@ -47,7 +47,6 @@
 
 - better handling for delete posts
 - use context for room, remove roomHack
-- lift notifications out of rooms in ui/ux
 - add (#) count to browser tab
 - accounting tools
 - 'Add Tags' to new top level post
@@ -71,7 +70,7 @@
 
 - replies should be less organized by hot and more by popular
 - should not be able to approve your own modality post
-- sent j a direct link to single post full of comments for her, she didn't know how to see them;; from notifications, j clicks and doesn't think it linked; she saw the blue no lurking box and even if she read it there wasn't a clear way to post/reply/rejoin-the-conversation
+- sent j a direct link to single post full of comments for her, she didn't know how to see them;; she saw the blue no lurking box and even if she read it there wasn't a clear way to post/reply/rejoin-the-conversation
 - pin posts/conversations/threads
 - save posts/conversations/threads
 - favorite posts/conversations/threads
