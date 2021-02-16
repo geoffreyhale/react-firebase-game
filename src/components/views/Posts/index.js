@@ -8,7 +8,6 @@ import { AppContext } from '../../AppProvider';
 import postsTreeFromRawPosts from '../../shared/postsTreeFromRawPosts';
 import Spinner from '../../shared/Spinner';
 import NewTopLevelPostCard from './NewTopLevelPostCard';
-import NotificationsFeed from '../../NotificationsFeed';
 import Post from './Post';
 import {
   FEED,

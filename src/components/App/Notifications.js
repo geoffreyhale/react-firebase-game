@@ -5,13 +5,12 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import Table from 'react-bootstrap/Table';
 import { useHistory, useLocation } from 'react-router-dom';
-import { removeNotification } from '../api/index';
-import { AppContext } from './AppProvider';
-import firebase from './firebase.js';
-import friendlyTimestamp from './shared/friendlyTimestamp';
-import Spinner from './shared/Spinner';
-import { UserPhoto } from './shared/User';
-import { getPosts } from '../api';
+import { getPosts, removeNotification } from '../../api/index';
+import { AppContext } from '../AppProvider';
+import firebase from '../firebase.js';
+import friendlyTimestamp from '../shared/friendlyTimestamp';
+import Spinner from '../shared/Spinner';
+import { UserPhoto } from '../shared/User';
 
 // appears to remove notifications for your posts that don't exist anymore
 const hackCleanupNotifications = (userId, postIds) => {
@@ -119,7 +118,7 @@ const NotificationBellIcon = ({ children }) => (
   </div>
 );
 
-export default class NotificationsFeed extends React.Component {
+export default class Notifications extends React.Component {
   constructor() {
     super();
     this.state = { loading: true, notifications: [] };

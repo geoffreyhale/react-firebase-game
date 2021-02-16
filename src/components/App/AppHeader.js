@@ -5,10 +5,10 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Link } from 'react-router-dom';
 import AppNav from './AppNav';
 import logoImg from './logo192.png';
+import Notifications from './Notifications';
 import { AppContext } from '../AppProvider';
 import { UserPhoto } from '../shared/User';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
-import NotificationsFeed from '../NotificationsFeed';
 
 const AccountDropdownMenu = ({ logout }) => {
   const { user } = useContext(AppContext);
@@ -53,7 +53,7 @@ export const TopRightMenu = ({ login, logout }) => {
         <UserPhoto uid={user.uid} />
       </TopRightMenuItem>
       <TopRightMenuItem>
-        <NotificationsFeed />
+        <Notifications />
       </TopRightMenuItem>
       <TopRightMenuItem>
         <AccountDropdownMenu logout={logout} />
