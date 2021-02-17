@@ -28,13 +28,13 @@ const UserModalityScoreCardInline = ({
   >
     <span className="ml-4">
       <div style={{ textAlign: 'center' }}>
-        {loadingPosts ? <Spinner /> : userModalityPostsCount}
+        {loadingPosts ? <Spinner size="sm" /> : userModalityPostsCount}
       </div>
     </span>
     <span className="ml-4">
       <div style={{ textAlign: 'center' }}>
         {loadingPosts ? (
-          <Spinner />
+          <Spinner size="sm" />
         ) : (
           `${userModalityYesCount}` // (${userModalityYesPercentage}%)`
         )}
@@ -43,7 +43,7 @@ const UserModalityScoreCardInline = ({
     <span className="ml-4">
       <div style={{ textAlign: 'center' }}>
         {loadingPosts ? (
-          <Spinner />
+          <Spinner size="sm" />
         ) : (
           `${userModalityNoCount}` // (${userModalityNoPercentage}%)`
         )}
@@ -68,7 +68,7 @@ const UserModalityScoreCard = ({
         <strong>Posts</strong>
       </div>
       <div style={{ textAlign: 'center' }}>
-        {loadingPosts ? <Spinner /> : userModalityPostsCount}
+        {loadingPosts ? <Spinner size="sm" /> : userModalityPostsCount}
       </div>
     </ListGroup.Item>
     <ListGroup.Item>
@@ -77,7 +77,7 @@ const UserModalityScoreCard = ({
       </div>
       <div style={{ textAlign: 'center' }}>
         {loadingPosts ? (
-          <Spinner />
+          <Spinner size="sm" />
         ) : (
           `${userModalityYesCount}` // (${userModalityYesPercentage}%)`
         )}
@@ -89,7 +89,7 @@ const UserModalityScoreCard = ({
       </div>
       <div style={{ textAlign: 'center' }}>
         {loadingPosts ? (
-          <Spinner />
+          <Spinner size="sm" />
         ) : (
           `${userModalityNoCount}` // (${userModalityNoPercentage}%)`
         )}
