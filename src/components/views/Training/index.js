@@ -9,6 +9,11 @@ import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
 import MODALITIES from '../Posts/Modality/MODALITIES';
 
+//TODO handle premium only
+//TODO allow post submissions from this page
+//TODO add feed of modality posts that user has not voted on
+//TODO add feeds of best examples
+
 const UserModalityScoreCardInline = ({
   loadingPosts,
   uid,
