@@ -8,6 +8,8 @@ import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
 import friendlyTimestamp from './shared/friendlyTimestamp';
 
+const HOURS_DELAY_FOR_TRAINING_AGAIN = 3;
+
 //TODO tests for all this
 
 const ITEMS = {
@@ -117,10 +119,15 @@ class SmartGuide extends React.Component {
     getMostRecentModalityPostTimestampForUser(
       { uid: this.user().uid },
       (modalityPostTimestamp) => {
-        // TODO if certain time duration has passed (6 hours?)
-        const items = this.state.items;
-        items.mostRecentModalityPostTimestamp = modalityPostTimestamp;
-        this.setState({ items });
+        const millisecondsPerHour = 3.6e6;
+        if (
+          Date.now() - modalityPostTimestamp >
+          HOURS_DELAY_FOR_TRAINING_AGAIN * millisecondsPerHour
+        ) {
+          const items = this.state.items;
+          items.mostRecentModalityPostTimestamp = modalityPostTimestamp;
+          this.setState({ items });
+        }
       }
     );
 
