@@ -98,6 +98,14 @@ const UserModalityScoreCard = ({
   </ListGroup>
 );
 
+const postsWithModalityArrayFromPostsObject = ({
+  posts = {},
+  modalityKey = null,
+}) =>
+  Object.values(posts).filter(
+    (post) => post.modality && post.modality.name === modalityKey
+  );
+
 const UserModality = ({
   posts: postsObject,
   loadingPosts,
@@ -110,9 +118,10 @@ const UserModality = ({
     return null;
   }
 
-  const posts = Object.values(postsObject).filter(
-    (post) => post.modality && post.modality.name === modalityKey
-  );
+  const posts = postsWithModalityArrayFromPostsObject({
+    posts: postsObject,
+    modalityKey,
+  });
 
   const userModalityPostsCount =
     posts && typeof posts === 'object' && Object.keys(posts).length;
