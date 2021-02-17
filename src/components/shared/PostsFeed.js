@@ -2,7 +2,7 @@ import React from 'react';
 import Post from '../views/Posts/Post';
 
 const PostsFeed = ({
-  posts,
+  posts = {},
   isUnseenFeed = false,
   showHeaderLinkToParent = false,
   hackHideRepliesCount,
