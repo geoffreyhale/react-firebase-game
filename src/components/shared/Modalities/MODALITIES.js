@@ -318,6 +318,77 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  possibleselves: {
+    // TODO maybe Vulnerability skills should be a prerequisite
+    available: true,
+    room: 'productivity',
+    title: 'Possible Selves',
+    description: (
+      <>
+        <blockquote>
+          <p>
+            "Possible selves represent individuals' ideas of what they might
+            become, what they would like to become, and what they are afraid of
+            becoming"
+          </p>
+          <figcaption>
+            — Markus,{' '}
+            <cite>
+              <a
+                href="https://web.stanford.edu/~hazelm/publications/1986_Markus%20&%20Nurius_PossibleSelves.pdf"
+                target="_blank"
+              >
+                Possible Selves
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
+        <blockquote>
+          <p>
+            If you want to know what drives your actions and what holds you back
+            from making decisions or pursuing goals, this exercise is for you.
+          </p>
+          <p>
+            You’re going to visualize and describe, in writing, three different
+            versions of yourself a year in the future:
+          </p>
+          <p>
+            <ol>
+              <li>
+                My Ideal Self - What do you really want for yourself a year from
+                now?
+              </li>
+              <li>
+                My Probable Self - What do you expect for yourself a year from
+                now?
+              </li>
+              <li>
+                My Feared Self - What are you most afraid of becoming a year
+                from now?
+              </li>
+            </ol>
+          </p>
+          <p>
+            ...describe an imaginary scene with you in it, unfettered by
+            reality. What are you doing? Where are you? Who else is there?
+            Include as many tiny details as you want, such as what you’re
+            wearing or what sounds are in the background.
+          </p>
+          <figcaption>
+            — Nicola Prentis,{' '}
+            <cite>
+              <a
+                href="https://www.success.com/use-this-writing-exercise-to-uncover-your-ideal-self/"
+                target="_blank"
+              >
+                Use This Writing Exercise to Uncover Your Ideal Self
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
+      </>
+    ),
+  },
 });
 
 export default MODALITIES;
