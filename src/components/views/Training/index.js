@@ -9,7 +9,7 @@ import { getPosts } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
-import MODALITIES from '../Posts/Modality/MODALITIES';
+import MODALITIES from '../../shared/Modalities/MODALITIES';
 
 //TODO add feed of modality posts that user has not voted on
 //TODO add feeds of best examples

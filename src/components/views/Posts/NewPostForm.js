@@ -4,8 +4,8 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { AppContext } from '../../AppProvider';
 import countWords from '../../shared/countWords';
-import { SelectModality } from './Modality';
-import EmotionalAwareness from './Modality/EmotionalAwareness';
+import { SelectModality } from '../../shared/Modalities';
+import EmotionalAwareness from '../../shared/Modalities/EmotionalAwareness';
 
 const WordCount = ({ words }) => {
   const [show, setShow] = useState(false);

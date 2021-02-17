@@ -14,7 +14,7 @@ import { addTag, createPost, deletePost, editPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
-import { ModalityVoteButton } from './Modality';
+import { ModalityVoteButton } from '../../shared/Modalities';
 
 import './post.css';
 

@@ -8,8 +8,8 @@ import Card from 'react-bootstrap/Card';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-import { AppContext } from '../../../AppProvider';
-import { setModalityVote } from '../../../../api';
+import { AppContext } from '../../AppProvider';
+import { setModalityVote } from '../../../api';
 import MODALITIES from './MODALITIES';
 
 export const validModalityForRoom = ({ modalityKey, room }) => {

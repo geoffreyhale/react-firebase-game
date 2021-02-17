@@ -21,7 +21,7 @@ import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../../shared/PremiumSaleCard';
 import PremiumFeature from '../../shared/PremiumFeature';
 import Mosaic from '../Community/Mosaic';
-import Modality from './Modality';
+import Modality from '../../shared/Modalities';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {

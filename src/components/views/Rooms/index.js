@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import Posts from '../Posts';
 import { AppContext } from '../../AppProvider';
-import { validModalityForRoom } from '../Posts/Modality';
+import { validModalityForRoom } from '../../shared/Modalities';
 
 export const ROOMS = Object.freeze({
   home: {
