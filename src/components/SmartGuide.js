@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
+import Badge from 'react-bootstrap/Badge';
+import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
@@ -9,28 +11,33 @@ import friendlyTimestamp from './shared/friendlyTimestamp';
 //TODO tests for all this
 
 const ITEMS = {
-  getPremium: () => (
-    <span>
-      Ask in <Link to="r/general">r/general</Link> how to{' '}
-      <strong>sign up for premium</strong> to gain access to r/healthyrelating
-      and other important xBook features.
-    </span>
-  ),
-  mostRecentModalityPostTimestamp: (timestamp) =>
-    // TODO if certain time duration has passed (an hour?)
-    timestamp ? (
+  getPremium: {
+    linkTo: '/r/general',
+    title: 'Get Premium',
+    description: () => (
       <span>
-        Your last modality post was{' '}
-        <strong>{friendlyTimestamp(timestamp, ' ago')}</strong>. Why don't you
-        head over to <Link to="r/healthyrelating">r/healthyrelating</Link> and
-        write another?
-      </span>
-    ) : (
-      <span>
-        You've never written modality post!? You should head over to{' '}
-        <Link to="r/healthyrelating">r/healthyrelating</Link> and give it a try!
+        Ask how to sign up for premium for just $1/mo in{' '}
+        <Link to="/r/general">r/general</Link>.
       </span>
     ),
+  },
+  mostRecentModalityPostTimestamp: {
+    linkTo: '/training',
+    title: 'Train Modalities',
+    description: (timestamp) =>
+      timestamp ? (
+        <span>
+          Checkout the <Link to="/training">training page</Link> and submit
+          another modality post. Your last modality post was{' '}
+          <strong>{friendlyTimestamp(timestamp, ' ago')}</strong>.
+        </span>
+      ) : (
+        <span>
+          Checkout the <Link to="/training">training page</Link> and submit a
+          modality post.
+        </span>
+      ),
+  },
 };
 
 const SmartGuidePanel = ({ items }) => {
@@ -40,30 +47,49 @@ const SmartGuidePanel = ({ items }) => {
 
   return (
     <Accordion /*defaultActiveKey="0"*/ activeKey={activeKey} className="mt-3">
-      <Card bg="light">
+      <Card>
         <Accordion.Toggle
           as={Card.Header}
           /*eventKey="0"*/ onClick={() => toggleActiveKey('0')}
         >
-          <strong>What's Next?</strong>{' '}
-          <span className={'pull-right'}>
-            {activeKey === '0' ? 'Click to collapse' : 'Click to expand'}
-          </span>
+          <strong>
+            Wizard{' '}
+            <Badge variant="secondary">{Object.keys(items).length}</Badge>
+          </strong>
+          <small className={'ml-3'}>
+            {activeKey === '0'
+              ? 'Click to collapse'
+              : 'Click to expand recommended actions'}
+          </small>
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           <Card.Body>
-            <Card.Title>Next step:</Card.Title>
             {items && typeof items === 'object' ? (
               Object.keys(items).length > 0 ? (
-                <ul>
-                  {Object.entries(items).map(([key, value]) => (
-                    <li>
-                      {ITEMS[key] &&
-                        typeof ITEMS[key] === 'function' &&
-                        ITEMS[key](value)}
-                    </li>
-                  ))}
-                </ul>
+                <ListGroup>
+                  {Object.entries(items).map(([key, value], i) => {
+                    const description = ITEMS[key].description(value);
+                    const title = ITEMS[key].title;
+                    const linkTo = ITEMS[key].linkTo;
+                    return (
+                      <ListGroup.Item
+                        as={Link}
+                        to={linkTo}
+                        action
+                        style={{ paddingBottom: 0 }}
+                      >
+                        <div className="float-left mr-4 mb-3">{i + 1}</div>
+                        <div
+                          className="float-left mr-4 mb-3"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          <strong>{title}</strong>
+                        </div>
+                        <div className="float-left">{description}</div>
+                      </ListGroup.Item>
+                    );
+                  })}
+                </ListGroup>
               ) : (
                 //TODO should never need this
                 "You're all caught up!  Do anything you like..."
@@ -91,6 +117,7 @@ class SmartGuide extends React.Component {
     getMostRecentModalityPostTimestampForUser(
       { uid: this.user().uid },
       (modalityPostTimestamp) => {
+        // TODO if certain time duration has passed (6 hours?)
         const items = this.state.items;
         items.mostRecentModalityPostTimestamp = modalityPostTimestamp;
         this.setState({ items });
