@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
+import { AppContext } from '../../AppProvider';
 import MODALITIES from '../Posts/Modality/MODALITIES';
 
-const Modalities = (props) => {
-  const defaultActiveKey = props.location.hash ? props.location.hash : null;
+const Modalities = () => {
+  const { modality: contextModalityKey, setModality } = useContext(AppContext);
+
+  const modalityToShow =
+    contextModalityKey &&
+    MODALITIES[contextModalityKey] &&
+    MODALITIES[contextModalityKey].available
+      ? MODALITIES[contextModalityKey]
+      : null;
 
   const modalities = Object.entries(MODALITIES)
     .filter(([key, MODALITY]) => MODALITY.available)
@@ -25,32 +32,33 @@ const Modalities = (props) => {
       <Card.Header>Training</Card.Header>
       <Card.Body>
         <Card.Title>Modalities</Card.Title>
-        <Tab.Container
-          id="list-group-tabs-example"
-          defaultActiveKey={defaultActiveKey}
-        >
-          <Row>
-            <Col sm={4} className="col-left">
-              <ListGroup>
-                {modalities.map((modality) => (
-                  <ListGroup.Item action href={`#${modality.key}`}>
-                    {modality.title}
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            </Col>
-            <Col sm={8} className="col-main">
-              <Tab.Content>
-                {modalities.map((modality) => (
-                  <Tab.Pane eventKey={`#${modality.key}`}>
-                    <h2>{modality.title}</h2>
-                    {modality.description}
-                  </Tab.Pane>
-                ))}
-              </Tab.Content>
-            </Col>
-          </Row>
-        </Tab.Container>
+        <Row>
+          <Col sm={4} className="col-left">
+            <ListGroup>
+              {modalities.map((modality) => (
+                <ListGroup.Item
+                  action
+                  active={contextModalityKey === modality.key}
+                  onClick={() =>
+                    setModality(
+                      contextModalityKey === modality.key ? null : modality.key
+                    )
+                  }
+                >
+                  {modality.title}
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </Col>
+          <Col sm={8} className="col-main">
+            {modalityToShow && (
+              <>
+                <h2>{modalityToShow.title}</h2>
+                {modalityToShow.description}
+              </>
+            )}
+          </Col>
+        </Row>
       </Card.Body>
     </Card>
   );
