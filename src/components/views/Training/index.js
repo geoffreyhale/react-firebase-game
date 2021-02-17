@@ -11,10 +11,9 @@ import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
 import MODALITIES from '../Posts/Modality/MODALITIES';
 
-//TODO handle premium only
-//TODO allow post submissions from this page
 //TODO add feed of modality posts that user has not voted on
 //TODO add feeds of best examples
+//TODO allow post submissions from this page
 
 const UserModalityScoreCardInline = ({
   loadingPosts,
@@ -123,12 +122,14 @@ const UserModality = ({
     Object.values(posts).reduce(
       ([yesCount, noCount], post) => [
         yesCount + post.modality && post.modality.votes
-          ? Object.values(post.modality.votes).filter((vote) => vote === true)
-              .length
+          ? Object.entries(post.modality.votes).filter(
+              ([key, vote]) => key !== user.uid && vote === true
+            ).length
           : 0,
         noCount + post.modality && post.modality.votes
-          ? Object.values(post.modality.votes).filter((vote) => vote === false)
-              .length
+          ? Object.entries(post.modality.votes).filter(
+              ([key, vote]) => key !== user.uid && vote === false
+            ).length
           : 0,
       ],
       [0, 0]
@@ -241,7 +242,6 @@ const Modalities = () => {
                         as={Link}
                         variant="link"
                         to={`/r/${modalityToShow.room}`}
-                        // onClick={() => setModality(modalityToShow.key)}
                       >
                         r/{modalityToShow.room}
                       </Button>
