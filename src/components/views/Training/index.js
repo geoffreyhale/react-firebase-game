@@ -172,7 +172,7 @@ const UserModality = ({
   });
 };
 
-const Modalities = () => {
+const Training = () => {
   const { user, modality: contextModalityKey, setModality } = useContext(
     AppContext
   );
@@ -296,4 +296,4 @@ const Modalities = () => {
     </Card>
   );
 };
-export default Modalities;
+export default Training;
