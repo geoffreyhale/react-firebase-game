@@ -9,16 +9,103 @@ import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
 import MODALITIES from '../Posts/Modality/MODALITIES';
 
-//TODO this calls getPosts every time the selected modality changes and rerenders this
-const UserModality = ({ posts: postsObject, loadingPosts }) => {
-  const { user, modality: contextModalityKey } = useContext(AppContext);
+const UserModalityScoreCardInline = ({
+  loadingPosts,
+  uid,
+  userModalityPostsCount,
+  userModalityYesCount,
+  userModalityNoCount,
+}) => (
+  <span
+    className="user-modality float-right"
+    style={{ display: 'inline-flex' }}
+  >
+    <span className="ml-4">
+      <div style={{ textAlign: 'center' }}>
+        {loadingPosts ? <Spinner /> : userModalityPostsCount}
+      </div>
+    </span>
+    <span className="ml-4">
+      <div style={{ textAlign: 'center' }}>
+        {loadingPosts ? (
+          <Spinner />
+        ) : (
+          `${userModalityYesCount}` // (${userModalityYesPercentage}%)`
+        )}
+      </div>
+    </span>
+    <span className="ml-4">
+      <div style={{ textAlign: 'center' }}>
+        {loadingPosts ? (
+          <Spinner />
+        ) : (
+          `${userModalityNoCount}` // (${userModalityNoPercentage}%)`
+        )}
+      </div>
+    </span>
+  </span>
+);
+
+const UserModalityScoreCard = ({
+  loadingPosts,
+  uid,
+  userModalityPostsCount,
+  userModalityYesCount,
+  userModalityNoCount,
+}) => (
+  <ListGroup horizontal className="user-modality">
+    <ListGroup.Item>
+      <UserPhoto uid={uid} />
+    </ListGroup.Item>
+    <ListGroup.Item>
+      <div>
+        <strong>Posts</strong>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        {loadingPosts ? <Spinner /> : userModalityPostsCount}
+      </div>
+    </ListGroup.Item>
+    <ListGroup.Item>
+      <div>
+        <strong>Yes</strong>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        {loadingPosts ? (
+          <Spinner />
+        ) : (
+          `${userModalityYesCount}` // (${userModalityYesPercentage}%)`
+        )}
+      </div>
+    </ListGroup.Item>
+    <ListGroup.Item>
+      <div>
+        <strong>No</strong>
+      </div>
+      <div style={{ textAlign: 'center' }}>
+        {loadingPosts ? (
+          <Spinner />
+        ) : (
+          `${userModalityNoCount}` // (${userModalityNoPercentage}%)`
+        )}
+      </div>
+    </ListGroup.Item>
+  </ListGroup>
+);
+
+const UserModality = ({
+  posts: postsObject,
+  loadingPosts,
+  modalityKey,
+  render,
+}) => {
+  const { user } = useContext(AppContext);
 
   if (!postsObject || typeof postsObject !== 'object') {
     return null;
   }
 
   const posts = Object.values(postsObject).filter(
-    (post) => post.modality && post.modality.name === contextModalityKey
+    (post) => post.modality && post.modality.name === modalityKey
   );
 
   const userModalityPostsCount =
@@ -48,45 +135,13 @@ const UserModality = ({ posts: postsObject, loadingPosts }) => {
   //   (userModalityNoCount / userModalityVoteCount) * 100
   // );
 
-  return (
-    <ListGroup horizontal className="my-3">
-      <ListGroup.Item>
-        <UserPhoto uid={user.uid} />
-      </ListGroup.Item>
-      <ListGroup.Item>
-        <div>
-          <strong>Posts</strong>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          {loadingPosts ? <Spinner /> : userModalityPostsCount}
-        </div>
-      </ListGroup.Item>
-      <ListGroup.Item>
-        <div>
-          <strong>Yes</strong>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          {loadingPosts ? (
-            <Spinner />
-          ) : (
-            `${userModalityYesCount}` // (${userModalityYesPercentage}%)`
-          )}
-        </div>
-      </ListGroup.Item>
-      <ListGroup.Item>
-        <div>
-          <strong>No</strong>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          {loadingPosts ? (
-            <Spinner />
-          ) : (
-            `${userModalityNoCount}` // (${userModalityNoPercentage}%)`
-          )}
-        </div>
-      </ListGroup.Item>
-    </ListGroup>
-  );
+  return render({
+    loadingPosts,
+    uid: user.uid,
+    userModalityPostsCount,
+    userModalityYesCount,
+    userModalityNoCount,
+  });
 };
 
 const Modalities = () => {
@@ -144,6 +199,15 @@ const Modalities = () => {
                   }
                 >
                   {modality.title}
+                  <UserModality
+                    key={modality.key}
+                    modalityKey={modality.key}
+                    posts={posts}
+                    loadingPosts={loadingPosts}
+                    render={(props) => (
+                      <UserModalityScoreCardInline {...props} />
+                    )}
+                  />
                 </ListGroup.Item>
               ))}
             </ListGroup>
@@ -152,11 +216,15 @@ const Modalities = () => {
             {modalityToShow && (
               <>
                 <h2>{modalityToShow.title}</h2>
-                <UserModality
-                  key={contextModalityKey}
-                  posts={posts}
-                  loadingPosts={loadingPosts}
-                />
+                <div className="my-3">
+                  <UserModality
+                    key={'main' + contextModalityKey}
+                    modalityKey={contextModalityKey}
+                    posts={posts}
+                    loadingPosts={loadingPosts}
+                    render={(props) => <UserModalityScoreCard {...props} />}
+                  />
+                </div>
                 {modalityToShow.description}
               </>
             )}

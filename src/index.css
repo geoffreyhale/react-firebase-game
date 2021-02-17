@@ -41,3 +41,7 @@ ul#rooms {
   list-style-type: none;
   padding-left: 0;
 }
+
+.user-modality.list-group .list-group-item {
+  color: rgb(73, 80, 87);
+}
