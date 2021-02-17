@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -191,7 +193,7 @@ const Modalities = () => {
       <Card.Body>
         <Card.Title>Modalities</Card.Title>
         <Row>
-          <Col sm={4} className="col-left">
+          <Col sm={4} className="col-left mb-3">
             <ListGroup>
               {modalities.map((modality) => (
                 <ListGroup.Item
@@ -230,7 +232,22 @@ const Modalities = () => {
                     render={(props) => <UserModalityScoreCard {...props} />}
                   />
                 </div>
-                {modalityToShow.description}
+                <div className="mb-3">{modalityToShow.description}</div>
+                <div className="mb-3">
+                  <Card>
+                    <Card.Body>
+                      Practice now in premium room:{' '}
+                      <Button
+                        as={Link}
+                        variant="link"
+                        to={`/r/${modalityToShow.room}`}
+                        // onClick={() => setModality(modalityToShow.key)}
+                      >
+                        r/{modalityToShow.room}
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </div>
               </>
             )}
           </Col>
