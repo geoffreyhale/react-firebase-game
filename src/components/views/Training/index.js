@@ -5,6 +5,8 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import { getPosts } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
@@ -255,32 +257,37 @@ const Modalities = () => {
                     render={(props) => <UserModalityScoreCard {...props} />}
                   />
                 </div>
-                <div className="mb-3">{modalityToShow.description}</div>
-                <div className="mb-3">
-                  <Card>
-                    <Card.Body>
-                      Practice now in premium room:{' '}
-                      <Button
-                        as={Link}
-                        variant="link"
-                        to={`/r/${modalityToShow.room}`}
-                      >
-                        r/{modalityToShow.room}
-                      </Button>
-                    </Card.Body>
-                  </Card>
-                </div>
-                <div className="mb-3">
-                  <h3 className="mt-5">My Posts</h3>
-                  {/* TODO the vote buttons work but the post will not update live here */}
-                  <PostsFeed
-                    posts={postsWithModalityArrayFromPostsObject({
-                      posts,
-                      modalityKey: contextModalityKey,
-                    })}
-                    hackHideRepliesCount={true}
-                  />
-                </div>
+                <Tabs defaultActiveKey="description" className="mb-3">
+                  <Tab eventKey="description" title="Description">
+                    <div className="mb-3">{modalityToShow.description}</div>
+                    <div className="mb-3">
+                      <Card>
+                        <Card.Body>
+                          Practice now in premium room:{' '}
+                          <Button
+                            as={Link}
+                            variant="link"
+                            to={`/r/${modalityToShow.room}`}
+                          >
+                            r/{modalityToShow.room}
+                          </Button>
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  </Tab>
+                  <Tab eventKey="my-posts" title="My Posts">
+                    <div className="mb-3">
+                      {/* TODO the vote buttons work but the post will not update live here */}
+                      <PostsFeed
+                        posts={postsWithModalityArrayFromPostsObject({
+                          posts,
+                          modalityKey: contextModalityKey,
+                        })}
+                        hackHideRepliesCount={true}
+                      />
+                    </div>
+                  </Tab>
+                </Tabs>
               </>
             )}
           </Col>
