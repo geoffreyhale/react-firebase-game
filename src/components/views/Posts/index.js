@@ -22,6 +22,7 @@ import PremiumSaleCard from '../../shared/PremiumSaleCard';
 import PremiumFeature from '../../shared/PremiumFeature';
 import Mosaic from '../Community/Mosaic';
 import Modality from '../../shared/Modalities';
+import PostsFeed from '../../shared/PostsFeed';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
@@ -36,26 +37,6 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
   }
   return null;
 };
-
-const PostsFeed = ({
-  posts,
-  isUnseenFeed = false,
-  showHeaderLinkToParent = false,
-  hackHideRepliesCount,
-}) =>
-  Object.entries(posts).map(([key, post]) => {
-    return (
-      <div className="mb-4" key={post.id}>
-        <Post
-          post={post}
-          hackRoom={post.room}
-          isUnseenFeed={isUnseenFeed}
-          showHeaderLinkToParent={showHeaderLinkToParent}
-          hackHideRepliesCount={hackHideRepliesCount}
-        />
-      </div>
-    );
-  });
 
 class Posts extends Component {
   constructor() {
