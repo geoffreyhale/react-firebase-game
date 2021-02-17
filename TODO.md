@@ -18,7 +18,6 @@
 
 # TODO
 
-- bug: 0 notifications is infinite spinner
 - consolidate stats, store them, update them selectively for performance, competitive gamification
 
 ## Top Tier

@@ -168,6 +168,10 @@ export default class Notifications extends React.Component {
           });
           postIds && hackCleanupNotifications(this.user().uid, postIds); // make better
         });
+      } else {
+        this.setState({
+          loading: false,
+        });
       }
     });
     // TODO removeNotification does't update the feed
