@@ -25,9 +25,6 @@ const Routes = () => {
     history.push('/r/general' + location.pathname);
   }
 
-  // if route changes, unset modality
-  history.listen(() => setModality(null));
-
   return (
     <Switch>
       {user && user.admin && (

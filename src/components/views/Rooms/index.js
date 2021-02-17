@@ -3,6 +3,8 @@ import Card from 'react-bootstrap/Card';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import Posts from '../Posts';
+import { AppContext } from '../../AppProvider';
+import { validModalityForRoom } from '../Posts/Modality';
 
 export const ROOMS = Object.freeze({
   home: {
@@ -115,8 +117,20 @@ class Rooms extends React.Component {
     this.state = { room: null };
   }
 
+  static contextType = AppContext;
+  user = () => this.context.user;
+
   componentDidMount() {
     const { roomId = 'home' } = this.props.match.params;
+
+    if (
+      !validModalityForRoom({
+        modalityKey: this.context.modality,
+        room: roomId === 'home' ? 'general' : roomId,
+      })
+    ) {
+      this.context.setModality(null);
+    }
 
     const room = ROOMS[roomId];
 
