@@ -10,6 +10,7 @@ import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
 import MODALITIES from '../../shared/Modalities/MODALITIES';
+import PostsFeed from '../../shared/PostsFeed';
 
 //TODO add feed of modality posts that user has not voted on
 //TODO add feeds of best examples
@@ -179,9 +180,13 @@ const Modalities = () => {
 
   useEffect(() => {
     getPosts((posts) => {
-      const userModalityPosts = Object.values(posts).filter(
-        (post) => post.userId === user.uid && post.modality
-      );
+      const userModalityPosts = Object.entries(posts)
+        .filter(([id, post]) => post.userId === user.uid && post.modality)
+        //TODO this id map should probably be handled in api/getPosts
+        .map(([id, post]) => {
+          post.id = id;
+          return post;
+        });
       setPosts(userModalityPosts);
       setLoadingPosts(false);
     });
@@ -264,6 +269,17 @@ const Modalities = () => {
                       </Button>
                     </Card.Body>
                   </Card>
+                </div>
+                <div className="mb-3">
+                  <h3 className="mt-5">My Posts</h3>
+                  {/* TODO the vote buttons work but the post will not update live here */}
+                  <PostsFeed
+                    posts={postsWithModalityArrayFromPostsObject({
+                      posts,
+                      modalityKey: contextModalityKey,
+                    })}
+                    hackHideRepliesCount={true}
+                  />
                 </div>
               </>
             )}
