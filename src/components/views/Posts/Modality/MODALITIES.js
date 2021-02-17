@@ -296,6 +296,28 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  triggered: {
+    available: true,
+    room: 'healthyrelating',
+    title: 'Triggered',
+    description: (
+      <>
+        <p>
+          This is for self-awareness and unpacking your experience when a
+          memory, experience, or event sparks an intense emotional reaction.
+        </p>
+        <p>
+          If the post displays self-awareness and seeks to find what's really
+          going on inside during the trigger, the post should receive a "Yes"
+          vote.
+        </p>
+        <p>
+          Aggressive blameful victim rambling should receive empathy and a "No"
+          vote in this modality.
+        </p>
+      </>
+    ),
+  },
 });
 
 export default MODALITIES;
