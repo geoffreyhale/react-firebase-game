@@ -85,7 +85,7 @@ const SmartGuidePanel = ({ items }) => {
                         >
                           <strong>{title}</strong>
                         </div>
-                        <div className="float-left">{description}</div>
+                        <div className="float-left mb-3">{description}</div>
                       </ListGroup.Item>
                     );
                   })}
