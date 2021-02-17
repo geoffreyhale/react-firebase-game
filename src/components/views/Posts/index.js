@@ -226,7 +226,7 @@ class Posts extends Component {
           )}
           {!this.user().isPremium && <PremiumSaleCard />}
         </Col>
-        <Col sm={8} className="col-posts">
+        <Col sm={8} className="col-main">
           {isSinglePostPage && (
             <>
               {isLurker && (
