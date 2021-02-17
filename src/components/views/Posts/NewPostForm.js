@@ -62,6 +62,7 @@ export default class NewPostForm extends React.Component {
             const successCallback = () => {
               this.setState({ content: '' });
               this.props.onSuccess && this.props.onSuccess();
+              this.context.setModality(null);
             };
             if (
               !this.props.onSubmit &&
@@ -71,7 +72,7 @@ export default class NewPostForm extends React.Component {
               this.props.onSubmitEditHack({
                 id: this.props.editPostIdHack,
                 content: this.state.content,
-                successCallback: successCallback,
+                successCallback,
               });
             } else {
               this.props.onSubmit({
