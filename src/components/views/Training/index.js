@@ -10,24 +10,16 @@ import { UserPhoto } from '../../shared/User';
 import MODALITIES from '../Posts/Modality/MODALITIES';
 
 //TODO this calls getPosts every time the selected modality changes and rerenders this
-const UserModality = () => {
+const UserModality = ({ posts: postsObject, loadingPosts }) => {
   const { user, modality: contextModalityKey } = useContext(AppContext);
 
-  const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState({});
+  if (!postsObject || typeof postsObject !== 'object') {
+    return null;
+  }
 
-  useEffect(() => {
-    getPosts((posts) => {
-      const userModalityPosts = Object.values(posts).filter(
-        (post) =>
-          post.userId === user.uid &&
-          post.modality &&
-          post.modality.name === contextModalityKey
-      );
-      setPosts(userModalityPosts);
-      setLoading(false);
-    });
-  }, []);
+  const posts = Object.values(postsObject).filter(
+    (post) => post.modality && post.modality.name === contextModalityKey
+  );
 
   const userModalityPostsCount =
     posts && typeof posts === 'object' && Object.keys(posts).length;
@@ -66,7 +58,7 @@ const UserModality = () => {
           <strong>Posts</strong>
         </div>
         <div style={{ textAlign: 'center' }}>
-          {loading ? <Spinner /> : userModalityPostsCount}
+          {loadingPosts ? <Spinner /> : userModalityPostsCount}
         </div>
       </ListGroup.Item>
       <ListGroup.Item>
@@ -74,7 +66,7 @@ const UserModality = () => {
           <strong>Yes</strong>
         </div>
         <div style={{ textAlign: 'center' }}>
-          {loading ? (
+          {loadingPosts ? (
             <Spinner />
           ) : (
             `${userModalityYesCount}` // (${userModalityYesPercentage}%)`
@@ -86,7 +78,7 @@ const UserModality = () => {
           <strong>No</strong>
         </div>
         <div style={{ textAlign: 'center' }}>
-          {loading ? (
+          {loadingPosts ? (
             <Spinner />
           ) : (
             `${userModalityNoCount}` // (${userModalityNoPercentage}%)`
@@ -98,7 +90,22 @@ const UserModality = () => {
 };
 
 const Modalities = () => {
-  const { modality: contextModalityKey, setModality } = useContext(AppContext);
+  const { user, modality: contextModalityKey, setModality } = useContext(
+    AppContext
+  );
+
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [posts, setPosts] = useState({});
+
+  useEffect(() => {
+    getPosts((posts) => {
+      const userModalityPosts = Object.values(posts).filter(
+        (post) => post.userId === user.uid && post.modality
+      );
+      setPosts(userModalityPosts);
+      setLoadingPosts(false);
+    });
+  }, []);
 
   const modalityToShow =
     contextModalityKey &&
@@ -145,7 +152,11 @@ const Modalities = () => {
             {modalityToShow && (
               <>
                 <h2>{modalityToShow.title}</h2>
-                <UserModality key={contextModalityKey} />
+                <UserModality
+                  key={contextModalityKey}
+                  posts={posts}
+                  loadingPosts={loadingPosts}
+                />
                 {modalityToShow.description}
               </>
             )}
