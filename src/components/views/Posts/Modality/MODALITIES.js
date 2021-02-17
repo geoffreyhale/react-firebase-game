@@ -219,14 +219,16 @@ const MODALITIES = Object.freeze({
           </li>
           <li>
             <blockquote>
-              <ul>
-                <li>Question 1: What’s working that you can do more of?</li>
-                <li>
-                  Question 2: What’s not working and would you like to do
-                  differently?
-                </li>
-                <li>Question 3: What’s one thing you’ve learned?</li>
-              </ul>
+              <p>
+                <ul>
+                  <li>Question 1: What’s working that you can do more of?</li>
+                  <li>
+                    Question 2: What’s not working and would you like to do
+                    differently?
+                  </li>
+                  <li>Question 3: What’s one thing you’ve learned?</li>
+                </ul>
+              </p>
               <figcaption>
                 — Ben Fanning,{' '}
                 <cite>
@@ -257,8 +259,11 @@ const MODALITIES = Object.freeze({
         </p>
         <p>This is a proof of concept, under construction.</p>
         <blockquote>
-          "four categories, namely happy, sad, fear/surprise (i.e.,
-          fast-approaching danger) and disgust/anger (i.e., stationary danger)"
+          <p>
+            "four categories, namely happy, sad, fear/surprise (i.e.,
+            fast-approaching danger) and disgust/anger (i.e., stationary
+            danger)"
+          </p>
           <figcaption>
             — Rachael E. Jack,{' '}
             <cite>
