@@ -116,24 +116,32 @@ const UserModality = ({
 
   const userModalityPostsCount =
     posts && typeof posts === 'object' && Object.keys(posts).length;
-  const [userModalityYesCount, userModalityNoCount] =
-    posts &&
-    typeof posts === 'object' &&
-    Object.values(posts).reduce(
-      ([yesCount, noCount], post) => [
-        yesCount + post.modality && post.modality.votes
-          ? Object.entries(post.modality.votes).filter(
-              ([key, vote]) => key !== user.uid && vote === true
-            ).length
-          : 0,
-        noCount + post.modality && post.modality.votes
-          ? Object.entries(post.modality.votes).filter(
-              ([key, vote]) => key !== user.uid && vote === false
-            ).length
-          : 0,
-      ],
-      [0, 0]
-    );
+
+  //TODO add tests for this monster
+  const { yesCount: userModalityYesCount, noCount: userModalityNoCount } =
+    posts && typeof posts === 'object'
+      ? Object.values(posts).reduce(
+          (acc, post) => {
+            return {
+              yesCount:
+                acc.yesCount +
+                (post.modality && post.modality.votes
+                  ? Object.entries(post.modality.votes).filter(
+                      ([key, vote]) => key !== user.uid && vote === true
+                    ).length
+                  : 0),
+              noCount:
+                acc.noCount +
+                (post.modality && post.modality.votes
+                  ? Object.entries(post.modality.votes).filter(
+                      ([key, vote]) => key !== user.uid && vote === false
+                    ).length
+                  : 0),
+            };
+          },
+          { yesCount: 0, noCount: 0 }
+        )
+      : {};
 
   // const userModalityVoteCount = userModalityYesCount + userModalityNoCount;
   // const userModalityYesPercentage = Math.round(
