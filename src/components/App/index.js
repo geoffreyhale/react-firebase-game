@@ -121,7 +121,7 @@ class App extends Component {
               <Row>
                 <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
                   <AppHeader login={this.login} logout={this.logout} />
-                  {/* <SmartGuide /> */}
+                  <SmartGuide />
                   {this.state.loading ? (
                     <Spinner />
                   ) : (
