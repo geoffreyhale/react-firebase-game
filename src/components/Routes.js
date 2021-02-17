@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import Training from './views/Training';
 import Scorekeeper from './views/Scorekeeper';
 import IncrementalClickerGame from './views/Games/IncrementalClicker';
 import Chess from './views/Games/Chess';
@@ -77,6 +78,15 @@ const Routes = () => {
           render={(props) => (
             <Page>
               <UserProfile {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/training"
+          key="/training"
+          render={(props) => (
+            <Page title="Training | xBook">
+              <Training {...props} />
             </Page>
           )}
         />,

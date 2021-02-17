@@ -22,6 +22,11 @@ const AppNav = () => {
           ))}
       </NavDropdown>
       <Nav.Item>
+        <Nav.Link as={NavLink} to="/training">
+          Training
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         <Nav.Link as={NavLink} to="/community">
           Community
         </Nav.Link>
