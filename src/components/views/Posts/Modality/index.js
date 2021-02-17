@@ -12,6 +12,17 @@ import { AppContext } from '../../../AppProvider';
 import { setModalityVote } from '../../../../api';
 import MODALITIES from './MODALITIES';
 
+export const validModalityForRoom = ({ modalityKey, room }) => {
+  const MODALITY = MODALITIES[modalityKey];
+  if (!MODALITY) {
+    return false;
+  }
+  if (MODALITY.room !== room) {
+    return false;
+  }
+  return true;
+};
+
 const PreSelectDescription = (
   <p>Select a modality that you'd like to learn about or practice.</p>
 );
