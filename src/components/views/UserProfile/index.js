@@ -14,8 +14,8 @@ import Posts from '../Posts';
 import { PremiumFeature } from '../../shared/Premium';
 import UserStats from './UserStats';
 
-const UserProfilePhotoBanner = ({ user }) => (
-  <Card>
+export const UserProfilePhotoBanner = ({ user }) => (
+  <Card style={{ textAlign: 'center' }}>
     <Card.Img
       src={user.photoURL}
       style={{
@@ -93,14 +93,14 @@ class UserProfile extends React.Component {
       <Card>
         <Card.Body>
           <Row className="mb-4">
-            <Col style={{ textAlign: 'center' }}>
+            <Col>
               <UserProfilePhotoBanner user={user} />
             </Col>
           </Row>
           <Row>
             <Col md={6} className="mb-4">
               <div className="mb-4">
-                <UserStats user={user} />
+                <UserStats uid={user.uid} />
               </div>
               <UserProfileTimes user={user} />
             </Col>

@@ -126,7 +126,7 @@ class UserStats extends React.Component {
   }
 
   render() {
-    const { uid } = this.props.user;
+    const { uid } = this.props;
     const { posts } = this.state;
 
     if (!posts || typeof posts !== 'object') {
