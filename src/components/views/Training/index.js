@@ -316,13 +316,11 @@ const Training = () => {
                       </span>
                     }
                   >
-                    <div className="mb-3">
-                      {/* TODO the vote buttons work but the post will not update live here */}
-                      <PostsFeed
-                        posts={userPostsWithThisModality}
-                        hackHideRepliesCount={true}
-                      />
-                    </div>
+                    {/* TODO the vote buttons work but the post will not update live here */}
+                    <PostsFeed
+                      posts={userPostsWithThisModality}
+                      hackHideRepliesCount={true}
+                    />
                   </Tab>
                   <Tab
                     eventKey="all-posts"
@@ -339,17 +337,15 @@ const Training = () => {
                       </span>
                     }
                   >
-                    <div className="mb-3">
-                      {/* TODO the vote buttons work but the post will not update live here */}
-                      {user.isPremium ? (
-                        <PostsFeed
-                          posts={postsWithThisModality}
-                          hackHideRepliesCount={true}
-                        />
-                      ) : (
-                        <PremiumFeature />
-                      )}
-                    </div>
+                    {/* TODO the vote buttons work but the post will not update live here */}
+                    {user.isPremium ? (
+                      <PostsFeed
+                        posts={postsWithThisModality}
+                        hackHideRepliesCount={true}
+                      />
+                    ) : (
+                      <PremiumFeature />
+                    )}
                   </Tab>
                 </Tabs>
               </>

@@ -18,8 +18,6 @@
 
 # TODO
 
-- consolidate stats, store them, update them selectively for performance, competitive gamification
-
 ## Top Tier
 
 - finish database security rules and related tests
