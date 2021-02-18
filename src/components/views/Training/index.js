@@ -8,7 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { getPosts } from '../../../api';
+import { postsRef } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
@@ -203,21 +203,18 @@ const ModalityMenu = ({ loadingPosts, posts }) => {
 
 const Training = () => {
   const { user, users, modality: contextModalityKey } = useContext(AppContext);
-
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    getPosts((posts) => {
-      const allPosts = Object.entries(posts)
-        //TODO this id map should probably be handled in api/getPosts
-        //TODO maybe this userDisplayName map should probably be handled more globally
-        .map(([id, post]) => {
-          post.id = id;
-          post.userDisplayName =
-            users[post.userId] && users[post.userId].displayName;
-          return post;
-        });
+    postsRef().on('value', (snapshot) => {
+      const posts = snapshot.val();
+      const allPosts = Object.entries(posts).map(([id, post]) => {
+        post.id = id;
+        post.userDisplayName =
+          users[post.userId] && users[post.userId].displayName;
+        return post;
+      });
       setPosts(allPosts);
       setLoadingPosts(false);
     });
