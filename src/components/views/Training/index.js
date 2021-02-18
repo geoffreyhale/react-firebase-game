@@ -209,8 +209,8 @@ const Training = () => {
   useEffect(() => {
     getPosts((posts) => {
       const allPosts = Object.entries(posts)
-        // .filter(([id, post]) => post.userId === user.uid && post.modality)
         //TODO this id map should probably be handled in api/getPosts
+        //TODO maybe this userDisplayName map should probably be handled more globally
         .map(([id, post]) => {
           post.id = id;
           post.userDisplayName =
@@ -305,9 +305,13 @@ const Training = () => {
                     title={
                       <span>
                         My Posts
-                        <Badge variant="secondary" className="ml-2">
-                          {userPostsWithThisModality.length}
-                        </Badge>
+                        {loadingPosts ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <Badge variant="secondary" className="ml-2">
+                            {userPostsWithThisModality.length}
+                          </Badge>
+                        )}
                       </span>
                     }
                   >
@@ -324,9 +328,13 @@ const Training = () => {
                     title={
                       <span>
                         All Posts
-                        <Badge variant="secondary" className="ml-2">
-                          {postsWithThisModality.length}
-                        </Badge>
+                        {loadingPosts ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          <Badge variant="secondary" className="ml-2">
+                            {postsWithThisModality.length}
+                          </Badge>
+                        )}
                       </span>
                     }
                   >
