@@ -15,6 +15,7 @@ import { UserPhoto } from '../../shared/User';
 import { availableModalities } from '../../shared/Modalities';
 import MODALITIES from '../../shared/Modalities/MODALITIES';
 import PostsFeed from '../../shared/PostsFeed';
+import PremiumFeature from '../../shared/PremiumFeature';
 
 //TODO add feed of modality posts that user has not voted on
 //TODO add feeds of best examples
@@ -340,10 +341,14 @@ const Training = () => {
                   >
                     <div className="mb-3">
                       {/* TODO the vote buttons work but the post will not update live here */}
-                      <PostsFeed
-                        posts={postsWithThisModality}
-                        hackHideRepliesCount={true}
-                      />
+                      {user.isPremium ? (
+                        <PostsFeed
+                          posts={postsWithThisModality}
+                          hackHideRepliesCount={true}
+                        />
+                      ) : (
+                        <PremiumFeature />
+                      )}
                     </div>
                   </Tab>
                 </Tabs>

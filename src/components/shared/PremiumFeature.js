@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 
 const PremiumFeature = ({ featureName }) => (
@@ -9,7 +10,10 @@ const PremiumFeature = ({ featureName }) => (
         {featureName ? <strong>{featureName}</strong> : 'This'} is a premium
         feature available to paying users.
       </p>
-      <p>Please subscribe now to enjoy premium features.</p>
+      <span>
+        Ask how to sign up for premium for just $1/mo in{' '}
+        <Link to="/r/general">r/general</Link>.
+      </span>
     </Card.Body>
   </Card>
 );
