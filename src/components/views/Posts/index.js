@@ -19,7 +19,7 @@ import {
 } from './Feed';
 import { isLurker, LURKER, NoLurking } from './Lurking';
 import PremiumSaleCard from '../../shared/PremiumSaleCard';
-import PremiumFeature from '../../shared/PremiumFeature';
+import { PremiumFeature } from '../../shared/Premium';
 import Mosaic from '../Community/Mosaic';
 import Modality from '../../shared/Modalities';
 import PostsFeed from '../../shared/PostsFeed';

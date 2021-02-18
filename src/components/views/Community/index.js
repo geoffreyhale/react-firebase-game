@@ -6,7 +6,7 @@ import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import Mosaic from './Mosaic';
 import Stats from './Stats';
-import PremiumFeature from '../../shared/PremiumFeature';
+import { PremiumFeature } from '../../shared/Premium';
 
 export default class CommunityPage extends Component {
   constructor() {

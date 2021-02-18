@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 
-const PremiumFeature = ({ featureName }) => (
+export const PremiumFeature = ({ featureName }) => (
   <Card>
     <Card.Body>
       <Card.Title>Premium Feature</Card.Title>
@@ -17,5 +17,3 @@ const PremiumFeature = ({ featureName }) => (
     </Card.Body>
   </Card>
 );
-
-export default PremiumFeature;

@@ -14,7 +14,7 @@ import { UserPhoto } from '../../shared/User';
 import Spinner from '../../shared/Spinner';
 import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingTypes';
 import Posts from '../Posts';
-import PremiumFeature from '../../shared/PremiumFeature';
+import { PremiumFeature } from '../../shared/Premium';
 
 const UserProfilePhotoBanner = ({ user }) => (
   <Card>

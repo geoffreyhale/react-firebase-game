@@ -15,7 +15,7 @@ import { UserPhoto } from '../../shared/User';
 import { availableModalities } from '../../shared/Modalities';
 import MODALITIES from '../../shared/Modalities/MODALITIES';
 import PostsFeed from '../../shared/PostsFeed';
-import PremiumFeature from '../../shared/PremiumFeature';
+import { PremiumFeature } from '../../shared/Premium';
 
 //TODO add feed of modality posts that user has not voted on
 //TODO add feeds of best examples
