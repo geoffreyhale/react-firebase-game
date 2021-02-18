@@ -170,10 +170,36 @@ const UserModality = ({
   });
 };
 
-const Training = () => {
-  const { user, modality: contextModalityKey, setModality } = useContext(
-    AppContext
+const ModalityMenu = ({ loadingPosts, modalities, userModalityPosts }) => {
+  const { modality: contextModalityKey, setModality } = useContext(AppContext);
+  return (
+    <ListGroup>
+      {modalities.map((modality) => (
+        <ListGroup.Item
+          action
+          active={contextModalityKey === modality.key}
+          onClick={() =>
+            setModality(
+              contextModalityKey === modality.key ? null : modality.key
+            )
+          }
+        >
+          {modality.title}
+          <UserModality
+            key={modality.key}
+            modalityKey={modality.key}
+            posts={userModalityPosts}
+            loadingPosts={loadingPosts}
+            render={(props) => <UserModalityScoreCardInline {...props} />}
+          />
+        </ListGroup.Item>
+      ))}
+    </ListGroup>
   );
+};
+
+const Training = () => {
+  const { user, modality: contextModalityKey } = useContext(AppContext);
 
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState([]);
@@ -221,30 +247,11 @@ const Training = () => {
         <Card.Title>Modalities</Card.Title>
         <Row>
           <Col sm={4} className="col-left mb-3">
-            <ListGroup>
-              {modalities.map((modality) => (
-                <ListGroup.Item
-                  action
-                  active={contextModalityKey === modality.key}
-                  onClick={() =>
-                    setModality(
-                      contextModalityKey === modality.key ? null : modality.key
-                    )
-                  }
-                >
-                  {modality.title}
-                  <UserModality
-                    key={modality.key}
-                    modalityKey={modality.key}
-                    posts={userModalityPosts}
-                    loadingPosts={loadingPosts}
-                    render={(props) => (
-                      <UserModalityScoreCardInline {...props} />
-                    )}
-                  />
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+            <ModalityMenu
+              loadingPosts={loadingPosts}
+              modalities={modalities}
+              userModalityPosts={userModalityPosts}
+            />
           </Col>
           <Col sm={8} className="col-main">
             {modalityToShow && (
