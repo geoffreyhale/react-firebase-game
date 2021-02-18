@@ -171,7 +171,7 @@ const UserModality = ({
   });
 };
 
-const ModalityMenu = ({ loadingPosts, userModalityPosts }) => {
+const ModalityMenu = ({ loadingPosts, posts }) => {
   const { modality: contextModalityKey, setModality } = useContext(AppContext);
   return (
     <ListGroup>
@@ -189,7 +189,7 @@ const ModalityMenu = ({ loadingPosts, userModalityPosts }) => {
           <UserModality
             key={modality.key}
             modalityKey={modality.key}
-            posts={userModalityPosts}
+            posts={posts}
             loadingPosts={loadingPosts}
             render={(props) => <UserModalityScoreCardInline {...props} />}
           />
@@ -226,9 +226,36 @@ const Training = () => {
       ? MODALITIES[contextModalityKey]
       : null;
 
-  const userModalityPosts = posts.filter(
+  const userPosts = posts.filter((post) => post.userId === user.uid);
+  const userPostsWithAnyModality = posts.filter(
     (post) => post.userId === user.uid && post.modality
   );
+  const userPostsWithThisModality = postsWithModalityArrayFromPostsArray({
+    posts: userPostsWithAnyModality,
+    modalityKey: contextModalityKey,
+  });
+  const postsWithThisModality = postsWithModalityArrayFromPostsArray({
+    posts,
+    modalityKey: contextModalityKey,
+  }).sort((a, b) => {
+    //TODO exclude votes for self
+    //TODO make this modality vote count a method of post object
+    const aYesVotes =
+      a.modality &&
+      a.modality.votes &&
+      Object.values(a.modality.votes).filter((vote) => vote === true).length;
+    const bYesVotes =
+      b.modality &&
+      b.modality.votes &&
+      Object.values(b.modality.votes).filter((vote) => vote === true).length;
+    if (!aYesVotes) {
+      return 1;
+    }
+    if (!bYesVotes) {
+      return -1;
+    }
+    return aYesVotes < bYesVotes ? 1 : -1;
+  });
 
   return (
     <Card>
@@ -237,10 +264,7 @@ const Training = () => {
         <Card.Title>Modalities</Card.Title>
         <Row>
           <Col sm={4} className="col-left mb-3">
-            <ModalityMenu
-              loadingPosts={loadingPosts}
-              userModalityPosts={userModalityPosts}
-            />
+            <ModalityMenu loadingPosts={loadingPosts} posts={userPosts} />
           </Col>
           <Col sm={8} className="col-main">
             {modalityToShow && (
@@ -250,7 +274,7 @@ const Training = () => {
                   <UserModality
                     key={'main' + contextModalityKey}
                     modalityKey={contextModalityKey}
-                    posts={userModalityPosts}
+                    posts={userPosts}
                     loadingPosts={loadingPosts}
                     render={(props) => <UserModalityScoreCard {...props} />}
                   />
@@ -277,10 +301,7 @@ const Training = () => {
                     <div className="mb-3">
                       {/* TODO the vote buttons work but the post will not update live here */}
                       <PostsFeed
-                        posts={postsWithModalityArrayFromPostsArray({
-                          posts: userModalityPosts,
-                          modalityKey: contextModalityKey,
-                        })}
+                        posts={userPostsWithThisModality}
                         hackHideRepliesCount={true}
                       />
                     </div>
@@ -289,10 +310,7 @@ const Training = () => {
                     <div className="mb-3">
                       {/* TODO the vote buttons work but the post will not update live here */}
                       <PostsFeed
-                        posts={postsWithModalityArrayFromPostsArray({
-                          posts,
-                          modalityKey: contextModalityKey,
-                        })}
+                        posts={postsWithThisModality}
                         hackHideRepliesCount={true}
                       />
                     </div>
