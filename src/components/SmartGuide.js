@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
 import friendlyTimestamp from './shared/friendlyTimestamp';
+import { GetPremium } from './shared/Premium';
 
 const HOURS_DELAY_FOR_TRAINING_AGAIN = 3;
 
@@ -16,12 +17,7 @@ const ITEMS = {
   getPremium: {
     linkTo: '/r/general',
     title: 'Get Premium',
-    description: () => (
-      <span>
-        Ask how to sign up for premium for just $1/mo in{' '}
-        <Link to="/r/general">r/general</Link>.
-      </span>
-    ),
+    description: () => <GetPremium />,
   },
   mostRecentModalityPostTimestamp: {
     linkTo: '/training',
