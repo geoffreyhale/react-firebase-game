@@ -2,7 +2,7 @@ import firebase, { db } from '../components/firebase.js';
 import { isPremium } from '../components/shared/User';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
-const postsRef = () => firebase.database().ref('posts');
+export const postsRef = () => firebase.database().ref('posts');
 const notificationUserPostRef = ({ uid, postId }) =>
   firebase.database().ref('notifications/' + uid + '/' + postId);
 const notificationsRef = ({ uid }) =>
