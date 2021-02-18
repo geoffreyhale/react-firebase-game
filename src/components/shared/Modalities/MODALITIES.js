@@ -319,7 +319,7 @@ const MODALITIES = Object.freeze({
     ),
   },
   possibleselves: {
-    // TODO maybe Vulnerability skills should be a prerequisite
+    // TODO maybe Vulnerability and bestpossibleself skills should be a prerequisite
     available: true,
     room: 'productivity',
     title: 'Possible Selves',
@@ -379,6 +379,59 @@ const MODALITIES = Object.freeze({
             <cite>
               <a
                 href="https://www.success.com/use-this-writing-exercise-to-uncover-your-ideal-self/"
+                target="_blank"
+              >
+                Use This Writing Exercise to Uncover Your Ideal Self
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
+      </>
+    ),
+  },
+  bestpossibleself: {
+    available: true,
+    room: 'productivity',
+    title: 'Best Possible Self',
+    description: (
+      <>
+        <blockquote>
+          <p>
+            Think about your life in the future. Imagine that everything has
+            gone as well as it possibly could. You have worked hard and
+            succeeded at accomplishing all of your life goals. Think of this as
+            the realization of all of your life dreams. Now, write about what
+            you imagined.
+          </p>
+          <p>
+            Don’t just think about what you have achieved (e.g., getting your
+            dream job), but be sure to write about how you got there (e.g.,
+            doing an internship, going to graduate school).
+          </p>
+          <p>
+            Think about your life in the future. Imagine that everything has
+            gone as well as it possibly could. You have worked hard and
+            succeeded at accomplishing all of your life goals. Think of this as
+            the realization of all of your life dreams.
+          </p>
+          <blockquote>
+            <figcaption>
+              - Laura A. King,{' '}
+              <cite>
+                <a
+                  href="https://journals.sagepub.com/doi/abs/10.1177/0146167201277003"
+                  target="_blank"
+                >
+                  The Health Benefits of Writing about Life Goals
+                </a>
+              </cite>
+            </figcaption>
+          </blockquote>
+          <figcaption>
+            — Jeff Cobb,{' '}
+            <cite>
+              <a
+                href="https://www.missiontolearn.com/best-possible-self/"
                 target="_blank"
               >
                 Use This Writing Exercise to Uncover Your Ideal Self
