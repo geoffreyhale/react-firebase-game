@@ -201,7 +201,7 @@ const ModalityMenu = ({ loadingPosts, posts }) => {
 };
 
 const Training = () => {
-  const { user, modality: contextModalityKey } = useContext(AppContext);
+  const { user, users, modality: contextModalityKey } = useContext(AppContext);
 
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState([]);
@@ -213,6 +213,8 @@ const Training = () => {
         //TODO this id map should probably be handled in api/getPosts
         .map(([id, post]) => {
           post.id = id;
+          post.userDisplayName =
+            users[post.userId] && users[post.userId].displayName;
           return post;
         });
       setPosts(allPosts);
