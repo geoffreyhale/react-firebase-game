@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -297,7 +298,17 @@ const Training = () => {
                       </Card>
                     </div>
                   </Tab>
-                  <Tab eventKey="my-posts" title="My Posts">
+                  <Tab
+                    eventKey="my-posts"
+                    title={
+                      <span>
+                        My Posts
+                        <Badge variant="secondary" className="ml-2">
+                          {userPostsWithThisModality.length}
+                        </Badge>
+                      </span>
+                    }
+                  >
                     <div className="mb-3">
                       {/* TODO the vote buttons work but the post will not update live here */}
                       <PostsFeed
@@ -306,7 +317,17 @@ const Training = () => {
                       />
                     </div>
                   </Tab>
-                  <Tab eventKey="all-posts" title="All Posts">
+                  <Tab
+                    eventKey="all-posts"
+                    title={
+                      <span>
+                        All Posts
+                        <Badge variant="secondary" className="ml-2">
+                          {postsWithThisModality.length}
+                        </Badge>
+                      </span>
+                    }
+                  >
                     <div className="mb-3">
                       {/* TODO the vote buttons work but the post will not update live here */}
                       <PostsFeed
