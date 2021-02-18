@@ -12,6 +12,17 @@ import { AppContext } from '../../AppProvider';
 import { setModalityVote } from '../../../api';
 import MODALITIES from './MODALITIES';
 
+export const availableModalities = Object.entries(MODALITIES)
+  .filter(([key, MODALITY]) => MODALITY.available)
+  .map(([key, MODALITY]) => {
+    const modality = MODALITY;
+    modality.key = key;
+    return modality;
+  })
+  .sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { ignorePunctuation: true })
+  );
+
 export const validModalityForRoom = ({ modalityKey, room }) => {
   const MODALITY = MODALITIES[modalityKey];
   if (!MODALITY) {

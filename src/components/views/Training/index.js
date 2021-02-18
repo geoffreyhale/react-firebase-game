@@ -11,6 +11,7 @@ import { getPosts } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import { UserPhoto } from '../../shared/User';
+import { availableModalities } from '../../shared/Modalities';
 import MODALITIES from '../../shared/Modalities/MODALITIES';
 import PostsFeed from '../../shared/PostsFeed';
 
@@ -170,11 +171,11 @@ const UserModality = ({
   });
 };
 
-const ModalityMenu = ({ loadingPosts, modalities, userModalityPosts }) => {
+const ModalityMenu = ({ loadingPosts, userModalityPosts }) => {
   const { modality: contextModalityKey, setModality } = useContext(AppContext);
   return (
     <ListGroup>
-      {modalities.map((modality) => (
+      {availableModalities.map((modality) => (
         <ListGroup.Item
           action
           active={contextModalityKey === modality.key}
@@ -229,17 +230,6 @@ const Training = () => {
     (post) => post.userId === user.uid && post.modality
   );
 
-  const modalities = Object.entries(MODALITIES)
-    .filter(([key, MODALITY]) => MODALITY.available)
-    .map(([key, MODALITY]) => {
-      const modality = MODALITY;
-      modality.key = key;
-      return modality;
-    })
-    .sort((a, b) =>
-      a.title.localeCompare(b.title, undefined, { ignorePunctuation: true })
-    );
-
   return (
     <Card>
       <Card.Header>Training</Card.Header>
@@ -249,7 +239,6 @@ const Training = () => {
           <Col sm={4} className="col-left mb-3">
             <ModalityMenu
               loadingPosts={loadingPosts}
-              modalities={modalities}
               userModalityPosts={userModalityPosts}
             />
           </Col>
