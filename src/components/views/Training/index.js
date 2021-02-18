@@ -101,13 +101,11 @@ const UserModalityScoreCard = ({
   </ListGroup>
 );
 
-const postsWithModalityArrayFromPostsObject = ({
-  posts = {},
+const postsWithModalityArrayFromPostsArray = ({
+  posts = [],
   modalityKey = null,
 }) =>
-  Object.values(posts).filter(
-    (post) => post.modality && post.modality.name === modalityKey
-  );
+  posts.filter((post) => post.modality && post.modality.name === modalityKey);
 
 const UserModality = ({
   posts: postsObject,
@@ -121,7 +119,7 @@ const UserModality = ({
     return null;
   }
 
-  const posts = postsWithModalityArrayFromPostsObject({
+  const posts = postsWithModalityArrayFromPostsArray({
     posts: postsObject,
     modalityKey,
   });
@@ -178,18 +176,18 @@ const Training = () => {
   );
 
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [posts, setPosts] = useState({});
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     getPosts((posts) => {
-      const userModalityPosts = Object.entries(posts)
-        .filter(([id, post]) => post.userId === user.uid && post.modality)
+      const allPosts = Object.entries(posts)
+        // .filter(([id, post]) => post.userId === user.uid && post.modality)
         //TODO this id map should probably be handled in api/getPosts
         .map(([id, post]) => {
           post.id = id;
           return post;
         });
-      setPosts(userModalityPosts);
+      setPosts(allPosts);
       setLoadingPosts(false);
     });
   }, []);
@@ -200,6 +198,10 @@ const Training = () => {
     MODALITIES[contextModalityKey].available
       ? MODALITIES[contextModalityKey]
       : null;
+
+  const userModalityPosts = posts.filter(
+    (post) => post.userId === user.uid && post.modality
+  );
 
   const modalities = Object.entries(MODALITIES)
     .filter(([key, MODALITY]) => MODALITY.available)
@@ -234,7 +236,7 @@ const Training = () => {
                   <UserModality
                     key={modality.key}
                     modalityKey={modality.key}
-                    posts={posts}
+                    posts={userModalityPosts}
                     loadingPosts={loadingPosts}
                     render={(props) => (
                       <UserModalityScoreCardInline {...props} />
@@ -252,7 +254,7 @@ const Training = () => {
                   <UserModality
                     key={'main' + contextModalityKey}
                     modalityKey={contextModalityKey}
-                    posts={posts}
+                    posts={userModalityPosts}
                     loadingPosts={loadingPosts}
                     render={(props) => <UserModalityScoreCard {...props} />}
                   />
@@ -279,7 +281,19 @@ const Training = () => {
                     <div className="mb-3">
                       {/* TODO the vote buttons work but the post will not update live here */}
                       <PostsFeed
-                        posts={postsWithModalityArrayFromPostsObject({
+                        posts={postsWithModalityArrayFromPostsArray({
+                          posts: userModalityPosts,
+                          modalityKey: contextModalityKey,
+                        })}
+                        hackHideRepliesCount={true}
+                      />
+                    </div>
+                  </Tab>
+                  <Tab eventKey="all-posts" title="All Posts">
+                    <div className="mb-3">
+                      {/* TODO the vote buttons work but the post will not update live here */}
+                      <PostsFeed
+                        posts={postsWithModalityArrayFromPostsArray({
                           posts,
                           modalityKey: contextModalityKey,
                         })}
