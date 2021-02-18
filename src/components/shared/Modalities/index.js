@@ -218,7 +218,7 @@ export const ModalityVoteButton = ({ modality, postId }) => {
           })
         }
       >
-        no
+        not quite
         <Badge variant="secondary" className="ml-2">
           {modality.votes
             ? Object.values(modality.votes).filter((vote) => vote === false)
