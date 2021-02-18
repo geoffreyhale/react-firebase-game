@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import firebase from '../../firebase.js';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
+import { PremiumFeature } from '../../shared/Premium';
 import Mosaic from './Mosaic';
 import Stats from './Stats';
-import { PremiumFeature } from '../../shared/Premium';
+import UserStatsCards from './UserStatsCards';
 
 export default class CommunityPage extends Component {
   constructor() {
@@ -41,16 +42,17 @@ export default class CommunityPage extends Component {
 
     return (
       <>
-        <Row>
-          <Col>
+        <Tabs defaultActiveKey="mosaic">
+          <Tab eventKey="mosaic" title="Mosaic">
             <Mosaic />
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col>
+          </Tab>
+          <Tab eventKey="stats" title="Stats">
             <Stats posts={this.state.rawPosts} />
-          </Col>
-        </Row>
+          </Tab>
+          <Tab eventKey="scores" title="Scores">
+            <UserStatsCards />
+          </Tab>
+        </Tabs>
       </>
     );
   }
