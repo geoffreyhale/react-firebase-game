@@ -11,7 +11,7 @@ const Tag = ({ allowDelete = false, children, variant, postId }) => {
 
   if (allowDelete && postId && children && user.uid) {
     return (
-      <div class="badge-group" onMouseLeave={() => setShowDelete(false)}>
+      <div className="badge-group" onMouseLeave={() => setShowDelete(false)}>
         <Badge
           pill
           variant={variant || 'secondary'}
