@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -93,10 +95,11 @@ const NotificationItemLinkContent = ({ timestamp, uid }) => {
 
 const NotificationBellIcon = ({ children }) => (
   <div style={{ position: 'relative' }}>
-    <i
-      class="fas fa-bell fa-fw"
+    <FontAwesomeIcon
+      icon={faBell}
+      className="fa-fw"
       style={{ verticalAlign: 'middle', fontSize: '35px' }}
-    ></i>{' '}
+    />
     <div
       style={{
         position: 'absolute',

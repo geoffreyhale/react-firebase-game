@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCheck } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
@@ -32,7 +34,7 @@ const Visibility = ({ postingToRoom }) => {
           </span>
         )}
         {visibility === VISIBILITIES['logged'] && (
-          <i class="fas fa-user-check"></i>
+          <FontAwesomeIcon icon={faUserCheck} />
         )}
         {visibility === VISIBILITIES['premium'] && <>&#11088;</>}
       </small>
