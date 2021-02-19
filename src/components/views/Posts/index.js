@@ -235,7 +235,7 @@ class Posts extends Component {
                     lurkerStatus={lurkerStatus}
                   />
                 )}
-                {!isLurker && !this.modality() && (
+                {!isLurker && (
                   <>
                     <FeedNav
                       currentFeed={this.state.feed}
