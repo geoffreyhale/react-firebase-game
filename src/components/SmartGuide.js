@@ -71,6 +71,7 @@ const SmartGuidePanel = ({ items }) => {
                     const linkTo = ITEMS[key].linkTo;
                     return (
                       <ListGroup.Item
+                        key={key + i}
                         as={Link}
                         to={linkTo}
                         action
