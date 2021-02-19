@@ -13,7 +13,7 @@ import Spinner from '../../shared/Spinner';
 import { isPremium } from '../../shared/User';
 import Accounting, { AccountingMiniCard } from './Accounting';
 import Funnel from './Funnel';
-import { PostsMiniCard } from './Posts';
+import { PostsMiniCard, PostsPerDay } from './Posts';
 import { Users, UsersTable } from './Users';
 
 export default class Admin extends React.Component {
@@ -157,6 +157,9 @@ export default class Admin extends React.Component {
                     />
                   </Card.Body>
                 </Card>
+              </Tab>
+              <Tab eventKey="posts" title="Posts">
+                <PostsPerDay posts={this.state.posts} />
               </Tab>
               <Tab eventKey="accounting" title="Accounting">
                 <Accounting

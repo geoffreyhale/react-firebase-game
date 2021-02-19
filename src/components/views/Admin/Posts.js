@@ -1,6 +1,16 @@
+import format from 'date-fns/format';
 import React from 'react';
+import Table from 'react-bootstrap/Table';
 import countWords from '../../shared/countWords';
 import PostLink from '../../shared/PostLink';
+
+const dateFromDaysSinceEpoch = (days) => {
+  return new Date(days * 1000 * 86400);
+};
+
+const daysSinceEpoch = (timestamp) => {
+  return Math.floor(timestamp / 1000 / 86400);
+};
 
 const pushReplyCountWordCountObjects = (
   post,
@@ -65,5 +75,30 @@ export const PostsMiniCard = ({ posts }) => {
         </div>
       ))}
     </>
+  );
+};
+
+export const PostsPerDay = ({ posts }) => {
+  const postsByDay = {};
+
+  Object.values(posts).forEach((post) => {
+    const day = daysSinceEpoch(post.timestamp);
+    postsByDay[day] = postsByDay[day] || {};
+    postsByDay[day][post.id] = post;
+  });
+
+  return (
+    <Table>
+      <tbody>
+        {Object.entries(postsByDay).map(([daysSinceEpoch, posts]) => (
+          <tr>
+            <td>
+              {format(dateFromDaysSinceEpoch(daysSinceEpoch), 'MMMM d, yyyy')}{' '}
+            </td>
+            <td>{Object.keys(posts).length}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
   );
 };
