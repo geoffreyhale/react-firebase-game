@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
+import { getPosts } from '../../../api';
+import { AppContext } from '../../AppProvider';
 import { UserProfilePhotoBanner } from '../UserProfile';
 import { getScoresByUid, UserScoreListGroup } from '../UserProfile/UserStats';
-import { AppContext } from '../../AppProvider';
-import { getPosts } from '../../../api';
 
 //TODO sort by Score please
-const UserStatsCards = () => {
+const UserScoreCards = () => {
   const { users } = useContext(AppContext);
   const [scores, setScores] = useState({});
 
@@ -39,4 +39,4 @@ const UserStatsCards = () => {
   );
 };
 
-export default UserStatsCards;
+export default UserScoreCards;

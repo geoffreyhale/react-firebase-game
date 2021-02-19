@@ -7,7 +7,7 @@ import Spinner from '../../shared/Spinner';
 import { PremiumFeature } from '../../shared/Premium';
 import Mosaic from './Mosaic';
 import Stats from './Stats';
-import UserStatsCards from './UserStatsCards';
+import UserScoreCards from './UserScoreCards';
 
 export default class CommunityPage extends Component {
   constructor() {
@@ -50,7 +50,7 @@ export default class CommunityPage extends Component {
             <Stats posts={this.state.rawPosts} />
           </Tab>
           <Tab eventKey="scores" title="Scores">
-            <UserStatsCards />
+            <UserScoreCards />
           </Tab>
         </Tabs>
       </>
