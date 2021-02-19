@@ -42,7 +42,7 @@ const Visibility = ({ postingToRoom }) => {
   );
 };
 
-const NewTopLevelPostCard = ({ hackRoom }) => {
+const NewTopLevelPostCard = ({ hackRoom, onSuccess }) => {
   const { user } = useContext(AppContext);
   const hackHackRoom = hackRoom === 'home' ? 'general' : hackRoom;
   return (
@@ -70,6 +70,7 @@ const NewTopLevelPostCard = ({ hackRoom }) => {
           multiline={true}
           placeholder={'How are you really feeling?'}
           hackRoom={hackHackRoom}
+          onSuccess={onSuccess}
         />
       </Card.Body>
     </Card>

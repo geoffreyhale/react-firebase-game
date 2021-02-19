@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -207,6 +206,7 @@ const Training = () => {
   const { user, users, modality: contextModalityKey } = useContext(AppContext);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
     postsRef().on('value', (snapshot) => {
@@ -288,7 +288,12 @@ const Training = () => {
                     <div className="mb-3">
                       <Card>
                         <Card.Body>
-                          <NewTopLevelPostCard hackRoom={modalityToShow.room} />
+                          <NewTopLevelPostCard
+                            hackRoom={modalityToShow.room}
+                            onSuccess={() =>
+                              history.push(`/r/${modalityToShow.room}`)
+                            }
+                          />
                         </Card.Body>
                       </Card>
                     </div>
