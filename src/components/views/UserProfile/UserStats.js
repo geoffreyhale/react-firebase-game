@@ -164,7 +164,7 @@ const ScoreListGroupItem = ({ description, title, value, variant }) => (
 export const UserScoreListGroup = ({ scores }) => (
   <ListGroup>
     <ScoreListGroupItem
-      description="modality * 10 + upvotes + replies + replies upvoted + days posted + modalityVotesSubmittedForOthersScore * 5"
+      description="(modality * 10) + upvotes + replies + replies upvoted + days posted + (modality votes submitted * 5)"
       title="Score"
       value={scores.score}
       variant="light"
