@@ -37,7 +37,7 @@ export default class CommunityPage extends Component {
 
     const users = this.users();
     if (!users) {
-      <Spinner />;
+      <Spinner size="lg" />;
     }
 
     return (

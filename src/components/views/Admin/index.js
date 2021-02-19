@@ -56,7 +56,7 @@ export default class Admin extends React.Component {
 
   render() {
     if (!this.user() || !this.users()) {
-      return <Spinner />;
+      return <Spinner size="lg" />;
     }
     if (!this.user().admin) {
       return <>Access Denied</>;

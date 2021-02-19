@@ -108,7 +108,7 @@ class UserProfile extends React.Component {
               {user && user.uid ? (
                 <Posts userFeedUid={user.uid} />
               ) : (
-                <Spinner />
+                <Spinner size="lg" />
               )}
             </Col>
           </Row>

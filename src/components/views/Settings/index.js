@@ -13,7 +13,7 @@ const Username = ({ user }) => {
   const [feedback, setFeedback] = useState(null);
 
   if (loading) {
-    return <Spinner />;
+    return <Spinner size="lg" />;
   }
 
   if (editMode) {

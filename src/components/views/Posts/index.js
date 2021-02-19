@@ -103,7 +103,7 @@ class Posts extends Component {
     const { lurkerStatus } = this.state;
     // TODO fix this will spin erroneously for a room with legitimately 0 posts
     if (!users || this.state.loading || lurkerStatus === null) {
-      return <Spinner />;
+      return <Spinner size="lg" />;
     }
 
     let feedSubtext = null;

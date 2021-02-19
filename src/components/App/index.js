@@ -123,7 +123,7 @@ class App extends Component {
                   <AppHeader login={this.login} logout={this.logout} />
                   <SmartGuide />
                   {this.state.loading ? (
-                    <Spinner />
+                    <Spinner size="lg" />
                   ) : (
                     <div className="mt-3">
                       {!this.state.user && <FrontPage login={this.login} />}
