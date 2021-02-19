@@ -108,61 +108,66 @@ export default class Admin extends React.Component {
     }
 
     return (
-      <Card>
-        <Card.Body>
-          <Card.Title>Admin Dashboard</Card.Title>
-          <div style={{ display: 'inline-block' }}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Users</Card.Title>
-                <Users usersArray={usersArray} posts={this.state.posts} />
-              </Card.Body>
-            </Card>
-          </div>
-          <div className="ml-3" style={{ display: 'inline-block' }}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Posts</Card.Title>
-                <Posts posts={this.state.posts} />
-              </Card.Body>
-            </Card>
-          </div>
-          <div className="ml-3" style={{ display: 'inline-block' }}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Accounting</Card.Title>
-                <AccountingMiniCard
-                  accounting={this.state.accounting}
-                  users={this.state.users}
-                />
-              </Card.Body>
-            </Card>
-          </div>
-          <Tabs defaultActiveKey="users" className="my-3">
-            <Tab eventKey="users" title="Users">
-              <Card className={'mt-3'}>
+      <>
+        <Card>
+          <Card.Body>
+            <div style={{ display: 'inline-block' }}>
+              <Card>
                 <Card.Body>
-                  <Funnel usersArray={usersArray} posts={this.state.posts} />
+                  <Card.Title>Users</Card.Title>
+                  <Users usersArray={usersArray} posts={this.state.posts} />
                 </Card.Body>
               </Card>
-              <Card className={'mt-3'}>
+            </div>
+            <div className="ml-3" style={{ display: 'inline-block' }}>
+              <Card>
                 <Card.Body>
-                  <UsersTable
-                    setSort={(propertyName) => this.sort(propertyName)}
-                    usersArray={usersArray}
+                  <Card.Title>Posts</Card.Title>
+                  <Posts posts={this.state.posts} />
+                </Card.Body>
+              </Card>
+            </div>
+            <div className="ml-3" style={{ display: 'inline-block' }}>
+              <Card>
+                <Card.Body>
+                  <Card.Title>Accounting</Card.Title>
+                  <AccountingMiniCard
+                    accounting={this.state.accounting}
+                    users={this.state.users}
                   />
                 </Card.Body>
               </Card>
-            </Tab>
-            <Tab eventKey="accounting" title="Accounting">
-              <Accounting
-                accounting={this.state.accounting}
-                users={this.state.users}
-              />
-            </Tab>
-          </Tabs>
-        </Card.Body>
-      </Card>
+            </div>
+          </Card.Body>
+        </Card>
+        <Card className="mt-3">
+          <Card.Body>
+            <Tabs defaultActiveKey="users" className="my-3">
+              <Tab eventKey="users" title="Users">
+                <Card className={'mt-3'}>
+                  <Card.Body>
+                    <Funnel usersArray={usersArray} posts={this.state.posts} />
+                  </Card.Body>
+                </Card>
+                <Card className={'mt-3'}>
+                  <Card.Body>
+                    <UsersTable
+                      setSort={(propertyName) => this.sort(propertyName)}
+                      usersArray={usersArray}
+                    />
+                  </Card.Body>
+                </Card>
+              </Tab>
+              <Tab eventKey="accounting" title="Accounting">
+                <Accounting
+                  accounting={this.state.accounting}
+                  users={this.state.users}
+                />
+              </Tab>
+            </Tabs>
+          </Card.Body>
+        </Card>
+      </>
     );
   }
 }
