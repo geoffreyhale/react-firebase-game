@@ -179,6 +179,7 @@ const ModalityMenu = ({ loadingPosts, posts }) => {
     <ListGroup>
       {availableModalities.map((modality) => (
         <ListGroup.Item
+          key={modality.key}
           action
           active={contextModalityKey === modality.key}
           onClick={() =>

@@ -14,7 +14,7 @@ const AppNav = () => {
         {Object.values(ROOMS)
           .filter((room) => room.available)
           .map((room) => (
-            <NavDropdown.Item>
+            <NavDropdown.Item key={room.url}>
               <Nav.Link as={NavLink} to={room.url} exact={room.url == '/'}>
                 {room.title}
               </Nav.Link>
