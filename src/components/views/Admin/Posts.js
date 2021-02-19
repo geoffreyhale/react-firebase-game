@@ -9,12 +9,17 @@ import countWords from '../../shared/countWords';
 import PostLink from '../../shared/PostLink';
 import { AppContext } from '../../AppProvider';
 
+//TODO write tests for this; the hours are surely busted and posts/day misrepresented
+
+const daysFromMilliseconds = (milliseconds) => milliseconds / 1000 / 86400;
+const millisecondsFromDays = (days) => days * 1000 * 86400;
+
 const dateFromDaysSinceEpoch = (days) => {
-  return new Date(days * 1000 * 86400);
+  return new Date(millisecondsFromDays(days));
 };
 
 const daysSinceEpoch = (timestamp) => {
-  return Math.floor(timestamp / 1000 / 86400);
+  return Math.floor(daysFromMilliseconds(timestamp));
 };
 
 const pushReplyCountWordCountObjects = (
@@ -206,7 +211,7 @@ export const PostsPerDay = ({ posts }) => {
   const earliestDay = Math.min(...Object.keys(postsByDay));
   const mostRecentDay = Math.max(...Object.keys(postsByDay));
   let startDayOfPeriod = earliestDay;
-  while (startDayOfPeriod < mostRecentDay) {
+  while (startDayOfPeriod < mostRecentDay + 1) {
     postsByDays[startDayOfPeriod] = postsByDay[startDayOfPeriod];
     for (let i = 1; i < daysPerBar; i++) {
       postsByDays[startDayOfPeriod] = Object.assign(
@@ -233,7 +238,7 @@ export const PostsPerDay = ({ posts }) => {
                 <td>
                   {format(
                     dateFromDaysSinceEpoch(daysSinceEpoch),
-                    "MMMM d, yyyy 'at' hh:mm b"
+                    'MMMM d, yyyy'
                   )}
                 </td>
                 <td>{Object.keys(posts).length}</td>
