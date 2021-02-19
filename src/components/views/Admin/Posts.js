@@ -1,5 +1,4 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
 import countWords from '../../shared/countWords';
 import PostLink from '../../shared/PostLink';
 
@@ -25,7 +24,7 @@ const pushReplyCountWordCountObjects = (
   }
 };
 
-const Posts = ({ posts }) => {
+export const PostsMiniCard = ({ posts }) => {
   Object.keys(posts).map((key) => {
     posts[key].id = key;
   });
@@ -68,5 +67,3 @@ const Posts = ({ posts }) => {
     </>
   );
 };
-
-export default Posts;

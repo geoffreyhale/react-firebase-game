@@ -13,7 +13,7 @@ import Spinner from '../../shared/Spinner';
 import { isPremium } from '../../shared/User';
 import Accounting, { AccountingMiniCard } from './Accounting';
 import Funnel from './Funnel';
-import Posts from './Posts';
+import { PostsMiniCard } from './Posts';
 import { Users, UsersTable } from './Users';
 
 export default class Admin extends React.Component {
@@ -123,7 +123,7 @@ export default class Admin extends React.Component {
               <Card>
                 <Card.Body>
                   <Card.Title>Posts</Card.Title>
-                  <Posts posts={this.state.posts} />
+                  <PostsMiniCard posts={this.state.posts} />
                 </Card.Body>
               </Card>
             </div>
