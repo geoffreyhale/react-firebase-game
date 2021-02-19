@@ -42,15 +42,13 @@ export default class CommunityPage extends Component {
 
     return (
       <>
-        <Tabs defaultActiveKey="mosaic">
-          <Tab eventKey="mosaic" title="Mosaic">
-            <Mosaic />
+        <Mosaic />
+        <Tabs defaultActiveKey="scores" className="mt-3">
+          <Tab eventKey="scores" title="Scores">
+            <UserScoreCards />
           </Tab>
           <Tab eventKey="stats" title="Stats">
             <Stats posts={this.state.rawPosts} />
-          </Tab>
-          <Tab eventKey="scores" title="Scores">
-            <UserScoreCards />
           </Tab>
         </Tabs>
       </>
