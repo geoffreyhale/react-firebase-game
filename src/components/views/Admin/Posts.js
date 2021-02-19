@@ -1,9 +1,10 @@
 import format from 'date-fns/format';
 import { ResponsiveBar } from '@nivo/bar';
-import React from 'react';
+import React, { useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import countWords from '../../shared/countWords';
 import PostLink from '../../shared/PostLink';
+import { AppContext } from '../../AppProvider';
 
 const dateFromDaysSinceEpoch = (days) => {
   return new Date(days * 1000 * 86400);
@@ -80,11 +81,19 @@ export const PostsMiniCard = ({ posts }) => {
 };
 
 const PostsPerDayBarChart = ({ postsByDay }) => {
+  const { user } = useContext(AppContext);
+
   const barData = [];
   Object.entries(postsByDay).forEach(([day, posts]) => {
     barData.push({
       day: format(dateFromDaysSinceEpoch(day), 'MMMM d, yyyy'),
       postsCount: Object.keys(posts).length,
+      myPostsCount: Object.values(posts).filter(
+        (post) => post.userId === user.uid
+      ).length,
+      notMyPostsCount: Object.values(posts).filter(
+        (post) => post.userId !== user.uid
+      ).length,
     });
   });
 
@@ -92,13 +101,13 @@ const PostsPerDayBarChart = ({ postsByDay }) => {
     <div style={{ height: 400 }}>
       <ResponsiveBar
         data={Object.values(barData)}
-        keys={['postsCount']}
+        keys={['notMyPostsCount', 'myPostsCount']}
         indexBy="day"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
         padding={0.3}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
-        colors={{ scheme: 'nivo' }}
+        colors={{ scheme: 'accent' }}
         borderColor={{ from: 'color', modifiers: [['darker', 1.6]] }}
         axisTop={null}
         axisRight={null}
