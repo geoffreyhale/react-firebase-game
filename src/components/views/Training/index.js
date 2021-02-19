@@ -16,6 +16,7 @@ import { availableModalities } from '../../shared/Modalities';
 import MODALITIES from '../../shared/Modalities/MODALITIES';
 import PostsFeed from '../../shared/PostsFeed';
 import { PremiumFeature } from '../../shared/Premium';
+import NewTopLevelPostCard from '../Posts/NewTopLevelPostCard';
 
 //TODO add feed of modality posts that user has not voted on
 //TODO add feeds of best examples
@@ -287,14 +288,7 @@ const Training = () => {
                     <div className="mb-3">
                       <Card>
                         <Card.Body>
-                          Practice now in premium room:{' '}
-                          <Button
-                            as={Link}
-                            variant="link"
-                            to={`/r/${modalityToShow.room}`}
-                          >
-                            r/{modalityToShow.room}
-                          </Button>
+                          <NewTopLevelPostCard hackRoom={modalityToShow.room} />
                         </Card.Body>
                       </Card>
                     </div>
