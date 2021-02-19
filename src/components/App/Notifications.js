@@ -93,7 +93,7 @@ const NotificationItemLinkContent = ({ timestamp, uid }) => {
   );
 };
 
-const NotificationBellIcon = ({ children }) => (
+const NotificationBellIcon = ({ children, loading }) => (
   <div style={{ position: 'relative' }}>
     <FontAwesomeIcon
       icon={faBell}
@@ -108,15 +108,19 @@ const NotificationBellIcon = ({ children }) => (
         textAlign: 'center',
       }}
     >
-      <Badge
-        variant="secondary"
-        style={{
-          backgroundColor: 'rgba(32, 156, 238, 0.95)',
-          backgroundOpacity: '50%',
-        }}
-      >
-        {children}
-      </Badge>
+      {loading ? (
+        <Spinner size={'sm'} />
+      ) : (
+        <Badge
+          variant="secondary"
+          style={{
+            backgroundColor: 'rgba(32, 156, 238, 0.95)',
+            backgroundOpacity: '50%',
+          }}
+        >
+          {children}
+        </Badge>
+      )}
     </div>
   </div>
 );
@@ -222,14 +226,8 @@ export default class Notifications extends React.Component {
         }
       >
         <div>
-          <NotificationBellIcon>
-            {this.state.loading ? (
-              <Spinner />
-            ) : hasNotifications ? (
-              notifications.length
-            ) : (
-              0
-            )}
+          <NotificationBellIcon loading={this.state.loading}>
+            {hasNotifications ? notifications.length : 0}
           </NotificationBellIcon>
         </div>
       </OverlayTrigger>
