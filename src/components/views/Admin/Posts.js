@@ -100,7 +100,7 @@ const PostsPerDayBarChart = ({ postsByDay }) => {
   return (
     <div style={{ height: 400 }}>
       <ResponsiveBar
-        data={Object.values(barData)}
+        data={barData}
         keys={['notMyPostsCount', 'myPostsCount']}
         indexBy="day"
         margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
@@ -164,6 +164,8 @@ const PostsPerDayBarChart = ({ postsByDay }) => {
 
 export const PostsPerDay = ({ posts }) => {
   const postsByDay = {};
+  //TODO find earliest post date, then load keys for every day until now
+  //TODO allows also by week month year etc
   Object.values(posts).forEach((post) => {
     const day = daysSinceEpoch(post.timestamp);
     postsByDay[day] = postsByDay[day] || {};
