@@ -1,7 +1,10 @@
 import format from 'date-fns/format';
 import { ResponsiveBar } from '@nivo/bar';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Table from 'react-bootstrap/Table';
+import ToggleButton from 'react-bootstrap/ToggleButton';
 import countWords from '../../shared/countWords';
 import PostLink from '../../shared/PostLink';
 import { AppContext } from '../../AppProvider';
@@ -162,29 +165,80 @@ const PostsPerDayBarChart = ({ postsByDay }) => {
   );
 };
 
+const PeriodRadioSelect = ({ daysPerBar, setDaysPerBar }) => (
+  <ButtonGroup toggle>
+    <Button disabled>Days</Button>
+    {[
+      { name: '1', value: 1 },
+      { name: '3', value: 3 },
+      { name: '7', value: 7 },
+      { name: '30', value: 30 },
+    ].map((radio, idx) => (
+      <ToggleButton
+        key={idx}
+        type="radio"
+        // variant="secondary"
+        name="radio"
+        value={radio.value}
+        checked={daysPerBar === radio.value}
+        onChange={(e) => {
+          setDaysPerBar(parseInt(e.currentTarget.value));
+        }}
+      >
+        {radio.name}
+      </ToggleButton>
+    ))}
+  </ButtonGroup>
+);
+
 export const PostsPerDay = ({ posts }) => {
+  const [daysPerBar, setDaysPerBar] = useState(1);
+
   const postsByDay = {};
   //TODO find earliest post date, then load keys for every day until now
-  //TODO allows also by week month year etc
   Object.values(posts).forEach((post) => {
     const day = daysSinceEpoch(post.timestamp);
     postsByDay[day] = postsByDay[day] || {};
     postsByDay[day][post.id] = post;
   });
 
+  const postsByDays = {};
+  const earliestDay = Math.min(...Object.keys(postsByDay));
+  const mostRecentDay = Math.max(...Object.keys(postsByDay));
+  let startDayOfPeriod = earliestDay;
+  while (startDayOfPeriod < mostRecentDay) {
+    postsByDays[startDayOfPeriod] = postsByDay[startDayOfPeriod];
+    for (let i = 1; i < daysPerBar; i++) {
+      postsByDays[startDayOfPeriod] = Object.assign(
+        postsByDays[startDayOfPeriod],
+        postsByDay[startDayOfPeriod + i]
+      );
+    }
+    startDayOfPeriod += daysPerBar;
+  }
+
   return (
     <>
-      <PostsPerDayBarChart postsByDay={postsByDay} />
+      <PeriodRadioSelect
+        daysPerBar={daysPerBar}
+        setDaysPerBar={setDaysPerBar}
+      />
+      <PostsPerDayBarChart postsByDay={postsByDays} />
       <Table>
         <tbody>
-          {Object.entries(postsByDay).map(([daysSinceEpoch, posts]) => (
-            <tr>
-              <td>
-                {format(dateFromDaysSinceEpoch(daysSinceEpoch), 'MMMM d, yyyy')}{' '}
-              </td>
-              <td>{Object.keys(posts).length}</td>
-            </tr>
-          ))}
+          {Object.entries(postsByDays)
+            .reverse()
+            .map(([daysSinceEpoch, posts]) => (
+              <tr>
+                <td>
+                  {format(
+                    dateFromDaysSinceEpoch(daysSinceEpoch),
+                    "MMMM d, yyyy 'at' hh:mm b"
+                  )}
+                </td>
+                <td>{Object.keys(posts).length}</td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </>
