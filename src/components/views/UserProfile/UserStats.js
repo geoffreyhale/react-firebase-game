@@ -106,6 +106,52 @@ const modalityVotesSubmittedForOthers = ({ posts, uid }) => {
   ).length;
 };
 
+const getXBookScore = ({ scores }) =>
+  scores.modalityPointsReceivedFromOthers * 10 +
+  scores.upvotesReceivedFromOthers +
+  scores.directRepliesReceivedFromOthers +
+  scores.repliesUpvotedByRecipient +
+  scores.uniqueDaysPosted +
+  scores.modalityVotesSubmittedForOthers * 5;
+
+const getScores = ({ uid, posts }) => {
+  const scores = {};
+  scores.modalityPointsReceivedFromOthers = modalityPointsReceivedFromOthers({
+    posts,
+    uid,
+  });
+  scores.upvotesReceivedFromOthers = upvotesReceivedFromOthers({
+    posts,
+    uid,
+  });
+  scores.directRepliesReceivedFromOthers = directRepliesReceivedFromOthers({
+    posts,
+    uid,
+  });
+  scores.repliesUpvotedByRecipient = repliesUpvotedByRecipient({
+    posts,
+    uid,
+  });
+  scores.uniqueDaysPosted = uniqueDaysPosted({
+    posts,
+    uid,
+  });
+  scores.modalityVotesSubmittedForOthers = modalityVotesSubmittedForOthers({
+    posts,
+    uid,
+  });
+  scores.score = getXBookScore({ scores });
+  return scores;
+};
+
+export const getScoresByUid = ({ uids, posts }) => {
+  const scores = {};
+  uids.forEach((uid) => {
+    scores[uid] = getScores({ uid, posts });
+  });
+  return scores;
+};
+
 const ScoreListGroupItem = ({ description, title, value, variant }) => (
   <ListGroup.Item key={title} variant={variant}>
     <OverlayTrigger placement="top" overlay={<Tooltip>{description}</Tooltip>}>
@@ -113,6 +159,47 @@ const ScoreListGroupItem = ({ description, title, value, variant }) => (
     </OverlayTrigger>{' '}
     {value}
   </ListGroup.Item>
+);
+
+export const UserScoreListGroup = ({ scores }) => (
+  <ListGroup>
+    <ScoreListGroupItem
+      description="modality * 10 + upvotes + replies + replies upvoted + days posted + modalityVotesSubmittedForOthersScore * 5"
+      title="Score"
+      value={scores.score}
+      variant="light"
+    />
+    <ScoreListGroupItem
+      description="Modality Points Received From Others"
+      title="Modality"
+      value={scores.modalityPointsReceivedFromOthers}
+    />
+    <ScoreListGroupItem
+      description="Upvotes Received From Others"
+      title="Upvotes"
+      value={scores.upvotesReceivedFromOthers}
+    />
+    <ScoreListGroupItem
+      description="Replies Received From Others"
+      title="Replies"
+      value={scores.directRepliesReceivedFromOthers}
+    />
+    <ScoreListGroupItem
+      description="Replies Upvoted By Recipient"
+      title="Recipient Upvotes"
+      value={scores.repliesUpvotedByRecipient}
+    />
+    <ScoreListGroupItem
+      description="Unique Days Posted"
+      title="Days Posted"
+      value={scores.uniqueDaysPosted}
+    />
+    <ScoreListGroupItem
+      description="Modality Votes Submitted For Others"
+      title="Modality Votes Submitted"
+      value={scores.modalityVotesSubmittedForOthers}
+    />
+  </ListGroup>
 );
 
 class UserStats extends React.Component {
@@ -137,73 +224,7 @@ class UserStats extends React.Component {
       );
     }
 
-    const modalityPointsReceivedFromOthersScore = modalityPointsReceivedFromOthers(
-      { posts, uid }
-    );
-    const upvotesReceivedFromOthersScore = upvotesReceivedFromOthers({
-      posts,
-      uid,
-    });
-    const directRepliesReceivedFromOthersScore = directRepliesReceivedFromOthers(
-      { posts, uid }
-    );
-    const repliesUpvotedByRecipientScore = repliesUpvotedByRecipient({
-      posts,
-      uid,
-    });
-    const uniqueDaysPostedScore = uniqueDaysPosted({ posts, uid });
-    const modalityVotesSubmittedForOthersScore = modalityVotesSubmittedForOthers(
-      { posts, uid }
-    );
-
-    const xBookScore =
-      modalityPointsReceivedFromOthersScore * 10 +
-      upvotesReceivedFromOthersScore +
-      directRepliesReceivedFromOthersScore +
-      repliesUpvotedByRecipientScore +
-      uniqueDaysPostedScore +
-      modalityVotesSubmittedForOthersScore * 5;
-
-    return (
-      <ListGroup>
-        <ScoreListGroupItem
-          description="modality * 10 + upvotes + replies + replies upvoted + days posted + modalityVotesSubmittedForOthersScore * 5"
-          title="Score"
-          value={xBookScore}
-          variant="light"
-        />
-        <ScoreListGroupItem
-          description="Modality Points Received From Others"
-          title="Modality"
-          value={modalityPointsReceivedFromOthersScore}
-        />
-        <ScoreListGroupItem
-          description="Upvotes Received From Others"
-          title="Upvotes"
-          value={upvotesReceivedFromOthersScore}
-        />
-        <ScoreListGroupItem
-          description="Replies Received From Others"
-          title="Replies"
-          value={directRepliesReceivedFromOthersScore}
-        />
-        <ScoreListGroupItem
-          description="Replies Upvoted By Recipient"
-          title="Recipient Upvotes"
-          value={repliesUpvotedByRecipientScore}
-        />
-        <ScoreListGroupItem
-          description="Unique Days Posted"
-          title="Days Posted"
-          value={uniqueDaysPostedScore}
-        />
-        <ScoreListGroupItem
-          description="Modality Votes Submitted For Others"
-          title="Modality Votes Submitted"
-          value={modalityVotesSubmittedForOthersScore}
-        />
-      </ListGroup>
-    );
+    return <UserScoreListGroup scores={getScores({ uid, posts })} />;
   }
 }
 export default UserStats;
