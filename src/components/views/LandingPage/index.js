@@ -32,44 +32,36 @@ const Login403DisallowedUseragent = () => (
   </Jumbotron>
 );
 
+const LandingCol = ({ children }) => (
+  <Col
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <div className="m-5">{children}</div>
+  </Col>
+);
+
 const BetterLandingPageContent = ({ login }) => (
-  <Row style={{ background: 'white' }}>
-    <Col
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div className="m-5">
-        <div
-          style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '3rem' }}
-        >
-          Healthy Relating.
-        </div>
-        <div className="mt-3 text-muted">
-          #1 online social network for meaningful connection and personal
-          growth.
-        </div>
-        <div className="mt-3">
-          <LogInButton login={login}>Start Now</LogInButton>
-        </div>
+  <Row>
+    <LandingCol>
+      <div style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '3rem' }}>
+        Healthy Relating.
       </div>
-    </Col>
-    <Col
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-      className="d-none d-sm-block"
-    >
-      <div className="m-5">
-        <div className="vignette">
-          <img src={friendsPhoneImg} alt="healthy relating" />
-        </div>
+      <div className="mt-3 text-muted">
+        #1 online social network for meaningful connection and personal growth.
       </div>
-    </Col>
+      <div className="mt-3">
+        <LogInButton login={login}>Start Now</LogInButton>
+      </div>
+    </LandingCol>
+    <LandingCol>
+      <div className="vignette">
+        <img src={friendsPhoneImg} alt="healthy relating" />
+      </div>
+    </LandingCol>
   </Row>
 );
 
