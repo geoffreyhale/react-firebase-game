@@ -17,7 +17,7 @@ const AppNav = () => {
               <NavDropdown.Item key={room.id}>
                 <Nav.Link
                   as={NavLink}
-                  to={`/r/${room.id}`}
+                  to={room.url || `/r/${room.id}`}
                   exact={room.id === 'home'}
                 >
                   {room.title || `r/${room.id}`}
