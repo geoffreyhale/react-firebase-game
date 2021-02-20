@@ -1,5 +1,5 @@
 /**
- * FrontPage is intended to serve as home for unauthorized users
+ * LandingPage is intended to serve as home for unauthorized users
  */
 import React from 'react';
 import Card from 'react-bootstrap/Card';
@@ -29,7 +29,7 @@ const Login403DisallowedUseragent = () => (
   </Jumbotron>
 );
 
-const FrontPage = ({ login }) => (
+const LandingPage = ({ login }) => (
   <>
     {/* <Card className="mt-1">
       <Card.Body
@@ -71,4 +71,4 @@ const FrontPage = ({ login }) => (
     </Row>
   </>
 );
-export default FrontPage;
+export default LandingPage;
