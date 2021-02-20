@@ -26,7 +26,7 @@ class Rooms extends React.Component {
   }
 
   static contextType = AppContext;
-  user = () => this.context.user;
+  rooms = () => this.context.rooms;
 
   componentDidMount() {
     const { roomId = 'home' } = this.props.match.params;
@@ -40,7 +40,7 @@ class Rooms extends React.Component {
       this.context.setModality(null);
     }
 
-    const room = ROOMS[roomId];
+    const room = this.rooms()[roomId];
 
     if (room && room.title) {
       document.title = `${room.title} | xBook`;

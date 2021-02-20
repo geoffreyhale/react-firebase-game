@@ -10,14 +10,9 @@ const AppNav = () => {
   return (
     <Nav className="justify-content-center">
       <NavDropdown title="Rooms">
-        <NavDropdown.Item key={'home'}>
-          <Nav.Link as={NavLink} to={`/`} exact>
-            Home
-          </Nav.Link>
-        </NavDropdown.Item>
         {rooms &&
           Object.values(rooms)
-            .filter((room) => room.available)
+            .filter((room) => room.available && room.id !== 'home')
             .map((room) => (
               <NavDropdown.Item key={room.id}>
                 <Nav.Link
