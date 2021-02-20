@@ -15,11 +15,7 @@ const AppNav = () => {
             .filter((room) => !room.hidden && room.id !== 'home')
             .map((room) => (
               <NavDropdown.Item key={room.id}>
-                <Nav.Link
-                  as={NavLink}
-                  to={room.url || `/r/${room.id}`}
-                  exact={room.id === 'home'}
-                >
+                <Nav.Link as={NavLink} to={room.url} exact={room.id === 'home'}>
                   {room.title || `r/${room.id}`}
                 </Nav.Link>
               </NavDropdown.Item>

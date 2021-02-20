@@ -3,7 +3,6 @@ import { getRooms } from '../../../api';
 
 export const room_overrides = Object.freeze({
   home: {
-    url: '/',
     description: (
       <small className="text-muted">
         <ul>
@@ -20,7 +19,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   dev: {
-    url: '/r/dev',
     color: 'Beige',
     description: (
       <small className="text-muted">
@@ -35,7 +33,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   general: {
-    url: '/r/general',
     color: 'AliceBlue',
     description: (
       <small className="text-muted">
@@ -46,7 +43,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   healthyrelating: {
-    url: '/r/healthyrelating',
     color: 'MistyRose',
     description: (
       <small className="text-muted">
@@ -63,7 +59,6 @@ export const room_overrides = Object.freeze({
     requiresPremium: true,
   },
   productivity: {
-    url: '/r/productivity',
     description: (
       <small className="text-muted">
         <ul>
@@ -98,6 +93,10 @@ const getROOMS = (callback) => {
       if (!rooms[roomKey]) {
         rooms[roomKey] = room;
       }
+    });
+    // iterate over combined list of rooms for final touchups, eg adding url
+    Object.keys(rooms).forEach((id) => {
+      rooms[id].url = rooms[id].url || `/r/${rooms[id].id}`;
     });
 
     callback(rooms);
