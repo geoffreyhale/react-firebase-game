@@ -121,14 +121,15 @@ class App extends Component {
               <Row>
                 <Col style={{ paddingRight: 0, paddingLeft: 0 }}>
                   <AppHeader login={this.login} logout={this.logout} />
-                  <SmartGuide />
                   {this.state.loading ? (
                     <Spinner size="lg" />
                   ) : (
-                    <div className="mt-3">
-                      {!this.state.user && <LandingPage login={this.login} />}
-                      <Routes />
-                    </div>
+                    <>
+                      <SmartGuide />
+                      <div className="mt-3">
+                        <Routes />
+                      </div>
+                    </>
                   )}
                 </Col>
               </Row>

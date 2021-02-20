@@ -14,9 +14,10 @@ import { AppContext } from './AppProvider';
 import Page from './Page';
 import UserProfile from './views/UserProfile';
 import Settings from './views/Settings';
+import LandingPage from './views/LandingPage';
 
 const Routes = () => {
-  const { setModality, user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const history = useHistory();
   const location = useLocation();
 
@@ -34,6 +35,18 @@ const Routes = () => {
           render={(props) => (
             <Page title="Admin | xBook">
               <Admin {...props} />
+            </Page>
+          )}
+        />
+      )}
+      {!user && (
+        <Route
+          exact
+          path="/"
+          key={location.pathname + 'landing'}
+          render={(props) => (
+            <Page title="xBook">
+              <LandingPage {...props} />
             </Page>
           )}
         />
