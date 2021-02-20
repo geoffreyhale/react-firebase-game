@@ -1,0 +1,36 @@
+body {
+  background-color: white !important;
+}
+header .card {
+  border: none;
+}
+
+.vignette {
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+.vignette img {
+  border-radius: 50%;
+  display: block;
+  border: 1px solid #fff;
+  max-width: 480px;
+}
+.vignette:after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 1) 70%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 480px;
+}

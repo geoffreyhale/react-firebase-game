@@ -8,6 +8,9 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import Row from 'react-bootstrap/Row';
 import About from '../About';
 import { LogInButton } from '../../App/AppHeader';
+import friendsPhoneImg from './three-diverse-friends-her-phone-looking-happy 640.jpg';
+
+import './LandingPage.css';
 
 const Login403DisallowedUseragent = () => (
   <Jumbotron className="mt-3" style={{ font: 'consolas' }}>
@@ -29,8 +32,50 @@ const Login403DisallowedUseragent = () => (
   </Jumbotron>
 );
 
+const BetterLandingPageContent = ({ login }) => (
+  <Row style={{ background: 'white' }}>
+    <Col
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div className="m-5">
+        <div
+          style={{ fontSize: '3rem', fontWeight: 'bold', lineHeight: '3rem' }}
+        >
+          Healthy Relating.
+        </div>
+        <div className="mt-3 text-muted">
+          #1 online social network for meaningful connection and personal
+          growth.
+        </div>
+        <div className="mt-3">
+          <LogInButton login={login}>Start Now</LogInButton>
+        </div>
+      </div>
+    </Col>
+    <Col
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      className="d-none d-sm-block"
+    >
+      <div className="m-5">
+        <div className="vignette">
+          <img src={friendsPhoneImg} alt="healthy relating" />
+        </div>
+      </div>
+    </Col>
+  </Row>
+);
+
 const LandingPage = ({ login }) => (
   <>
+    <BetterLandingPageContent login={login} />
     {/* <Card className="mt-1">
       <Card.Body
         style={{
