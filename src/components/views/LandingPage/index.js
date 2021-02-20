@@ -41,7 +41,7 @@ const LandingCol = ({ children }) => (
       justifyContent: 'center',
     }}
   >
-    <div className="m-5">{children}</div>
+    <div className="m-4 m-sm-5">{children}</div>
   </Col>
 );
 
@@ -56,6 +56,13 @@ const SmallLandingText = ({ children }) => (
 );
 
 const Vignette = ({ children }) => <div className="vignette">{children}</div>;
+
+const ShowSmOnly = ({ children }) => (
+  <div className="d-block d-sm-none">{children}</div>
+);
+const ShowNotSm = ({ children }) => (
+  <div className="d-none d-sm-block">{children}</div>
+);
 
 const BetterLandingPageContent = ({ login }) => (
   <>
@@ -76,20 +83,38 @@ const BetterLandingPageContent = ({ login }) => (
         </Vignette>
       </LandingCol>
     </Row>
-    <Row>
-      <LandingCol>
-        <Vignette>
-          <img src={olderCoupleImg} alt="meaningful connection" />
-        </Vignette>
-      </LandingCol>
-      <LandingCol>
-        <BigLandingText>Meaningful Connections.</BigLandingText>
-        <SmallLandingText>
-          Guided writing exercises develop our capacity for emotional intimacy
-          and deep connection.
-        </SmallLandingText>
-      </LandingCol>
-    </Row>
+    <ShowNotSm>
+      <Row>
+        <LandingCol>
+          <Vignette>
+            <img src={olderCoupleImg} alt="meaningful connection" />
+          </Vignette>
+        </LandingCol>
+        <LandingCol>
+          <BigLandingText>Meaningful Connections.</BigLandingText>
+          <SmallLandingText>
+            Guided writing exercises develop our capacity for emotional intimacy
+            and deep connection.
+          </SmallLandingText>
+        </LandingCol>
+      </Row>
+    </ShowNotSm>
+    <ShowSmOnly>
+      <Row>
+        <LandingCol>
+          <BigLandingText>Meaningful Connections.</BigLandingText>
+          <SmallLandingText>
+            Guided writing exercises develop our capacity for emotional intimacy
+            and deep connection.
+          </SmallLandingText>
+        </LandingCol>
+        <LandingCol>
+          <Vignette>
+            <img src={olderCoupleImg} alt="meaningful connection" />
+          </Vignette>
+        </LandingCol>
+      </Row>
+    </ShowSmOnly>
     <Row>
       <LandingCol>
         <BigLandingText>Safe Space.</BigLandingText>
@@ -104,19 +129,36 @@ const BetterLandingPageContent = ({ login }) => (
         </Vignette>
       </LandingCol>
     </Row>
-    <Row>
-      <LandingCol>
-        <Vignette>
-          <img src={glassesGirlImg} alt="track progress" />
-        </Vignette>
-      </LandingCol>
-      <LandingCol>
-        <BigLandingText>Track Progress.</BigLandingText>
-        <SmallLandingText>
-          Appreciate how your relational skills develop over time.
-        </SmallLandingText>
-      </LandingCol>
-    </Row>
+    <ShowNotSm>
+      <Row>
+        <LandingCol>
+          <Vignette>
+            <img src={glassesGirlImg} alt="track progress" />
+          </Vignette>
+        </LandingCol>
+        <LandingCol>
+          <BigLandingText>Track Progress.</BigLandingText>
+          <SmallLandingText>
+            Appreciate how your relational skills develop over time.
+          </SmallLandingText>
+        </LandingCol>
+      </Row>
+    </ShowNotSm>
+    <ShowSmOnly>
+      <Row>
+        <LandingCol>
+          <BigLandingText>Track Progress.</BigLandingText>
+          <SmallLandingText>
+            Appreciate how your relational skills develop over time.
+          </SmallLandingText>
+        </LandingCol>
+        <LandingCol>
+          <Vignette>
+            <img src={glassesGirlImg} alt="track progress" />
+          </Vignette>
+        </LandingCol>
+      </Row>
+    </ShowSmOnly>
     <Row>
       <LandingCol>
         <LogInButton login={login} style={{ fontSize: '2rem' }}>

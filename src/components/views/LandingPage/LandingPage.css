@@ -9,6 +9,7 @@ header .card {
   border-radius: 50%;
   display: inline-block;
   position: relative;
+  min-width: 320px;
 }
 .vignette img {
   border-radius: 50%;
