@@ -20,7 +20,7 @@ const AppNav = () => {
                   to={`/r/${room.id}`}
                   exact={room.id === 'home'}
                 >
-                  r/{room.id}
+                  {room.title || `r/${room.id}`}
                 </Nav.Link>
               </NavDropdown.Item>
             ))}

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { getRooms } from '../../../api';
 
-export const ROOMS = Object.freeze({
+export const room_overrides = Object.freeze({
   home: {
     available: true,
     url: '/',
@@ -83,7 +83,7 @@ export const ROOMS = Object.freeze({
   },
 });
 
-export const premiumRooms = Object.values(ROOMS)
+export const premiumRooms = Object.values(room_overrides)
   .filter((room) => room.requiresPremium)
   .map((room) => room.id);
 
@@ -91,9 +91,16 @@ const getROOMS = (callback) => {
   getRooms((apiRooms) => {
     const rooms = {};
 
+    // add from database and override w local
     Object.entries(apiRooms).forEach(([roomKey, room]) => {
-      if (room || ROOMS[roomKey]) {
-        rooms[roomKey] = Object.assign(room, ROOMS[roomKey]);
+      rooms[roomKey] = room_overrides[roomKey]
+        ? Object.assign(room, room_overrides[roomKey])
+        : room;
+    });
+    // add local override rooms that don't exist in database
+    Object.entries(room_overrides).forEach(([roomKey, room]) => {
+      if (!rooms[roomKey]) {
+        rooms[roomKey] = room;
       }
     });
 
