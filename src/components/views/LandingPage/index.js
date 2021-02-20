@@ -1,7 +1,6 @@
-/**
- * LandingPage is intended to serve as home for unauthorized users
- */
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Jumbotron from 'react-bootstrap/Jumbotron';
@@ -86,7 +85,8 @@ const BetterLandingPageContent = ({ login }) => (
       <LandingCol>
         <BigLandingText>Meaningful Connections.</BigLandingText>
         <SmallLandingText>
-          Guided writing exercises develop our capacity for emotional intimacy.
+          Guided writing exercises develop our capacity for emotional intimacy
+          and deep connection.
         </SmallLandingText>
       </LandingCol>
     </Row>
@@ -124,6 +124,13 @@ const BetterLandingPageContent = ({ login }) => (
         </LogInButton>
       </LandingCol>
     </Row>
+    {/* <Row>
+      <LandingCol>
+        <Button variant="secondary" as={Link} to="/about">
+          About
+        </Button>
+      </LandingCol>
+    </Row> */}
   </>
 );
 
@@ -148,7 +155,7 @@ const LandingPage = ({ login }) => (
         </div>
       </Card.Body>
     </Card> */}
-    <div className="mt-3">
+    {/* <div className="mt-3">
       <About />
     </div>
     <Row>
@@ -167,7 +174,7 @@ const LandingPage = ({ login }) => (
         </Card>
       </Col>
       <Col></Col>
-    </Row>
+    </Row> */}
   </>
 );
 export default LandingPage;
