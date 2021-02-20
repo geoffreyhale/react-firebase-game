@@ -3,7 +3,6 @@ import { getRooms } from '../../../api';
 
 export const room_overrides = Object.freeze({
   home: {
-    hidden: false,
     url: '/',
     description: (
       <small className="text-muted">
@@ -21,7 +20,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   dev: {
-    hidden: true,
     url: '/r/dev',
     color: 'Beige',
     description: (
@@ -37,7 +35,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   general: {
-    hidden: false,
     url: '/r/general',
     color: 'AliceBlue',
     description: (
@@ -49,7 +46,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   healthyrelating: {
-    hidden: false,
     url: '/r/healthyrelating',
     color: 'MistyRose',
     description: (
@@ -67,7 +63,6 @@ export const room_overrides = Object.freeze({
     requiresPremium: true,
   },
   productivity: {
-    hidden: false,
     url: '/r/productivity',
     description: (
       <small className="text-muted">
