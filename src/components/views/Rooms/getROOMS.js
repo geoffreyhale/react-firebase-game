@@ -4,9 +4,7 @@ import { getRooms } from '../../../api';
 export const ROOMS = Object.freeze({
   home: {
     available: true,
-    id: 'home',
     url: '/',
-    title: 'Home',
     description: (
       <small className="text-muted">
         <ul>
@@ -23,10 +21,8 @@ export const ROOMS = Object.freeze({
     ),
   },
   dev: {
-    id: 'dev',
     url: '/r/dev',
     color: 'Beige',
-    title: 'r/dev',
     description: (
       <small className="text-muted">
         <ul>
@@ -40,11 +36,9 @@ export const ROOMS = Object.freeze({
     ),
   },
   general: {
-    id: 'general',
     available: true,
     url: '/r/general',
     color: 'AliceBlue',
-    title: 'r/general',
     description: (
       <small className="text-muted">
         <ul>
@@ -54,11 +48,9 @@ export const ROOMS = Object.freeze({
     ),
   },
   healthyrelating: {
-    id: 'healthyrelating',
     available: true,
     url: '/r/healthyrelating',
     color: 'MistyRose',
-    title: 'r/healthyrelating',
     description: (
       <small className="text-muted">
         <ul>
@@ -74,10 +66,8 @@ export const ROOMS = Object.freeze({
     requiresPremium: true,
   },
   productivity: {
-    id: 'productivity',
     available: true,
     url: '/r/productivity',
-    title: 'r/productivity',
     description: (
       <small className="text-muted">
         <ul>
@@ -101,9 +91,9 @@ const getROOMS = (callback) => {
   getRooms((apiRooms) => {
     const rooms = {};
 
-    Object.keys(apiRooms).forEach((roomKey) => {
-      if (ROOMS[roomKey]) {
-        rooms[roomKey] = ROOMS[roomKey];
+    Object.entries(apiRooms).forEach(([roomKey, room]) => {
+      if (room || ROOMS[roomKey]) {
+        rooms[roomKey] = Object.assign(room, ROOMS[roomKey]);
       }
     });
 
