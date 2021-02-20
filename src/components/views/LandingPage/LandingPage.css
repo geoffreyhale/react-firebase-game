@@ -14,7 +14,7 @@ header .card {
   border-radius: 50%;
   display: block;
   border: 1px solid #fff;
-  max-width: 480px;
+  width: 100%;
 }
 .vignette:after {
   content: '';
@@ -32,5 +32,4 @@ header .card {
   position: absolute;
   top: 0;
   left: 0;
-  max-width: 480px;
 }
