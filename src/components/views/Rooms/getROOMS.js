@@ -43,7 +43,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   healthyrelating: {
-    requires: ['premium'],
     color: 'MistyRose',
     description: (
       <small className="text-muted">
@@ -59,7 +58,6 @@ export const room_overrides = Object.freeze({
     ),
   },
   productivity: {
-    requires: ['premium'],
     description: (
       <small className="text-muted">
         <ul>
