@@ -12,7 +12,7 @@ const AppNav = () => {
       <NavDropdown title="Rooms">
         {rooms &&
           Object.values(rooms)
-            .filter((room) => room.available && room.id !== 'home')
+            .filter((room) => !room.hidden && room.id !== 'home')
             .map((room) => (
               <NavDropdown.Item key={room.id}>
                 <Nav.Link
