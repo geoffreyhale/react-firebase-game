@@ -313,7 +313,6 @@ const Training = () => {
                       </span>
                     }
                   >
-                    {/* TODO the vote buttons work but the post will not update live here */}
                     <PostsFeed
                       posts={userPostsWithThisModality}
                       hackHideRepliesCount={true}
@@ -323,7 +322,7 @@ const Training = () => {
                     eventKey="all-posts"
                     title={
                       <span>
-                        All Posts
+                        Best Examples
                         {loadingPosts ? (
                           <Spinner size="sm" />
                         ) : (
@@ -334,7 +333,6 @@ const Training = () => {
                       </span>
                     }
                   >
-                    {/* TODO the vote buttons work but the post will not update live here */}
                     {user.isPremium ? (
                       <PostsFeed
                         posts={postsWithThisModality}
