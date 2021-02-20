@@ -18,8 +18,6 @@ import { PremiumFeature } from '../../shared/Premium';
 import NewTopLevelPostCard from '../Posts/NewTopLevelPostCard';
 
 //TODO add feed of modality posts that user has not voted on
-//TODO add feeds of best examples
-//TODO allow post submissions from this page
 
 const UserModalityScoreCardInline = ({
   loadingPosts,
@@ -288,12 +286,16 @@ const Training = () => {
                     <div className="mb-3">
                       <Card>
                         <Card.Body>
-                          <NewTopLevelPostCard
-                            hackRoom={modalityToShow.room}
-                            onSuccess={() =>
-                              history.push(`/r/${modalityToShow.room}`)
-                            }
-                          />
+                          {user.isPremium ? (
+                            <NewTopLevelPostCard
+                              hackRoom={modalityToShow.room}
+                              onSuccess={() =>
+                                history.push(`/r/${modalityToShow.room}`)
+                              }
+                            />
+                          ) : (
+                            <PremiumFeature />
+                          )}
                         </Card.Body>
                       </Card>
                     </div>
