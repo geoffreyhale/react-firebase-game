@@ -16,7 +16,7 @@ import UserProfile from './views/UserProfile';
 import Settings from './views/Settings';
 import LandingPage from './views/LandingPage';
 
-const Routes = () => {
+const Routes = ({ login }) => {
   const { user } = useContext(AppContext);
   const history = useHistory();
   const location = useLocation();
@@ -46,7 +46,7 @@ const Routes = () => {
           key={location.pathname + 'landing'}
           render={(props) => (
             <Page title="xBook">
-              <LandingPage {...props} />
+              <LandingPage login={login} {...props} />
             </Page>
           )}
         />

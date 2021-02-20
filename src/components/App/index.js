@@ -127,7 +127,7 @@ class App extends Component {
                     <>
                       <SmartGuide />
                       <div className="mt-3">
-                        <Routes />
+                        <Routes login={this.login} />
                       </div>
                     </>
                   )}
