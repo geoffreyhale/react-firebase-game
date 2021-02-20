@@ -15,7 +15,7 @@ export const AboutContent = () => (
       <Link to="/r/healthyrelating">healthy relating</Link> and{' '}
       <Link to="/r/productivity">productivity</Link>.
     </p>
-    <p>xBook focuses on meaningful connection and self work together.</p>
+    <p>xBook focuses on meaningful connection and self-work together.</p>
     {/* <p>xBook will never sell your data.</p> */}
     {/* <p>
             We value respectful, considerate participation. We value rationality
@@ -29,9 +29,13 @@ export const AboutContent = () => (
       <Link to="/r/general">r/general</Link>.
     </p>
     <p>
-      Join premium for $1/mo and join us in{' '}
+      Check out the library of writing exercises in the{' '}
+      <Link to="/training">training room</Link>.
+    </p>
+    <p>
+      Join premium for $1/mo to join us in{' '}
       <Link to="/r/healthyrelating">r/healthyrelating</Link> and{' '}
-      <Link to="/r/productivity">productivity</Link>.
+      <Link to="/r/productivity">r/productivity</Link>.
     </p>
     {/* <h2>How do I pay?</h2>
           <p>
@@ -50,8 +54,7 @@ export const AboutContent = () => (
         Geoffrey Hale
       </Link>
       , an engineer passionate about{' '}
-      <Link to="/r/healthyrelating">healthy relating</Link> and{' '}
-      <Link to="/r/productivity">productivity</Link>.
+      <Link to="/r/healthyrelating">healthy relating</Link>.
     </p>
     {/* <p>
             If you'd like to know more you can ask us anything in{' '}
