@@ -10,7 +10,7 @@ import { AppContext } from '../../AppProvider';
 import { createPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 import { PostHeaderRoom } from './Post';
-import { premiumRooms } from '../Rooms';
+import { premiumRooms } from '../Rooms/getROOMS';
 
 const VISIBILITIES = Object.freeze({
   logged: 'Logged In Users',

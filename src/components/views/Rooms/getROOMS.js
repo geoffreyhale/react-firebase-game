@@ -93,6 +93,10 @@ export const ROOMS = Object.freeze({
   },
 });
 
+export const premiumRooms = Object.values(ROOMS)
+  .filter((room) => room.requiresPremium)
+  .map((room) => room.id);
+
 const getROOMS = (callback) => {
   getRooms((apiRooms) => {
     const rooms = {};

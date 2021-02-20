@@ -4,11 +4,6 @@ import { withRouter } from 'react-router';
 import { AppContext } from '../../AppProvider';
 import { validModalityForRoom } from '../../shared/Modalities';
 import Posts from '../Posts';
-import { ROOMS } from './getROOMS';
-
-export const premiumRooms = Object.values(ROOMS)
-  .filter((room) => room.requiresPremium)
-  .map((room) => room.id);
 
 const RoomDoesNotExist = () => (
   <Card>
