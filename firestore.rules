@@ -12,5 +12,8 @@ service cloud.firestore {
       allow read: if true; //TODO restrict this
       allow write: if (request.auth.uid == userId);
     }
+    match /rooms/{roomId} {
+      allow read: if true;
+    }
   }
 }

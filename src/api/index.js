@@ -138,6 +138,19 @@ export const getPosts = (callback) => {
   });
 };
 
+export const getRooms = (callback) => {
+  const rooms = {};
+  db.collection('rooms')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        rooms[doc.id] = doc.data();
+        rooms[doc.id].id = doc.id;
+      });
+      callback(rooms);
+    });
+};
+
 const getModalityPostsArrayForUser = ({ uid }, callback) => {
   getPosts((posts) => {
     const modalityPosts = Object.values(posts).filter(
