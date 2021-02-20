@@ -92,7 +92,11 @@ class Posts extends Component {
   }
 
   render() {
-    if (!this.user().isPremium && this.props.room.requiresPremium) {
+    if (
+      !this.user().isPremium &&
+      this.props.room.requires &&
+      this.props.room.requires.includes('premium')
+    ) {
       return <PremiumFeature featureName={'Premium rooms'} />;
     }
 

@@ -43,6 +43,7 @@ export const room_overrides = Object.freeze({
     ),
   },
   healthyrelating: {
+    requires: ['premium'],
     color: 'MistyRose',
     description: (
       <small className="text-muted">
@@ -56,9 +57,9 @@ export const room_overrides = Object.freeze({
         </ul>
       </small>
     ),
-    requiresPremium: true,
   },
   productivity: {
+    requires: ['premium'],
     description: (
       <small className="text-muted">
         <ul>
@@ -70,12 +71,11 @@ export const room_overrides = Object.freeze({
         </ul>
       </small>
     ),
-    requiresPremium: true,
   },
 });
 
 export const premiumRooms = Object.values(room_overrides)
-  .filter((room) => room.requiresPremium)
+  .filter((room) => room.requires && room.requires.includes('premium'))
   .map((room) => room.id);
 
 const getROOMS = (callback) => {
