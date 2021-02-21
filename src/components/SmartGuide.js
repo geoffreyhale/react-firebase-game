@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
-import Accordion from 'react-bootstrap/Accordion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHatWizard } from '@fortawesome/free-solid-svg-icons';
+import React, { useContext } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
@@ -38,68 +39,89 @@ const ITEMS = {
   },
 };
 
-const SmartGuidePanel = ({ items }) => {
-  const [activeKey, setActiveKey] = useState('0');
-  const toggleActiveKey = (key) =>
-    activeKey === key ? setActiveKey(null) : setActiveKey(key);
+export const SmartGuideIcon = ({ items }) => (
+  <div style={{ position: 'relative' }}>
+    <FontAwesomeIcon
+      icon={faHatWizard}
+      className="fa-fw"
+      style={{ verticalAlign: 'middle', fontSize: '35px' }}
+    />
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        textAlign: 'center',
+      }}
+    >
+      {/* {loading ? (
+        <Spinner size={'sm'} />
+      ) : ( */}
+      <Badge
+        variant="secondary"
+        style={{
+          backgroundColor: 'rgba(32, 156, 238, 0.95)',
+          backgroundOpacity: '50%',
+        }}
+      >
+        {items && typeof items === 'object' && Object.keys(items).length}
+      </Badge>
+      {/* )} */}
+    </div>
+  </div>
+);
+
+const SmartGuideDefaultViewPanel = ({ items }) => {
+  const { setShowWizard } = useContext(AppContext);
 
   return (
-    <Accordion /*defaultActiveKey="0"*/ activeKey={activeKey} className="mt-3">
-      <Card>
-        <Accordion.Toggle
-          as={Card.Header}
-          /*eventKey="0"*/ onClick={() => toggleActiveKey('0')}
-        >
+    <Card>
+      <Card.Header onClick={() => setShowWizard(false)}>
+        <>
           <strong>
-            Wizard{' '}
+            <FontAwesomeIcon icon={faHatWizard} /> Wizard{' '}
             <Badge variant="secondary">{Object.keys(items).length}</Badge>
           </strong>
-          <small className={'ml-3'}>
-            {activeKey === '0'
-              ? 'Click to collapse'
-              : 'Click to expand recommended actions'}
-          </small>
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
-          <Card.Body>
-            {items && typeof items === 'object' ? (
-              Object.keys(items).length > 0 ? (
-                <ListGroup>
-                  {Object.entries(items).map(([key, value], i) => {
-                    const description = ITEMS[key].description(value);
-                    const title = ITEMS[key].title;
-                    const linkTo = ITEMS[key].linkTo;
-                    return (
-                      <ListGroup.Item
-                        key={key + i}
-                        as={Link}
-                        to={linkTo}
-                        action
-                        style={{ paddingBottom: 0 }}
-                      >
-                        <div className="float-left mr-4 mb-3">{i + 1}</div>
-                        <div
-                          className="float-left mr-4 mb-3"
-                          style={{ whiteSpace: 'nowrap' }}
-                        >
-                          <strong>{title}</strong>
-                        </div>
-                        <div className="float-left mb-3">{description}</div>
-                      </ListGroup.Item>
-                    );
-                  })}
-                </ListGroup>
-              ) : (
-                //TODO should never need this
-                "You're all caught up!  Do anything you like..."
-              )
-            ) : (
-              'Loading...'
-            )}
-          </Card.Body>
-        </Accordion.Collapse>
-      </Card>
-    </Accordion>
+          <small className={'ml-3'}>Click to hide</small>
+        </>
+      </Card.Header>
+      <Card.Body>
+        {items && typeof items === 'object' ? (
+          Object.keys(items).length > 0 ? (
+            <ListGroup>
+              {Object.entries(items).map(([key, value], i) => {
+                const description = ITEMS[key].description(value);
+                const title = ITEMS[key].title;
+                const linkTo = ITEMS[key].linkTo;
+                return (
+                  <ListGroup.Item
+                    key={key + i}
+                    as={Link}
+                    to={linkTo}
+                    action
+                    style={{ paddingBottom: 0 }}
+                  >
+                    <div className="float-left mr-4 mb-3">{i + 1}</div>
+                    <div
+                      className="float-left mr-4 mb-3"
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      <strong>{title}</strong>
+                    </div>
+                    <div className="float-left mb-3">{description}</div>
+                  </ListGroup.Item>
+                );
+              })}
+            </ListGroup>
+          ) : (
+            //TODO should never need this
+            "You're all caught up!  Do anything you like..."
+          )
+        ) : (
+          'Loading...'
+        )}
+      </Card.Body>
+    </Card>
   );
 };
 
@@ -113,6 +135,8 @@ class SmartGuide extends React.Component {
   user = () => this.context.user;
 
   componentDidMount() {
+    if (!this.user()) return;
+
     getMostRecentModalityPostTimestampForUser(
       { uid: this.user().uid },
       (modalityPostTimestamp) => {
@@ -137,14 +161,17 @@ class SmartGuide extends React.Component {
 
   render() {
     if (!this.user()) return null;
+
     const { items } = this.state;
-    return <SmartGuidePanel items={items} />;
+
+    if (this.props.icon) {
+      return <SmartGuideIcon items={items} />;
+    }
+
+    if (!this.context.showWizard) return null;
+
+    return <SmartGuideDefaultViewPanel items={items} />;
   }
 }
 
-const SmartGuideWrapper = () => {
-  const { user } = useContext(AppContext);
-  return user ? <SmartGuide /> : null;
-};
-
-export default SmartGuideWrapper;
+export default SmartGuide;

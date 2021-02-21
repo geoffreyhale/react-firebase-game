@@ -9,6 +9,7 @@ import Notifications from './Notifications';
 import { AppContext } from '../AppProvider';
 import { UserPhoto } from '../shared/User';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
+import SmartGuide from '../SmartGuide';
 
 const AccountDropdownMenu = ({ logout }) => {
   const { user } = useContext(AppContext);
@@ -43,12 +44,17 @@ const TopRightMenuItem = ({ children }) => (
   </div>
 );
 export const TopRightMenu = ({ login, logout }) => {
-  const { user } = useContext(AppContext);
+  const { user, toggleShowWizard } = useContext(AppContext);
   if (user) {
     return (
       <div className="float-right">
         <TopRightMenuItem>
           <UserPhoto uid={user.uid} />
+        </TopRightMenuItem>
+        <TopRightMenuItem>
+          <div onClick={toggleShowWizard}>
+            <SmartGuide icon={true} />
+          </div>
         </TopRightMenuItem>
         <TopRightMenuItem>
           <Notifications />
