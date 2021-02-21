@@ -27,6 +27,11 @@ const AppNav = () => {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
+        <Nav.Link as={NavLink} to="/queues">
+          Queues
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         <Nav.Link as={NavLink} to="/community">
           Community
         </Nav.Link>

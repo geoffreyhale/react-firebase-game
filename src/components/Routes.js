@@ -15,6 +15,7 @@ import Page from './Page';
 import UserProfile from './views/UserProfile';
 import Settings from './views/Settings';
 import LandingPage from './views/LandingPage';
+import Queues from './views/Queues';
 
 const Routes = ({ login }) => {
   const { user } = useContext(AppContext);
@@ -72,6 +73,7 @@ const Routes = ({ login }) => {
             </Page>
           )}
         />,
+        //TODO should not need room path for viewing a post
         <Route
           path="/r/:roomId/posts/:postId"
           key={location.pathname}
@@ -97,6 +99,15 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Training | xBook">
               <Training {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/queues"
+          key="/queues"
+          render={(props) => (
+            <Page title="Queues | xBook">
+              <Queues {...props} />
             </Page>
           )}
         />,
