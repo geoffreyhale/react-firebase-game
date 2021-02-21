@@ -115,7 +115,6 @@ export default class Mosaic extends Component {
           {this.props.title && <Card.Title>{this.props.title}</Card.Title>}
           <div
             style={{
-              // display: 'inline-block',
               float: 'left',
               height: size,
               width: size,
@@ -136,8 +135,8 @@ export default class Mosaic extends Component {
           </div>
           {usersArray.map((user, i) => (
             <div
+              key={i}
               style={{
-                // display: 'inline-block',
                 float: 'left',
               }}
             >
