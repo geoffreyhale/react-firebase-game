@@ -9,7 +9,7 @@ import Notifications from './Notifications';
 import { AppContext } from '../AppProvider';
 import { UserPhoto } from '../shared/User';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
-import SmartGuide from '../SmartGuide';
+import Wizard from '../Wizard';
 
 const AccountDropdownMenu = ({ logout }) => {
   const { user } = useContext(AppContext);
@@ -52,7 +52,7 @@ export const TopRightMenu = ({ login, logout }) => {
           <UserPhoto uid={user.uid} />
         </TopRightMenuItem>
         <TopRightMenuItem>
-          <SmartGuide icon={true} />
+          <Wizard icon={true} />
         </TopRightMenuItem>
         <TopRightMenuItem>
           <Notifications />

@@ -41,7 +41,7 @@ const ITEMS = {
   },
 };
 
-export const SmartGuideIcon = ({ items }) => (
+export const WizardIcon = ({ items }) => (
   <div style={{ position: 'relative' }}>
     <FontAwesomeIcon
       icon={faHatWizard}
@@ -110,7 +110,7 @@ const WizardItems = ({ items }) => {
   );
 };
 
-class SmartGuide extends React.Component {
+class Wizard extends React.Component {
   constructor() {
     super();
     this.state = { items: {} };
@@ -164,7 +164,7 @@ class SmartGuide extends React.Component {
           }
         >
           <div>
-            <SmartGuideIcon items={items} />
+            <WizardIcon items={items} />
           </div>
         </OverlayTrigger>
       );
@@ -176,4 +176,4 @@ class SmartGuide extends React.Component {
   }
 }
 
-export default SmartGuide;
+export default Wizard;
