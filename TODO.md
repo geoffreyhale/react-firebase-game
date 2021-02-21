@@ -18,31 +18,30 @@
 
 # TODO
 
+- wizard trainings recommendation doesn't update itself when you submit a training modality, requires refresh
+
 ## Top Tier
 
+- fix Google auth from apps like Facebook that use embedded browsers
 - finish database security rules and related tests
 - enforce @username uniqueness
 
 ## Tier 2
 
+- home is getting slow
 - elevate visibility of modality posts that need votes
 - elevate visibility of unanswered posts
+- invite codes and family-tree displays and stats for top inviters ?
 - use auth.token.identifier not uid
 - improve visibility of "hot" topics/posts; get as many eyes/additional-activity on the "hot" (replies etc) as possible
-- fix Google auth from apps like Facebook that use embedded browsers
 - cross site search
-- step by step intro/tutorial/quest-lines
-- improve new member experience, on-boarding
-- what is "healthy relating"? what are the expectations here, how do i play?
-- map out what is healthy relating
-- change display name
-- optional custom display names?
+- what is "healthy relating"? what are the expectations here, how do i play? map out what is healthy relating
+- change display name, optional custom display names?
 - community verification for display names
-- invite codes and family-tree displays and stats for top inviters ?
+- post shouldn't need room in link
 
 ## Tier 3
 
-- better handling for delete posts
 - use context for room, remove roomHack
 - add (#) count to browser tab
 - accounting tools
@@ -51,26 +50,20 @@
 - remove hackFunctions
 - help user to put it on their phone home screen
 - phone users may be confused about no submit buttons for tags
-- Ability to delete your own tags
 - confirm prompt for delete post
-- better handling for orphan posts; how handle deleting posts?
 - stats for top tag getters esp by tag type
 - long-term small groups?; round tables, eg 5 closest friends, 5 best friends, 5 friends I want to be more like, etc
 - chat rooms
 - are client-visible userIds a concern?
-- abstract posts' and collections' functions into models and utils etc
 - better react props handling
-- add backend app to complete Stripe payment gateway
-- add purchasables
+- add backend app to complete Stripe payment gateway, add purchasables
 
 ## Tier 4
 
+- abstract posts' and collections' functions into models and utils etc
 - replies should be less organized by hot and more by popular
-- should not be able to approve your own modality post
 - sent j a direct link to single post full of comments for her, she didn't know how to see them;; she saw the blue no lurking box and even if she read it there wasn't a clear way to post/reply/rejoin-the-conversation
-- pin posts/conversations/threads
-- save posts/conversations/threads
-- favorite posts/conversations/threads
+- pin|save|favorite posts/conversations/threads
 - showHeaderLinkToParent Card.Header could have more helpful informations
 - show accurate reply count on user profile posts
 - (my) user profile is so slow
