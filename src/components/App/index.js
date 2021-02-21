@@ -8,9 +8,7 @@ import Routes from '../Routes';
 import AppProvider from '../AppProvider';
 import { getUser, getUsers, updateUser } from '../../api/index';
 import Spinner from '../shared/Spinner';
-import LandingPage from '../views/LandingPage';
 import AppHeader from './AppHeader';
-import SmartGuide from '../SmartGuide';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -125,7 +123,6 @@ class App extends Component {
                     <Spinner size="lg" />
                   ) : (
                     <>
-                      <SmartGuide />
                       <div className="mt-3">
                         <Routes login={this.login} />
                       </div>

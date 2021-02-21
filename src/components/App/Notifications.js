@@ -219,7 +219,7 @@ export default class Notifications extends React.Component {
         trigger="click"
         placement="bottom"
         overlay={
-          <Popover id="popover-basic">
+          <Popover>
             <Popover.Title as="h3">Notifications</Popover.Title>
             <Popover.Content>{Notifications}</Popover.Content>
           </Popover>

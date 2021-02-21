@@ -52,9 +52,7 @@ export const TopRightMenu = ({ login, logout }) => {
           <UserPhoto uid={user.uid} />
         </TopRightMenuItem>
         <TopRightMenuItem>
-          <div onClick={toggleShowWizard}>
-            <SmartGuide icon={true} />
-          </div>
+          <SmartGuide icon={true} />
         </TopRightMenuItem>
         <TopRightMenuItem>
           <Notifications />

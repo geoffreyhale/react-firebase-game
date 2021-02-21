@@ -2,8 +2,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHatWizard } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext } from 'react';
 import Badge from 'react-bootstrap/Badge';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Popover from 'react-bootstrap/Popover';
 import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
@@ -71,57 +73,40 @@ export const SmartGuideIcon = ({ items }) => (
   </div>
 );
 
-const SmartGuideDefaultViewPanel = ({ items }) => {
-  const { setShowWizard } = useContext(AppContext);
-
-  return (
-    <Card>
-      <Card.Header onClick={() => setShowWizard(false)}>
-        <>
-          <strong>
-            <FontAwesomeIcon icon={faHatWizard} /> Wizard{' '}
-            <Badge variant="secondary">{Object.keys(items).length}</Badge>
-          </strong>
-          <small className={'ml-3'}>Click to hide</small>
-        </>
-      </Card.Header>
-      <Card.Body>
-        {items && typeof items === 'object' ? (
-          Object.keys(items).length > 0 ? (
-            <ListGroup>
-              {Object.entries(items).map(([key, value], i) => {
-                const description = ITEMS[key].description(value);
-                const title = ITEMS[key].title;
-                const linkTo = ITEMS[key].linkTo;
-                return (
-                  <ListGroup.Item
-                    key={key + i}
-                    as={Link}
-                    to={linkTo}
-                    action
-                    style={{ paddingBottom: 0 }}
-                  >
-                    <div className="float-left mr-4 mb-3">{i + 1}</div>
-                    <div
-                      className="float-left mr-4 mb-3"
-                      style={{ whiteSpace: 'nowrap' }}
-                    >
-                      <strong>{title}</strong>
-                    </div>
-                    <div className="float-left mb-3">{description}</div>
-                  </ListGroup.Item>
-                );
-              })}
-            </ListGroup>
-          ) : (
-            //TODO should never need this
-            "You're all caught up!  Do anything you like..."
-          )
-        ) : (
-          'Loading...'
-        )}
-      </Card.Body>
-    </Card>
+const WizardItems = ({ items }) => {
+  return items && typeof items === 'object' ? (
+    Object.keys(items).length > 0 ? (
+      <ListGroup>
+        {Object.entries(items).map(([key, value], i) => {
+          const description = ITEMS[key].description(value);
+          const title = ITEMS[key].title;
+          const linkTo = ITEMS[key].linkTo;
+          return (
+            <ListGroup.Item
+              key={key + i}
+              as={Link}
+              to={linkTo}
+              action
+              style={{ paddingBottom: 0 }}
+            >
+              <div className="float-left mr-4 mb-3">{i + 1}</div>
+              <div
+                className="float-left mr-4 mb-3"
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                <strong>{title}</strong>
+              </div>
+              <div className="float-left mb-3">{description}</div>
+            </ListGroup.Item>
+          );
+        })}
+      </ListGroup>
+    ) : (
+      //TODO should never need this
+      "You're all caught up!  Do anything you like..."
+    )
+  ) : (
+    'Loading...'
   );
 };
 
@@ -165,12 +150,29 @@ class SmartGuide extends React.Component {
     const { items } = this.state;
 
     if (this.props.icon) {
-      return <SmartGuideIcon items={items} />;
+      return (
+        <OverlayTrigger
+          trigger="click"
+          placement="bottom"
+          overlay={
+            <Popover>
+              <Popover.Title as="h3">Wizard</Popover.Title>
+              <Popover.Content>
+                <WizardItems items={items} />
+              </Popover.Content>
+            </Popover>
+          }
+        >
+          <div>
+            <SmartGuideIcon items={items} />
+          </div>
+        </OverlayTrigger>
+      );
     }
 
     if (!this.context.showWizard) return null;
 
-    return <SmartGuideDefaultViewPanel items={items} />;
+    return <WizardItems items={items} />;
   }
 }
 
