@@ -11,15 +11,20 @@ import { AppContext } from '../../AppProvider';
 
 //TODO write tests for this; the hours are surely busted and posts/day misrepresented
 
+//TODO this is probably not quite right
+const millisecondAdjustmentHack = new Date().getTimezoneOffset() * 60 * 1000;
+
 const daysFromMilliseconds = (milliseconds) => milliseconds / 1000 / 86400;
 const millisecondsFromDays = (days) => days * 1000 * 86400;
 
 const dateFromDaysSinceEpoch = (days) => {
-  return new Date(millisecondsFromDays(days));
+  return new Date(millisecondsFromDays(days) + millisecondAdjustmentHack);
 };
 
 const daysSinceEpoch = (timestamp) => {
-  return Math.floor(daysFromMilliseconds(timestamp));
+  return Math.floor(
+    daysFromMilliseconds(timestamp - millisecondAdjustmentHack)
+  );
 };
 
 const pushReplyCountWordCountObjects = (
