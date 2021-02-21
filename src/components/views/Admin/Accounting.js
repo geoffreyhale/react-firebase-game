@@ -32,7 +32,7 @@ const Accounting = ({ accounting }) => {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Accounting</Card.Title>
+        <Card.Title>Transactions</Card.Title>
         <Table>
           <thead>
             <tr>
