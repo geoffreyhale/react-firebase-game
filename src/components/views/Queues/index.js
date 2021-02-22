@@ -7,6 +7,8 @@ import { postsRef } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Post from '../Posts/Post';
 
+//TODO tests
+
 const QueueBadge = ({ children }) => (
   <Badge
     className="mr-2"
@@ -38,8 +40,13 @@ const QueueItem = ({ item }) => {
 const DATA = Object.freeze({
   NOT_MY_POST: 'not my post',
   NO_REPLIES: 'no replies',
+  NO_TAGS: 'no tags',
+  NO_UPVOTES: 'no upvotes (besides maybe themselves)',
   I_HAVE_NOT_REPLIED: 'i have not replied',
+  NO_ONE_VOTED_ON_MODALITY:
+    'is modality post no one has voted on (besides maybe themselves)',
   I_HAVE_NOT_VOTED_ON_MODALITY: 'is modality post i have not voted on',
+  MODALITY_WITH_VOTES: 'is modality post with votes (not counting themselves)',
 });
 
 const QueusTabTitle = ({ children, queue }) => (
@@ -64,10 +71,18 @@ const QueuesTabs = ({ queue }) => {
   const modalityQueue = queue.filter((item) =>
     item.data.includes(DATA.I_HAVE_NOT_VOTED_ON_MODALITY)
   );
+  const untouchedQueue = queue.filter(
+    (item) =>
+      item.data.includes(DATA.NOT_MY_POST) &&
+      item.data.includes(DATA.NO_REPLIES) &&
+      !item.data.includes(DATA.MODALITY_WITH_VOTES) &&
+      item.data.includes(DATA.NO_TAGS) &&
+      item.data.includes(DATA.NO_UPVOTES)
+  );
   const unrepliedQueue = queue.filter(
     (item) =>
-      item.data.includes(DATA.NO_REPLIES) &&
-      item.data.includes(DATA.NOT_MY_POST)
+      item.data.includes(DATA.NOT_MY_POST) &&
+      item.data.includes(DATA.NO_REPLIES)
   );
 
   return (
@@ -80,6 +95,13 @@ const QueuesTabs = ({ queue }) => {
           Please vote on these modality posts:
         </QueuesTabDescription>
         <QueuesItems queue={modalityQueue} />
+      </Tab>
+      <Tab
+        eventKey="untouched"
+        title={<QueusTabTitle queue={untouchedQueue}>Untouched</QueusTabTitle>}
+      >
+        <QueuesTabDescription>Please touch these posts:</QueuesTabDescription>
+        <QueuesItems queue={untouchedQueue} />
       </Tab>
       <Tab
         eventKey="unreplied"
@@ -112,9 +134,30 @@ const Queues = () => {
         data: [], //['not my post', "i haven't replied"],
         post,
       }));
+      //TODO tests for these
+      //TODO combine conditional checks where possible for efficiency
       queue.forEach((item, i) => {
+        //TODO destructure post from item
         if (item.post.userId !== user.uid) {
           queue[i].data.push(DATA.NOT_MY_POST);
+        }
+        if (
+          item.post.modality &&
+          (!item.post.modality.votes ||
+            (Object.keys(item.post.modality.votes).length === 1 &&
+              Object.keys(item.post.modality.votes)[0] === item.post.userId))
+        ) {
+          queue[i].data.push(DATA.NO_ONE_VOTED_ON_MODALITY);
+        }
+        if (
+          item.post.modality &&
+          item.post.modality.votes &&
+          !(
+            Object.keys(item.post.modality.votes).length === 1 &&
+            Object.keys(item.post.modality.votes)[0] === item.post.userId
+          )
+        ) {
+          queue[i].data.push(DATA.MODALITY_WITH_VOTES);
         }
         if (
           item.post.modality &&
@@ -129,6 +172,16 @@ const Queues = () => {
             .includes(item.post.id)
         ) {
           queue[i].data.push(DATA.NO_REPLIES);
+        }
+        if (!item.post.tags) {
+          queue[i].data.push(DATA.NO_TAGS);
+        }
+        if (
+          !item.post.upvote ||
+          (Object.keys(item.post.upvote).length === 1 &&
+            Object.keys(item.post.upvote)[0] === item.post.userId)
+        ) {
+          queue[i].data.push(DATA.NO_UPVOTES);
         }
         if (
           !Object.values(posts)
