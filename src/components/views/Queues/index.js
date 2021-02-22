@@ -100,7 +100,9 @@ const QueuesTabs = ({ queue }) => {
         eventKey="untouched"
         title={<QueusTabTitle queue={untouchedQueue}>Untouched</QueusTabTitle>}
       >
-        <QueuesTabDescription>Please touch these posts:</QueuesTabDescription>
+        <QueuesTabDescription>
+          Please touch these posts (reply, tag, or vote):
+        </QueuesTabDescription>
         <QueuesItems queue={untouchedQueue} />
       </Tab>
       <Tab
@@ -131,55 +133,56 @@ const Queues = () => {
       });
 
       const queue = posts.reverse().map((post) => ({
-        data: [], //['not my post', "i haven't replied"],
+        data: [],
         post,
       }));
       //TODO tests for these
       //TODO combine conditional checks where possible for efficiency
       queue.forEach((item, i) => {
-        //TODO destructure post from item
-        if (item.post.userId !== user.uid) {
+        const { post } = item;
+
+        if (post.userId !== user.uid) {
           queue[i].data.push(DATA.NOT_MY_POST);
         }
         if (
-          item.post.modality &&
-          (!item.post.modality.votes ||
-            (Object.keys(item.post.modality.votes).length === 1 &&
-              Object.keys(item.post.modality.votes)[0] === item.post.userId))
+          post.modality &&
+          (!post.modality.votes ||
+            (Object.keys(post.modality.votes).length === 1 &&
+              Object.keys(post.modality.votes)[0] === post.userId))
         ) {
           queue[i].data.push(DATA.NO_ONE_VOTED_ON_MODALITY);
         }
         if (
-          item.post.modality &&
-          item.post.modality.votes &&
+          post.modality &&
+          post.modality.votes &&
           !(
-            Object.keys(item.post.modality.votes).length === 1 &&
-            Object.keys(item.post.modality.votes)[0] === item.post.userId
+            Object.keys(post.modality.votes).length === 1 &&
+            Object.keys(post.modality.votes)[0] === post.userId
           )
         ) {
           queue[i].data.push(DATA.MODALITY_WITH_VOTES);
         }
         if (
-          item.post.modality &&
-          item.post.modality.votes &&
-          !Object.keys(item.post.modality.votes).includes(user.uid)
+          post.modality &&
+          post.modality.votes &&
+          !Object.keys(post.modality.votes).includes(user.uid)
         ) {
           queue[i].data.push(DATA.I_HAVE_NOT_VOTED_ON_MODALITY);
         }
         if (
           !Object.values(posts)
             .map((userPost) => userPost.replyToId)
-            .includes(item.post.id)
+            .includes(post.id)
         ) {
           queue[i].data.push(DATA.NO_REPLIES);
         }
-        if (!item.post.tags) {
+        if (!post.tags) {
           queue[i].data.push(DATA.NO_TAGS);
         }
         if (
-          !item.post.upvote ||
-          (Object.keys(item.post.upvote).length === 1 &&
-            Object.keys(item.post.upvote)[0] === item.post.userId)
+          !post.upvote ||
+          (Object.keys(post.upvote).length === 1 &&
+            Object.keys(post.upvote)[0] === post.userId)
         ) {
           queue[i].data.push(DATA.NO_UPVOTES);
         }
@@ -187,7 +190,7 @@ const Queues = () => {
           !Object.values(posts)
             .filter((post) => post.userId === user.uid)
             .map((userPost) => userPost.replyToId)
-            .includes(item.post.id)
+            .includes(post.id)
         ) {
           queue[i].data.push(DATA.I_HAVE_NOT_REPLIED);
         }
