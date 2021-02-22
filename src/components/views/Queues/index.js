@@ -6,6 +6,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import { postsRef } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Post from '../Posts/Post';
+import { PremiumFeature } from '../../shared/Premium';
 
 //TODO tests
 
@@ -123,6 +124,8 @@ const Queues = () => {
   const { user, users } = useContext(AppContext);
 
   useEffect(() => {
+    if (!user.isPremium) return;
+
     postsRef().on('value', (snapshot) => {
       const apiPosts = snapshot.val();
       const posts = Object.entries(apiPosts).map(([id, post]) => {
@@ -199,6 +202,9 @@ const Queues = () => {
     });
   }, []);
 
+  if (!user.isPremium) {
+    return <PremiumFeature featureName={'Queues'} />;
+  }
   return <QueuesTabs queue={queue} />;
 };
 export default Queues;
