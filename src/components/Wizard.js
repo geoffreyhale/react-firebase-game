@@ -11,6 +11,7 @@ import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
 import friendlyTimestamp from './shared/friendlyTimestamp';
 import { GetPremium } from './shared/Premium';
+import Spinner from './shared/Spinner';
 
 const HOURS_DELAY_FOR_TRAINING_AGAIN = 3;
 
@@ -41,7 +42,7 @@ const ITEMS = {
   },
 };
 
-export const WizardIcon = ({ items }) => (
+export const WizardIcon = ({ items, loading }) => (
   <div style={{ position: 'relative' }}>
     <FontAwesomeIcon
       icon={faHatWizard}
@@ -56,19 +57,19 @@ export const WizardIcon = ({ items }) => (
         textAlign: 'center',
       }}
     >
-      {/* {loading ? (
+      {loading ? (
         <Spinner size={'sm'} />
-      ) : ( */}
-      <Badge
-        variant="secondary"
-        style={{
-          backgroundColor: 'rgba(32, 156, 238, 0.95)',
-          backgroundOpacity: '50%',
-        }}
-      >
-        {items && typeof items === 'object' && Object.keys(items).length}
-      </Badge>
-      {/* )} */}
+      ) : (
+        <Badge
+          variant="secondary"
+          style={{
+            backgroundColor: 'rgba(32, 156, 238, 0.95)',
+            backgroundOpacity: '50%',
+          }}
+        >
+          {items && typeof items === 'object' && Object.keys(items).length}
+        </Badge>
+      )}
     </div>
   </div>
 );
@@ -113,7 +114,7 @@ const WizardItems = ({ items }) => {
 class Wizard extends React.Component {
   constructor() {
     super();
-    this.state = { items: {} };
+    this.state = { items: {}, loading: true };
   }
 
   static contextType = AppContext;
@@ -134,6 +135,7 @@ class Wizard extends React.Component {
           items.mostRecentModalityPostTimestamp = modalityPostTimestamp;
           this.setState({ items });
         }
+        this.setState({ loading: false });
       }
     );
 
@@ -147,7 +149,7 @@ class Wizard extends React.Component {
   render() {
     if (!this.user()) return null;
 
-    const { items } = this.state;
+    const { items, loading } = this.state;
 
     if (this.props.icon) {
       return (
@@ -164,7 +166,7 @@ class Wizard extends React.Component {
           }
         >
           <div>
-            <WizardIcon items={items} />
+            <WizardIcon items={items} loading={loading} />
           </div>
         </OverlayTrigger>
       );
