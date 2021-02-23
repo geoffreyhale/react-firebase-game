@@ -4,8 +4,7 @@ import Card from 'react-bootstrap/Card';
 
 export const GetPremium = () => (
   <>
-    Ask <Link to="/r/general">r/general</Link> how to get premium for just
-    $1/mo.
+    Ask in <Link to="/r/general">r/general</Link> how to get premium.
   </>
 );
 
@@ -46,10 +45,10 @@ export const PremiumSaleCard = () => {
 export const PremiumFeature = ({ featureName }) => (
   <Card>
     <Card.Body>
-      <Card.Title>Premium Feature</Card.Title>
+      <Card.Title className="mb-3">Premium Feature</Card.Title>
       <p>
         {featureName ? <strong>{featureName}</strong> : 'This'} is a premium
-        feature available to paying users.
+        feature.
       </p>
       <p>
         <GetPremium />
