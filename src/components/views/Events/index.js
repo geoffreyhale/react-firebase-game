@@ -44,6 +44,10 @@ const Events = (props) => {
     return null;
   }
 
+  if (!Object.keys(event.uids).includes(user.uid) && event.uid !== user.uid) {
+    return 'Private Event';
+  }
+
   return (
     <Form
       onSubmit={(e) => {
@@ -90,6 +94,8 @@ const Events = (props) => {
           >
             {editMode ? (
               <>
+                <UserPhoto uid={event.uid} showNameTitle={true} />
+                <br />
                 <FormLabel>Guest List</FormLabel>
                 {uids &&
                   typeof uids === 'object' &&
@@ -110,9 +116,10 @@ const Events = (props) => {
                 {Object.values(users)
                   .filter(
                     (user) =>
-                      !uids ||
-                      typeof uids !== 'object' ||
-                      !Object.keys(uids).includes(user.uid)
+                      event.uid !== user.uid &&
+                      (!uids ||
+                        typeof uids !== 'object' ||
+                        !Object.keys(uids).includes(user.uid))
                   )
                   .map((user) => (
                     <span
@@ -132,11 +139,14 @@ const Events = (props) => {
                   ))}
               </>
             ) : (
-              event.uids &&
-              typeof event.uids === 'object' &&
-              Object.keys(event.uids).map((uid) => (
-                <UserPhoto key={uid} uid={uid} showNameTitle={true} />
-              ))
+              <>
+                <UserPhoto uid={event.uid} showNameTitle={true} />
+                {event.uids &&
+                  typeof event.uids === 'object' &&
+                  Object.keys(event.uids).map((uid) => (
+                    <UserPhoto key={uid} uid={uid} showNameTitle={true} />
+                  ))}
+              </>
             )}
           </div>
           <div className="mt-3" style={{ maxWidth: 600 }}>
