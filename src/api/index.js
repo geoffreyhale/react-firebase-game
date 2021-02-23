@@ -24,11 +24,13 @@ export const getEvent = ({ eventId }, callback) => {
       }
     });
 };
-export const updateEvent = (id, { description }, callback) => {
+export const updateEvent = (id, { description, location, title }, callback) => {
   db.collection('events')
     .doc(id)
     .update({
       description,
+      location,
+      title,
     })
     .then(() => {
       callback && typeof callback === 'function' && callback();
