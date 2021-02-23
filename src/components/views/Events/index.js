@@ -18,12 +18,14 @@ const EditEvent = ({ event, setEditMode }) => {
   return (
     <Form
       onSubmit={(e) =>
-        handleOnSubmit(e, { id: event.id, description }, history.go(0))
+        handleOnSubmit(e, { id: event.id, description }, () => {
+          history.go(0);
+        })
       }
     >
       <Form.Control
         as="textarea"
-        rows={8}
+        rows={12}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         autoFocus={true}
@@ -80,23 +82,23 @@ const Events = (props) => {
             <small className="text-muted">{event.location}</small>
           </div>
         </div>
-        <div
-          className="mt-3"
-          style={{
-            whiteSpace: 'break-spaces',
-          }}
-        >
-          <p>{event.description}</p>
+        <div className="mt-3" style={{ maxWidth: 600 }}>
+          {editMode ? (
+            <EditEvent event={event} setEditMode={setEditMode} />
+          ) : (
+            <span
+              style={{
+                whiteSpace: 'break-spaces',
+              }}
+            >
+              {event.description}
+            </span>
+          )}
         </div>
-        {user.uid === event.uid && (
-          <>
-            {!editMode && (
-              <Button variant="link" onClick={() => setEditMode(!editMode)}>
-                edit
-              </Button>
-            )}
-            {editMode && <EditEvent event={event} setEditMode={setEditMode} />}
-          </>
+        {user.uid === event.uid && !editMode && (
+          <Button variant="link" onClick={() => setEditMode(!editMode)}>
+            edit
+          </Button>
         )}
       </Card.Body>
     </Card>
