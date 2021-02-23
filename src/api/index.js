@@ -24,6 +24,14 @@ export const getEvent = ({ eventId }, callback) => {
       }
     });
 };
+export const updateEvent = (id, { description }, callback) => {
+  db.collection('events')
+    .doc(id)
+    .update({
+      description,
+    })
+    .then(callback && typeof callback === 'function' && callback());
+};
 
 export const setModalityVote = ({ postId, vote, uid }) => {
   postRef(postId).child('modality').child('votes').child(uid).set(vote);

@@ -17,6 +17,7 @@ service cloud.firestore {
     }
     match /events/{eventId} {
       allow read: if true;
+      allow write: if request.auth.uid == resource.data.uid
     }
   }
 }
