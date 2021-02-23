@@ -100,6 +100,7 @@ const Events = (props) => {
                         delete newUids[uid];
                         setUids(newUids);
                       }}
+                      key={uid}
                     >
                       <UserPhoto uid={uid} noLink={true} showNameTitle={true} />
                     </span>
@@ -120,6 +121,7 @@ const Events = (props) => {
                         newUids[user.uid] = true;
                         setUids(newUids);
                       }}
+                      key={user.uid}
                     >
                       <UserPhoto
                         uid={user.uid}
@@ -133,7 +135,7 @@ const Events = (props) => {
               event.uids &&
               typeof event.uids === 'object' &&
               Object.keys(event.uids).map((uid) => (
-                <UserPhoto uid={uid} showNameTitle={true} />
+                <UserPhoto key={uid} uid={uid} showNameTitle={true} />
               ))
             )}
           </div>
