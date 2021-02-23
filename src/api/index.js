@@ -30,7 +30,9 @@ export const updateEvent = (id, { description }, callback) => {
     .update({
       description,
     })
-    .then(callback && typeof callback === 'function' && callback());
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
 };
 
 export const setModalityVote = ({ postId, vote, uid }) => {
@@ -100,7 +102,9 @@ export const editPost = ({ id, content, successCallback }) => {
     .update({
       content,
     })
-    .then(successCallback());
+    .then(() => {
+      successCallback();
+    });
 };
 
 export const createPost = ({
