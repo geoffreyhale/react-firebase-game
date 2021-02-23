@@ -1,21 +1,22 @@
 import React, { useContext } from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
-import Training from './views/Training';
-import Scorekeeper from './views/Scorekeeper';
-import IncrementalClickerGame from './views/Games/IncrementalClicker';
-import Chess from './views/Games/Chess';
-import TicTacToe from './views/Games/TicTacToe';
-import Community from './views/Community';
-import Admin from './views/Admin';
-import Sandbox from './views/Sandbox';
-import About from './views/About';
-import Rooms from './views/Rooms';
 import { AppContext } from './AppProvider';
 import Page from './Page';
-import UserProfile from './views/UserProfile';
-import Settings from './views/Settings';
+import About from './views/About';
+import Admin from './views/Admin';
+import Community from './views/Community';
+import Events from './views/Events';
+import Chess from './views/Games/Chess';
+import IncrementalClickerGame from './views/Games/IncrementalClicker';
+import TicTacToe from './views/Games/TicTacToe';
 import LandingPage from './views/LandingPage';
 import Queues from './views/Queues';
+import Rooms from './views/Rooms';
+import Sandbox from './views/Sandbox';
+import Scorekeeper from './views/Scorekeeper';
+import Settings from './views/Settings';
+import Training from './views/Training';
+import UserProfile from './views/UserProfile';
 
 const Routes = ({ login }) => {
   const { user } = useContext(AppContext);
@@ -108,6 +109,15 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Queues | xBook">
               <Queues {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/events/:eventId"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="Event | xBook">
+              <Events {...props} />
             </Page>
           )}
         />,

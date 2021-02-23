@@ -12,6 +12,19 @@ const upvoteUserRef = ({ postId, uid }) =>
 const upvoteRef = ({ postId }) =>
   firebase.database().ref('posts/' + postId + '/upvote');
 
+export const getEvent = ({ eventId }, callback) => {
+  db.collection('events')
+    .doc(eventId)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const event = doc.data();
+        event.id = doc.id;
+        callback(event);
+      }
+    });
+};
+
 export const setModalityVote = ({ postId, vote, uid }) => {
   postRef(postId).child('modality').child('votes').child(uid).set(vote);
 };
