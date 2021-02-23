@@ -161,34 +161,41 @@ const Events = (props) => {
               </span>
             )}
           </div>
+
+          {user.uid === event.uid && !editMode && (
+            <>
+              <hr />
+              <Button variant="link" onClick={() => setEditMode(!editMode)}>
+                edit
+              </Button>
+            </>
+          )}
+          {editMode && (
+            <>
+              <hr />
+              <div className="mt-1">
+                <Button variant="primary" type="submit">
+                  Save
+                </Button>
+                <Button
+                  className="ml-1"
+                  variant="danger"
+                  type="button"
+                  onClick={() => {
+                    setEditMode(false);
+                    setTitle(event.title);
+                    setLocation(event.location);
+                    setDescription(event.description);
+                    setUids(event.uids || {});
+                  }}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </>
+          )}
         </Card.Body>
       </Card>
-      {user.uid === event.uid && !editMode && (
-        <Button variant="link" onClick={() => setEditMode(!editMode)}>
-          edit
-        </Button>
-      )}
-      {editMode && (
-        <div className="mt-1">
-          <Button variant="primary" type="submit">
-            Save
-          </Button>
-          <Button
-            className="ml-1"
-            variant="danger"
-            type="button"
-            onClick={() => {
-              setEditMode(false);
-              setTitle(event.title);
-              setLocation(event.location);
-              setDescription(event.description);
-              setUids(event.uids || {});
-            }}
-          >
-            Cancel
-          </Button>
-        </div>
-      )}
     </Form>
   );
 };
