@@ -167,8 +167,8 @@ const Queues = () => {
         }
         if (
           post.modality &&
-          post.modality.votes &&
-          !Object.keys(post.modality.votes).includes(user.uid)
+          (!post.modality.votes ||
+            !Object.keys(post.modality.votes).includes(user.uid))
         ) {
           queue[i].data.push(DATA.I_HAVE_NOT_VOTED_ON_MODALITY);
         }
