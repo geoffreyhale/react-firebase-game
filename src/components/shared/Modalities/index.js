@@ -171,6 +171,10 @@ export const ModalityVoteButton = ({ modality, postId }) => {
   const { uid } = user;
   const myExistingVote = modality.votes ? modality.votes[uid] : null;
 
+  if (!MODALITIES[modality.name]) {
+    return null;
+  }
+
   return (
     <ButtonGroup>
       <OverlayTrigger
