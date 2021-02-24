@@ -442,6 +442,67 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  subpersonality: {
+    available: true,
+    room: 'healthyrelating',
+    title: 'Subpersonality',
+    description: (
+      <>
+        <blockquote>
+          <p>
+            "A subpersonality is, in humanistic psychology, transpersonal
+            psychology and ego psychology, a personality mode that activates
+            (appears on a temporary basis) to allow a person to cope with
+            certain types of psychosocial situations."
+          </p>
+          <p>
+            "Subpersonalities are able to perceive consciousness as something
+            separate from themselves, as well as domestic image attached to
+            these elements."
+          </p>
+          <p>
+            "Many schools of psychotherapy see subpersonalities as relatively
+            enduring psychological structures or entities that influence how a
+            person feels, perceives, behaves, and sees him-, herself or
+            themselves."
+          </p>
+          <figcaption>
+            <cite>
+              <a
+                href="https://en.wikipedia.org/wiki/Subpersonality"
+                target="_blank"
+              >
+                Subpersonality
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
+        <blockquote>
+          <p>
+            "IFS posits that the mind is made up of multiple parts, and
+            underlying them is a person's core or true Self. Like members of a
+            family, a person's inner parts can take on extreme roles or
+            subpersonalities. Each part has its own perspective, interests,
+            memories, and viewpoint. A core tenet of IFS is that every part has
+            a positive intent, even if its actions are counterproductive and/or
+            cause dysfunction. There is no need to fight with, coerce, or
+            eliminate parts; the IFS method promotes internal connection and
+            harmony to bring the mind back into balance."
+          </p>
+          <figcaption>
+            <cite>
+              <a
+                href="https://en.wikipedia.org/wiki/Internal_Family_Systems_Model#Parts"
+                target="_blank"
+              >
+                Internal Family Systems Model{' > '}Parts
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
+      </>
+    ),
+  },
 });
 
 export default MODALITIES;
