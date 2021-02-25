@@ -142,9 +142,9 @@ export const createPost = ({
   postsRef()
     .child(key)
     .update(post)
+    .then(toggleUpvote({ postId: key, uid }))
     .then(replyToId && addNotifications({ postId: replyToId, uid }))
     .then(successCallback());
-  toggleUpvote({ postId: key, uid });
 };
 
 export const deletePost = ({ postId }) => {
