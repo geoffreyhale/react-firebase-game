@@ -172,6 +172,8 @@ const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
     user: { isPremium, uid },
   } = useContext(AppContext);
   const isCurrentVote = modalityVotes && modalityVotes[uid] === value;
+  // TODO more sophisticated canVote
+  const canVote = isPremium === true;
   return (
     <OverlayTrigger
       placement="bottom"
@@ -186,7 +188,7 @@ const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
             vote: isCurrentVote ? null : value,
           })
         }
-        disabled={isPremium !== true}
+        disabled={!canVote}
       >
         {children}
         <Badge variant="secondary" className="ml-2">
