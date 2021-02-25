@@ -116,6 +116,7 @@ export const SelectModality = ({ navigate = false }) => {
               setModality(newModality);
             }
           }}
+          active={modality === key}
         >
           {MODALITY.title}
         </Dropdown.Item>
