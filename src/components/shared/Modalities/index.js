@@ -8,6 +8,7 @@ import Card from 'react-bootstrap/Card';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
+import Tooltip from 'react-bootstrap/Tooltip';
 import { AppContext } from '../../AppProvider';
 import { setModalityVote } from '../../../api';
 import MODALITIES from './MODALITIES';
@@ -166,36 +167,36 @@ export const Modality = ({ room }) => {
   );
 };
 
-const ModalityVotingButton = ({
-  modalityVotes,
-  value,
-  children,
-  postId,
-  disabled,
-}) => {
+const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
   const {
-    user: { uid },
+    user: { isPremium, uid },
   } = useContext(AppContext);
   const isCurrentVote = modalityVotes && modalityVotes[uid] === value;
   return (
-    <Button
-      variant={isCurrentVote ? 'warning' : 'outline-warning'}
-      onClick={() =>
-        setModalityVote({
-          postId,
-          uid,
-          vote: isCurrentVote ? null : value,
-        })
-      }
-      disabled={disabled}
+    <OverlayTrigger
+      placement="bottom"
+      overlay={<Tooltip>Premium Feature</Tooltip>}
     >
-      {children}
-      <Badge variant="secondary" className="ml-2">
-        {modalityVotes
-          ? Object.values(modalityVotes).filter((vote) => vote === value).length
-          : 0}
-      </Badge>
-    </Button>
+      <Button
+        variant={isCurrentVote ? 'warning' : 'outline-warning'}
+        onClick={() =>
+          setModalityVote({
+            postId,
+            uid,
+            vote: isCurrentVote ? null : value,
+          })
+        }
+        disabled={isPremium !== true}
+      >
+        {children}
+        <Badge variant="secondary" className="ml-2">
+          {modalityVotes
+            ? Object.values(modalityVotes).filter((vote) => vote === value)
+                .length
+            : 0}
+        </Badge>
+      </Button>
+    </OverlayTrigger>
   );
 };
 
@@ -204,8 +205,6 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
     return null;
   }
   const { title, description } = MODALITIES[modality.name];
-
-  const canVote = true;
 
   return (
     <ButtonGroup>
@@ -228,7 +227,6 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modality.votes}
         value={true}
         postId={postId}
-        disabled={!canVote}
       >
         yes
       </ModalityVotingButton>
@@ -236,7 +234,6 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modality.votes}
         value={false}
         postId={postId}
-        disabled={!canVote}
       >
         not quite
       </ModalityVotingButton>
