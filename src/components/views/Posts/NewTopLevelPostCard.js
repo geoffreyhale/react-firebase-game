@@ -42,7 +42,11 @@ const Visibility = ({ postingToRoom }) => {
   );
 };
 
-const NewTopLevelPostCard = ({ hackRoom, onSuccess }) => {
+const NewTopLevelPostCard = ({
+  hackRoom,
+  onSuccess,
+  navigateOnModalitySelect = false,
+}) => {
   const { user } = useContext(AppContext);
   const hackHackRoom = hackRoom === 'home' ? 'general' : hackRoom;
   return (
@@ -71,6 +75,7 @@ const NewTopLevelPostCard = ({ hackRoom, onSuccess }) => {
           placeholder={'How are you really feeling?'}
           hackRoom={hackHackRoom}
           onSuccess={onSuccess}
+          navigateOnModalitySelect={navigateOnModalitySelect}
         />
       </Card.Body>
     </Card>

@@ -95,6 +95,15 @@ const Routes = ({ login }) => {
           )}
         />,
         <Route
+          path="/training/:modalityId"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="Training | xBook">
+              <Training {...props} />
+            </Page>
+          )}
+        />,
+        <Route
           path="/training"
           key="/training"
           render={(props) => (
@@ -103,6 +112,7 @@ const Routes = ({ login }) => {
             </Page>
           )}
         />,
+
         <Route
           path="/queues"
           key="/queues"

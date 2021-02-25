@@ -88,7 +88,10 @@ export default class NewPostForm extends React.Component {
         >
           {isPostForm && !this.props.replyToId && (
             <div className="mb-2">
-              <SelectModality room={this.props.hackRoom} />
+              <SelectModality
+                room={this.props.hackRoom}
+                navigate={this.props.navigateOnModalitySelect}
+              />
               {this.modality() === 'emotionalawareness' && (
                 <Card className="mt-2">
                   <Card.Body>

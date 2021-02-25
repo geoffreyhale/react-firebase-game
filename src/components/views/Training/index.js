@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
@@ -173,6 +174,7 @@ const UserModality = ({
 
 const ModalityMenu = ({ loadingPosts, posts }) => {
   const { modality: contextModalityKey, setModality } = useContext(AppContext);
+  const history = useHistory();
   return (
     <ListGroup>
       {availableModalities.map((modality) => (
@@ -180,11 +182,12 @@ const ModalityMenu = ({ loadingPosts, posts }) => {
           key={modality.key}
           action
           active={contextModalityKey === modality.key}
-          onClick={() =>
-            setModality(
-              contextModalityKey === modality.key ? null : modality.key
-            )
-          }
+          onClick={() => {
+            const modalityToSet =
+              contextModalityKey === modality.key ? null : modality.key;
+            // setModality(modalityToSet);
+            history.push(`/training/${modalityToSet}`);
+          }}
         >
           {modality.title}
           <UserModality
@@ -201,10 +204,24 @@ const ModalityMenu = ({ loadingPosts, posts }) => {
 };
 
 const Training = () => {
-  const { user, users, modality: contextModalityKey } = useContext(AppContext);
+  const { user, users, modality: contextModalityKey, setModality } = useContext(
+    AppContext
+  );
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState([]);
   const history = useHistory();
+  const { modalityId } = useParams();
+
+  /**
+   * - navigating to url /training/:modalityId should bring up Training with modality selected
+   * - selecting a modality from the side menu should change url and bring up Training with new modality selected
+   * - selecting from the new post modality dropdown should change the modality but not change base page
+   */
+  if (modalityId) {
+    setModality(modalityId);
+  } else {
+    setModality(null);
+  }
 
   useEffect(() => {
     postsRef().on('value', (snapshot) => {
@@ -292,6 +309,7 @@ const Training = () => {
                               onSuccess={() =>
                                 history.push(`/r/${modalityToShow.room}`)
                               }
+                              navigateOnModalitySelect={true}
                             />
                           ) : (
                             <PremiumFeature />

@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -90,8 +91,9 @@ const VoteDescription = (
   </>
 );
 
-export const SelectModality = ({ room }) => {
+export const SelectModality = ({ room, navigate = false }) => {
   const { modality, setModality } = useContext(AppContext);
+  const history = useHistory();
   const arrayOfAvailableModalities = Object.entries(MODALITIES)
     .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
     .sort(
@@ -114,7 +116,16 @@ export const SelectModality = ({ room }) => {
       {arrayOfAvailableModalities.map(([key, MODALITY]) => (
         <Dropdown.Item
           as="div" //"button" would trigger onSubmit
-          onClick={() => setModality(modality === key ? null : key)}
+          onClick={() => {
+            const newModality = modality === key ? null : key;
+            if (navigate) {
+              newModality
+                ? history.push(`/training/${newModality}`)
+                : history.push(`/training`);
+            } else {
+              setModality(newModality);
+            }
+          }}
         >
           {MODALITY.title}
         </Dropdown.Item>
@@ -137,6 +148,7 @@ const ModalityDescription = () => {
   );
 };
 
+// TODO better component name wtf does this do
 export const Modality = ({ room }) => {
   const { modality: modalityKey, setModality } = useContext(AppContext);
   const modality = MODALITIES[modalityKey];
@@ -205,6 +217,8 @@ const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
 };
 
 export const ModalityVotingBooth = ({ modality, postId }) => {
+  const history = useHistory();
+
   if (!MODALITIES[modality.name]) {
     return null;
   }
@@ -212,7 +226,12 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
 
   return (
     <ButtonGroup>
-      <Button variant="warning">
+      <Button
+        variant="warning"
+        onClick={() => {
+          history.push(`/training/${modality.name}`);
+        }}
+      >
         {title}
         <span className="ml-3">
           <OverlayTrigger
