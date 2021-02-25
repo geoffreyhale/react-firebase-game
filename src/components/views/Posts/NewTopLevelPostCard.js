@@ -36,7 +36,10 @@ const RoomSelect = ({ room, setRoom, hackHideRoomSelectDropdown }) => {
                 .map((room) => {
                   if (room.id === 'home') return;
                   return (
-                    <Dropdown.Item onClick={() => setRoom(room.id)}>
+                    <Dropdown.Item
+                      key={room.id}
+                      onClick={() => setRoom(room.id)}
+                    >
                       {room.title}
                     </Dropdown.Item>
                   );
