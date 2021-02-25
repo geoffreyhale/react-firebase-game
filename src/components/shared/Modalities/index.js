@@ -166,15 +166,10 @@ export const Modality = ({ room }) => {
   );
 };
 
-const ModalityVotingButton = ({
-  myExistingVote,
-  modalityVotes,
-  value,
-  children,
-  postId,
-}) => {
+const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
   const { user } = useContext(AppContext);
   const { uid } = user;
+  const myExistingVote = modalityVotes ? modalityVotes[uid] : null;
   return (
     <Button
       variant={myExistingVote === value ? 'warning' : 'outline-warning'}
@@ -197,17 +192,12 @@ const ModalityVotingButton = ({
 };
 
 export const ModalityVotingBooth = ({ modality, postId }) => {
-  const { user } = useContext(AppContext);
-  const { uid } = user;
-  const myExistingVote = modality.votes ? modality.votes[uid] : null;
-
   if (!MODALITIES[modality.name]) {
     return null;
   }
 
   const modalityTitle = MODALITIES[modality.name].title;
   const modalityDescription = MODALITIES[modality.name].description;
-  const modalityVotes = modality.votes;
 
   return (
     <ButtonGroup>
@@ -227,16 +217,14 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         <Button variant="warning">{modalityTitle}</Button>
       </OverlayTrigger>
       <ModalityVotingButton
-        myExistingVote={myExistingVote}
-        modalityVotes={modalityVotes}
+        modalityVotes={modality.votes}
         value={true}
         postId={postId}
       >
         yes
       </ModalityVotingButton>
       <ModalityVotingButton
-        myExistingVote={myExistingVote}
-        modalityVotes={modalityVotes}
+        modalityVotes={modality.votes}
         value={false}
         postId={postId}
       >
