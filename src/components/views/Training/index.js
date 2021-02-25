@@ -217,11 +217,13 @@ const Training = () => {
    * - selecting a modality from the side menu should change url and bring up Training with new modality selected
    * - selecting from the new post modality dropdown should change the modality but not change base page
    */
-  if (modalityId) {
-    setModality(modalityId);
-  } else {
-    setModality(null);
-  }
+  useEffect(() => {
+    if (modalityId) {
+      setModality(modalityId);
+    } else {
+      setModality(null);
+    }
+  });
 
   useEffect(() => {
     postsRef().on('value', (snapshot) => {
