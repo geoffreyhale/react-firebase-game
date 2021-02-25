@@ -14,7 +14,7 @@ import { addTag, createPost, deletePost, editPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
-import { ModalityVoteButton } from '../../shared/Modalities';
+import { ModalityVotingBooth } from '../../shared/Modalities';
 
 import './post.css';
 
@@ -416,7 +416,7 @@ const Post = ({
               </div>
               {post.modality && (
                 <div className="mt-2">
-                  <ModalityVoteButton
+                  <ModalityVotingBooth
                     modality={post.modality}
                     postId={post.id}
                   />

@@ -166,7 +166,7 @@ export const Modality = ({ room }) => {
   );
 };
 
-export const ModalityVoteButton = ({ modality, postId }) => {
+export const ModalityVotingBooth = ({ modality, postId }) => {
   const { user } = useContext(AppContext);
   const { uid } = user;
   const myExistingVote = modality.votes ? modality.votes[uid] : null;
