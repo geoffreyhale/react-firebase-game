@@ -72,9 +72,12 @@ export const room_overrides = Object.freeze({
   },
 });
 
-export const premiumRooms = Object.values(room_overrides)
-  .filter((room) => room.requires && room.requires.includes('premium'))
-  .map((room) => room.id);
+export const premiumRooms = (rooms) =>
+  rooms &&
+  typeof rooms === 'object' &&
+  Object.values(rooms)
+    .filter((room) => room.requires && room.requires.includes('premium'))
+    .map((room) => room.id);
 
 const getROOMS = (callback) => {
   getRooms((apiRooms) => {

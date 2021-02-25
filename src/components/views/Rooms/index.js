@@ -2,7 +2,6 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import { withRouter } from 'react-router';
 import { AppContext } from '../../AppProvider';
-import { validModalityForRoom } from '../../shared/Modalities';
 import Posts from '../Posts';
 
 const RoomDoesNotExist = () => (
@@ -25,15 +24,6 @@ class Rooms extends React.Component {
 
   componentDidMount() {
     const { roomId = 'home' } = this.props.match.params;
-
-    if (
-      !validModalityForRoom({
-        modalityKey: this.context.modality,
-        room: roomId === 'home' ? 'general' : roomId,
-      })
-    ) {
-      this.context.setModality(null);
-    }
 
     const room = this.rooms()[roomId];
 

@@ -201,9 +201,10 @@ class Posts extends Component {
                   />
                 </div>
               )}
-              {!isSinglePostPage && (
+              {/* !isSinglePostPage here is a hack, would be better to show applicable modality info */}
+              {this.user().isPremium && this.modality() && !isSinglePostPage && (
                 <div className="mb-3">
-                  <Modality room={this.props.room.id} />
+                  <Modality />
                 </div>
               )}
             </>

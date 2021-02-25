@@ -86,12 +86,13 @@ export default class NewPostForm extends React.Component {
             }
           }}
         >
-          {isPostForm && !this.props.replyToId && (
+          {this.user().isPremium && isPostForm && !this.props.replyToId && (
             <div className="mb-2">
               <SelectModality
                 room={this.props.hackRoom}
                 navigate={this.props.navigateOnModalitySelect}
               />
+              {/* TODO shouldn't need to do this exceptional thing here anymore */}
               {this.modality() === 'emotionalawareness' && (
                 <Card className="mt-2">
                   <Card.Body>

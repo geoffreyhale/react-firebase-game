@@ -305,9 +305,8 @@ const Training = () => {
                         <Card.Body>
                           {user.isPremium ? (
                             <NewTopLevelPostCard
-                              hackRoom={modalityToShow.room}
-                              onSuccess={() =>
-                                history.push(`/r/${modalityToShow.room}`)
+                              onSuccess={({ room }) =>
+                                history.push(`/r/${room}`)
                               }
                               navigateOnModalitySelect={true}
                             />

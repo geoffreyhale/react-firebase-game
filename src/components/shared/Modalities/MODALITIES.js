@@ -1,6 +1,5 @@
 const MODALITIES = Object.freeze({
   healthyrelating: {
-    room: 'healthyrelating',
     title: 'Healthy Relating',
     description: (
       <p>
@@ -11,7 +10,6 @@ const MODALITIES = Object.freeze({
     ),
   },
   ownershiplanguage: {
-    room: 'healthyrelating',
     title: 'Ownership Language',
     description: (
       <ul>
@@ -126,7 +124,6 @@ const MODALITIES = Object.freeze({
   },
   istatements: {
     available: true,
-    room: 'healthyrelating',
     title: '"I" Statements',
     description: (
       <blockquote>
@@ -154,7 +151,6 @@ const MODALITIES = Object.freeze({
   },
   somaticcheckin: {
     available: true,
-    room: 'healthyrelating',
     title: 'Somatic Check-In',
     description: (
       <>
@@ -176,7 +172,6 @@ const MODALITIES = Object.freeze({
   },
   reflection: {
     available: true,
-    room: 'productivity',
     title: 'Reflection',
     description: (
       <>
@@ -248,7 +243,6 @@ const MODALITIES = Object.freeze({
   },
   emotionalawareness: {
     available: true,
-    room: 'healthyrelating',
     title: 'Emotional Awareness',
     description: (
       <>
@@ -282,7 +276,6 @@ const MODALITIES = Object.freeze({
   },
   vulnerability: {
     available: true,
-    room: 'healthyrelating',
     title: 'Vulnerability',
     description: (
       <>
@@ -298,7 +291,6 @@ const MODALITIES = Object.freeze({
   },
   triggered: {
     available: true,
-    room: 'healthyrelating',
     title: 'Triggered',
     description: (
       <>
@@ -321,7 +313,6 @@ const MODALITIES = Object.freeze({
   possibleselves: {
     // TODO maybe Vulnerability and bestpossibleself skills should be a prerequisite
     available: true,
-    room: 'productivity',
     title: 'Possible Selves',
     description: (
       <>
@@ -391,7 +382,6 @@ const MODALITIES = Object.freeze({
   },
   bestpossibleself: {
     available: true,
-    room: 'productivity',
     title: 'Best Possible Self',
     description: (
       <>
@@ -444,7 +434,6 @@ const MODALITIES = Object.freeze({
   },
   subpersonality: {
     available: true,
-    room: 'healthyrelating',
     title: 'Subpersonality',
     description: (
       <>

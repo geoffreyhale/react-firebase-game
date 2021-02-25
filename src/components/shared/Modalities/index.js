@@ -27,17 +27,6 @@ export const availableModalities = Object.entries(MODALITIES)
     a.title.localeCompare(b.title, undefined, { ignorePunctuation: true })
   );
 
-export const validModalityForRoom = ({ modalityKey, room }) => {
-  const MODALITY = MODALITIES[modalityKey];
-  if (!MODALITY) {
-    return false;
-  }
-  if (MODALITY.room !== room) {
-    return false;
-  }
-  return true;
-};
-
 const PreSelectDescription = (
   <p>Select a modality that you'd like to learn about or practice.</p>
 );
@@ -91,11 +80,11 @@ const VoteDescription = (
   </>
 );
 
-export const SelectModality = ({ room, navigate = false }) => {
+export const SelectModality = ({ navigate = false }) => {
   const { modality, setModality } = useContext(AppContext);
   const history = useHistory();
   const arrayOfAvailableModalities = Object.entries(MODALITIES)
-    .filter(([key, MODALITY]) => MODALITY.available && MODALITY.room === room)
+    .filter(([key, MODALITY]) => MODALITY.available)
     .sort(
       ([aKey, a], [bKey, b]) =>
         a.title &&
@@ -115,6 +104,7 @@ export const SelectModality = ({ room, navigate = false }) => {
     >
       {arrayOfAvailableModalities.map(([key, MODALITY]) => (
         <Dropdown.Item
+          key={key}
           as="div" //"button" would trigger onSubmit
           onClick={() => {
             const newModality = modality === key ? null : key;
@@ -149,14 +139,9 @@ const ModalityDescription = () => {
 };
 
 // TODO better component name wtf does this do
-export const Modality = ({ room }) => {
-  const { modality: modalityKey, setModality } = useContext(AppContext);
+export const Modality = () => {
+  const { modality: modalityKey } = useContext(AppContext);
   const modality = MODALITIES[modalityKey];
-
-  const roomsWithAvailableModalities = Object.values(MODALITIES)
-    .filter((MODALITY) => MODALITY.available === true)
-    .map((MODALITY) => MODALITY.room);
-  if (!roomsWithAvailableModalities.includes(room)) return null;
 
   return (
     <>
@@ -168,7 +153,7 @@ export const Modality = ({ room }) => {
               <Card.Body>{PreSelectDescription}</Card.Body>
             </Card>
           )}
-          <SelectModality room={room} />
+          <SelectModality />
           {modality && (
             <Jumbotron className="mt-3">
               <WriteDescription />
