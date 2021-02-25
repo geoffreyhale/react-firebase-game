@@ -144,6 +144,7 @@ export const createPost = ({
     .update(post)
     .then(toggleUpvote({ postId: key, uid }))
     .then(replyToId && addNotifications({ postId: replyToId, uid }))
+    .then(modality && setModalityVote({ postId: key, vote: true, uid }))
     .then(successCallback());
 };
 
