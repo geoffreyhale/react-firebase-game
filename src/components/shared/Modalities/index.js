@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext, useState } from 'react';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
@@ -210,21 +212,25 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
 
   return (
     <ButtonGroup>
-      <OverlayTrigger
-        trigger="click"
-        placement="bottom"
-        overlay={
-          <Popover>
-            <Popover.Title as={'h3'}>What is {title}?</Popover.Title>
-            <Popover.Content>
-              {description}
-              {VoteDescription}
-            </Popover.Content>
-          </Popover>
-        }
-      >
-        <Button variant="warning">{title}</Button>
-      </OverlayTrigger>
+      <Button variant="warning">
+        {title}
+        <span className="ml-3">
+          <OverlayTrigger
+            placement="bottom"
+            overlay={
+              <Popover>
+                <Popover.Title as={'h3'}>What is {title}?</Popover.Title>
+                <Popover.Content>
+                  {description}
+                  {VoteDescription}
+                </Popover.Content>
+              </Popover>
+            }
+          >
+            <FontAwesomeIcon icon={faInfoCircle} />
+          </OverlayTrigger>
+        </span>
+      </Button>
       <ModalityVotingButton
         modalityVotes={modality.votes}
         value={true}
