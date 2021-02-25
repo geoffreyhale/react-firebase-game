@@ -166,7 +166,13 @@ export const Modality = ({ room }) => {
   );
 };
 
-const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
+const ModalityVotingButton = ({
+  modalityVotes,
+  value,
+  children,
+  postId,
+  disabled,
+}) => {
   const {
     user: { uid },
   } = useContext(AppContext);
@@ -181,6 +187,7 @@ const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
           vote: isCurrentVote ? null : value,
         })
       }
+      disabled={disabled}
     >
       {children}
       <Badge variant="secondary" className="ml-2">
@@ -197,6 +204,8 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
     return null;
   }
   const { title, description } = MODALITIES[modality.name];
+
+  const canVote = true;
 
   return (
     <ButtonGroup>
@@ -219,6 +228,7 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modality.votes}
         value={true}
         postId={postId}
+        disabled={!canVote}
       >
         yes
       </ModalityVotingButton>
@@ -226,6 +236,7 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modality.votes}
         value={false}
         postId={postId}
+        disabled={!canVote}
       >
         not quite
       </ModalityVotingButton>
