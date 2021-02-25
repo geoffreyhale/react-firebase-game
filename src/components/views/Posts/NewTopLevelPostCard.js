@@ -121,7 +121,9 @@ const NewTopLevelPostCard = ({
           multiline={true}
           placeholder={'How are you really feeling?'}
           hackRoom={room}
-          onSuccess={() => onSuccess({ room })}
+          onSuccess={() =>
+            onSuccess && typeof onSuccess === 'function' && onSuccess({ room })
+          }
           navigateOnModalitySelect={navigateOnModalitySelect}
         />
       </Card.Body>
