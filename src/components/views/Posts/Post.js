@@ -303,7 +303,7 @@ const Post = ({
   }
   const replyCount = countAncestors(post) - 1;
   return (
-    <Card className="mt-3 post">
+    <Card className="mt-3 post" bg={hackRoom === 'dev' && 'light'}>
       {showHeaderLinkToParent && (
         <Card.Header>
           {hackRoom && post.replyToId && (
