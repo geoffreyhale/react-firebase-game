@@ -167,17 +167,18 @@ export const Modality = ({ room }) => {
 };
 
 const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
-  const { user } = useContext(AppContext);
-  const { uid } = user;
-  const myExistingVote = modalityVotes ? modalityVotes[uid] : null;
+  const {
+    user: { uid },
+  } = useContext(AppContext);
+  const isCurrentVote = modalityVotes && modalityVotes[uid] === value;
   return (
     <Button
-      variant={myExistingVote === value ? 'warning' : 'outline-warning'}
+      variant={isCurrentVote ? 'warning' : 'outline-warning'}
       onClick={() =>
         setModalityVote({
           postId,
           uid,
-          vote: myExistingVote === value ? null : value,
+          vote: isCurrentVote ? null : value,
         })
       }
     >
