@@ -172,26 +172,29 @@ const ModalityVotingButton = ({
   value,
   children,
   postId,
-  uid,
-}) => (
-  <Button
-    variant={myExistingVote === value ? 'warning' : 'outline-warning'}
-    onClick={() =>
-      setModalityVote({
-        postId,
-        uid,
-        vote: myExistingVote === value ? null : value,
-      })
-    }
-  >
-    {children}
-    <Badge variant="secondary" className="ml-2">
-      {modalityVotes
-        ? Object.values(modalityVotes).filter((vote) => vote === value).length
-        : 0}
-    </Badge>
-  </Button>
-);
+}) => {
+  const { user } = useContext(AppContext);
+  const { uid } = user;
+  return (
+    <Button
+      variant={myExistingVote === value ? 'warning' : 'outline-warning'}
+      onClick={() =>
+        setModalityVote({
+          postId,
+          uid,
+          vote: myExistingVote === value ? null : value,
+        })
+      }
+    >
+      {children}
+      <Badge variant="secondary" className="ml-2">
+        {modalityVotes
+          ? Object.values(modalityVotes).filter((vote) => vote === value).length
+          : 0}
+      </Badge>
+    </Button>
+  );
+};
 
 export const ModalityVotingBooth = ({ modality, postId }) => {
   const { user } = useContext(AppContext);
@@ -228,7 +231,6 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modalityVotes}
         value={true}
         postId={postId}
-        uid={uid}
       >
         yes
       </ModalityVotingButton>
@@ -237,7 +239,6 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modalityVotes}
         value={false}
         postId={postId}
-        uid={uid}
       >
         not quite
       </ModalityVotingButton>
