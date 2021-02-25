@@ -166,6 +166,33 @@ export const Modality = ({ room }) => {
   );
 };
 
+const ModalityVotingButton = ({
+  myExistingVote,
+  modalityVotes,
+  value,
+  children,
+  postId,
+  uid,
+}) => (
+  <Button
+    variant={myExistingVote === value ? 'warning' : 'outline-warning'}
+    onClick={() =>
+      setModalityVote({
+        postId,
+        uid,
+        vote: myExistingVote === value ? null : value,
+      })
+    }
+  >
+    {children}
+    <Badge variant="secondary" className="ml-2">
+      {modalityVotes
+        ? Object.values(modalityVotes).filter((vote) => vote === value).length
+        : 0}
+    </Badge>
+  </Button>
+);
+
 export const ModalityVotingBooth = ({ modality, postId }) => {
   const { user } = useContext(AppContext);
   const { uid } = user;
@@ -196,42 +223,24 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
       >
         <Button variant="warning">{modalityTitle}</Button>
       </OverlayTrigger>
-      <Button
-        variant={myExistingVote === true ? 'warning' : 'outline-warning'}
-        onClick={() =>
-          setModalityVote({
-            postId,
-            uid,
-            vote: myExistingVote === true ? null : true,
-          })
-        }
+      <ModalityVotingButton
+        myExistingVote={myExistingVote}
+        modalityVotes={modalityVotes}
+        value={true}
+        postId={postId}
+        uid={uid}
       >
         yes
-        <Badge variant="secondary" className="ml-2">
-          {modalityVotes
-            ? Object.values(modalityVotes).filter((vote) => vote === true)
-                .length
-            : 0}
-        </Badge>
-      </Button>
-      <Button
-        variant={myExistingVote === false ? 'warning' : 'outline-warning'}
-        onClick={() =>
-          setModalityVote({
-            postId,
-            uid,
-            vote: myExistingVote === false ? null : false,
-          })
-        }
+      </ModalityVotingButton>
+      <ModalityVotingButton
+        myExistingVote={myExistingVote}
+        modalityVotes={modalityVotes}
+        value={false}
+        postId={postId}
+        uid={uid}
       >
         not quite
-        <Badge variant="secondary" className="ml-2">
-          {modalityVotes
-            ? Object.values(modalityVotes).filter((vote) => vote === false)
-                .length
-            : 0}
-        </Badge>
-      </Button>
+      </ModalityVotingButton>
     </ButtonGroup>
   );
 };
