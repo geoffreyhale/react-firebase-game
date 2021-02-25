@@ -175,6 +175,10 @@ export const ModalityVoteButton = ({ modality, postId }) => {
     return null;
   }
 
+  const modalityTitle = MODALITIES[modality.name].title;
+  const modalityDescription = MODALITIES[modality.name].description;
+  const modalityVotes = modality.votes;
+
   return (
     <ButtonGroup>
       <OverlayTrigger
@@ -182,17 +186,15 @@ export const ModalityVoteButton = ({ modality, postId }) => {
         placement="bottom"
         overlay={
           <Popover>
-            <Popover.Title as={'h3'}>
-              What is {MODALITIES[modality.name].title}?
-            </Popover.Title>
+            <Popover.Title as={'h3'}>What is {modalityTitle}?</Popover.Title>
             <Popover.Content>
-              {MODALITIES[modality.name].description}
+              {modalityDescription}
               {VoteDescription}
             </Popover.Content>
           </Popover>
         }
       >
-        <Button variant="warning">{MODALITIES[modality.name].title}</Button>
+        <Button variant="warning">{modalityTitle}</Button>
       </OverlayTrigger>
       <Button
         variant={myExistingVote === true ? 'warning' : 'outline-warning'}
@@ -206,8 +208,8 @@ export const ModalityVoteButton = ({ modality, postId }) => {
       >
         yes
         <Badge variant="secondary" className="ml-2">
-          {modality.votes
-            ? Object.values(modality.votes).filter((vote) => vote === true)
+          {modalityVotes
+            ? Object.values(modalityVotes).filter((vote) => vote === true)
                 .length
             : 0}
         </Badge>
@@ -224,8 +226,8 @@ export const ModalityVoteButton = ({ modality, postId }) => {
       >
         not quite
         <Badge variant="secondary" className="ml-2">
-          {modality.votes
-            ? Object.values(modality.votes).filter((vote) => vote === false)
+          {modalityVotes
+            ? Object.values(modalityVotes).filter((vote) => vote === false)
                 .length
             : 0}
         </Badge>
