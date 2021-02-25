@@ -196,9 +196,7 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
   if (!MODALITIES[modality.name]) {
     return null;
   }
-
-  const modalityTitle = MODALITIES[modality.name].title;
-  const modalityDescription = MODALITIES[modality.name].description;
+  const { title, description } = MODALITIES[modality.name];
 
   return (
     <ButtonGroup>
@@ -207,15 +205,15 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         placement="bottom"
         overlay={
           <Popover>
-            <Popover.Title as={'h3'}>What is {modalityTitle}?</Popover.Title>
+            <Popover.Title as={'h3'}>What is {title}?</Popover.Title>
             <Popover.Content>
-              {modalityDescription}
+              {description}
               {VoteDescription}
             </Popover.Content>
           </Popover>
         }
       >
-        <Button variant="warning">{modalityTitle}</Button>
+        <Button variant="warning">{title}</Button>
       </OverlayTrigger>
       <ModalityVotingButton
         modalityVotes={modality.votes}
