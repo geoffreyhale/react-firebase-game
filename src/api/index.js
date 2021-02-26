@@ -150,7 +150,7 @@ export const createPost = ({
   successCallback,
   uid,
   room,
-  modality,
+  modality, //TODO handle modalities
 }) => {
   if (!room) {
     console.error('createPost must receive value for room');
@@ -162,7 +162,7 @@ export const createPost = ({
     userId: uid,
     replyToId: replyToId,
     room: room,
-    modality: { name: modality },
+    modalities: { [modality]: { name: modality } },
   };
   //hacky fix to prevent replies from having a modality
   if (replyToId) {
@@ -174,7 +174,15 @@ export const createPost = ({
     .update(post)
     .then(toggleUpvote({ postId: key, uid }))
     .then(replyToId && addNotifications({ postId: replyToId, uid }))
-    .then(modality && setModalityVote({ postId: key, vote: true, uid }))
+    .then(
+      modality &&
+        setModalityVote({
+          postId: key,
+          vote: true,
+          uid,
+          modalityName: modality,
+        })
+    )
     .then(successCallback());
 };
 
