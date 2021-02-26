@@ -42,8 +42,38 @@ export const updateEvent = (
     });
 };
 
-export const setModalityVote = ({ postId, vote, uid }) => {
-  postRef(postId).child('modality').child('votes').child(uid).set(vote);
+export const setModalityVote = ({ postId, vote, uid, modalityName }) => {
+  postsRef()
+    .child(postId)
+    .child('modality')
+    .once('value', (snapshot) => {
+      const modality = snapshot.val();
+      if (modality && modality.name === modalityName) {
+        postRef(postId).child('modality').child('votes').child(uid).set(vote);
+      } else {
+        console.error(
+          'setModalityVote reached where modalityName does not exist as this post modality'
+        );
+      }
+    });
+  postsRef()
+    .child(postId)
+    .child('modalities')
+    .once('value', (snapshot) => {
+      const modalities = snapshot.val();
+      if (modalities && modalities[modalityName]) {
+        postRef(postId)
+          .child('modalities')
+          .child(modalityName)
+          .child('votes')
+          .child(uid)
+          .set(vote);
+      } else {
+        console.error(
+          'setModalityVote reached where modalityName does not exist on this post modalities'
+        );
+      }
+    });
 };
 
 export const addTag = ({ postId, content, successCallback, uid }) => {

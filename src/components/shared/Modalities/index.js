@@ -167,7 +167,13 @@ export const Modality = () => {
   );
 };
 
-const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
+const ModalityVotingButton = ({
+  modalityVotes,
+  value,
+  children,
+  postId,
+  modalityName,
+}) => {
   const {
     user: { isPremium, uid },
   } = useContext(AppContext);
@@ -186,6 +192,7 @@ const ModalityVotingButton = ({ modalityVotes, value, children, postId }) => {
             postId,
             uid,
             vote: isCurrentVote ? null : value,
+            modalityName,
           })
         }
         disabled={!canVote}
@@ -240,6 +247,7 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modality.votes}
         value={true}
         postId={postId}
+        modalityName={modality.name}
       >
         yes
       </ModalityVotingButton>
@@ -247,6 +255,7 @@ export const ModalityVotingBooth = ({ modality, postId }) => {
         modalityVotes={modality.votes}
         value={false}
         postId={postId}
+        modalityName={modality.name}
       >
         not quite
       </ModalityVotingButton>

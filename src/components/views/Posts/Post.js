@@ -422,6 +422,12 @@ const Post = ({
                   />
                 </div>
               )}
+              {post.modalities &&
+                Object.values(post.modalities).map((modality) => (
+                  <div className="mt-2">
+                    <ModalityVotingBooth modality={modality} postId={post.id} />
+                  </div>
+                ))}
               {repliesCollapsed && replyCount > 0 && (
                 // TODO abuse of card-footer class
                 <div
