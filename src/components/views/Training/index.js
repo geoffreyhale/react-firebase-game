@@ -107,7 +107,10 @@ const postsWithModalityArrayFromPostsArray = ({
   posts = [],
   modalityKey = null,
 }) =>
-  posts.filter((post) => post.modality && post.modality.name === modalityKey);
+  posts.filter(
+    (post) =>
+      post.modalities && Object.keys(post.modalities).includes(modalityKey)
+  );
 
 const UserModality = ({
   posts: postsObject,
@@ -137,15 +140,19 @@ const UserModality = ({
             return {
               yesCount:
                 acc.yesCount +
-                (post.modality && post.modality.votes
-                  ? Object.entries(post.modality.votes).filter(
+                (post.modalities &&
+                post.modalities[modalityKey] &&
+                post.modalities[modalityKey].votes
+                  ? Object.entries(post.modalities[modalityKey].votes).filter(
                       ([key, vote]) => key !== user.uid && vote === true
                     ).length
                   : 0),
               noCount:
                 acc.noCount +
-                (post.modality && post.modality.votes
-                  ? Object.entries(post.modality.votes).filter(
+                (post.modalities &&
+                post.modalities[modalityKey] &&
+                post.modalities[modalityKey].votes
+                  ? Object.entries(post.modalities[modalityKey].votes).filter(
                       ([key, vote]) => key !== user.uid && vote === false
                     ).length
                   : 0),
@@ -248,7 +255,7 @@ const Training = () => {
 
   const userPosts = posts.filter((post) => post.userId === user.uid);
   const userPostsWithAnyModality = posts.filter(
-    (post) => post.userId === user.uid && post.modality
+    (post) => post.userId === user.uid && post.modalities
   );
   const userPostsWithThisModality = postsWithModalityArrayFromPostsArray({
     posts: userPostsWithAnyModality,
@@ -261,13 +268,19 @@ const Training = () => {
     //TODO exclude votes for self
     //TODO make this modality vote count a method of post object
     const aYesVotes =
-      a.modality &&
-      a.modality.votes &&
-      Object.values(a.modality.votes).filter((vote) => vote === true).length;
+      a.modalities &&
+      a.modalities[contextModalityKey] &&
+      a.modalities[contextModalityKey].votes &&
+      Object.values(a.modalities[contextModalityKey].votes).filter(
+        (vote) => vote === true
+      ).length;
     const bYesVotes =
-      b.modality &&
-      b.modality.votes &&
-      Object.values(b.modality.votes).filter((vote) => vote === true).length;
+      b.modalities &&
+      b.modalities[contextModalityKey] &&
+      b.modalities[contextModalityKey].votes &&
+      Object.values(b.modalities[contextModalityKey].votes).filter(
+        (vote) => vote === true
+      ).length;
     if (!aYesVotes) {
       return 1;
     }
