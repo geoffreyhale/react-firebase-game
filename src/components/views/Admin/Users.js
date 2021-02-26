@@ -12,7 +12,7 @@ export const Users = ({ usersArray, posts }) => {
     posts &&
     typeof posts === 'object' &&
     Object.values(posts)
-      .filter((post) => !post.deleted && post.modality)
+      .filter((post) => !post.deleted && post.modalities)
       .map((post) => post.userId)
       .filter((uid, i, self) => self.indexOf(uid) === i).length;
   const usedModalityPercentage = Math.round(
