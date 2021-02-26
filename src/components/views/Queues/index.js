@@ -25,7 +25,8 @@ const QueueItem = ({ item }) => {
   return (
     <Card className="my-3">
       <Card.Body>
-        {data && data.map((datum) => <QueueBadge>{datum}</QueueBadge>)}
+        {data &&
+          data.map((datum) => <QueueBadge key={datum}>{datum}</QueueBadge>)}
         {post && (
           <Post
             post={post}
