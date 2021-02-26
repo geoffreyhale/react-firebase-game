@@ -166,7 +166,7 @@ export const createPost = ({
   };
   //hacky fix to prevent replies from having a modality
   if (replyToId) {
-    delete post.modality;
+    delete post.modalities;
   }
   const key = postsRef().push().key;
   postsRef()
@@ -217,7 +217,7 @@ export const getRooms = (callback) => {
 const getModalityPostsArrayForUser = ({ uid }, callback) => {
   getPosts((posts) => {
     const modalityPosts = Object.values(posts).filter(
-      (post) => post.userId === uid && post.modality
+      (post) => post.userId === uid && post.modalities
     );
     callback(modalityPosts);
   });
