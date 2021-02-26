@@ -7,6 +7,7 @@ import { postsRef } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Post from '../Posts/Post';
 import { PremiumFeature } from '../../shared/Premium';
+import Spinner from '../../shared/Spinner';
 
 //TODO tests
 
@@ -50,11 +51,11 @@ const DATA = Object.freeze({
   MODALITY_WITH_VOTES: 'is modality post with votes (not counting themselves)',
 });
 
-const QueusTabTitle = ({ children, queue }) => (
+const QueusTabTitle = ({ children, queue, loading }) => (
   <>
     {children}{' '}
     <Badge className="ml-1" variant="secondary">
-      {queue.length}
+      {loading ? <Spinner size="sm" /> : queue.length}
     </Badge>
   </>
 );
@@ -68,7 +69,7 @@ const QueuesTabDescription = ({ children }) => (
 const QueuesItems = ({ queue }) =>
   queue.map((item) => <QueueItem key={Math.random()} item={item} />);
 
-const QueuesTabs = ({ queue }) => {
+const QueuesTabs = ({ queue, loading }) => {
   const modalityQueue = queue.filter((item) =>
     item.data.includes(DATA.I_HAVE_NOT_VOTED_ON_MODALITY)
   );
@@ -90,30 +91,60 @@ const QueuesTabs = ({ queue }) => {
     <Tabs defaultActiveKey="modality" className="my-3">
       <Tab
         eventKey="modality"
-        title={<QueusTabTitle queue={modalityQueue}>Modality</QueusTabTitle>}
+        title={
+          <QueusTabTitle queue={modalityQueue} loading={loading}>
+            Modality
+          </QueusTabTitle>
+        }
       >
-        <QueuesTabDescription>
-          Please vote on these modality posts:
-        </QueuesTabDescription>
-        <QueuesItems queue={modalityQueue} />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <QueuesTabDescription>
+              Please vote on these modality posts:
+            </QueuesTabDescription>
+            <QueuesItems queue={modalityQueue} />
+          </>
+        )}
       </Tab>
       <Tab
         eventKey="untouched"
-        title={<QueusTabTitle queue={untouchedQueue}>Untouched</QueusTabTitle>}
+        title={
+          <QueusTabTitle queue={untouchedQueue} loading={loading}>
+            Untouched
+          </QueusTabTitle>
+        }
       >
-        <QueuesTabDescription>
-          Please touch these posts (reply, tag, or vote):
-        </QueuesTabDescription>
-        <QueuesItems queue={untouchedQueue} />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <QueuesTabDescription>
+              Please touch these posts (reply, tag, or vote):
+            </QueuesTabDescription>
+            <QueuesItems queue={untouchedQueue} />
+          </>
+        )}
       </Tab>
       <Tab
         eventKey="unreplied"
-        title={<QueusTabTitle queue={unrepliedQueue}>Unreplied</QueusTabTitle>}
+        title={
+          <QueusTabTitle queue={unrepliedQueue} loading={loading}>
+            Unreplied
+          </QueusTabTitle>
+        }
       >
-        <QueuesTabDescription>
-          Please reply to these posts:
-        </QueuesTabDescription>
-        <QueuesItems queue={unrepliedQueue} />
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <QueuesTabDescription>
+              Please reply to these posts:
+            </QueuesTabDescription>
+            <QueuesItems queue={unrepliedQueue} />
+          </>
+        )}
       </Tab>
     </Tabs>
   );
@@ -127,6 +158,7 @@ const modalityVotesIncludesUid = ({ modality, uid }) =>
   modalityHasVotes({ modality }) && Object.keys(modality.votes).includes(uid);
 
 const Queues = () => {
+  const [loading, setLoading] = useState(true);
   const [queue, setQueue] = useState([]);
   const { user, users } = useContext(AppContext);
 
@@ -205,12 +237,13 @@ const Queues = () => {
         }
       });
       setQueue(queue);
+      setLoading(false);
     });
   }, []);
 
   if (!user.isPremium) {
     return <PremiumFeature featureName={'Queues'} />;
   }
-  return <QueuesTabs queue={queue} />;
+  return <QueuesTabs queue={queue} loading={loading} />;
 };
 export default Queues;
