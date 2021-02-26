@@ -119,6 +119,13 @@ const QueuesTabs = ({ queue }) => {
   );
 };
 
+const modalityHasVotes = ({ modality }) => modality.votes;
+const modalityHasVotesNotUid = ({ modality, uid }) =>
+  modalityHasVotes({ modality }) &&
+  !Object.keys(modality.votes).every((voteKey) => voteKey === uid);
+const modalityVotesIncludesUid = ({ modality, uid }) =>
+  modalityHasVotes({ modality }) && Object.keys(modality.votes).includes(uid);
+
 const Queues = () => {
   const [queue, setQueue] = useState([]);
   const { user, users } = useContext(AppContext);
@@ -148,27 +155,26 @@ const Queues = () => {
           queue[i].data.push(DATA.NOT_MY_POST);
         }
         if (
-          post.modality &&
-          (!post.modality.votes ||
-            (Object.keys(post.modality.votes).length === 1 &&
-              Object.keys(post.modality.votes)[0] === post.userId))
+          post.modalities &&
+          !Object.values(post.modalities).some((modality) =>
+            modalityHasVotesNotUid({ modality, uid: post.userId })
+          )
         ) {
           queue[i].data.push(DATA.NO_ONE_VOTED_ON_MODALITY);
         }
         if (
-          post.modality &&
-          post.modality.votes &&
-          !(
-            Object.keys(post.modality.votes).length === 1 &&
-            Object.keys(post.modality.votes)[0] === post.userId
+          post.modalities &&
+          Object.values(post.modalities).some((modality) =>
+            modalityHasVotesNotUid({ modality, uid: post.userId })
           )
         ) {
           queue[i].data.push(DATA.MODALITY_WITH_VOTES);
         }
         if (
-          post.modality &&
-          (!post.modality.votes ||
-            !Object.keys(post.modality.votes).includes(user.uid))
+          post.modalities &&
+          !Object.values(post.modalities).every((modality) =>
+            modalityVotesIncludesUid({ modality, uid: user.uid })
+          )
         ) {
           queue[i].data.push(DATA.I_HAVE_NOT_VOTED_ON_MODALITY);
         }
