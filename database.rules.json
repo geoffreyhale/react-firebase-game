@@ -28,10 +28,12 @@
             ".write": "auth.uid != null && $upvote_id == auth.uid"
           }
         },
-        "modality": {
-          "votes": {
-            "$vote_id": {
-              ".write":"auth.uid != null && $vote_id == auth.uid && root.child('posts/' + $post_id + '/userId').val() != auth.uid"  //TODO this won't work because higher level rule is more lenient
+        "modalities": {
+          "$modality_id": {
+            "votes": {
+              "$vote_id": {
+                ".write":"auth.uid != null && $vote_id == auth.uid && root.child('posts/' + $post_id + '/userId').val() != auth.uid"  //TODO this won't work because higher level rule is more lenient
+              }
             }
           }
         }
