@@ -12,15 +12,18 @@ const modalityPointsReceivedFromOthers = ({ posts, uid }) => {
     .filter(
       (post) =>
         post.userId === uid &&
-        post.modality &&
         !post.deleted &&
-        post.modality.votes &&
-        typeof post.modality.votes === 'object'
+        post.modalities &&
+        Object.values(post.modalities).some(
+          (modality) => modality.votes && typeof modality.votes === 'object'
+        )
     )
     .forEach((post) => {
-      modalityPointsReceivedFromOthers += Object.entries(
-        post.modality.votes
-      ).filter(([key, vote]) => key !== uid && vote === true).length;
+      Object.values(post.modalities).forEach((modality) => {
+        modalityPointsReceivedFromOthers += Object.entries(
+          modality.votes
+        ).filter(([key, vote]) => key !== uid && vote === true).length;
+      });
     });
   return modalityPointsReceivedFromOthers;
 };
@@ -95,15 +98,23 @@ const uniqueDaysPosted = ({ posts, uid }) => {
 };
 
 const modalityVotesSubmittedForOthers = ({ posts, uid }) => {
-  return Object.values(posts).filter(
-    (post) =>
-      post.userId !== uid &&
-      !post.deleted &&
-      post.modality &&
-      post.modality.votes &&
-      typeof post.modality.votes === 'object' &&
-      Object.keys(post.modality.votes).includes(uid)
-  ).length;
+  let modalityVotesSubmittedForOthers = null;
+  Object.values(posts)
+    .filter(
+      (post) =>
+        post.userId !== uid &&
+        !post.deleted &&
+        post.modalities &&
+        Object.values(post.modalities).some(
+          (modality) => modality.votes && typeof modality.votes === 'object'
+        )
+    )
+    .forEach((post) => {
+      modalityVotesSubmittedForOthers += Object.values(
+        post.modalities
+      ).filter((modality) => Object.keys(modality.votes).includes(uid)).length;
+    });
+  return modalityVotesSubmittedForOthers;
 };
 
 const getXBookScore = ({ scores }) =>
