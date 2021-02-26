@@ -19,7 +19,7 @@ export const room_overrides = Object.freeze({
     ),
   },
   dev: {
-    color: 'Beige',
+    color: '#f8f9fa',
     description: (
       <small className="text-muted">
         <ul>
