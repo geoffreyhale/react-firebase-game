@@ -492,6 +492,39 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  gratitude: {
+    available: true,
+    title: 'Gratitude',
+    // add description
+  },
+  morningpages: {
+    available: true,
+    title: 'Morning Pages',
+    description: (
+      <>
+        <blockquote>
+          <p>
+            "Morning Pages are three pages of longhand, stream of consciousness
+            writing, done first thing in the morning. *There is no wrong way to
+            do Morning Pages*– they are not high art. They are not even
+            “writing.” They are about anything and everything that crosses your
+            mind..."
+          </p>
+          <figcaption>
+            - Julia Cameron,{' '}
+            <cite>
+              <a
+                href="https://juliacameronlive.com/basic-tools/morning-pages/"
+                target="_blank"
+              >
+                Morning Pages
+              </a>
+            </cite>
+          </figcaption>
+        </blockquote>
+      </>
+    ),
+  },
 });
 
 export default MODALITIES;
