@@ -414,14 +414,6 @@ const Post = ({
                   Collapse Branch
                 </PostMenuBarItem> */}
               </div>
-              {post.modality && (
-                <div className="mt-2">
-                  <ModalityVotingBooth
-                    modality={post.modality}
-                    postId={post.id}
-                  />
-                </div>
-              )}
               {post.modalities &&
                 Object.values(post.modalities).map((modality) => (
                   <div className="mt-2">
