@@ -1,11 +1,21 @@
-import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCheck, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import React, { useContext, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
-import { withRouter } from 'react-router';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { withRouter, useHistory } from 'react-router';
 import { AppContext } from '../../AppProvider';
-import { getUser, getUserByUsername } from '../../../api/index';
+import {
+  followUser,
+  getUser,
+  getUserByUsername,
+  unfollowUser,
+} from '../../../api';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import { UserPhoto } from '../../shared/User';
 import Spinner from '../../shared/Spinner';
@@ -13,6 +23,54 @@ import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingType
 import Posts from '../Posts';
 import { PremiumFeature } from '../../shared/Premium';
 import UserStats from './UserStats';
+
+const FollowButton = ({ uid }) => {
+  const { user } = useContext(AppContext);
+  const history = useHistory();
+  const [loading, setLoading] = useState(false);
+
+  if (loading || !user || !uid) return <Spinner size="sm" />;
+
+  if (user.uid === uid) return null;
+
+  const following = user.following && user.following.includes(uid);
+
+  return following ? (
+    <OverlayTrigger
+      placement="top"
+      delay={{ show: 250, hide: 400 }}
+      overlay={<Tooltip>following</Tooltip>}
+    >
+      <Button
+        size="sm"
+        variant="secondary"
+        onClick={() => {
+          setLoading(true);
+          unfollowUser({ myUid: user.uid, followUid: uid }, () =>
+            // setLoading(false)
+            history.go(0)
+          );
+        }}
+      >
+        <FontAwesomeIcon icon={faUserCheck} />
+      </Button>
+    </OverlayTrigger>
+  ) : (
+    <Button
+      size="sm"
+      variant="primary"
+      onClick={() => {
+        setLoading(true);
+        followUser({ myUid: user.uid, followUid: uid }, () =>
+          // setLoading(false)
+          history.go(0)
+        );
+      }}
+    >
+      <FontAwesomeIcon icon={faUserPlus} /> Follow
+    </Button>
+  );
+};
 
 export const UserProfilePhotoBanner = ({ user }) => (
   <Card style={{ textAlign: 'center' }}>
@@ -92,9 +150,16 @@ class UserProfile extends React.Component {
     return (
       <Card>
         <Card.Body>
-          <Row className="mb-4">
+          <Row className="mb-2">
             <Col>
               <UserProfilePhotoBanner user={user} />
+            </Col>
+          </Row>
+          <Row className="mb-2">
+            <Col>
+              <span className="float-right">
+                <FollowButton uid={user.uid} />
+              </span>
             </Col>
           </Row>
           <Row>
