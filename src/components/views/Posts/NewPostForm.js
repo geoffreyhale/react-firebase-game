@@ -81,7 +81,9 @@ export default class NewPostForm extends React.Component {
                 successCallback,
                 uid: this.user().uid,
                 room: this.props.hackRoom,
-                modality: this.modality(),
+                //TODO this hack prevents non-premium user from submitting a post with modality
+                // but it's here floating in the middle; should be lifted out to both ends
+                modality: this.user().isPremium ? this.modality() : null,
               });
             }
           }}
