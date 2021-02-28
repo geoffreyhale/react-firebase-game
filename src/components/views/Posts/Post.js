@@ -416,7 +416,7 @@ const Post = ({
               </div>
               {post.modalities &&
                 Object.values(post.modalities).map((modality) => (
-                  <div className="mt-2">
+                  <div className="mt-2" key={modality.name}>
                     <ModalityVotingBooth modality={modality} postId={post.id} />
                   </div>
                 ))}
