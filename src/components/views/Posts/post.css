@@ -1,3 +1,7 @@
+.post.card:first-child {
+  margin-top: 0 !important;
+}
+
 .post .card {
   border-right: none;
   border-bottom: none;
