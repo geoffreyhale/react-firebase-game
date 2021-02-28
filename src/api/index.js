@@ -339,6 +339,27 @@ export const getUsersRealtimeDatabase = (callback) => {
   });
 };
 
+export const followUser = ({ myUid, followUid }, callback) => {
+  db.collection('users')
+    .doc(myUid)
+    .update({
+      following: firebase.firestore.FieldValue.arrayUnion(followUid),
+    })
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
+};
+export const unfollowUser = ({ myUid, followUid }, callback) => {
+  db.collection('users')
+    .doc(myUid)
+    .update({
+      following: firebase.firestore.FieldValue.arrayRemove(followUid),
+    })
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
+};
+
 export const updateUser = ({ uid, user }, callback) => {
   db.collection('users')
     .doc(uid)
