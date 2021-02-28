@@ -42,6 +42,7 @@ const Accounting = ({ accounting }) => {
               <th>usd</th>
               <th>via</th>
               <th>timestamp</th>
+              <th>notes</th>
             </tr>
           </thead>
           <tbody>
@@ -57,6 +58,7 @@ const Accounting = ({ accounting }) => {
                   <td>${a.usd}</td>
                   <td>{a.via}</td>
                   <td>{friendlyTimestamp(a.timestamp?.seconds * 1000)}</td>
+                  <td>{a.notes}</td>
                 </tr>
               ))}
           </tbody>
@@ -66,6 +68,7 @@ const Accounting = ({ accounting }) => {
               {/* <td></td> */}
               <td></td>
               <td>${totalUsd({ accounting })}</td>
+              <td></td>
               <td></td>
               <td></td>
             </tr>
