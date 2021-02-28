@@ -5,6 +5,7 @@ import Page from './Page';
 import About from './views/About';
 import Admin from './views/Admin';
 import Community from './views/Community';
+import Donate from './views/Donate';
 import Events from './views/Events';
 import Chess from './views/Games/Chess';
 import IncrementalClickerGame from './views/Games/IncrementalClicker';
@@ -137,6 +138,15 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Community | xBook">
               <Community {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/donate"
+          key="/donate"
+          render={(props) => (
+            <Page title="Donate | xBook">
+              <Donate {...props} />
             </Page>
           )}
         />,

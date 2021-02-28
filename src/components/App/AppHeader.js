@@ -24,6 +24,10 @@ const AccountDropdownMenu = ({ logout }) => {
           Settings
         </Dropdown.Item>
         <Dropdown.Divider />
+        <Dropdown.Item as={Link} to="/donate">
+          Donate
+        </Dropdown.Item>
+        <Dropdown.Divider />
         <Dropdown.Item as="button" onClick={logout}>
           Log Out
         </Dropdown.Item>
