@@ -146,11 +146,11 @@ export const editPost = ({ id, content, successCallback }) => {
 
 export const createPost = ({
   content,
-  replyToId,
+  replyToId = null,
   successCallback,
   uid,
   room,
-  modality, //TODO handle modalities
+  modality = null, //TODO handle modalities
 }) => {
   if (!room) {
     console.error('createPost must receive value for room');
@@ -160,30 +160,36 @@ export const createPost = ({
     content,
     timestamp: firebase.database.ServerValue.TIMESTAMP,
     userId: uid,
-    replyToId: replyToId,
-    room: room,
-    modalities: { [modality]: { name: modality } },
+    replyToId,
+    room,
   };
+  if (modality) {
+    post.modalities = { [modality]: { name: modality } };
+  }
   //hacky fix to prevent replies from having a modality
   if (replyToId) {
     delete post.modalities;
   }
-  const key = postsRef().push().key;
+  const postId = postsRef().push().key;
   postsRef()
-    .child(key)
+    .child(postId)
     .update(post)
-    .then(toggleUpvote({ postId: key, uid }))
+    .then(toggleUpvote({ postId, uid }))
     .then(replyToId && addNotifications({ postId: replyToId, uid }))
     .then(
       modality &&
         setModalityVote({
-          postId: key,
+          postId,
           vote: true,
           uid,
           modalityName: modality,
         })
     )
-    .then(successCallback());
+    .then(
+      successCallback &&
+        typeof successCallback === 'function' &&
+        successCallback()
+    );
 };
 
 export const deletePost = ({ postId }) => {
