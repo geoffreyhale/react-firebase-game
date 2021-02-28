@@ -48,3 +48,9 @@ export const login = (callback) => {
     );
   });
 };
+
+export const logoff = (callback) => {
+  auth.signOut().then(() => {
+    callback && typeof callback === 'function' && callback();
+  });
+};

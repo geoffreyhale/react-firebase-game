@@ -9,7 +9,7 @@ import AppProvider from '../AppProvider';
 import { getUser, getUsers } from '../../api/index';
 import Spinner from '../shared/Spinner';
 import AppHeader from './AppHeader';
-import { login as userAuthLogin } from './userAuth';
+import { login as userAuthLogin, logoff as userAuthLogoff } from './userAuth';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -86,9 +86,8 @@ class App extends Component {
       this.setState({ loading: false, user });
     });
   }
-  //TODO move to UserAuth
   logout() {
-    auth.signOut().then(() => {
+    userAuthLogoff(() => {
       this.setState({
         user: null,
       });
