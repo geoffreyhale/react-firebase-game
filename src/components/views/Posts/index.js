@@ -42,7 +42,6 @@ class Posts extends Component {
     super();
     this.state = {
       loading: true,
-      lurkerStatus: null,
       posts: {},
       feed: FEED.HOT,
       postsFilter: {
@@ -61,12 +60,6 @@ class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
-    const userId = this.user().uid;
-    isLurker({
-      userId,
-      callback: (lurkerStatus) => this.setState({ lurkerStatus }),
-    });
-
     let postsRef = null;
     if (!this.user().isPremium) {
       postsRef = this.postsRef().orderByChild('room').equalTo('general');
@@ -104,9 +97,8 @@ class Posts extends Component {
     const isSinglePostPage = !!postId;
 
     const users = this.users();
-    const { lurkerStatus } = this.state;
     // TODO fix this will spin erroneously for a room with legitimately 0 posts
-    if (!users || this.state.loading || lurkerStatus === null) {
+    if (!users || this.state.loading) {
       return <Spinner size="lg" />;
     }
 
@@ -114,11 +106,7 @@ class Posts extends Component {
 
     let post = {};
     let posts = [];
-    if (
-      lurkerStatus === LURKER.NO &&
-      this.state.posts &&
-      this.state.posts.length !== 0
-    ) {
+    if (this.state.posts && this.state.posts.length !== 0) {
       const flatPostsArray = Object.entries(this.state.posts).map(
         ([id, post]) => {
           post.id = id;
@@ -176,8 +164,6 @@ class Posts extends Component {
       );
     }
 
-    const isLurker = lurkerStatus !== LURKER.NO;
-
     return (
       <Row>
         <Col className="col-left">
@@ -213,55 +199,33 @@ class Posts extends Component {
         </Col>
         <Col sm={8} className="col-main">
           {isSinglePostPage && (
-            <>
-              {isLurker && (
-                <NoLurking
-                  userDisplayName={this.user().displayName}
-                  lurkerStatus={lurkerStatus}
-                />
-              )}
-              {!isLurker && (
-                <Post
-                  post={post}
-                  hackIsSinglePostPage={isSinglePostPage}
-                  hackRoom={this.props.room.id}
-                  showHeaderLinkToParent={true}
-                />
-              )}
-            </>
+            <Post
+              post={post}
+              hackIsSinglePostPage={isSinglePostPage}
+              hackRoom={this.props.room.id}
+              showHeaderLinkToParent={true}
+            />
           )}
           {!isSinglePostPage && (
             <>
               <NewTopLevelPostCard hackRoom={this.props.room.id} />
-              <>
-                {isLurker && (
-                  <NoLurking
-                    userDisplayName={this.user().displayName}
-                    lurkerStatus={lurkerStatus}
-                  />
-                )}
-                {!isLurker && (
-                  <>
-                    <FeedNav
-                      currentFeed={this.state.feed}
-                      setFeed={(feed) => this.setState({ feed: feed })}
-                      setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                        this.setState({
-                          postsFilter: {
-                            requiredTags: requiredTags,
-                            forbiddenTagsByMe: forbiddenTagsByMe,
-                          },
-                        })
-                      }
-                      feedSubtext={feedSubtext}
-                    />
-                    <PostsFeed
-                      posts={posts}
-                      isUnseenFeed={this.state.feed === FEED.UNSEEN}
-                    />
-                  </>
-                )}
-              </>
+              <FeedNav
+                currentFeed={this.state.feed}
+                setFeed={(feed) => this.setState({ feed: feed })}
+                setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                  this.setState({
+                    postsFilter: {
+                      requiredTags: requiredTags,
+                      forbiddenTagsByMe: forbiddenTagsByMe,
+                    },
+                  })
+                }
+                feedSubtext={feedSubtext}
+              />
+              <PostsFeed
+                posts={posts}
+                isUnseenFeed={this.state.feed === FEED.UNSEEN}
+              />
             </>
           )}
         </Col>
