@@ -15,7 +15,9 @@ export const FEED = Object.freeze({
 
 export const getFollowingFeed = ({ posts, userFollowingUids }) => {
   return [
-    posts.filter((post) => userFollowingUids.includes(post.userId)),
+    posts.filter(
+      (post) => userFollowingUids && userFollowingUids.includes(post.userId)
+    ),
     'All recent posts from only users you follow',
   ];
 };
