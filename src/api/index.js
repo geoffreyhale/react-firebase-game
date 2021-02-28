@@ -332,9 +332,11 @@ export const getUsersRealtimeDatabase = (callback) => {
   });
 };
 
-export const updateUser = ({ uid, user }, then) => {
-  db.collection('users').doc(uid).set(user, { merge: true });
-  then();
+export const updateUser = ({ uid, user }, callback) => {
+  db.collection('users')
+    .doc(uid)
+    .set(user, { merge: true })
+    .then(callback && typeof callback === 'function' && callback());
 };
 
 export const updateUsername = ({ uid, username }, callback) => {
