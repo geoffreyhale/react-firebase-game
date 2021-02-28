@@ -275,7 +275,8 @@ export const getUser = (uid, callback) => {
             callback(mergedUser);
           });
       } else {
-        console.error('User not found! uid: ', uid);
+        console.warn('User not found! uid: ', uid);
+        callback();
       }
     });
 };
