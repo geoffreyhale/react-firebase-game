@@ -10,7 +10,15 @@ export const FEED = Object.freeze({
   HOT: 'hot',
   POPULAR: 'popular',
   UNSEEN: 'unseen',
+  FOLLOWING: 'following',
 });
+
+export const getFollowingFeed = ({ posts, userFollowingUids }) => {
+  return [
+    posts.filter((post) => userFollowingUids.includes(post.userId)),
+    'All recent posts from only users you follow',
+  ];
+};
 
 export const hotScore = ({ post }) => {
   if (
@@ -193,6 +201,17 @@ export const FeedNav = ({
   return (
     <div className="mb-3">
       <Nav variant="tabs" className="justify-content-center mt-2">
+        <Nav.Item>
+          <Nav.Link
+            active={currentFeed === FEED.FOLLOWING}
+            onClick={() => {
+              setFeed(FEED.FOLLOWING);
+              setPostsFilter([], []);
+            }}
+          >
+            Following
+          </Nav.Link>
+        </Nav.Item>
         <Nav.Item>
           <Nav.Link
             active={currentFeed === FEED.HOT}

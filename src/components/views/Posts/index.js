@@ -13,11 +13,11 @@ import {
   FEED,
   FeedNav,
   getFeedFilterByTags,
+  getFollowingFeed,
   getHotFeed,
   getPopularFeed,
   getUnseenFeed,
 } from './Feed';
-import { isLurker, LURKER, NoLurking } from './Lurking';
 import { PremiumFeature, PremiumSaleCard } from '../../shared/Premium';
 import Mosaic from '../Community/Mosaic';
 import Modality from '../../shared/Modalities';
@@ -138,6 +138,12 @@ class Posts extends Component {
           post = null; // not found
         }
       } else {
+        if (this.state.feed === FEED.FOLLOWING) {
+          [posts, feedSubtext] = getFollowingFeed({
+            posts,
+            userFollowingUids: this.user().following,
+          });
+        }
         if (this.state.feed === FEED.UNSEEN) {
           [posts, feedSubtext] = getUnseenFeed({
             flatPostsArray,
