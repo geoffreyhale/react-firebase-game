@@ -198,64 +198,44 @@ export const FeedNav = ({
   feedSubtext,
 }) => {
   const { user } = useContext(AppContext);
+  const navItemData = [
+    {
+      title: 'Following',
+      feed: FEED.FOLLOWING,
+    },
+    {
+      title: 'Hot',
+      feed: FEED.HOT,
+    },
+    {
+      title: 'Upvotes',
+      feed: FEED.POPULAR,
+    },
+    {
+      title: 'Unseen',
+      feed: FEED.UNSEEN,
+    },
+    {
+      title: 'All',
+      feed: FEED.ALL,
+    },
+  ];
   return (
     <div className="mb-3">
       <Nav variant="tabs" className="justify-content-center mt-2">
-        <Nav.Item>
-          <Nav.Link
-            active={currentFeed === FEED.FOLLOWING}
-            onClick={() => {
-              setFeed(FEED.FOLLOWING);
-              setPostsFilter([], []);
-            }}
-          >
-            Following
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            active={currentFeed === FEED.HOT}
-            onClick={() => {
-              setFeed(FEED.HOT);
-              setPostsFilter([], []);
-            }}
-          >
-            Hot
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            active={currentFeed === FEED.POPULAR}
-            onClick={() => {
-              setFeed(FEED.POPULAR);
-              setPostsFilter([], []);
-            }}
-          >
-            Upvotes
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            active={currentFeed === FEED.UNSEEN}
-            onClick={() => {
-              setFeed(FEED.UNSEEN);
-              setPostsFilter([], []);
-            }}
-          >
-            Unseen
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
-            active={currentFeed === FEED.ALL}
-            onClick={() => {
-              setFeed(FEED.ALL);
-              setPostsFilter([], []);
-            }}
-          >
-            All
-          </Nav.Link>
-        </Nav.Item>
+        {navItemData.map((item) => (
+          <Nav.Item key={item.title}>
+            <Nav.Link
+              active={currentFeed === item.feed}
+              onClick={() => {
+                setFeed(item.feed);
+                setPostsFilter(item.filters);
+              }}
+            >
+              {item.title}
+            </Nav.Link>
+          </Nav.Item>
+        ))}
         {user.admin && (
           <Nav.Item>
             <Nav.Link
