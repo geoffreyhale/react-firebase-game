@@ -3,12 +3,13 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { BrowserRouter } from 'react-router-dom';
-import firebase, { auth, provider } from '../firebase.js';
+import firebase, { auth } from '../firebase.js';
 import Routes from '../Routes';
 import AppProvider from '../AppProvider';
-import { getUser, getUsers, updateUser } from '../../api/index';
+import { getUser, getUsers } from '../../api/index';
 import Spinner from '../shared/Spinner';
 import AppHeader from './AppHeader';
+import { login as userAuthLogin } from './userAuth';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
@@ -80,26 +81,9 @@ class App extends Component {
       }
     });
   }
-  //TODO move to UserAuth
   login() {
-    auth.signInWithPopup(provider).then((result) => {
-      const authUser = result.user;
-      updateUser(
-        {
-          uid: authUser.uid,
-          user: {
-            displayName: authUser.displayName,
-            email: authUser.email,
-            photoURL: authUser.photoURL,
-            joined: new Date(parseInt(authUser.metadata.a)),
-            lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-          },
-        },
-        () =>
-          getUser(authUser.uid, (user) => {
-            this.setState({ loading: false, user });
-          })
-      );
+    userAuthLogin((user) => {
+      this.setState({ loading: false, user });
     });
   }
   //TODO move to UserAuth
@@ -109,6 +93,7 @@ class App extends Component {
         user: null,
       });
     });
+    //TODO redirect to home
   }
   render() {
     return (
