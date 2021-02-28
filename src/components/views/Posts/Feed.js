@@ -200,12 +200,16 @@ export const FeedNav = ({
   const { user } = useContext(AppContext);
   const navItemData = [
     {
+      title: 'Hot',
+      feed: FEED.HOT,
+    },
+    {
       title: 'Following',
       feed: FEED.FOLLOWING,
     },
     {
-      title: 'Hot',
-      feed: FEED.HOT,
+      title: 'All',
+      feed: FEED.ALL,
     },
     {
       title: 'Upvotes',
@@ -214,10 +218,6 @@ export const FeedNav = ({
     {
       title: 'Unseen',
       feed: FEED.UNSEEN,
-    },
-    {
-      title: 'All',
-      feed: FEED.ALL,
     },
   ];
   return (
