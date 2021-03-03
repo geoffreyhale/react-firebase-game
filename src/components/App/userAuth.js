@@ -1,18 +1,20 @@
-import { createPost, getUser, updateUser } from '../../api';
+import { getUser, processInviteCode, updateUser } from '../../api';
 import firebase, { auth, provider } from '../firebase.js';
 
-//TODO
-const doNewUserStuff = ({ uid }) => {
-  // createPost({
-  //   content: 'This post was auto-generated the first time I ever logged in.',
-  //   uid,
-  //   room: 'general',
-  // });
+//TODO oof, tests ?
+const handleInviteCodeStuff = ({ uid }) => {
+  const localStorageKey = 'inviteCode';
+  const inviteCode = window.localStorage.getItem(localStorageKey);
+  inviteCode &&
+    processInviteCode(
+      { uid, inviteCode },
+      window.localStorage.removeItem(localStorageKey)
+    );
 };
 
 export const login = (callback) => {
   auth.signInWithPopup(provider).then((result) => {
-    // even if is new user, is already created in authorization db by here
+    // even if this is a new user, result.user is already created in authorization db by here
     const {
       displayName,
       email,
@@ -23,29 +25,31 @@ export const login = (callback) => {
 
     // does user exist yet in firestore users ?
     getUser(uid, (user) => {
-      // TODO if uid does not exist in firestore users, create it and do newbie announcement stuff
-      if (!user) {
-        doNewUserStuff({ uid });
+      const isNewUser = !user;
+
+      // this creates or updates the firestore user
+      updateUser(
+        {
+          uid,
+          user: {
+            displayName,
+            email,
+            photoURL,
+            joined: new Date(parseInt(creationTimestamp)),
+            lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+          },
+        },
+        () =>
+          getUser(uid, (user) => {
+            callback && typeof callback === 'function' && callback(user);
+          })
+      );
+
+      if (isNewUser) {
+        handleInviteCodeStuff({ uid });
+        //TODO newbie announcement and other new user stuff
       }
     });
-
-    // this creates or updates firestore users
-    updateUser(
-      {
-        uid,
-        user: {
-          displayName,
-          email,
-          photoURL,
-          joined: new Date(parseInt(creationTimestamp)),
-          lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
-        },
-      },
-      () =>
-        getUser(uid, (user) => {
-          callback && typeof callback === 'function' && callback(user);
-        })
-    );
   });
 };
 
