@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -11,6 +11,7 @@ import altFamilyImg from './alt-family-bed-child-laptop 640.jpg';
 import friendsPhoneImg from './three-diverse-friends-phone-happy 640.jpg';
 import glassesGirlImg from './green-girl-glasses-phone 640.jpg';
 import olderCoupleImg from './older-mixed-couple-phone-happy 640.jpg';
+import { getInviteCodeFromLocationSearchString } from '../../shared/inviteCode';
 
 import './LandingPage.css';
 
@@ -176,10 +177,17 @@ const BetterLandingPageContent = ({ login }) => (
   </>
 );
 
-const LandingPage = ({ login }) => (
-  <>
-    <BetterLandingPageContent login={login} />
-    {/* <Card className="mt-1">
+const LandingPage = ({ login }) => {
+  const location = useLocation();
+  const inviteCode = getInviteCodeFromLocationSearchString(location.search);
+  if (inviteCode) {
+    window.localStorage.setItem('inviteCode', inviteCode);
+  }
+
+  return (
+    <>
+      <BetterLandingPageContent login={login} />
+      {/* <Card className="mt-1">
       <Card.Body
         style={{
           paddingBottom: '0.25rem',
@@ -197,7 +205,7 @@ const LandingPage = ({ login }) => (
         </div>
       </Card.Body>
     </Card> */}
-    {/* <div className="mt-3">
+      {/* <div className="mt-3">
       <About />
     </div>
     <Row>
@@ -217,6 +225,7 @@ const LandingPage = ({ login }) => (
       </Col>
       <Col></Col>
     </Row> */}
-  </>
-);
+    </>
+  );
+};
 export default LandingPage;
