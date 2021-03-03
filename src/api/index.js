@@ -12,6 +12,48 @@ const upvoteUserRef = ({ postId, uid }) =>
 const upvoteRef = ({ postId }) =>
   firebase.database().ref('posts/' + postId + '/upvote');
 
+export const createInviteCode = ({ uid }, callback) => {
+  const newInviteCodeRef = db.collection('inviteCodes').doc();
+  const result = newInviteCodeRef
+    .set({ uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
+};
+
+export const getInviteCodes = ({ uid }, callback) => {
+  const inviteCodes = {};
+  db.collection('inviteCodes')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const inviteCode = doc.data();
+        if (inviteCode.uid === uid) {
+          const uniqueKey = doc.id;
+          inviteCodes[uniqueKey] = inviteCode;
+          inviteCodes[uniqueKey].id = uniqueKey;
+        }
+      });
+      callback(inviteCodes);
+    });
+};
+
+export const processInviteCode = ({ uid, inviteCode }, callback) => {
+  const inviteCodeRef = db.collection('inviteCodes').doc(inviteCode);
+  //1. does valid inviteCode exist, get source uid
+  inviteCodeRef.get().then((doc) => {
+    if (doc.exists) {
+      //2. update user w invitedBy source uid
+      console.log(doc.data().uid);
+      updateUser({ uid, user: { invitedBy: doc.data().uid } }, (data) => {
+        //3. delete invite code
+        inviteCodeRef.delete();
+        callback && typeof callback === 'function' && callback(data);
+      });
+    }
+  });
+};
+
 export const getEvent = ({ eventId }, callback) => {
   db.collection('events')
     .doc(eventId)
