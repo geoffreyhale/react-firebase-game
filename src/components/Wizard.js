@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
 import friendlyTimestamp from './shared/friendlyTimestamp';
-import { GetPremium } from './shared/Premium';
+import { HowToGetPremium } from './shared/Premium';
 import Spinner from './shared/Spinner';
 
 const HOURS_DELAY_FOR_TRAINING_AGAIN = 3;
@@ -21,7 +21,7 @@ const ITEMS = {
   getPremium: {
     linkTo: '/r/general',
     title: 'Get Premium',
-    description: () => <GetPremium />,
+    description: () => <HowToGetPremium />,
   },
   mostRecentModalityPostTimestamp: {
     linkTo: '/training',

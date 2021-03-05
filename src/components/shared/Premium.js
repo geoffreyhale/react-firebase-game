@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 
-export const GetPremium = () => (
+export const HowToGetPremium = () => (
   <>
     Ask in <Link to="/r/general">r/general</Link> how to get premium.
   </>
@@ -35,7 +35,7 @@ export const PremiumSaleCard = () => {
           <li>Remove this ad</li>
         </ul>
         <p>
-          <GetPremium />
+          <HowToGetPremium />
         </p>
       </Card.Body>
     </Card>
@@ -51,7 +51,7 @@ export const PremiumFeature = ({ featureName }) => (
         feature.
       </p>
       <p>
-        <GetPremium />
+        <HowToGetPremium />
       </p>
     </Card.Body>
   </Card>
