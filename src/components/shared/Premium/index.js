@@ -33,7 +33,12 @@ export const PremiumSaleCard = () => {
       Math.floor(Math.random() * premiumSaleCardVariants.length)
     ];
   return (
-    <Card className="mb-3" bg={randomPremiumSaleCardVariant} text="white">
+    <Card
+      className="mb-3"
+      bg={randomPremiumSaleCardVariant}
+      text="white"
+      style={{ display: 'inline-block' }}
+    >
       <Card.Body>
         <Card.Title>Premium Sale &#11088;</Card.Title>
         <h5>Features</h5>
