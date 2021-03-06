@@ -7,6 +7,7 @@ service cloud.firestore {
     match /accounting/{recordId} {
       allow read: if get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin == true
       allow write: if false;
+      allow create: if request.auth != null; //TODO tests
     }
     match /users/{userId} {
       allow read: if true; //TODO restrict this
