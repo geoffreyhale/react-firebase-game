@@ -18,6 +18,7 @@ import Scorekeeper from './views/Scorekeeper';
 import Settings from './views/Settings';
 import Training from './views/Training';
 import UserProfile from './views/UserProfile';
+import PremiumPage from './views/Premium';
 
 const Routes = ({ login }) => {
   const { user } = useContext(AppContext);
@@ -156,6 +157,15 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Settings | xBook">
               <Settings {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/premium"
+          key="/premium"
+          render={(props) => (
+            <Page title="Premium | xBook">
+              <PremiumPage {...props} />
             </Page>
           )}
         />,
