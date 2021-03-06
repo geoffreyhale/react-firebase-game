@@ -36,7 +36,7 @@ const Accounting = ({ accounting }) => {
         <Table>
           <thead>
             <tr>
-              {/* <th>id</th> */}
+              <th>id</th>
               {/* <th>uid</th> */}
               <th>user</th>
               <th>usd</th>
@@ -50,7 +50,7 @@ const Accounting = ({ accounting }) => {
               .sort((a, b) => b.timestamp?.seconds - a.timestamp?.seconds)
               .map((a) => (
                 <tr key={a.id}>
-                  {/* <td>{a.id}</td> */}
+                  <td>{a.id}</td>
                   {/* <td>{a.uid}</td> */}
                   <td>
                     <User uid={a.uid} displayName={users[a.uid]?.displayName} />
@@ -64,7 +64,7 @@ const Accounting = ({ accounting }) => {
           </tbody>
           <tfoot>
             <tr>
-              {/* <td></td> */}
+              <td></td>
               {/* <td></td> */}
               <td></td>
               <td>${totalUsd({ accounting })}</td>
