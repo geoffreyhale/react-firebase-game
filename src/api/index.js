@@ -367,6 +367,27 @@ export const getAccounting = (callback) => {
     });
 };
 
+export const createAccounting = (
+  { notes, orderID, payerID, type, uid, usd, via },
+  callback
+) => {
+  db.collection('accounting')
+    .doc()
+    .set({
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      notes,
+      orderID,
+      payerID,
+      type,
+      uid,
+      usd,
+      via,
+    })
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
+};
+
 export const getUsers = (callback) => {
   const users = {};
   db.collection('users')
