@@ -39,34 +39,39 @@ const InviteCodes = () => {
             </tr>
           </thead>
           <tbody>
-            {Object.values(inviteCodes).map((inviteCode) => (
-              <tr key={inviteCode.id}>
-                <td>
-                  <Link to={`/?inviteCode=${inviteCode.id}`}>
-                    {window.location.host}/?inviteCode={inviteCode.id}
-                  </Link>
-                </td>
-                {/* <td>{inviteCode.id}</td> */}
-                <td>
-                  {inviteCode.createdAt &&
-                    friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
-                </td>
-                <td>
-                  <Button
-                    onClick={() => {
-                      setLoading(true);
-                      deleteInviteCode({ inviteCodeId: inviteCode.id }, () => {
-                        history.go(0);
-                      });
-                    }}
-                    variant="link"
-                    style={{ color: 'red' }}
-                  >
-                    delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
+            {Object.values(inviteCodes)
+              .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+              .map((inviteCode) => (
+                <tr key={inviteCode.id}>
+                  <td>
+                    <Link to={`/?inviteCode=${inviteCode.id}`}>
+                      {window.location.host}/?inviteCode={inviteCode.id}
+                    </Link>
+                  </td>
+                  {/* <td>{inviteCode.id}</td> */}
+                  <td>
+                    {inviteCode.createdAt &&
+                      friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
+                  </td>
+                  <td>
+                    <Button
+                      onClick={() => {
+                        setLoading(true);
+                        deleteInviteCode(
+                          { inviteCodeId: inviteCode.id },
+                          () => {
+                            history.go(0);
+                          }
+                        );
+                      }}
+                      variant="link"
+                      style={{ color: 'red' }}
+                    >
+                      delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
         <Button
