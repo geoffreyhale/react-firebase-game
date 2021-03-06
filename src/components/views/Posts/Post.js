@@ -15,6 +15,7 @@ import { UserPhoto } from '../../shared/User';
 import MarkAsSeenButton from './MarkAsSeenButton';
 import { Upvote } from './PostVote';
 import { ModalityVotingBooth } from '../../shared/Modalities';
+import { jankyCopyToClipboard } from '../../shared/copyToClipboard';
 
 import './post.css';
 
@@ -403,8 +404,7 @@ const Post = ({
                 </PostMenuBarItem>
                 <PostMenuBarItem
                   onClick={() =>
-                    window.prompt(
-                      'Copy to clipboard: Ctrl+C, Enter',
+                    jankyCopyToClipboard(
                       postLink({ id: post.id, room: hackRoom }, true)
                     )
                   }
