@@ -23,6 +23,9 @@ const AccountDropdownMenu = ({ logout }) => {
         <Dropdown.Item as={Link} to="/settings">
           Settings
         </Dropdown.Item>
+        <Dropdown.Item as={Link} to="/invitecodes">
+          Invite Codes
+        </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item as={Link} to="/donate">
           Donate

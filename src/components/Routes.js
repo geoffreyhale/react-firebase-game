@@ -18,6 +18,7 @@ import Scorekeeper from './views/Scorekeeper';
 import Settings from './views/Settings';
 import Training from './views/Training';
 import UserProfile from './views/UserProfile';
+import InviteCodes from './views/InviteCodes';
 import PremiumPage from './views/Premium';
 
 const Routes = ({ login }) => {
@@ -148,6 +149,15 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Donate | xBook">
               <Donate {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/invitecodes"
+          key="/invitecodes"
+          render={(props) => (
+            <Page title="Invite Codes | xBook">
+              <InviteCodes {...props} />
             </Page>
           )}
         />,
