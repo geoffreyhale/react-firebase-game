@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
-import { PremiumSaleCard } from '../../shared/Premium';
 import { AppContext } from '../../AppProvider';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import PayPal from './PayPal';
 
 const UserPremium = () => {
   const { user } = useContext(AppContext);
@@ -30,6 +30,9 @@ const PremiumPage = () => {
             <UserPremium />
           </Card.Body>
         </Card>
+        <div className="mt-3">
+          <PayPal />
+        </div>
       </Card.Body>
     </Card>
   );
