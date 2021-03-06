@@ -9,6 +9,7 @@ export const elapsedDuration = ({ timestamp }) => {
 };
 
 //TODO write tests for this function
+//TODO returns react component, should be capitalized
 const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
   if (!timestamp) {
     return;
