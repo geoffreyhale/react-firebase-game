@@ -29,6 +29,17 @@ const InviteCodes = () => {
     <Card className="mt-3">
       <Card.Header>Invite Codes</Card.Header>
       <Card.Body>
+        <Button
+          className="mb-3"
+          onClick={() => {
+            setLoading(true);
+            createInviteCode({ uid }, () => {
+              history.go(0);
+            });
+          }}
+        >
+          Create New Single-Use Invite Code
+        </Button>
         <Table>
           <thead>
             <tr>
@@ -74,16 +85,6 @@ const InviteCodes = () => {
               ))}
           </tbody>
         </Table>
-        <Button
-          onClick={() => {
-            setLoading(true);
-            createInviteCode({ uid }, () => {
-              history.go(0);
-            });
-          }}
-        >
-          Create New Single-Use Invite Code
-        </Button>
       </Card.Body>
     </Card>
   );
