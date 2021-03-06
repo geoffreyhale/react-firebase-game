@@ -414,7 +414,9 @@ export const updateUser = ({ uid, user }, callback) => {
   db.collection('users')
     .doc(uid)
     .set(user, { merge: true })
-    .then(callback && typeof callback === 'function' && callback());
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
 };
 
 export const updateUsername = ({ uid, username }, callback) => {
