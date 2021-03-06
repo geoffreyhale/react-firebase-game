@@ -40,7 +40,7 @@ const InviteCodes = () => {
           </thead>
           <tbody>
             {Object.values(inviteCodes).map((inviteCode) => (
-              <tr>
+              <tr key={inviteCode.id}>
                 <td>
                   <Link to={`/?inviteCode=${inviteCode.id}`}>
                     {window.location.host}/?inviteCode={inviteCode.id}
