@@ -44,7 +44,6 @@ export const processInviteCode = ({ uid, inviteCode }, callback) => {
   inviteCodeRef.get().then((doc) => {
     if (doc.exists) {
       //2. update user w invitedBy source uid
-      console.log(doc.data().uid);
       updateUser({ uid, user: { invitedBy: doc.data().uid } }, (data) => {
         //3. delete invite code
         inviteCodeRef.delete();
@@ -52,6 +51,15 @@ export const processInviteCode = ({ uid, inviteCode }, callback) => {
       });
     }
   });
+};
+
+export const deleteInviteCode = ({ inviteCodeId }, callback) => {
+  db.collection('inviteCodes')
+    .doc(inviteCodeId)
+    .delete()
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
 };
 
 export const getEvent = ({ eventId }, callback) => {
