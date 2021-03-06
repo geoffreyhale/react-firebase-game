@@ -1,3 +1,5 @@
+import addYears from 'date-fns/addYears';
+import toDate from 'date-fns/toDate';
 import firebase, { db } from '../components/firebase.js';
 import { isPremium } from '../components/shared/User';
 
@@ -453,6 +455,22 @@ export const updateUsername = ({ uid, username }, callback) => {
       callback(false);
     }
   });
+};
+
+export const addOneYearPremium = ({ uid }, callback) => {
+  db.collection('users')
+    .doc(uid)
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        const user = doc.data();
+        const baseDate = isPremium({ premium: user.premium })
+          ? toDate(user.premium.seconds * 1000)
+          : new Date();
+        const newPremiumExpiryDate = addYears(baseDate, 1);
+        updateUser({ uid, user: { premium: newPremiumExpiryDate } }, callback);
+      }
+    });
 };
 
 export const toggleUpvote = ({ postId, uid }) => {
