@@ -8,7 +8,7 @@ import friendlyTimestamp from '../../shared/friendlyTimestamp';
 import MyDropdownToggle from '../../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../../AppProvider';
-import PostLink from '../../shared/PostLink';
+import PostLink, { postLink } from '../../shared/PostLink';
 import Tag from '../../shared/Tag';
 import { addTag, createPost, deletePost, editPost } from '../../../api/index';
 import { UserPhoto } from '../../shared/User';
@@ -400,6 +400,16 @@ const Post = ({
                   active={!replyFormCollapsed}
                 >
                   Reply
+                </PostMenuBarItem>
+                <PostMenuBarItem
+                  onClick={() =>
+                    window.prompt(
+                      'Copy to clipboard: Ctrl+C, Enter',
+                      postLink({ id: post.id, room: hackRoom }, true)
+                    )
+                  }
+                >
+                  Share
                 </PostMenuBarItem>
                 <PostMenuBarItem
                   onClick={() => setContentCollapsed(!contentCollapsed)}
