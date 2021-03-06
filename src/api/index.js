@@ -376,7 +376,7 @@ export const createAccounting = (
   db.collection('accounting')
     .doc()
     .set({
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       notes,
       orderID,
       payerID,

@@ -4,17 +4,18 @@ import { withRouter } from 'react-router-dom';
 import { addOneYearPremium, createAccounting } from '../../../api';
 import { AppContext } from '../../AppProvider';
 
-const amountValue = '30.00';
+const defaultAmountUsd = 30;
 
-const handleOnApprove = ({ data, uid }, callback) => {
+const handleOnApprove = ({ data, uid, amountUsd }, callback) => {
   const { orderID, payerID } = data;
 
+  //TODO usd does not include paypal fees
   createAccounting({
-    notes: 'onsite paypal',
+    notes: '12 months premium (usd does not include paypal fees)',
     type: 'premium',
     uid,
-    usd: parseInt(amountValue),
-    via: 'paypal',
+    usd: parseInt(amountUsd),
+    via: 'paypal (onsite)',
     orderID,
     payerID,
   });
@@ -40,7 +41,7 @@ class PayPal extends React.Component {
       purchase_units: [
         {
           amount: {
-            value: amountValue,
+            value: defaultAmountUsd,
           },
         },
       ],
@@ -48,18 +49,25 @@ class PayPal extends React.Component {
   }
 
   onApprove(data, actions) {
-    handleOnApprove({ data, uid: this.user().uid }, () => {
-      this.props.history.go(0);
-    });
+    handleOnApprove(
+      { amountUsd: defaultAmountUsd, data, uid: this.user().uid },
+      () => {
+        this.props.history.go(0);
+      }
+    );
     return actions.order.capture();
   }
 
+  // TODO clarify that purchase will add 1 year to existing expiry if exists
   render() {
     return (
-      <PayPalButton
-        createOrder={(data, actions) => this.createOrder(data, actions)}
-        onApprove={(data, actions) => this.onApprove(data, actions)}
-      />
+      <>
+        <div>Purchasing: ${defaultAmountUsd} for 1 Year Premium</div>
+        <PayPalButton
+          createOrder={(data, actions) => this.createOrder(data, actions)}
+          onApprove={(data, actions) => this.onApprove(data, actions)}
+        />
+      </>
     );
   }
 }
