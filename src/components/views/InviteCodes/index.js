@@ -3,7 +3,11 @@ import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { createInviteCode, getInviteCodes } from '../../../api';
+import {
+  createInviteCode,
+  deleteInviteCode,
+  getInviteCodes,
+} from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
@@ -31,6 +35,7 @@ const InviteCodes = () => {
               <th>Link</th>
               {/* <th>Invite Code</th> */}
               <th>Created At</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +50,20 @@ const InviteCodes = () => {
                 <td>
                   {inviteCode.createdAt &&
                     friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
+                </td>
+                <td>
+                  <Button
+                    onClick={() => {
+                      setLoading(true);
+                      deleteInviteCode({ inviteCodeId: inviteCode.id }, () => {
+                        history.go(0);
+                      });
+                    }}
+                    variant="link"
+                    style={{ color: 'red' }}
+                  >
+                    delete
+                  </Button>
                 </td>
               </tr>
             ))}
