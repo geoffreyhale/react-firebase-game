@@ -1,5 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
-const HowToGetPremium = () => <Link to="/premium">Get Premium</Link>;
+const HowToGetPremium = () => {
+  const location = useLocation();
+  const active = location.pathname.startsWith('/premium');
+  return (
+    <NavLink to="/premium" active={active.toString()}>
+      Get Premium
+    </NavLink>
+  );
+};
 export default HowToGetPremium;
