@@ -6,6 +6,15 @@ import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import { User } from '../../shared/User';
 
+const AccountingLink = ({ id }) => (
+  <a
+    href={`https://console.firebase.google.com/u/0/project/react-firebase-2020-aecbd/firestore/data~2Faccounting~2F${id}`}
+    target="_blank"
+  >
+    {id}
+  </a>
+);
+
 const totalUsd = ({ accounting }) =>
   Object.values(accounting).reduce((totalUsd, a) => totalUsd + a.usd, 0);
 
@@ -50,7 +59,9 @@ const Accounting = ({ accounting }) => {
               .sort((a, b) => b.timestamp?.seconds - a.timestamp?.seconds)
               .map((a) => (
                 <tr key={a.id}>
-                  <td>{a.id}</td>
+                  <td>
+                    <AccountingLink id={a.id} />
+                  </td>
                   {/* <td>{a.uid}</td> */}
                   <td>
                     <User uid={a.uid} displayName={users[a.uid]?.displayName} />
