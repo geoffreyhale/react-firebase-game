@@ -4,11 +4,11 @@ import HowToGetPremium from './HowToGetPremium';
 
 export const PremiumSaleCard = () => {
   const premiumSaleCardVariants = [
+    'primary',
     'success',
     'danger',
     'warning',
     'info',
-    'dark',
   ];
   const randomPremiumSaleCardVariant =
     premiumSaleCardVariants[
@@ -17,8 +17,8 @@ export const PremiumSaleCard = () => {
   return (
     <Card
       className="mb-3"
-      bg={randomPremiumSaleCardVariant}
-      text="white"
+      bg="light"
+      border={randomPremiumSaleCardVariant}
       style={{ display: 'inline-block' }}
     >
       <Card.Body>
