@@ -1,6 +1,11 @@
 import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 
+export const yearMonthDay = (timestampMilliseconds) =>
+  timestampMilliseconds &&
+  typeof timestampMilliseconds === 'number' &&
+  format(new Date(timestampMilliseconds), 'yyyy-MM-dd');
+
 export const elapsedDuration = ({ timestamp }) => {
   return intervalToDuration({
     start: new Date(timestamp),
