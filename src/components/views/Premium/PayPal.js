@@ -1,10 +1,32 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
 import { addOneYearPremium, createAccounting } from '../../../api';
 import { AppContext } from '../../AppProvider';
 
+const payPalCssMaxWidth = 750;
+
 const defaultAmountUsd = 30;
+
+const ShoppingCart = () => (
+  <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
+    <Card border="primary">
+      <Card.Body>
+        <FontAwesomeIcon icon={faShoppingCart} className="mr-3" />+ 1 Year
+        Premium
+        <span className="float-right">${defaultAmountUsd}</span>
+      </Card.Body>
+    </Card>
+    <Card border="light">
+      <Card.Body>
+        <strong className="float-right">Total: ${defaultAmountUsd}</strong>
+      </Card.Body>
+    </Card>
+  </div>
+);
 
 const handleOnApprove = ({ data, uid, amountUsd }, callback) => {
   const { orderID, payerID } = data;
@@ -62,7 +84,7 @@ class PayPal extends React.Component {
   render() {
     return (
       <>
-        <div>Purchasing: ${defaultAmountUsd} for 1 Year Premium</div>
+        <ShoppingCart />
         <PayPalButton
           createOrder={(data, actions) => this.createOrder(data, actions)}
           onApprove={(data, actions) => this.onApprove(data, actions)}
