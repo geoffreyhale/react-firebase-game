@@ -52,7 +52,7 @@ const TopRightMenuItem = ({ children }) => (
   </div>
 );
 export const TopRightMenu = ({ login, logout }) => {
-  const { user, toggleShowWizard } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   if (user) {
     return (
       <div className="float-right">
@@ -86,12 +86,6 @@ export const TopRightMenu = ({ login, logout }) => {
 };
 
 const AppHeaderTitle = () => {
-  // const taglines = [
-  //   <em>better together &#128149;</em>,
-  //   <em>healthy relating &#128149;</em>,
-  // ];
-  // const randomTagline = taglines[Math.floor(Math.random() * taglines.length)];
-
   return (
     <h1 style={{ display: 'inline-block', marginBottom: 0 }}>
       <Link
