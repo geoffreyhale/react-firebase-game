@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
 import friendlyTimestamp from './shared/friendlyTimestamp';
-import { HowToGetPremium } from './shared/Premium';
+import HowToGetPremium from './shared/Premium/HowToGetPremium';
 import Spinner from './shared/Spinner';
 
 const HOURS_DELAY_FOR_TRAINING_AGAIN = 3;
