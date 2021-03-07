@@ -46,11 +46,10 @@ const Accounting = ({ accounting }) => {
           <thead>
             <tr>
               <th>id</th>
-              {/* <th>uid</th> */}
+              <th>timestamp</th>
               <th>user</th>
               <th>usd</th>
               <th>via</th>
-              <th>timestamp</th>
               <th>notes</th>
             </tr>
           </thead>
@@ -62,13 +61,12 @@ const Accounting = ({ accounting }) => {
                   <td>
                     <AccountingLink id={a.id} />
                   </td>
-                  {/* <td>{a.uid}</td> */}
+                  <td>{friendlyTimestamp(a.timestamp?.seconds * 1000)}</td>
                   <td>
                     <User uid={a.uid} displayName={users[a.uid]?.displayName} />
                   </td>
                   <td>${a.usd}</td>
                   <td>{a.via}</td>
-                  <td>{friendlyTimestamp(a.timestamp?.seconds * 1000)}</td>
                   <td>{a.notes}</td>
                 </tr>
               ))}
@@ -76,10 +74,9 @@ const Accounting = ({ accounting }) => {
           <tfoot>
             <tr>
               <td></td>
-              {/* <td></td> */}
+              <td></td>
               <td></td>
               <td>${totalUsd({ accounting })}</td>
-              <td></td>
               <td></td>
               <td></td>
             </tr>
