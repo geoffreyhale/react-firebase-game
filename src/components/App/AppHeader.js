@@ -10,6 +10,7 @@ import { AppContext } from '../AppProvider';
 import { UserPhoto } from '../shared/User';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import Wizard from '../Wizard';
+import HowToGetPremium from '../shared/Premium/HowToGetPremium';
 
 const AccountDropdownMenu = ({ logout }) => {
   const { user } = useContext(AppContext);
@@ -55,6 +56,11 @@ export const TopRightMenu = ({ login, logout }) => {
   if (user) {
     return (
       <div className="float-right">
+        {!user.isPremium && (
+          <TopRightMenuItem>
+            <HowToGetPremium />
+          </TopRightMenuItem>
+        )}
         <TopRightMenuItem>
           <UserPhoto uid={user.uid} />
         </TopRightMenuItem>
