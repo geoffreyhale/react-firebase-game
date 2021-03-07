@@ -47,8 +47,9 @@ const Accounting = ({ accounting }) => {
             <tr>
               <th>id</th>
               <th>timestamp</th>
-              <th>user</th>
+              <th>description</th>
               <th>usd</th>
+              <th>user</th>
               <th>via</th>
               <th>notes</th>
             </tr>
@@ -64,10 +65,11 @@ const Accounting = ({ accounting }) => {
                   <td style={{ whiteSpace: 'nowrap' }}>
                     {yearMonthDay(a.timestamp?.seconds * 1000)}
                   </td>
+                  <td>{a.description}</td>
+                  <td>${a.usd}</td>
                   <td>
                     <User uid={a.uid} displayName={users[a.uid]?.displayName} />
                   </td>
-                  <td>${a.usd}</td>
                   <td>{a.via}</td>
                   <td>{a.notes}</td>
                 </tr>
@@ -79,6 +81,7 @@ const Accounting = ({ accounting }) => {
               <td></td>
               <td></td>
               <td>${totalUsd({ accounting })}</td>
+              <td></td>
               <td></td>
               <td></td>
             </tr>
