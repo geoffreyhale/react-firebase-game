@@ -37,7 +37,9 @@ const EventsPage = () => {
                 return (
                   <tr onClick={() => history.push(url)}>
                     <td>
-                      <Link to={url}>{event.title}</Link>
+                      {/* TODO bug: click text link, click back, url changes to events but page doesn't */}
+                      {/* <Link to={url}>{event.title}</Link> */}
+                      <strong>{event.title}</strong>
                     </td>
                     <td>{event.location}</td>
                   </tr>
