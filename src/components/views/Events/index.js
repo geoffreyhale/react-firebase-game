@@ -2,15 +2,20 @@ import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import { getEvents } from '../../../api';
+import Spinner from '../../shared/Spinner';
 
 const EventsPage = () => {
   const [events, setEvents] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getEvents((events) => {
       setEvents(events);
+      setLoading(false);
     });
   }, []);
+
+  if (loading) return <Spinner />;
 
   return (
     <Card>
