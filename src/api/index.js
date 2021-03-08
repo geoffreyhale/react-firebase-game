@@ -64,6 +64,18 @@ export const deleteInviteCode = ({ inviteCodeId }, callback) => {
     });
 };
 
+export const getEvents = (callback) => {
+  const events = {};
+  db.collection('events')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        events[doc.id] = doc.data();
+        events[doc.id].id = doc.id;
+      });
+      callback(events);
+    });
+};
 export const getEvent = ({ eventId }, callback) => {
   db.collection('events')
     .doc(eventId)
