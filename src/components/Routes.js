@@ -7,6 +7,7 @@ import Admin from './views/Admin';
 import Community from './views/Community';
 import Donate from './views/Donate';
 import Events from './views/Events';
+import EventPage from './views/Events/EventPage';
 import Chess from './views/Games/Chess';
 import IncrementalClickerGame from './views/Games/IncrementalClicker';
 import TicTacToe from './views/Games/TicTacToe';
@@ -130,7 +131,7 @@ const Routes = ({ login }) => {
           path="/events"
           key={location.pathname}
           render={(props) => (
-            <Page title="Event | xBook">
+            <Page title="Events | xBook">
               <Events {...props} />
             </Page>
           )}
@@ -140,7 +141,7 @@ const Routes = ({ login }) => {
           key={location.pathname}
           render={(props) => (
             <Page title="Event | xBook">
-              <Events {...props} />
+              <EventPage {...props} />
             </Page>
           )}
         />,

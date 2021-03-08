@@ -1,27 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
-import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import { getEvents } from '../../../api';
-import { AppContext } from '../../AppProvider';
-import EventPage from './EventPage';
 
-const EventsPage = (props) => {
-  const { user } = useContext(AppContext);
+const EventsPage = () => {
   const [events, setEvents] = useState({});
-  const isSingleEventPage = !!props.match.params.eventId;
 
   useEffect(() => {
-    if (!isSingleEventPage) {
-      getEvents((events) => {
-        setEvents(events);
-      });
-    }
+    getEvents((events) => {
+      setEvents(events);
+    });
   }, []);
-
-  if (isSingleEventPage) {
-    return <EventPage />;
-  }
 
   return (
     <Card>
@@ -33,4 +22,4 @@ const EventsPage = (props) => {
     </Card>
   );
 };
-export default withRouter(EventsPage);
+export default EventsPage;
