@@ -126,6 +126,16 @@ const Routes = ({ login }) => {
           )}
         />,
         <Route
+          exact
+          path="/events"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="Event | xBook">
+              <Events {...props} />
+            </Page>
+          )}
+        />,
+        <Route
           path="/events/:eventId"
           key={location.pathname}
           render={(props) => (
