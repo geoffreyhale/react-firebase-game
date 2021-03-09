@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { useHistory, withRouter } from 'react-router';
 import { getEvent, updateEvent } from '../../../api';
 import { AppContext } from '../../AppProvider';
-import { PremiumFeature } from '../../shared/Premium';
+import HowToGetPremium from '../../shared/Premium/HowToGetPremium';
 import { UserPhoto } from '../../shared/User';
 import { eventTimestamp } from '../../shared/friendlyTimestamp';
 
@@ -26,28 +26,32 @@ const EventPage = (props) => {
   const { eventId } = props.match.params;
 
   useEffect(() => {
-    if (user.isPremium) {
-      getEvent({ eventId }, (event) => {
-        setEvent(event);
-        setTitle(event.title);
-        setLocation(event.location);
-        setDescription(event.description);
-        setUids(event.uids || {});
-      });
-    }
+    getEvent({ eventId }, (event) => {
+      setEvent(event);
+      setTitle(event.title);
+      setLocation(event.location);
+      setDescription(event.description);
+      setUids(event.uids || {});
+    });
   }, [eventId]);
 
-  if (!user.isPremium) {
-    return <PremiumFeature featureName={'Events'} />;
+  if (event.visibility === 'premium' && !user.isPremium) {
+    return (
+      <div>
+        This is a premium event.
+        <br />
+        <HowToGetPremium />
+      </div>
+    );
   }
 
   if (!event.id) {
     return null;
   }
 
-  if (!Object.keys(event.uids).includes(user.uid) && event.uid !== user.uid) {
-    return 'Private Event';
-  }
+  // if (!Object.keys(event.uids).includes(user.uid) && event.uid !== user.uid) {
+  //   return 'Private Event';
+  // }
 
   return (
     <Form
