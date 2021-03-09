@@ -37,6 +37,11 @@ const AppNav = () => {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
+        <Nav.Link as={NavLink} to="/events">
+          Events
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         <Nav.Link as={NavLink} to="/about">
           About
         </Nav.Link>
