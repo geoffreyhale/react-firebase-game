@@ -34,22 +34,26 @@ const EventsPage = () => {
           </thead>
           <tbody>
             {events &&
-              Object.values(events).map((event) => {
-                const url = `/events/${event.id}`;
-                return (
-                  <tr onClick={() => history.push(url)}>
-                    <td>
-                      {event.start && eventTimestamp(event.start.seconds)}
-                    </td>
-                    <td>
-                      {/* TODO bug: click text link, click back, url changes to events but page doesn't */}
-                      {/* <Link to={url}>{event.title}</Link> */}
-                      <strong>{event.title}</strong>
-                    </td>
-                    <td>{event.location}</td>
-                  </tr>
-                );
-              })}
+              Object.values(events)
+                .sort((a, b) => {
+                  return a.start?.seconds - b.start?.seconds;
+                })
+                .map((event) => {
+                  const url = `/events/${event.id}`;
+                  return (
+                    <tr onClick={() => history.push(url)}>
+                      <td>
+                        {event.start && eventTimestamp(event.start.seconds)}
+                      </td>
+                      <td>
+                        {/* TODO bug: click text link, click back, url changes to events but page doesn't */}
+                        {/* <Link to={url}>{event.title}</Link> */}
+                        <strong>{event.title}</strong>
+                      </td>
+                      <td>{event.location}</td>
+                    </tr>
+                  );
+                })}
           </tbody>
         </Table>
       </Card.Body>
