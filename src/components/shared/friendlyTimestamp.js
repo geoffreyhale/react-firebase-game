@@ -1,6 +1,27 @@
 import format from 'date-fns/format';
 import intervalToDuration from 'date-fns/intervalToDuration';
 
+export const eventTimestamp = (
+  startTimestampSeconds,
+  endTimestampSeconds = null
+) => {
+  if (!startTimestampSeconds) return '';
+  const start =
+    startTimestampSeconds &&
+    typeof startTimestampSeconds === 'number' &&
+    format(new Date(startTimestampSeconds * 1000), "EEE, MMM d 'AT' h:mm b");
+  if (!start) return '';
+
+  if (!endTimestampSeconds) return start;
+  const end =
+    endTimestampSeconds &&
+    typeof endTimestampSeconds === 'number' &&
+    format(new Date(endTimestampSeconds * 1000), "EEE, MMM d 'AT' h:mm b");
+  if (!end) return start;
+
+  return `${start} - ${end}`;
+};
+
 export const yearMonthDay = (timestampMilliseconds) =>
   timestampMilliseconds &&
   typeof timestampMilliseconds === 'number' &&
