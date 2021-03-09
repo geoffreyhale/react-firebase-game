@@ -7,6 +7,7 @@ import { getEvent, updateEvent } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import { PremiumFeature } from '../../shared/Premium';
 import { UserPhoto } from '../../shared/User';
+import { eventTimestamp } from '../../shared/friendlyTimestamp';
 
 const FormLabel = ({ children }) => (
   <div className="text-muted small">{children}</div>
@@ -60,6 +61,12 @@ const EventPage = (props) => {
       <Card>
         <Card.Body>
           <div>
+            <div>
+              <small className="text-muted">
+                {event.start &&
+                  eventTimestamp(event.start.seconds, event.end?.seconds)}
+              </small>
+            </div>
             {editMode ? (
               <>
                 <FormLabel>Title</FormLabel>
