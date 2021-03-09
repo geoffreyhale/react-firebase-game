@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { getEvents } from '../../../api';
+import { eventTimestamp } from '../../shared/friendlyTimestamp';
 import Spinner from '../../shared/Spinner';
 
 const EventsPage = () => {
@@ -26,6 +27,7 @@ const EventsPage = () => {
         <Table hover>
           <thead>
             <tr>
+              <th>Start Time</th>
               <th>Title</th>
               <th>Location</th>
             </tr>
@@ -36,6 +38,9 @@ const EventsPage = () => {
                 const url = `/events/${event.id}`;
                 return (
                   <tr onClick={() => history.push(url)}>
+                    <td>
+                      {event.start && eventTimestamp(event.start.seconds)}
+                    </td>
                     <td>
                       {/* TODO bug: click text link, click back, url changes to events but page doesn't */}
                       {/* <Link to={url}>{event.title}</Link> */}
