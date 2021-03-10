@@ -218,26 +218,28 @@ export const removeNotification = ({ postId, uid, userId = null }) => {
   }
 };
 
-//TODO tests for this regex
 const addNotificationsForMentionsIfDoesntAlreadyExist = ({
   postContent,
   postId,
   myUserId,
 }) => {
-  const uids = postContent
-    .match(/@[0-9a-zA-Z]{28}(?=\s)/g)
-    .map((uid) => uid.substring(1));
-  console.log(uids);
-  getUsers((users) => {
-    console.log(users);
-    Object.values(users).forEach((user) => {
-      const { uid } = user;
-      if (uids.includes(uid)) {
-        console.log('in');
-        addNotification({ uid, postId, type: 'mention', fromUid: myUserId });
-      }
+  //TODO tests for this regex
+  const uidsWithAtSymbol = postContent.match(/@[0-9a-zA-Z]{28}(?=\s|$)/g);
+  const uids =
+    uidsWithAtSymbol &&
+    uidsWithAtSymbol.length > 0 &&
+    uidsWithAtSymbol.map((uid) => uid.substring(1));
+  if (uids) {
+    getUsers((users) => {
+      Object.values(users).forEach((user) => {
+        const { uid } = user;
+        if (uids.includes(uid)) {
+          console.log('in');
+          addNotification({ uid, postId, type: 'mention', fromUid: myUserId });
+        }
+      });
     });
-  });
+  }
 };
 
 export const editPost = ({ id, content, uid, successCallback }) => {
