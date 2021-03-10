@@ -198,6 +198,7 @@ export default class Notifications extends React.Component {
         });
       } else {
         this.setState({
+          notifications: notifications,
           loading: false,
         });
       }
