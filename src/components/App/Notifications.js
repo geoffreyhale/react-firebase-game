@@ -77,7 +77,7 @@ const NotificationItem = ({ content, postId, url, userId }) => {
   );
 };
 
-const NotificationItemLinkContent = ({ timestamp, uid }) => {
+const NotificationItemLinkContent = ({ timestamp, uid, type = null }) => {
   const { users } = useContext(AppContext);
   const user = users && users[uid];
   const userDisplayName = user && user.displayName;
@@ -87,7 +87,7 @@ const NotificationItemLinkContent = ({ timestamp, uid }) => {
         <UserPhoto uid={uid} size={38} />
       </div>
       <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
-      {` replied to your post `}
+      {type === 'mention' ? ' mentioned you ' : ` replied to your post `}
       {friendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
     </span>
   );
@@ -150,20 +150,43 @@ export default class Notifications extends React.Component {
             postIds.push(postId);
             const post = posts[postId];
             if (typeof nItem === 'object' && post && post.room) {
-              Object.entries(nItem).forEach(([userId, timestamp]) => {
-                notifications.push({
-                  postId,
-                  room: post.room,
-                  userId,
-                  content: (
-                    <NotificationItemLinkContent
-                      timestamp={timestamp}
-                      uid={userId}
-                    />
-                  ),
-                  timestamp,
-                });
-              });
+              Object.entries(nItem).forEach(
+                ([userId, notificationItemData]) => {
+                  if (typeof notificationItemData === 'number') {
+                    const timestamp = notificationItemData;
+                    notifications.push({
+                      postId,
+                      room: post.room,
+                      userId,
+                      content: (
+                        <NotificationItemLinkContent
+                          timestamp={timestamp}
+                          uid={userId}
+                        />
+                      ),
+                      timestamp,
+                    });
+                  } else if (typeof notificationItemData === 'object') {
+                    //that new shit
+                    console.log(notificationItemData);
+                    const { timestamp, type, uid } = notificationItemData;
+                    notifications.push({
+                      postId,
+                      room: post.room, //TODO why is this here
+                      userId,
+                      content: (
+                        <NotificationItemLinkContent
+                          timestamp={timestamp}
+                          uid={uid}
+                          type={type}
+                        />
+                      ),
+                      timestamp,
+                      type,
+                    });
+                  }
+                }
+              );
             }
           });
           notifications.sort((a, b) => {
