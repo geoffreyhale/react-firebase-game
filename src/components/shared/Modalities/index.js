@@ -180,32 +180,52 @@ const ModalityVotingButton = ({
   const isCurrentVote = modalityVotes && modalityVotes[uid] === value;
   // TODO more sophisticated canVote
   const canVote = isPremium === true;
-  return (
-    <OverlayTrigger
-      placement="bottom"
-      overlay={<Tooltip>Premium Feature</Tooltip>}
+
+  const VotingButton = (
+    <Button
+      variant={isCurrentVote ? 'warning' : 'outline-warning'}
+      onClick={() =>
+        setModalityVote({
+          postId,
+          uid,
+          vote: isCurrentVote ? null : value,
+          modalityName,
+        })
+      }
+      disabled={!canVote}
     >
-      <Button
-        variant={isCurrentVote ? 'warning' : 'outline-warning'}
-        onClick={() =>
-          setModalityVote({
-            postId,
-            uid,
-            vote: isCurrentVote ? null : value,
-            modalityName,
-          })
-        }
-        disabled={!canVote}
+      {children}
+      <Badge variant="secondary" className="ml-2">
+        {modalityVotes
+          ? Object.values(modalityVotes).filter((vote) => vote === value).length
+          : 0}
+      </Badge>
+    </Button>
+  );
+
+  if (canVote) {
+    return VotingButton;
+  }
+  return (
+    <>
+      <OverlayTrigger
+        placement="bottom"
+        overlay={<Tooltip>Premium Feature</Tooltip>}
       >
-        {children}
-        <Badge variant="secondary" className="ml-2">
-          {modalityVotes
-            ? Object.values(modalityVotes).filter((vote) => vote === value)
-                .length
-            : 0}
-        </Badge>
-      </Button>
-    </OverlayTrigger>
+        <div
+          style={{
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            cursor: 'not-allowed',
+            zIndex: 2,
+          }}
+        />
+      </OverlayTrigger>
+      {VotingButton}
+    </>
   );
 };
 
