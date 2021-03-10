@@ -14,6 +14,7 @@ import {
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import InvitedBy from './InvitedBy';
 
 const InviteCodeNotes = ({ id, notes }) => {
   const history = useHistory();
@@ -81,72 +82,75 @@ const InviteCodes = () => {
   if (loading) return <Spinner />;
 
   return (
-    <Card className="mt-3">
-      <Card.Header>Invite Codes</Card.Header>
-      <Card.Body>
-        <Button
-          className="mb-3"
-          onClick={() => {
-            setLoading(true);
-            createInviteCode({ uid }, () => {
-              history.go(0);
-            });
-          }}
-        >
-          Create New Single-Use Invite Code
-        </Button>
-        <Table>
-          <thead>
-            <tr>
-              <th>Link</th>
-              <th>Created At</th>
-              <th>Notes</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.values(inviteCodes)
-              .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
-              .map((inviteCode) => (
-                <tr key={inviteCode.id}>
-                  <td>
-                    <Link to={`/?inviteCode=${inviteCode.id}`}>
-                      {window.location.host}/?inviteCode={inviteCode.id}
-                    </Link>
-                  </td>
-                  <td>
-                    {inviteCode.createdAt &&
-                      friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
-                  </td>
-                  <td>
-                    <InviteCodeNotes
-                      id={inviteCode.id}
-                      notes={inviteCode.notes}
-                    />
-                  </td>
-                  <td>
-                    <Button
-                      onClick={() => {
-                        setLoading(true);
-                        deleteInviteCode(
-                          { inviteCodeId: inviteCode.id },
-                          () => {
-                            history.go(0);
-                          }
-                        );
-                      }}
-                      variant="link"
-                      style={{ color: 'red' }}
-                    >
-                      delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-      </Card.Body>
-    </Card>
+    <>
+      <Card className="mt-3">
+        <Card.Header>Invite Codes</Card.Header>
+        <Card.Body>
+          <Button
+            className="mb-3"
+            onClick={() => {
+              setLoading(true);
+              createInviteCode({ uid }, () => {
+                history.go(0);
+              });
+            }}
+          >
+            Create New Single-Use Invite Code
+          </Button>
+          <Table>
+            <thead>
+              <tr>
+                <th>Link</th>
+                <th>Created At</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.values(inviteCodes)
+                .sort((a, b) => b.createdAt.seconds - a.createdAt.seconds)
+                .map((inviteCode) => (
+                  <tr key={inviteCode.id}>
+                    <td>
+                      <Link to={`/?inviteCode=${inviteCode.id}`}>
+                        {window.location.host}/?inviteCode={inviteCode.id}
+                      </Link>
+                    </td>
+                    <td>
+                      {inviteCode.createdAt &&
+                        friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
+                    </td>
+                    <td>
+                      <InviteCodeNotes
+                        id={inviteCode.id}
+                        notes={inviteCode.notes}
+                      />
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() => {
+                          setLoading(true);
+                          deleteInviteCode(
+                            { inviteCodeId: inviteCode.id },
+                            () => {
+                              history.go(0);
+                            }
+                          );
+                        }}
+                        variant="link"
+                        style={{ color: 'red' }}
+                      >
+                        delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+        </Card.Body>
+      </Card>
+      <InvitedBy />
+    </>
   );
 };
 export default InviteCodes;
