@@ -182,7 +182,7 @@ export const removeTag = ({ postId, content, uid }) => {
 
 // post w id postId received a reply
 // add a notification for the user who authored the post
-const addNotifications = ({ postId, uid }) => {
+const addNotificationsDeprecated = ({ postId, uid }) => {
   postRef(postId)
     .once('value')
     .then((snapshot) => {
@@ -198,6 +198,17 @@ const addNotifications = ({ postId, uid }) => {
     });
 };
 
+// add notification for uid with link to postId
+const addNotification = ({ uid, postId, type, fromUid }) => {
+  notificationUserPostRef({ uid, postId }).update({
+    [uid]: {
+      timestamp: firebase.database.ServerValue.TIMESTAMP,
+      type,
+      uid: fromUid,
+    },
+  });
+};
+
 // TODO get rid of old count notifiations and should always require userId here
 export const removeNotification = ({ postId, uid, userId = null }) => {
   if (userId) {
@@ -207,10 +218,39 @@ export const removeNotification = ({ postId, uid, userId = null }) => {
   }
 };
 
-export const editPost = ({ id, content, successCallback }) => {
+//TODO tests for this regex
+const addNotificationsForMentionsIfDoesntAlreadyExist = ({
+  postContent,
+  postId,
+  myUserId,
+}) => {
+  const uids = postContent
+    .match(/@[0-9a-zA-Z]{28}(?=\s)/g)
+    .map((uid) => uid.substring(1));
+  console.log(uids);
+  getUsers((users) => {
+    console.log(users);
+    Object.values(users).forEach((user) => {
+      const { uid } = user;
+      if (uids.includes(uid)) {
+        console.log('in');
+        addNotification({ uid, postId, type: 'mention', fromUid: myUserId });
+      }
+    });
+  });
+};
+
+export const editPost = ({ id, content, uid, successCallback }) => {
   postRef(id)
     .update({
       content,
+    })
+    .then(() => {
+      addNotificationsForMentionsIfDoesntAlreadyExist({
+        postContent: content,
+        postId: id,
+        myUserId: uid,
+      });
     })
     .then(() => {
       successCallback();
@@ -248,7 +288,14 @@ export const createPost = ({
     .child(postId)
     .update(post)
     .then(toggleUpvote({ postId, uid }))
-    .then(replyToId && addNotifications({ postId: replyToId, uid }))
+    .then(replyToId && addNotificationsDeprecated({ postId: replyToId, uid }))
+    .then(() => {
+      addNotificationsForMentionsIfDoesntAlreadyExist({
+        postContent: content,
+        postId,
+        myUserId: uid,
+      });
+    })
     .then(
       modality &&
         setModalityVote({

@@ -72,6 +72,7 @@ export default class NewPostForm extends React.Component {
               this.props.onSubmitEditHack({
                 id: this.props.editPostIdHack,
                 content: this.state.content,
+                uid: this.user().uid,
                 successCallback,
               });
             } else {
