@@ -2,15 +2,70 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import FormLabel from 'react-bootstrap/FormLabel';
 import Table from 'react-bootstrap/Table';
 import {
   createInviteCode,
   deleteInviteCode,
   getInviteCodes,
+  setInviteCodeNotes,
 } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import friendlyTimestamp from '../../shared/friendlyTimestamp';
+
+const InviteCodeNotes = ({ id, notes }) => {
+  const history = useHistory();
+  const [newNotes, setNotes] = useState(notes);
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  if (loading) return <Spinner />;
+
+  return editMode ? (
+    <>
+      <>
+        <FormLabel>Notes</FormLabel>
+        <Form.Control
+          as="textarea"
+          rows={1}
+          value={newNotes}
+          onChange={(e) => setNotes(e.target.value)}
+          autoFocus={true}
+        />
+      </>
+      <br />
+      <Button
+        onClick={() => {
+          setLoading(true);
+          setInviteCodeNotes({ id, notes: newNotes }, () => {
+            history.go(0);
+          });
+        }}
+        variant="primary"
+      >
+        save
+      </Button>
+      <Button
+        onClick={() => {
+          setEditMode(false);
+          setNotes(notes);
+        }}
+        variant="danger"
+      >
+        cancel
+      </Button>
+    </>
+  ) : (
+    <>
+      {newNotes}{' '}
+      <Button onClick={() => setEditMode(true)} variant="link">
+        edit
+      </Button>
+    </>
+  );
+};
 
 const InviteCodes = () => {
   const { user } = useContext(AppContext);
@@ -44,8 +99,8 @@ const InviteCodes = () => {
           <thead>
             <tr>
               <th>Link</th>
-              {/* <th>Invite Code</th> */}
               <th>Created At</th>
+              <th>Notes</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -59,10 +114,15 @@ const InviteCodes = () => {
                       {window.location.host}/?inviteCode={inviteCode.id}
                     </Link>
                   </td>
-                  {/* <td>{inviteCode.id}</td> */}
                   <td>
                     {inviteCode.createdAt &&
                       friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
+                  </td>
+                  <td>
+                    <InviteCodeNotes
+                      id={inviteCode.id}
+                      notes={inviteCode.notes}
+                    />
                   </td>
                   <td>
                     <Button
