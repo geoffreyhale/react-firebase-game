@@ -139,14 +139,14 @@ export default class Notifications extends React.Component {
 
   componentDidMount() {
     this.notificationsRef().on('value', (snapshot) => {
-      const notificationsObject = snapshot.val();
+      const notificationsData = snapshot.val();
       const notifications = [];
-      const postIds = [];
-      if (notificationsObject) {
+      if (notificationsData) {
         // TODO this is a hack to get room from post, but could be dup in notifications
         // TODO posts should be linkable by id alone, no room necessary
         getPosts((posts) => {
-          Object.entries(notificationsObject).forEach(([postId, nItem]) => {
+          const postIds = [];
+          Object.entries(notificationsData).forEach(([postId, nItem]) => {
             postIds.push(postId);
             const post = posts[postId];
             if (typeof nItem === 'object' && post && post.room) {
