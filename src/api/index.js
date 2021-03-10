@@ -23,6 +23,15 @@ export const createInviteCode = ({ uid }, callback) => {
     });
 };
 
+export const setInviteCodeNotes = ({ id, notes }, callback) => {
+  db.collection('inviteCodes')
+    .doc(id)
+    .set({ notes }, { merge: true })
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
+};
+
 export const getInviteCodes = ({ uid }, callback) => {
   const inviteCodes = {};
   db.collection('inviteCodes')
