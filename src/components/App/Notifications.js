@@ -167,8 +167,6 @@ export default class Notifications extends React.Component {
                       timestamp,
                     });
                   } else if (typeof notificationItemData === 'object') {
-                    //that new shit
-                    console.log(notificationItemData);
                     const { timestamp, type, uid } = notificationItemData;
                     notifications.push({
                       postId,
