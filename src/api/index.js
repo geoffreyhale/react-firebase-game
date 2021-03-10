@@ -234,7 +234,6 @@ const addNotificationsForMentionsIfDoesntAlreadyExist = ({
       Object.values(users).forEach((user) => {
         const { uid } = user;
         if (uids.includes(uid)) {
-          console.log('in');
           addNotification({ uid, postId, type: 'mention', fromUid: myUserId });
         }
       });
