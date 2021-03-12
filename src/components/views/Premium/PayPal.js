@@ -37,13 +37,10 @@ const itemOneYearPremium = {
   monthsPremium: 12,
 };
 
-const ShoppingCart = ({ items, totalUsd, setTotalUsd }) => {
-  useEffect(() => {
-    setTotalUsd(
-      Object.values(items).reduce((total, item) => total + item.usd, 0)
-    );
-  }, []);
+const totalAmountUsd = (items) =>
+  Object.values(items).reduce((total, item) => total + item.usd, 0);
 
+const ShoppingCart = ({ items }) => {
   return (
     <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
       <Card border="primary">
@@ -59,7 +56,9 @@ const ShoppingCart = ({ items, totalUsd, setTotalUsd }) => {
       </Card>
       <Card border="light">
         <Card.Body>
-          <strong className="float-right">Total: ${totalUsd}</strong>
+          <strong className="float-right">
+            Total: ${totalAmountUsd(items)}
+          </strong>
         </Card.Body>
       </Card>
     </div>
@@ -88,7 +87,7 @@ class PayPal extends React.Component {
       purchase_units: [
         {
           amount: {
-            value: this.state.totalUsd,
+            value: totalAmountUsd(this.state.items),
           },
         },
       ],
@@ -123,11 +122,7 @@ class PayPal extends React.Component {
   render() {
     return (
       <>
-        <ShoppingCart
-          items={this.state.items}
-          totalUsd={this.state.totalUsd}
-          setTotalUsd={(totalUsd) => this.setState({ totalUsd })}
-        />
+        <ShoppingCart items={this.state.items} />
         <PayPalButton
           createOrder={(data, actions) => this.createOrder(data, actions)}
           onApprove={(data, actions) => this.onApprove(data, actions)}
