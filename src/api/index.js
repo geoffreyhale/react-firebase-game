@@ -439,7 +439,16 @@ export const getAccounting = (callback) => {
 };
 
 export const createAccounting = (
-  { notes, orderID, payerID, type, uid, usd, via },
+  {
+    notes,
+    type,
+    uid,
+    amount,
+    currencyCode,
+    via,
+    createdAt,
+    paypalTransactionId,
+  },
   callback
 ) => {
   db.collection('accounting')
@@ -447,12 +456,12 @@ export const createAccounting = (
     .set({
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       notes,
-      orderID,
-      payerID,
       type,
       uid,
-      usd,
+      amount,
+      currencyCode,
       via,
+      paypalTransactionId,
     })
     .then(() => {
       callback && typeof callback === 'function' && callback();

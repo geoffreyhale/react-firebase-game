@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
@@ -9,40 +9,59 @@ import { AppContext } from '../../AppProvider';
 
 const payPalCssMaxWidth = 750;
 
-const defaultAmountUsd = 30;
+const itemOneYearPremium = { description: '+1 Year Premium', usd: 30 };
 
-const ShoppingCart = () => (
-  <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
-    <Card border="primary">
-      <Card.Body>
-        <FontAwesomeIcon icon={faShoppingCart} className="mr-3" />+ 1 Year
-        Premium
-        <span className="float-right">${defaultAmountUsd}</span>
-      </Card.Body>
-    </Card>
-    <Card border="light">
-      <Card.Body>
-        <strong className="float-right">Total: ${defaultAmountUsd}</strong>
-      </Card.Body>
-    </Card>
-  </div>
-);
+const ShoppingCart = ({ totalUsd, setTotalUsd }) => {
+  const [items, setItems] = useState([itemOneYearPremium]);
 
-const handleOnApprove = ({ data, uid, amountUsd }, callback) => {
-  const { orderID, payerID } = data;
+  useEffect(() => {
+    setTotalUsd(
+      Object.values(items).reduce((total, item) => total + item.usd, 0)
+    );
+  }, []);
 
-  //TODO usd does not include paypal fees
-  createAccounting({
-    notes: '12 months premium (usd does not include paypal fees)',
-    type: 'premium',
-    uid,
-    usd: parseInt(amountUsd),
-    via: 'paypal (onsite)',
-    orderID,
-    payerID,
-  });
+  return (
+    <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
+      <Card border="primary">
+        <Card.Body>
+          {Object.values(items).map((item) => (
+            <div>
+              <FontAwesomeIcon icon={faShoppingCart} className="mr-3" />
+              {item.description}
+              <span className="float-right">${item.usd}</span>
+            </div>
+          ))}
+        </Card.Body>
+      </Card>
+      <Card border="light">
+        <Card.Body>
+          <strong className="float-right">Total: ${totalUsd}</strong>
+        </Card.Body>
+      </Card>
+    </div>
+  );
+};
 
-  addOneYearPremium({ uid }, callback);
+const handleOnApprove = (
+  { uid, currencyCode, amount, createdAt, paypalTransactionId },
+  callback
+) => {
+  //TODO amount does not include paypal fees
+  createAccounting(
+    {
+      notes: '12 months premium (usd does not include paypal fees)',
+      type: 'premium',
+      uid,
+      amount,
+      currencyCode,
+      via: 'paypal (onsite)',
+      createdAt,
+      paypalTransactionId,
+    },
+    () => {
+      addOneYearPremium({ uid }, callback);
+    }
+  );
 };
 
 const PayPalButton = window.paypal_sdk.Buttons.driver('react', {
@@ -53,6 +72,7 @@ const PayPalButton = window.paypal_sdk.Buttons.driver('react', {
 class PayPal extends React.Component {
   constructor() {
     super();
+    this.state = { totalUsd: null };
   }
 
   static contextType = AppContext;
@@ -63,7 +83,7 @@ class PayPal extends React.Component {
       purchase_units: [
         {
           amount: {
-            value: defaultAmountUsd,
+            value: this.state.totalUsd,
           },
         },
       ],
@@ -71,20 +91,37 @@ class PayPal extends React.Component {
   }
 
   onApprove(data, actions) {
-    handleOnApprove(
-      { amountUsd: defaultAmountUsd, data, uid: this.user().uid },
-      () => {
-        this.props.history.go(0);
-      }
-    );
-    return actions.order.capture();
+    const { orderID, payerID } = data;
+    actions.order.capture().then((details) => {
+      const {
+        id,
+        create_time,
+        amount,
+      } = details.purchase_units[0].payments.captures[0];
+      handleOnApprove(
+        {
+          amount: amount.value,
+          currencyCode: amount.currency_code.toLowerCase(),
+          uid: this.user().uid,
+          createdAt: new Date(create_time),
+          paypalTransactionId: id,
+        },
+        () => {
+          this.props.history.go(0);
+        }
+      );
+      // return actions.order.capture();
+    });
   }
 
   // TODO clarify that purchase will add 1 year to existing expiry if exists
   render() {
     return (
       <>
-        <ShoppingCart />
+        <ShoppingCart
+          totalUsd={this.state.totalUsd}
+          setTotalUsd={(totalUsd) => this.setState({ totalUsd })}
+        />
         <PayPalButton
           createOrder={(data, actions) => this.createOrder(data, actions)}
           onApprove={(data, actions) => this.onApprove(data, actions)}
