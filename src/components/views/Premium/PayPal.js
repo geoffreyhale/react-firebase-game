@@ -7,13 +7,37 @@ import Card from 'react-bootstrap/Card';
 import { addOneYearPremium, createAccounting } from '../../../api';
 import { AppContext } from '../../AppProvider';
 
+const handleOnApprove = (
+  { uid, currencyCode, amount, createdAt, paypalTransactionId },
+  callback
+) => {
+  //TODO amount does not include paypal fees
+  createAccounting(
+    {
+      notes: '12 months premium (usd does not include paypal fees)',
+      type: 'premium',
+      uid,
+      amount,
+      currencyCode,
+      via: 'paypal (onsite)',
+      createdAt,
+      paypalTransactionId,
+    },
+    () => {
+      addOneYearPremium({ uid }, callback);
+    }
+  );
+};
+
 const payPalCssMaxWidth = 750;
 
-const itemOneYearPremium = { description: '+1 Year Premium', usd: 30 };
+const itemOneYearPremium = {
+  description: '+1 Year Premium',
+  usd: 30,
+  monthsPremium: 12,
+};
 
-const ShoppingCart = ({ totalUsd, setTotalUsd }) => {
-  const [items, setItems] = useState([itemOneYearPremium]);
-
+const ShoppingCart = ({ items, totalUsd, setTotalUsd }) => {
   useEffect(() => {
     setTotalUsd(
       Object.values(items).reduce((total, item) => total + item.usd, 0)
@@ -42,28 +66,6 @@ const ShoppingCart = ({ totalUsd, setTotalUsd }) => {
   );
 };
 
-const handleOnApprove = (
-  { uid, currencyCode, amount, createdAt, paypalTransactionId },
-  callback
-) => {
-  //TODO amount does not include paypal fees
-  createAccounting(
-    {
-      notes: '12 months premium (usd does not include paypal fees)',
-      type: 'premium',
-      uid,
-      amount,
-      currencyCode,
-      via: 'paypal (onsite)',
-      createdAt,
-      paypalTransactionId,
-    },
-    () => {
-      addOneYearPremium({ uid }, callback);
-    }
-  );
-};
-
 const PayPalButton = window.paypal_sdk.Buttons.driver('react', {
   React,
   ReactDOM,
@@ -72,7 +74,10 @@ const PayPalButton = window.paypal_sdk.Buttons.driver('react', {
 class PayPal extends React.Component {
   constructor() {
     super();
-    this.state = { totalUsd: null };
+    this.state = {
+      items: [itemOneYearPremium],
+      totalUsd: null,
+    };
   }
 
   static contextType = AppContext;
@@ -119,6 +124,7 @@ class PayPal extends React.Component {
     return (
       <>
         <ShoppingCart
+          items={this.state.items}
           totalUsd={this.state.totalUsd}
           setTotalUsd={(totalUsd) => this.setState({ totalUsd })}
         />
