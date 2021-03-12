@@ -3,6 +3,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { addOneYearPremium, createAccounting } from '../../../api';
 import { AppContext } from '../../AppProvider';
@@ -36,6 +37,17 @@ const itemOneYearPremium = {
   usd: 30,
   monthsPremium: 12,
 };
+
+const ItemsForSale = ({ addItem }) => (
+  <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
+    {/* <Button className="mr-3" onClick={() => addItem(itemOneYearPremium)}>
+      +1 Month Premium $5
+    </Button> */}
+    <Button className="mr-3" onClick={() => addItem(itemOneYearPremium)}>
+      +1 Year Premium $30 (50% Off)
+    </Button>
+  </div>
+);
 
 const totalAmountUsd = (items) =>
   Object.values(items).reduce((total, item) => total + item.usd, 0);
@@ -81,7 +93,7 @@ class PayPal extends React.Component {
   constructor() {
     super();
     this.state = {
-      items: [itemOneYearPremium],
+      items: [],
       totalUsd: null,
     };
   }
@@ -129,6 +141,15 @@ class PayPal extends React.Component {
   render() {
     return (
       <>
+        <h6>Add to Cart</h6>
+        <ItemsForSale
+          addItem={(item) => {
+            const newItemsState = this.state.items;
+            newItemsState.push(item);
+            this.setState({ items: newItemsState });
+          }}
+        />
+        <h6>Cart</h6>
         <ShoppingCart items={this.state.items} />
         <PayPalButton
           createOrder={(data, actions) => this.createOrder(data, actions)}
