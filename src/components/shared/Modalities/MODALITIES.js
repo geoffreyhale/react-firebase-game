@@ -525,6 +525,49 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  sevenfiftywords: {
+    available: true,
+    title: '750 Words',
+    description: (
+      <>
+        <blockquote>
+          "
+          <p>
+            I've long been inspired by an idea I first learned about in The
+            Artist's Way called morning pages. Morning pages are three pages of
+            writing done every day, typically encouraged to be in "long hand",
+            typically done in the morning, that can be about anything and
+            everything that comes into your head. It's about getting it all out
+            of your head, and is not supposed to be edited or censored in any
+            way. The idea is that if you can get in the habit of writing three
+            pages a day, that it will help clear your mind and get the ideas
+            flowing for the rest of the day. Unlike many of the other exercises
+            in that book, I found that this one actually worked and was really
+            really useful.
+          </p>
+          <p>
+            I've used the exercise as a great way to think out loud without
+            having to worry about half-formed ideas, random tangents, private
+            stuff, and all the other things in our heads that we often filter
+            out before ever voicing them or writing about them. It's a daily
+            brain dump. Over time, I've found that it's also very helpful as a
+            tool to get thoughts going that have become stuck, or to help get to
+            the bottom of a rotten mood.
+          </p>
+          "
+          <figcaption>
+            -{' '}
+            <cite>
+              <a href="https://750words.com/" target="_blank">
+                750words.com
+              </a>{' '}
+              ($5/mo)
+            </cite>
+          </figcaption>
+        </blockquote>
+      </>
+    ),
+  },
 });
 
 export default MODALITIES;
