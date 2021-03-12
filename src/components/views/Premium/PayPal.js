@@ -45,9 +45,9 @@ const itemOneYearPremium = {
 
 const ItemsForSale = ({ addItem }) => (
   <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
-    {/* <Button className="mr-3" onClick={() => addItem(itemOneMonthPremium)}>
+    <Button className="mr-3" onClick={() => addItem(itemOneMonthPremium)}>
       +1 Month Premium ${itemOneMonthPremium.usd}
-    </Button> */}
+    </Button>
     <Button className="mr-3" onClick={() => addItem(itemOneYearPremium)}>
       +1 Year Premium ${itemOneYearPremium.usd} (50% Off)
     </Button>
