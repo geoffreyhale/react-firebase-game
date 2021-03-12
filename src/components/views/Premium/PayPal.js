@@ -40,17 +40,24 @@ const itemOneYearPremium = {
 const totalAmountUsd = (items) =>
   Object.values(items).reduce((total, item) => total + item.usd, 0);
 
+const ShoppingCartItem = ({ description, amountUsd }) => (
+  <div>
+    <FontAwesomeIcon icon={faShoppingCart} className="mr-3" />
+    {description}
+    <span className="float-right">${amountUsd}</span>
+  </div>
+);
+
 const ShoppingCart = ({ items }) => {
   return (
     <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
       <Card border="primary">
         <Card.Body>
           {Object.values(items).map((item) => (
-            <div>
-              <FontAwesomeIcon icon={faShoppingCart} className="mr-3" />
-              {item.description}
-              <span className="float-right">${item.usd}</span>
-            </div>
+            <ShoppingCartItem
+              description={item.description}
+              amountUsd={item.usd}
+            />
           ))}
         </Card.Body>
       </Card>
