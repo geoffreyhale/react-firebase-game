@@ -5,11 +5,11 @@ import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { addOneYearPremium, createAccounting } from '../../../api';
+import { addPremium, createAccounting } from '../../../api';
 import { AppContext } from '../../AppProvider';
 
 const handleOnApprove = (
-  { uid, currencyCode, amount, createdAt, paypalTransactionId },
+  { uid, currencyCode, amount, createdAt, paypalTransactionId, months },
   callback
 ) => {
   //TODO amount does not include paypal fees
@@ -25,32 +25,39 @@ const handleOnApprove = (
       paypalTransactionId,
     },
     () => {
-      addOneYearPremium({ uid }, callback);
+      addPremium({ uid, months }, callback);
     }
   );
 };
 
 const payPalCssMaxWidth = 750;
 
+const itemOneMonthPremium = {
+  description: '+1 Year Premium',
+  usd: 5,
+  months: 1,
+};
 const itemOneYearPremium = {
   description: '+1 Year Premium',
   usd: 30,
-  monthsPremium: 12,
+  months: 12,
 };
 
 const ItemsForSale = ({ addItem }) => (
   <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
-    {/* <Button className="mr-3" onClick={() => addItem(itemOneYearPremium)}>
-      +1 Month Premium $5
+    {/* <Button className="mr-3" onClick={() => addItem(itemOneMonthPremium)}>
+      +1 Month Premium ${itemOneMonthPremium.usd}
     </Button> */}
     <Button className="mr-3" onClick={() => addItem(itemOneYearPremium)}>
-      +1 Year Premium $30 (50% Off)
+      +1 Year Premium ${itemOneYearPremium.usd} (50% Off)
     </Button>
   </div>
 );
 
 const totalAmountUsd = (items) =>
   Object.values(items).reduce((total, item) => total + item.usd, 0);
+const totalMonths = (items) =>
+  Object.values(items).reduce((total, item) => total + item.months, 0);
 
 const ShoppingCartItem = ({ description, amountUsd }) => (
   <div>
@@ -128,6 +135,7 @@ class PayPal extends React.Component {
           uid: this.user().uid,
           createdAt: new Date(create_time),
           paypalTransactionId: id,
+          months: totalMonths(this.state.items),
         },
         () => {
           this.props.history.go(0);
