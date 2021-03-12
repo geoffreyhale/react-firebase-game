@@ -33,24 +33,34 @@ const handleOnApprove = (
 const payPalCssMaxWidth = 750;
 
 const itemOneMonthPremium = {
-  description: '+1 Month Premium',
+  description: '+1 Month Premium $5',
   usd: 5,
   months: 1,
 };
 const itemOneYearPremium = {
-  description: '+1 Year Premium',
+  description: '+1 Year Premium $30 (50% Off)',
   usd: 30,
   months: 12,
 };
+// const itemOneHundredYearsPremium = {
+//   description: '+100 Years Premium $1000 (83% Off)',
+//   usd: 1000,
+//   months: 120,
+// };
+
+const itemsForSale = [
+  itemOneMonthPremium,
+  itemOneYearPremium,
+  // itemOneHundredYearsPremium,
+];
 
 const ItemsForSale = ({ addItem }) => (
   <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
-    <Button className="mr-3" onClick={() => addItem(itemOneMonthPremium)}>
-      +1 Month Premium ${itemOneMonthPremium.usd}
-    </Button>
-    <Button className="mr-3" onClick={() => addItem(itemOneYearPremium)}>
-      +1 Year Premium ${itemOneYearPremium.usd} (50% Off)
-    </Button>
+    {itemsForSale.map((item) => (
+      <Button className="mr-3 mb-3" onClick={() => addItem(item)}>
+        {item.description}
+      </Button>
+    ))}
   </div>
 );
 
