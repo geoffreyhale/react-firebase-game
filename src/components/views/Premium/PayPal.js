@@ -42,16 +42,16 @@ const itemOneYearPremium = {
   usd: 30,
   months: 12,
 };
-// const itemOneHundredYearsPremium = {
-//   description: '+100 Years Premium $1000 (83% Off)',
-//   usd: 1000,
-//   months: 120,
-// };
+const itemOneHundredYearsPremium = {
+  description: '+100 Years Premium $1000 (83% Off)',
+  usd: 1000,
+  months: 1200,
+};
 
 const itemsForSale = [
   itemOneMonthPremium,
   itemOneYearPremium,
-  // itemOneHundredYearsPremium,
+  itemOneHundredYearsPremium,
 ];
 
 const ItemsForSale = ({ addItem }) => (
