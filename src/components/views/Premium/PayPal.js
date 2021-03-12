@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { withRouter } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
@@ -52,6 +52,12 @@ const itemOneHundredYearsPremium = {
   usd: 1000,
   months: 1200,
 };
+const itemOneMonthPremiumFirstTimerDiscount = {
+  title: 'First Time Special',
+  description: '+1 Month Premium',
+  usd: 1,
+  months: 1,
+};
 
 const itemsForSale = [
   itemOneMonthPremium,
@@ -59,32 +65,52 @@ const itemsForSale = [
   itemOneHundredYearsPremium,
 ];
 
-const ItemsForSale = ({ addItem }) => (
-  <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
-    {itemsForSale.map((item) => (
-      <Card
-        className="mr-2 mb-2"
-        style={{
-          width: payPalCssMaxWidth / 3 - 8,
-          display: 'inline-block',
-          verticalAlign: 'top',
-        }}
-      >
-        <Card.Body>
-          <Card.Title>{item.title}</Card.Title>
-          <p>{item.description}</p>
-          <p>
-            <strong>${item.usd}</strong>
-            {item.discount && ` (${item.discount} Off)`}
-          </p>
-          <Button className="mr-3 mb-3" onClick={() => addItem(item)}>
-            Add to Cart
-          </Button>
-        </Card.Body>
-      </Card>
-    ))}
-  </div>
-);
+const ItemsForSale = ({ addItem, cartItems = [] }) => {
+  const { user } = useContext(AppContext);
+  const [items, setItems] = useState(itemsForSale);
+  const resetItems = () => setItems(itemsForSale);
+  useEffect(() => {
+    if (
+      cartItems
+        .map((cartItem) => cartItem.title)
+        .includes(itemOneMonthPremiumFirstTimerDiscount.title)
+    ) {
+      resetItems();
+    } else if (user.premium === undefined) {
+      setItems((items) => [
+        ...itemsForSale,
+        itemOneMonthPremiumFirstTimerDiscount,
+      ]);
+    }
+  }, [cartItems.length]);
+  return (
+    <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
+      {items.map((item) => (
+        <Card
+          key={item.title}
+          className="mr-2 mb-2"
+          style={{
+            width: payPalCssMaxWidth / 3 - 8,
+            display: 'inline-block',
+            verticalAlign: 'top',
+          }}
+        >
+          <Card.Body>
+            <Card.Title>{item.title}</Card.Title>
+            <p>{item.description}</p>
+            <p>
+              <strong>${item.usd}</strong>
+              {item.discount && ` (${item.discount} Off)`}
+            </p>
+            <Button className="mr-3 mb-3" onClick={() => addItem(item)}>
+              Add to Cart
+            </Button>
+          </Card.Body>
+        </Card>
+      ))}
+    </div>
+  );
+};
 
 const totalAmountUsd = (items) =>
   Object.values(items).reduce((total, item) => total + item.usd, 0);
@@ -188,6 +214,7 @@ class PayPal extends React.Component {
             newItemsState.push(item);
             this.setState({ items: newItemsState });
           }}
+          cartItems={this.state.items}
         />
         <h6>Cart</h6>
         <ShoppingCart items={this.state.items} />
