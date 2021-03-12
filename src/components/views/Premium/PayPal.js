@@ -33,7 +33,7 @@ const handleOnApprove = (
 const payPalCssMaxWidth = 750;
 
 const itemOneMonthPremium = {
-  description: '+1 Year Premium',
+  description: '+1 Month Premium',
   usd: 5,
   months: 1,
 };
