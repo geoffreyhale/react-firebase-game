@@ -33,17 +33,22 @@ const handleOnApprove = (
 const payPalCssMaxWidth = 750;
 
 const itemOneMonthPremium = {
-  description: '+1 Month Premium $5',
+  title: 'Month',
+  description: '+1 Month Premium',
   usd: 5,
   months: 1,
 };
 const itemOneYearPremium = {
-  description: '+1 Year Premium $30 (50% Off)',
+  title: 'Year',
+  description: '+1 Year Premium',
+  discount: '50%',
   usd: 30,
   months: 12,
 };
 const itemOneHundredYearsPremium = {
-  description: '+100 Years Premium $1000 (83% Off)',
+  title: 'Lifetime',
+  description: '+100 Years Premium',
+  discount: '83%',
   usd: 1000,
   months: 1200,
 };
@@ -57,9 +62,26 @@ const itemsForSale = [
 const ItemsForSale = ({ addItem }) => (
   <div className="mb-3" style={{ maxWidth: payPalCssMaxWidth }}>
     {itemsForSale.map((item) => (
-      <Button className="mr-3 mb-3" onClick={() => addItem(item)}>
-        {item.description}
-      </Button>
+      <Card
+        className="mr-2 mb-2"
+        style={{
+          width: payPalCssMaxWidth / 3 - 8,
+          display: 'inline-block',
+          verticalAlign: 'top',
+        }}
+      >
+        <Card.Body>
+          <Card.Title>{item.title}</Card.Title>
+          <p>{item.description}</p>
+          <p>
+            <strong>${item.usd}</strong>
+            {item.discount && ` (${item.discount} Off)`}
+          </p>
+          <Button className="mr-3 mb-3" onClick={() => addItem(item)}>
+            Add to Cart
+          </Button>
+        </Card.Body>
+      </Card>
     ))}
   </div>
 );
