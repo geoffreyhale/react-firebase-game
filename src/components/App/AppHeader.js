@@ -87,7 +87,7 @@ export const TopRightMenu = ({ login, logout }) => {
 
 const AppHeaderTitle = () => {
   return (
-    <h1 style={{ display: 'inline-block', marginBottom: 0 }}>
+    <div style={{ display: 'inline-block' }}>
       <Link
         to="/"
         style={{
@@ -95,7 +95,7 @@ const AppHeaderTitle = () => {
           textDecoration: 'inherit',
         }}
       >
-        <span title="xBook">
+        <span title="xBook" className="h1">
           <img
             src={logoImg}
             alt="xBook logo"
@@ -105,11 +105,9 @@ const AppHeaderTitle = () => {
         </span>
       </Link>
       <span className="text-muted ml-2 d-none d-sm-inline">
-        <small style={{ fontSize: '50%', fontWeight: 300 }}>
-          healthy community
-        </small>
+        <span style={{ fontWeight: 300 }}>healthy community</span>
       </span>
-    </h1>
+    </div>
   );
 };
 
