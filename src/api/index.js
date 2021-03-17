@@ -2,6 +2,7 @@ import addMonths from 'date-fns/addMonths';
 import toDate from 'date-fns/toDate';
 import firebase, { db } from '../components/firebase.js';
 import { isPremium } from '../components/shared/User';
+import uidMentions from './uidMentions';
 
 const postRef = (postId) => firebase.database().ref('posts/' + postId);
 export const postsRef = () => firebase.database().ref('posts');
@@ -223,8 +224,7 @@ const addNotificationsForMentionsIfDoesntAlreadyExist = ({
   postId,
   myUserId,
 }) => {
-  //TODO tests for this regex
-  const uidsWithAtSymbol = postContent.match(/@[0-9a-zA-Z]{28}(?=\s|$)/g);
+  const uidsWithAtSymbol = uidMentions(postContent);
   const uids =
     uidsWithAtSymbol &&
     uidsWithAtSymbol.length > 0 &&
