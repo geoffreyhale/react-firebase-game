@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Popover from 'react-bootstrap/Popover';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Link } from 'react-router-dom';
 import AppNav from './AppNav';
 import logoImg from './logo192.png';
@@ -11,6 +13,27 @@ import { UserPhoto } from '../shared/User';
 import MyDropdownToggle from '../shared/MyDropdownToggle';
 import Wizard from '../Wizard';
 import HowToGetPremium from '../shared/Premium/HowToGetPremium';
+
+const Beta = () => (
+  <>
+    <OverlayTrigger
+      placement="right"
+      overlay={
+        <Popover>
+          <Popover.Title as="h3">βeta</Popover.Title>
+          <Popover.Content>
+            Hi, friends! This site is new and under construction. It has known
+            bugs and lots of great features. Our developer is hard at work. We
+            apprecite your patience, feedback, and support in building this
+            healthy community together. :)
+          </Popover.Content>
+        </Popover>
+      }
+    >
+      <div style={{ display: 'inline-block' }}>βeta</div>
+    </OverlayTrigger>
+  </>
+);
 
 const AccountDropdownMenu = ({ logout }) => {
   const { user } = useContext(AppContext);
@@ -104,6 +127,9 @@ const AppHeaderTitle = () => {
           <span className="ml-2">xBook</span>
         </span>
       </Link>
+      <span className="text-muted ml-2">
+        <Beta />
+      </span>
       <span className="text-muted ml-2 d-none d-sm-inline">
         <span style={{ fontWeight: 300 }}>healthy community</span>
       </span>
