@@ -15,7 +15,7 @@ const handleOnApprove = (
   //TODO amount does not include paypal fees
   createAccounting(
     {
-      notes: '12 months premium (usd does not include paypal fees)',
+      notes: '',
       type: 'premium',
       uid,
       amount,
