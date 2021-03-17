@@ -16,7 +16,7 @@ const upvoteRef = ({ postId }) =>
 
 export const createInviteCode = ({ uid }, callback) => {
   const newInviteCodeRef = db.collection('inviteCodes').doc();
-  const result = newInviteCodeRef
+  newInviteCodeRef
     .set({ uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() })
     .then(() => {
       callback && typeof callback === 'function' && callback();

@@ -36,6 +36,7 @@ const MoreAngerWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>
@@ -68,6 +69,7 @@ const MoreFearWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>
@@ -100,6 +102,7 @@ const MoreHappyWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>
@@ -131,6 +134,7 @@ const MoreSadWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>
@@ -163,6 +167,7 @@ const MoreShameGuiltWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>
@@ -190,6 +195,7 @@ const MoreJealousyEnvyWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>
@@ -225,6 +231,7 @@ const MoreSuicidalUrgeWords = () => (
       <a
         href="https://karlamclaren.com/emotional-vocabulary-page/"
         target="_blank"
+        rel="noreferrer"
       >
         Emotional Vocabulary
       </a>

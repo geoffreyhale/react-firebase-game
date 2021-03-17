@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHatWizard } from '@fortawesome/free-solid-svg-icons';
-import React, { useContext } from 'react';
+import React from 'react';
 import Badge from 'react-bootstrap/Badge';
-import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';

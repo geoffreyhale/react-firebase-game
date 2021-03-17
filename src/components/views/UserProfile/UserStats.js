@@ -85,7 +85,7 @@ const repliesUpvotedByRecipient = ({ posts, uid }) => {
 
 const uniqueDaysPosted = ({ posts, uid }) => {
   const uniqueDays = [];
-  const userPosts = Object.values(posts)
+  Object.values(posts)
     .filter((post) => post.userId === uid && !post.deleted)
     .forEach((post) => {
       if (

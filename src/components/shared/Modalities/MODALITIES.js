@@ -34,6 +34,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://www.onecommunityglobal.org/conscious-and-conscientious-communication/"
                 target="_blank"
+                rel="noreferrer"
               >
                 Conscious and Conscientious Communication
               </a>
@@ -57,6 +58,7 @@ const MODALITIES = Object.freeze({
                 <a
                   href="https://www.swc.edu/student-alum-stories/part-1-3-series-ownership-language/"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   Part 1 of 3 in a Series About Ownership Language
                 </a>
@@ -86,7 +88,11 @@ const MODALITIES = Object.freeze({
             <figcaption>
               — Thomas Haller,{' '}
               <cite>
-                <a href="https://vimeo.com/123997338" target="_blank">
+                <a
+                  href="https://vimeo.com/123997338"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   TTA: Ownership Language
                 </a>
               </cite>
@@ -112,6 +118,7 @@ const MODALITIES = Object.freeze({
                 <a
                   href="https://www.youtube.com/watch?v=NQAZps4Phlw"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   Ownership Language
                 </a>
@@ -141,6 +148,7 @@ const MODALITIES = Object.freeze({
             <a
               href="https://www.swc.edu/student-alum-stories/part-1-3-series-ownership-language/"
               target="_blank"
+              rel="noreferrer"
             >
               Part 1 of 3 in a Series About Ownership Language
             </a>
@@ -162,6 +170,7 @@ const MODALITIES = Object.freeze({
             <a
               href="https://gravitywerks.com/a-somatic-check-in-anyone-can-do/"
               target="_blank"
+              rel="noreferrer"
             >
               A Somatic Check-in Anyone Can Do
             </a>
@@ -204,6 +213,7 @@ const MODALITIES = Object.freeze({
                   <a
                     href="https://www.benfanning.com/boost-team-productivity/"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     This Counterintuitive Work Strategy Boosts Productivity Over
                     20%
@@ -230,6 +240,7 @@ const MODALITIES = Object.freeze({
                   <a
                     href="https://gravitywerks.com/a-somatic-check-in-anyone-can-do/"
                     target="_blank"
+                    rel="noreferrer"
                   >
                     A Somatic Check-in Anyone Can Do
                   </a>
@@ -264,6 +275,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://www.cell.com/current-biology/fulltext/S0960-9822(13)01519-4"
                 target="_blank"
+                rel="noreferrer"
               >
                 Dynamic Facial Expressions of Emotion Transmit an Evolving
                 Hierarchy of Signals over Time
@@ -328,6 +340,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://web.stanford.edu/~hazelm/publications/1986_Markus%20&%20Nurius_PossibleSelves.pdf"
                 target="_blank"
+                rel="noreferrer"
               >
                 Possible Selves
               </a>
@@ -371,6 +384,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://www.success.com/use-this-writing-exercise-to-uncover-your-ideal-self/"
                 target="_blank"
+                rel="noreferrer"
               >
                 Use This Writing Exercise to Uncover Your Ideal Self
               </a>
@@ -411,6 +425,7 @@ const MODALITIES = Object.freeze({
                 <a
                   href="https://journals.sagepub.com/doi/abs/10.1177/0146167201277003"
                   target="_blank"
+                  rel="noreferrer"
                 >
                   The Health Benefits of Writing about Life Goals
                 </a>
@@ -423,6 +438,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://www.missiontolearn.com/best-possible-self/"
                 target="_blank"
+                rel="noreferrer"
               >
                 Use This Writing Exercise to Uncover Your Ideal Self
               </a>
@@ -460,6 +476,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://en.wikipedia.org/wiki/Subpersonality"
                 target="_blank"
+                rel="noreferrer"
               >
                 Subpersonality
               </a>
@@ -483,6 +500,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://en.wikipedia.org/wiki/Internal_Family_Systems_Model#Parts"
                 target="_blank"
+                rel="noreferrer"
               >
                 Internal Family Systems Model{' > '}Parts
               </a>
@@ -516,6 +534,7 @@ const MODALITIES = Object.freeze({
               <a
                 href="https://juliacameronlive.com/basic-tools/morning-pages/"
                 target="_blank"
+                rel="noreferrer"
               >
                 Morning Pages
               </a>
@@ -558,7 +577,7 @@ const MODALITIES = Object.freeze({
           <figcaption>
             -{' '}
             <cite>
-              <a href="https://750words.com/" target="_blank">
+              <a href="https://750words.com/" target="_blank" rel="noreferrer">
                 750words.com
               </a>{' '}
               ($5/mo)

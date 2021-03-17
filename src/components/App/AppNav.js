@@ -6,7 +6,7 @@ import { AppContext } from '../AppProvider';
 
 const AppNav = () => {
   const { rooms, user } = useContext(AppContext);
-  const { admin, isPremium } = user;
+  const { admin } = user;
   return (
     <Nav className="justify-content-center">
       <NavDropdown title="Rooms">

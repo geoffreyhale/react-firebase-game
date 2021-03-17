@@ -1,11 +1,8 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import { useLocation } from 'react-router-dom';
 import Col from 'react-bootstrap/Col';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Row from 'react-bootstrap/Row';
-import About from '../About';
 import { LogInButton } from '../../App/AppHeader';
 import altFamilyImg from './alt-family-bed-child-laptop 640.jpg';
 import friendsPhoneImg from './three-diverse-friends-phone-happy 640.jpg';

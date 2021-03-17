@@ -10,6 +10,7 @@ const AccountingLink = ({ id }) => (
   <a
     href={`https://console.firebase.google.com/u/0/project/react-firebase-2020-aecbd/firestore/data~2Faccounting~2F${id}`}
     target="_blank"
+    rel="noreferrer"
   >
     {id}
   </a>

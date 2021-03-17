@@ -27,28 +27,6 @@ const daysSinceEpoch = (timestamp) => {
   );
 };
 
-const pushReplyCountWordCountObjects = (
-  post,
-  replyCountByWordCountObjectsArray
-) => {
-  if (post.childNodes?.length > 0) {
-    post.childNodes.forEach((post) =>
-      pushReplyCountWordCountObjects(post, replyCountByWordCountObjectsArray)
-    );
-  }
-  if (post.content) {
-    const replyCount = post.childNodes?.length || 0;
-    const wordCount = countWords(post.content);
-    // if (replyCount !== 0 && wordCount !== 0) {
-    const replyCountByWordCountObject = {
-      replyCount,
-      wordCount,
-    };
-    replyCountByWordCountObjectsArray.push(replyCountByWordCountObject);
-    // }
-  }
-};
-
 export const PostsMiniCard = ({ posts }) => {
   Object.keys(posts).map((key) => {
     posts[key].id = key;

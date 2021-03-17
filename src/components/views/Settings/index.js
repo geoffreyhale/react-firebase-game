@@ -80,6 +80,7 @@ const Username = ({ user }) => {
   );
 };
 
+//TODO doesn't need to be a class component
 export default class Settings extends React.Component {
   constructor() {
     super();
