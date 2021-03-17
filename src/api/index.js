@@ -224,11 +224,7 @@ const addNotificationsForMentionsIfDoesntAlreadyExist = ({
   postId,
   myUserId,
 }) => {
-  const uidsWithAtSymbol = uidMentions(postContent);
-  const uids =
-    uidsWithAtSymbol &&
-    uidsWithAtSymbol.length > 0 &&
-    uidsWithAtSymbol.map((uid) => uid.substring(1));
+  const uids = uidMentions(postContent);
   if (uids) {
     getUsers((users) => {
       Object.values(users).forEach((user) => {

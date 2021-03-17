@@ -11,21 +11,18 @@ describe('uidMentions', () => {
   });
   it('returns array of results for valid matches', () => {
     expect(uidMentions('@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0')).toEqual([
-      '@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
+      '1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
     ]);
     expect(uidMentions(' @1aB2cD3eF4gH5hI6jK7lM8nO9pQ0 ')).toEqual([
-      '@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
+      '1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
     ]);
     expect(
       uidMentions('@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0 @2aB2cD3eF4gH5hI6jK7lM8nO9pQ0')
-    ).toEqual([
-      '@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
-      '@2aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
-    ]);
+    ).toEqual(['1aB2cD3eF4gH5hI6jK7lM8nO9pQ0', '2aB2cD3eF4gH5hI6jK7lM8nO9pQ0']);
   });
   it('works adjacent to non alphanumeric characters', () => {
     expect(uidMentions('(@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0)')).toEqual([
-      '@1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
+      '1aB2cD3eF4gH5hI6jK7lM8nO9pQ0',
     ]);
   });
 });
