@@ -225,7 +225,7 @@ const addNotificationsForMentionsIfDoesntAlreadyExist = ({
   myUserId,
 }) => {
   const uids = uidMentions(postContent);
-  if (uids) {
+  if (uids && uids.length > 0) {
     getUsers((users) => {
       Object.values(users).forEach((user) => {
         const { uid } = user;
