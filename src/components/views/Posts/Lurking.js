@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
+import { AppContext } from '../../AppProvider';
+import Spinner from '../../shared/Spinner';
 
 export const LURKER = Object.freeze({
   YES: 'yes',
@@ -9,7 +11,7 @@ export const LURKER = Object.freeze({
   NEW: 'new',
 });
 
-export const isLurker = ({ userId, callback }) => {
+export const isLurker = ({ userId }, callback) => {
   firebase
     .database()
     .ref('posts')
@@ -38,53 +40,55 @@ export const isLurker = ({ userId, callback }) => {
     });
 };
 
-export const NoLurking = ({ lurkerStatus, userDisplayName }) => (
-  <Card bg="primary" text="white" className="mt-3">
-    <Card.Body>
-      {lurkerStatus === LURKER.YES && (
-        <>
-          <Card.Title>
-            {userDisplayName ? (
-              <>Welcome back, {userDisplayName}!</>
-            ) : (
-              <>Welcome back!</>
-            )}
-          </Card.Title>
-          <p>
-            You haven't posted in a few days. Please share an update about
-            yourself to rejoin the conversation. We miss you!
-          </p>
-          <p>
-            This participation requirement helps promote meaningful connections
-            and safety in the active community in accordance with our "no
-            lurking" policy.
-          </p>
-          <p>
-            Once you've posted, you'll be welcome to browse and reply to posts
-            as usual.
-          </p>
-        </>
-      )}
-      {lurkerStatus === LURKER.NEW && (
-        <>
-          <Card.Title>
-            {userDisplayName ? <>Welcome, {userDisplayName}!</> : <>Welcome!</>}
-          </Card.Title>
-          <p>Please introduce yourself to join the conversation.</p>
-          <p>
-            This participation requirement helps initiate meaningful connections
-            and promotes safety in the active community in accordance with our
-            "no lurking" policy.
-          </p>
-          <p>
-            Once you've posted, you'll be welcome to browse{' '}
-            <Link to="/r/general" style={{ color: 'white', fontWeight: 600 }}>
-              r/general
-            </Link>{' '}
-            and reply to posts as much as you like.
-          </p>
-        </>
-      )}
-    </Card.Body>
+const LurkingCard = ({ children }) => (
+  <Card bg="warning" text="yellow" className="mt-3">
+    <Card.Body>{children}</Card.Body>
   </Card>
 );
+
+const NewUserLurkerCard = ({ displayName }) => (
+  <LurkingCard>
+    <Card.Title>Join The Conversation</Card.Title>
+    <p>Welcome to xBook, {displayName}!</p>
+    <p>This community thrives on conversation.</p>
+    <p>We'd love to hear a bit about you and how you're feeling.</p>
+  </LurkingCard>
+);
+
+const LurkerLurkerCard = ({ displayName }) => (
+  <LurkingCard>
+    <Card.Title>Join The Conversation</Card.Title>
+    <p>We're glad you're back, {displayName}!</p>
+    <p>
+      This community thrives on conversation. We'd love to hear how you're
+      feeling and what you've been up to since we last heard from you.
+    </p>
+  </LurkingCard>
+);
+
+export const NoLurkerBlock = ({ children }) => {
+  const { user } = useContext(AppContext);
+  const [lurkingStatus, setLurkingStatus] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    isLurker({ userId: user.uid }, (lurkingStatus) => {
+      setLurkingStatus(lurkingStatus);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <Spinner />;
+  }
+
+  if (lurkingStatus === LURKER.NEW) {
+    return <NewUserLurkerCard displayName={user.displayName} />;
+  }
+
+  if (lurkingStatus === LURKER.YES) {
+    return <LurkerLurkerCard displayName={user.displayName} />;
+  }
+
+  return children;
+};
