@@ -16,8 +16,8 @@ const AccountingLink = ({ id }) => (
   </a>
 );
 
-const totalUsd = ({ accounting }) =>
-  Object.values(accounting).reduce((totalUsd, a) => totalUsd + a.usd, 0);
+const totalAmount = ({ accounting }) =>
+  Object.values(accounting).reduce((totalUsd, a) => totalUsd + a.amount, 0);
 
 export const AccountingMiniCard = ({ accounting, users }) => {
   if (!accounting || typeof accounting !== 'object') {
@@ -26,7 +26,7 @@ export const AccountingMiniCard = ({ accounting, users }) => {
   return (
     <>
       <div>
-        <strong>USD:</strong> ${totalUsd({ accounting })}
+        <strong>USD:</strong> ${totalAmount({ accounting })}
       </div>
     </>
   );
@@ -49,7 +49,8 @@ const Accounting = ({ accounting }) => {
               <th>id</th>
               <th>timestamp</th>
               <th>description</th>
-              <th>usd</th>
+              <th>currencyCode</th>
+              <th>amount</th>
               <th>user</th>
               <th>via</th>
               <th>notes</th>
@@ -67,7 +68,8 @@ const Accounting = ({ accounting }) => {
                     {yearMonthDay(a.timestamp?.seconds * 1000)}
                   </td>
                   <td>{a.description}</td>
-                  <td>${a.usd}</td>
+                  <td>{a.currencyCode}</td>
+                  <td>{a.amount}</td>
                   <td>
                     <User uid={a.uid} displayName={users[a.uid]?.displayName} />
                   </td>
@@ -81,7 +83,8 @@ const Accounting = ({ accounting }) => {
               <td></td>
               <td></td>
               <td></td>
-              <td>${totalUsd({ accounting })}</td>
+              <td></td>
+              <td>${totalAmount({ accounting })}</td>
               <td></td>
               <td></td>
               <td></td>
