@@ -22,6 +22,7 @@ import { PremiumFeature, PremiumSaleCard } from '../../shared/Premium';
 import Mosaic from '../Community/Mosaic';
 import Modality from '../../shared/Modalities';
 import PostsFeed from '../../shared/PostsFeed';
+import { NoLurkerBlock } from './Lurking';
 
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
@@ -215,6 +216,7 @@ class Posts extends Component {
           {!isSinglePostPage && (
             <>
               <NewTopLevelPostCard hackRoom={this.props.room.id} />
+              <NoLurkerBlock>
               <FeedNav
                 currentFeed={this.state.feed}
                 setFeed={(feed) => this.setState({ feed: feed })}
@@ -232,6 +234,7 @@ class Posts extends Component {
                 posts={posts}
                 isUnseenFeed={this.state.feed === FEED.UNSEEN}
               />
+              </NoLurkerBlock>
             </>
           )}
         </Col>
