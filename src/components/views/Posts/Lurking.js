@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
 import firebase from '../../firebase.js';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
@@ -46,16 +46,40 @@ const LurkingCard = ({ children }) => (
   </Card>
 );
 
-const NewUserLurkerCard = ({ displayName }) => (
+const BypassButton = ({ doBypass }) => {
+  const [startingBypass, startBypass] = useState(false);
+  if (startingBypass) {
+    setTimeout(() => doBypass());
+    return (
+      <>
+        <Spinner /> Loading posts...
+      </>
+    );
+  }
+  return (
+    <Button
+      variant="link"
+      onClick={() => {
+        startBypass(true);
+      }}
+    >
+      No thanks, maybe later.
+    </Button>
+  );
+};
+
+const NewUserLurkerCard = ({ displayName, doBypass }) => (
   <LurkingCard>
     <Card.Title>Join The Conversation</Card.Title>
     <p>Welcome to xBook, {displayName}!</p>
     <p>This community thrives on conversation.</p>
     <p>We'd love to hear a bit about you and how you're feeling.</p>
+    <p>You can use the form above to post.</p>
+    <BypassButton doBypass={doBypass} />
   </LurkingCard>
 );
 
-const LurkerLurkerCard = ({ displayName }) => (
+const LurkerLurkerCard = ({ displayName, doBypass }) => (
   <LurkingCard>
     <Card.Title>Join The Conversation</Card.Title>
     <p>We're glad you're back, {displayName}!</p>
@@ -63,6 +87,7 @@ const LurkerLurkerCard = ({ displayName }) => (
       This community thrives on conversation. We'd love to hear how you're
       feeling and what you've been up to since we last heard from you.
     </p>
+    <BypassButton doBypass={doBypass} />
   </LurkingCard>
 );
 
@@ -70,6 +95,7 @@ export const NoLurkerBlock = ({ children }) => {
   const { user } = useContext(AppContext);
   const [lurkingStatus, setLurkingStatus] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bypass, setBypass] = useState(false);
 
   useEffect(() => {
     isLurker({ userId: user.uid }, (lurkingStatus) => {
@@ -78,16 +104,30 @@ export const NoLurkerBlock = ({ children }) => {
     });
   }, []);
 
+  if (bypass) {
+    return children;
+  }
+
   if (loading) {
     return <Spinner />;
   }
 
   if (lurkingStatus === LURKER.NEW) {
-    return <NewUserLurkerCard displayName={user.displayName} />;
+    return (
+      <NewUserLurkerCard
+        displayName={user.displayName}
+        doBypass={() => setBypass(true)}
+      />
+    );
   }
 
   if (lurkingStatus === LURKER.YES) {
-    return <LurkerLurkerCard displayName={user.displayName} />;
+    return (
+      <LurkerLurkerCard
+        displayName={user.displayName}
+        doBypass={() => setBypass(true)}
+      />
+    );
   }
 
   return children;
