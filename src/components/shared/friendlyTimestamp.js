@@ -34,7 +34,7 @@ export const elapsedDuration = ({ timestamp }) => {
   });
 };
 
-const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
+export const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
   if (!timestamp) {
     return;
   }
