@@ -53,7 +53,7 @@ const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
       "MMMM d, yyyy 'at' hh:mm b"
     );
     content = formattedTimestamp;
-    useSuffix = true;
+    useSuffix = false;
   } else if (duration.days) {
     content = `${duration.days}d`;
     useSuffix = true;
