@@ -10,7 +10,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { getPosts, removeNotification } from '../../api/index';
 import { AppContext } from '../AppProvider';
 import firebase from '../firebase.js';
-import friendlyTimestamp from '../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../shared/FriendlyTimestamp';
 import Spinner from '../shared/Spinner';
 import { UserPhoto } from '../shared/User';
 
@@ -88,7 +88,7 @@ const NotificationItemLinkContent = ({ timestamp, uid, type = null }) => {
       </div>
       <strong style={{ fontWeight: 700 }}>{userDisplayName}</strong>
       {type === 'mention' ? ' mentioned you ' : ` replied to your post `}
-      {friendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
+      {FriendlyTimestamp(timestamp, ' ago', { fontWeight: 600 })}.
     </span>
   );
 };

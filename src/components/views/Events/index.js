@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { useHistory } from 'react-router-dom';
 import { getEvents } from '../../../api';
-import { eventTimestamp } from '../../shared/friendlyTimestamp';
+import { eventTimestamp } from '../../shared/FriendlyTimestamp';
 import Spinner from '../../shared/Spinner';
 
 const EventsPage = () => {

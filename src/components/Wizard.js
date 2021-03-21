@@ -8,7 +8,7 @@ import Popover from 'react-bootstrap/Popover';
 import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
-import friendlyTimestamp from './shared/friendlyTimestamp';
+import FriendlyTimestamp from './shared/FriendlyTimestamp';
 import HowToGetPremium from './shared/Premium/HowToGetPremium';
 import Spinner from './shared/Spinner';
 
@@ -30,7 +30,7 @@ const ITEMS = {
         <span>
           Checkout the <Link to="/training">training page</Link> and submit
           another modality post. Your last modality post was{' '}
-          <strong>{friendlyTimestamp(timestamp, ' ago')}</strong>.
+          <strong>{FriendlyTimestamp(timestamp, ' ago')}</strong>.
         </span>
       ) : (
         <span>

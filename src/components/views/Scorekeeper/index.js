@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/card';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
 
 export default class Scorekeeper extends React.Component {
   constructor() {
@@ -180,7 +180,7 @@ export default class Scorekeeper extends React.Component {
                 const text = entry[1];
                 return (
                   <>
-                    <span>{friendlyTimestamp(timestamp)}</span>
+                    <span>{FriendlyTimestamp(timestamp)}</span>
                     <span className="ml-3">{text}</span>
                     <br />
                   </>

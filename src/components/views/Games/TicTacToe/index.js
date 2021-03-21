@@ -6,7 +6,7 @@ import { AppContext } from '../../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
 import { getUsers } from '../../../../api/index';
 import { UserPhoto } from '../../../shared/User';
-import friendlyTimestamp from '../../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../../shared/FriendlyTimestamp';
 
 import './index.css';
 
@@ -64,7 +64,7 @@ const Log = ({ log, showCount }) =>
           <tr>
             <td>{entry.t}</td>
             <td style={{ textAlign: 'right' }}>
-              ({friendlyTimestamp(entry.t, ' ago')}):
+              ({FriendlyTimestamp(entry.t, ' ago')}):
             </td>
             <td>{entry.msg}</td>
           </tr>

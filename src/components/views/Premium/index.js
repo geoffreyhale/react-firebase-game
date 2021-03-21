@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import { AppContext } from '../../AppProvider';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
 import PayPal from './PayPal';
 
 const UserPremiumStatusCard = () => {
@@ -15,7 +15,7 @@ const UserPremiumStatusCard = () => {
         {user.isPremium ? (
           <>
             You have premium until{' '}
-            {friendlyTimestamp(user.premium.seconds * 1000)}.
+            {FriendlyTimestamp(user.premium.seconds * 1000)}.
           </>
         ) : (
           'You do not currently have premium.'

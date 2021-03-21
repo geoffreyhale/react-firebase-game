@@ -16,7 +16,7 @@ import {
   getUserByUsername,
   unfollowUser,
 } from '../../../api';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
 import { UserPhoto } from '../../shared/User';
 import Spinner from '../../shared/Spinner';
 import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingTypes';
@@ -101,15 +101,15 @@ const UserProfileTimes = ({ user }) => (
   <ListGroup>
     <ListGroup.Item>
       <strong>Last Online: </strong>
-      {friendlyTimestamp(user.lastOnline)}
+      {FriendlyTimestamp(user.lastOnline)}
     </ListGroup.Item>
     {/* <ListGroup.Item>
       <strong>Last Login: </strong>
-      {friendlyTimestamp(getMillisFromDifferingTypes(user.lastLogin))}
+      {FriendlyTimestamp(getMillisFromDifferingTypes(user.lastLogin))}
     </ListGroup.Item> */}
     <ListGroup.Item>
       <strong>Joined: </strong>
-      {friendlyTimestamp(getMillisFromDifferingTypes(user.joined))}
+      {FriendlyTimestamp(getMillisFromDifferingTypes(user.joined))}
     </ListGroup.Item>
   </ListGroup>
 );

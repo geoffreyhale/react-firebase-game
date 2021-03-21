@@ -13,7 +13,7 @@ import {
 } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
 import InvitedBy from './InvitedBy';
 
 const InviteCodeNotes = ({ id, notes }) => {
@@ -118,7 +118,7 @@ const InviteCodes = () => {
                     </td>
                     <td>
                       {inviteCode.createdAt &&
-                        friendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
+                        FriendlyTimestamp(inviteCode.createdAt.seconds * 1000)}
                     </td>
                     <td>
                       <InviteCodeNotes

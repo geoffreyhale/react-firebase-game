@@ -34,8 +34,6 @@ export const elapsedDuration = ({ timestamp }) => {
   });
 };
 
-//TODO write tests for this function
-//TODO returns react component, should be capitalized
 const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
   if (!timestamp) {
     return;
@@ -71,7 +69,11 @@ const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
   } else if (Object.values(duration).every((unit) => unit === 0)) {
     content = 'just now';
   }
+  return { content, useSuffix };
+};
 
+const FriendlyTimestamp = (timestamp, suffix = '', style = null) => {
+  const { content, useSuffix } = friendlyTimestamp(timestamp, suffix, style);
   if (content) {
     return (
       <>
@@ -81,5 +83,4 @@ const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
     );
   }
 };
-
-export default friendlyTimestamp;
+export default FriendlyTimestamp;

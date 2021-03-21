@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
 import { User } from '../../shared/User';
 
 export const Users = ({ usersArray, posts }) => {
@@ -66,9 +66,9 @@ export const UsersTable = ({ setSort, usersArray }) => (
               <User uid={user.uid} displayName={user.displayName} />
             </td>
             <td>{user.email}</td>
-            <td>{friendlyTimestamp(user.lastOnline)}</td>
-            <td>{friendlyTimestamp(user.lastLogin)}</td>
-            <td>{friendlyTimestamp(user.joined)}</td>
+            <td>{FriendlyTimestamp(user.lastOnline)}</td>
+            <td>{FriendlyTimestamp(user.lastLogin)}</td>
+            <td>{FriendlyTimestamp(user.joined)}</td>
           </tr>
         );
       })}

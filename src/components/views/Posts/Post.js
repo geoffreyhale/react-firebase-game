@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
-import friendlyTimestamp from '../../shared/friendlyTimestamp';
+import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
 import MyDropdownToggle from '../../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../../AppProvider';
@@ -179,7 +179,7 @@ export const PostHeader = ({
           {hideActionsAndTimestamp ? null : (
             <div className="small text-muted">
               <PostLink room={hackRoom} id={postId}>
-                {friendlyTimestamp(timestamp)}
+                {FriendlyTimestamp(timestamp)}
               </PostLink>
             </div>
           )}
