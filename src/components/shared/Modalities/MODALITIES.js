@@ -587,6 +587,10 @@ const MODALITIES = Object.freeze({
       </>
     ),
   },
+  moodjournal: {
+    available: true,
+    title: 'Mood Journal',
+  },
 });
 
 export default MODALITIES;
