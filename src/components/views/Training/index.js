@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -170,34 +171,80 @@ const UserModality = ({ loadingPosts, uid, userStatsForModality, render }) => {
   });
 };
 
+const sortAlphanumerical = (a, b) =>
+  a.title.localeCompare(b.title, undefined, { ignorePunctuation: true });
+const sortPostsCount = (a, b) =>
+  b.userModalityPostsCount - a.userModalityPostsCount;
+const sortYesVotes = (a, b) => b.userModalityYesCount - a.userModalityYesCount;
+const sortNoVotes = (a, b) => b.userModalityNoCount - a.userModalityNoCount;
+
 const ModalityMenu = ({ loadingPosts, uid, userStatsPerModality }) => {
   const { modality: contextModalityKey, setModality } = useContext(AppContext);
+  const [sortFunction, setSortFunction] = useState(() => sortAlphanumerical);
   const history = useHistory();
+
+  const modalitiesForMenu = availableModalities;
+  modalitiesForMenu.forEach((modality, i) => {
+    modalitiesForMenu[i] = Object.assign(
+      modalitiesForMenu[i],
+      userStatsPerModality[modality.key]
+    );
+  });
+
   return (
-    <ListGroup>
-      {availableModalities.map((modality) => (
-        <ListGroup.Item
-          key={modality.key}
-          action
-          active={contextModalityKey === modality.key}
-          onClick={() => {
-            const modalityToSet =
-              contextModalityKey === modality.key ? null : modality.key;
-            // setModality(modalityToSet);
-            history.push(`/training/${modalityToSet}`);
-          }}
+    <>
+      <div>
+        <strong>sort:</strong>
+        <Button
+          onClick={() => setSortFunction(() => sortAlphanumerical)}
+          variant="link"
         >
-          {modality.title}
-          <UserModality
+          title
+        </Button>
+        <Button
+          onClick={() => setSortFunction(() => sortPostsCount)}
+          variant="link"
+        >
+          posts
+        </Button>
+        <Button
+          onClick={() => setSortFunction(() => sortYesVotes)}
+          variant="link"
+        >
+          yes
+        </Button>
+        <Button
+          onClick={() => setSortFunction(() => sortNoVotes)}
+          variant="link"
+        >
+          not quite
+        </Button>
+      </div>
+      <ListGroup>
+        {availableModalities.sort(sortFunction).map((modality) => (
+          <ListGroup.Item
             key={modality.key}
-            userStatsForModality={userStatsPerModality[modality.key]}
-            uid={uid}
-            loadingPosts={loadingPosts}
-            render={(props) => <UserModalityScoreCardInline {...props} />}
-          />
-        </ListGroup.Item>
-      ))}
-    </ListGroup>
+            action
+            active={contextModalityKey === modality.key}
+            onClick={() => {
+              const modalityToSet =
+                contextModalityKey === modality.key ? null : modality.key;
+              // setModality(modalityToSet);
+              history.push(`/training/${modalityToSet}`);
+            }}
+          >
+            {modality.title}
+            <UserModality
+              key={modality.key}
+              userStatsForModality={userStatsPerModality[modality.key]}
+              uid={uid}
+              loadingPosts={loadingPosts}
+              render={(props) => <UserModalityScoreCardInline {...props} />}
+            />
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+    </>
   );
 };
 
@@ -305,7 +352,6 @@ const Training = () => {
       userModalityNoCount,
     };
   });
-  console.log(userStatsPerModality);
 
   return (
     <Card>
