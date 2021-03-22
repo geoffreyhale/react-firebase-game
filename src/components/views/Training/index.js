@@ -112,6 +112,51 @@ const postsWithModalityArrayFromPostsArray = ({
       post.modalities && Object.keys(post.modalities).includes(modalityKey)
   );
 
+//TODO add tests
+const userModalityPostsData = ({ posts, modalityKey, uid }) => {
+  const userModalityPostsCount =
+    posts && typeof posts === 'object' && Object.keys(posts).length;
+
+  const { yesCount: userModalityYesCount, noCount: userModalityNoCount } =
+    posts && typeof posts === 'object'
+      ? Object.values(posts).reduce(
+          (acc, post) => {
+            return {
+              yesCount:
+                acc.yesCount +
+                (post.modalities &&
+                post.modalities[modalityKey] &&
+                post.modalities[modalityKey].votes
+                  ? Object.entries(post.modalities[modalityKey].votes).filter(
+                      ([key, vote]) => key !== uid && vote === true
+                    ).length
+                  : 0),
+              noCount:
+                acc.noCount +
+                (post.modalities &&
+                post.modalities[modalityKey] &&
+                post.modalities[modalityKey].votes
+                  ? Object.entries(post.modalities[modalityKey].votes).filter(
+                      ([key, vote]) => key !== uid && vote === false
+                    ).length
+                  : 0),
+            };
+          },
+          { yesCount: 0, noCount: 0 }
+        )
+      : {};
+
+  // const userModalityVoteCount = userModalityYesCount + userModalityNoCount;
+  // const userModalityYesPercentage = Math.round(
+  //   (userModalityYesCount / userModalityVoteCount) * 100
+  // );
+  // const userModalityNoPercentage = Math.round(
+  //   (userModalityNoCount / userModalityVoteCount) * 100
+  // );
+
+  return { userModalityPostsCount, userModalityYesCount, userModalityNoCount };
+};
+
 const UserModality = ({
   posts: postsObject,
   loadingPosts,
@@ -129,46 +174,8 @@ const UserModality = ({
     modalityKey,
   });
 
-  const userModalityPostsCount =
-    posts && typeof posts === 'object' && Object.keys(posts).length;
-
-  //TODO add tests for this monster
-  const { yesCount: userModalityYesCount, noCount: userModalityNoCount } =
-    posts && typeof posts === 'object'
-      ? Object.values(posts).reduce(
-          (acc, post) => {
-            return {
-              yesCount:
-                acc.yesCount +
-                (post.modalities &&
-                post.modalities[modalityKey] &&
-                post.modalities[modalityKey].votes
-                  ? Object.entries(post.modalities[modalityKey].votes).filter(
-                      ([key, vote]) => key !== user.uid && vote === true
-                    ).length
-                  : 0),
-              noCount:
-                acc.noCount +
-                (post.modalities &&
-                post.modalities[modalityKey] &&
-                post.modalities[modalityKey].votes
-                  ? Object.entries(post.modalities[modalityKey].votes).filter(
-                      ([key, vote]) => key !== user.uid && vote === false
-                    ).length
-                  : 0),
-            };
-          },
-          { yesCount: 0, noCount: 0 }
-        )
-      : {};
-
-  // const userModalityVoteCount = userModalityYesCount + userModalityNoCount;
-  // const userModalityYesPercentage = Math.round(
-  //   (userModalityYesCount / userModalityVoteCount) * 100
-  // );
-  // const userModalityNoPercentage = Math.round(
-  //   (userModalityNoCount / userModalityVoteCount) * 100
-  // );
+  const { userModalityPostsCount, userModalityYesCount, userModalityNoCount } =
+    userModalityPostsData({ posts, modalityKey, uid: user.uid }) || {};
 
   return render({
     loadingPosts,
