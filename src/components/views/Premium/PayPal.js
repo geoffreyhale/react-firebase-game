@@ -18,7 +18,7 @@ const handleOnApprove = (
       notes: '',
       type: 'premium',
       uid,
-      amount,
+      amount, //TODO Parse int here
       currencyCode,
       via: 'paypal (onsite)',
       createdAt,
