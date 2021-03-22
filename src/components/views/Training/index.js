@@ -157,36 +157,20 @@ const userModalityPostsData = ({ posts, modalityKey, uid }) => {
   return { userModalityPostsCount, userModalityYesCount, userModalityNoCount };
 };
 
-const UserModality = ({
-  posts: postsObject,
-  loadingPosts,
-  modalityKey,
-  render,
-}) => {
-  const { user } = useContext(AppContext);
-
-  if (!postsObject || typeof postsObject !== 'object') {
-    return null;
-  }
-
-  const posts = postsWithModalityArrayFromPostsArray({
-    posts: postsObject,
-    modalityKey,
-  });
-
+const UserModality = ({ loadingPosts, uid, userStatsForModality, render }) => {
   const { userModalityPostsCount, userModalityYesCount, userModalityNoCount } =
-    userModalityPostsData({ posts, modalityKey, uid: user.uid }) || {};
+    userStatsForModality || {};
 
   return render({
     loadingPosts,
-    uid: user.uid,
+    uid,
     userModalityPostsCount,
     userModalityYesCount,
     userModalityNoCount,
   });
 };
 
-const ModalityMenu = ({ loadingPosts, posts }) => {
+const ModalityMenu = ({ loadingPosts, uid, userStatsPerModality }) => {
   const { modality: contextModalityKey, setModality } = useContext(AppContext);
   const history = useHistory();
   return (
@@ -206,8 +190,8 @@ const ModalityMenu = ({ loadingPosts, posts }) => {
           {modality.title}
           <UserModality
             key={modality.key}
-            modalityKey={modality.key}
-            posts={posts}
+            userStatsForModality={userStatsPerModality[modality.key]}
+            uid={uid}
             loadingPosts={loadingPosts}
             render={(props) => <UserModalityScoreCardInline {...props} />}
           />
@@ -297,6 +281,32 @@ const Training = () => {
     return aYesVotes < bYesVotes ? 1 : -1;
   });
 
+  const userStatsPerModality = {};
+  availableModalities.forEach((modality) => {
+    const modalityKey = modality.key;
+    if (!userPosts || typeof userPosts !== 'object') {
+      return null;
+    }
+
+    const posts = postsWithModalityArrayFromPostsArray({
+      posts: userPosts,
+      modalityKey,
+    });
+
+    const {
+      userModalityPostsCount,
+      userModalityYesCount,
+      userModalityNoCount,
+    } = userModalityPostsData({ posts, modalityKey, uid: user.uid }) || {};
+
+    userStatsPerModality[modalityKey] = {
+      userModalityPostsCount,
+      userModalityYesCount,
+      userModalityNoCount,
+    };
+  });
+  console.log(userStatsPerModality);
+
   return (
     <Card>
       <Card.Header>Training</Card.Header>
@@ -304,7 +314,11 @@ const Training = () => {
         <Card.Title>Modalities</Card.Title>
         <Row>
           <Col sm={4} className="col-left mb-3">
-            <ModalityMenu loadingPosts={loadingPosts} posts={userPosts} />
+            <ModalityMenu
+              loadingPosts={loadingPosts}
+              userStatsPerModality={userStatsPerModality}
+              uid={user.uid}
+            />
           </Col>
           <Col sm={8} className="col-main">
             {modalityToShow && (
@@ -313,9 +327,11 @@ const Training = () => {
                 <div className="my-3">
                   <UserModality
                     key={'main' + contextModalityKey}
-                    modalityKey={contextModalityKey}
-                    posts={userPosts}
+                    userStatsForModality={
+                      userStatsPerModality[contextModalityKey]
+                    }
                     loadingPosts={loadingPosts}
+                    uid={user.uid}
                     render={(props) => <UserModalityScoreCard {...props} />}
                   />
                 </div>
