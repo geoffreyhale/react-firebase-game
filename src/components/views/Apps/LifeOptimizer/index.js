@@ -107,7 +107,6 @@ const sortExtremeValue = (a, b) => Math.abs(b.value) - Math.abs(a.value);
 const EventsTable = ({ events, deleteEvent }) => {
   const [sortFunction, setSortFunction] = useState(() => sortHighValue);
   const sortedEventsArray = Object.values(events).sort(sortFunction);
-  console.log(events);
   return (
     <>
       <Card>
