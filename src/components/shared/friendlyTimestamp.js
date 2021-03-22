@@ -73,7 +73,8 @@ export const friendlyTimestamp = (timestamp, suffix = '', style = null) => {
 };
 
 const FriendlyTimestamp = (timestamp, suffix = '', style = null) => {
-  const { content, useSuffix } = friendlyTimestamp(timestamp, suffix, style);
+  const { content, useSuffix } =
+    friendlyTimestamp(timestamp, suffix, style) || {};
   if (content) {
     return (
       <>
