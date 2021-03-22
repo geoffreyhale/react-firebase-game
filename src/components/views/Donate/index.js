@@ -14,10 +14,10 @@ const TopDonors = () => {
       setTopDonations(
         Object.values(accounting)
           .filter((record) => record.type === 'donation')
-          .sort((a, b) => b.usd - a.usd)
+          .sort((a, b) => b.amount - a.amount)
           .map((record) => ({
             uid: record.uid,
-            usd: record.usd,
+            amount: record.amount,
             displayName: users[record.uid].displayName,
           }))
       );
@@ -31,7 +31,7 @@ const TopDonors = () => {
         {topDonations ? (
           Object.values(topDonations).map((donation) => (
             <li>
-              ${donation.usd}
+              ${donation.amount}
               <span className={'ml-2'}>
                 <UserPhoto uid={donation.uid} roundedCircle={true} />
               </span>
