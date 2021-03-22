@@ -21,6 +21,7 @@ import Training from './views/Training';
 import UserProfile from './views/UserProfile';
 import InviteCodes from './views/InviteCodes';
 import PremiumPage from './views/Premium';
+import LifeOptimizer from './views/Apps/LifeOptimizer';
 
 const Routes = ({ login }) => {
   const { user } = useContext(AppContext);
@@ -223,6 +224,15 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Score Keeper | xBook">
               <Scorekeeper {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/lifeoptimizer"
+          key="/lifeoptimizer"
+          render={(props) => (
+            <Page title="Life Optimizer | xBook">
+              <LifeOptimizer {...props} />
             </Page>
           )}
         />,
