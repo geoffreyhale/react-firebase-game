@@ -182,7 +182,7 @@ const LandingPage = ({ login }) => {
   }
 
   return (
-    <>
+    <div style={{ backgroundColor: 'white' }}>
       <BetterLandingPageContent login={login} />
       {/* <Card className="mt-1">
       <Card.Body
@@ -222,7 +222,7 @@ const LandingPage = ({ login }) => {
       </Col>
       <Col></Col>
     </Row> */}
-    </>
+    </div>
   );
 };
 export default LandingPage;
