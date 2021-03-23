@@ -95,7 +95,7 @@ const InviteCodes = () => {
               });
             }}
           >
-            Create New Single-Use Invite Code
+            Create New Invite Code
           </Button>
           <Table>
             <thead>

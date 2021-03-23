@@ -57,8 +57,8 @@ export const processInviteCode = ({ uid, inviteCode }, callback) => {
     if (doc.exists) {
       //2. update user w invitedBy source uid
       updateUser({ uid, user: { invitedBy: doc.data().uid } }, (data) => {
-        //3. delete invite code
-        inviteCodeRef.delete();
+        //3. do not delete invite code
+        // inviteCodeRef.delete();
         callback && typeof callback === 'function' && callback(data);
       });
     }
