@@ -16,7 +16,7 @@ const InvitedBy = () => {
         {users &&
           Object.values(users)
             .filter((u) => u.invitedBy === user.uid)
-            .map((user) => <div>{user.displayName}</div>)}
+            .map((user) => <div key={user.uid}>{user.displayName}</div>)}
       </Card.Body>
     </Card>
   );
