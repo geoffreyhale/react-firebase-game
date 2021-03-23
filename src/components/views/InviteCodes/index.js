@@ -68,6 +68,26 @@ const InviteCodeNotes = ({ id, notes }) => {
   );
 };
 
+const CreateInviteCodeButton = ({ setLoading }) => {
+  const {
+    user: { uid },
+  } = useContext(AppContext);
+  const history = useHistory();
+  return (
+    <Button
+      className="mb-3"
+      onClick={() => {
+        setLoading(true);
+        createInviteCode({ uid }, () => {
+          history.go(0);
+        });
+      }}
+    >
+      Create New Invite Code
+    </Button>
+  );
+};
+
 const InviteCodes = () => {
   const { user } = useContext(AppContext);
   const history = useHistory();
@@ -85,17 +105,7 @@ const InviteCodes = () => {
     <Card className="mt-3">
       <Card.Body>
         <Card.Title>Your Invite Codes</Card.Title>
-        <Button
-          className="mb-3"
-          onClick={() => {
-            setLoading(true);
-            createInviteCode({ uid }, () => {
-              history.go(0);
-            });
-          }}
-        >
-          Create New Invite Code
-        </Button>
+        <CreateInviteCodeButton setLoading={setLoading} />
         <Table>
           <thead>
             <tr>
