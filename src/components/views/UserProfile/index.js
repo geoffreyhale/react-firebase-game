@@ -16,7 +16,7 @@ import {
   getUserByUsername,
   unfollowUser,
 } from '../../../api';
-import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../shared/timestamp';
 import { UserPhoto } from '../../shared/User';
 import Spinner from '../../shared/Spinner';
 import getMillisFromDifferingTypes from '../../shared/getMillisFromDifferingTypes';

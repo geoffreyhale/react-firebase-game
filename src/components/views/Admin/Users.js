@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
-import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../shared/timestamp';
 import { User } from '../../shared/User';
 
 export const Users = ({ usersArray, posts }) => {

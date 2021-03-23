@@ -6,7 +6,7 @@ import { AppContext } from '../../../AppProvider';
 import firebase, { auth } from '../../../firebase.js';
 import { getUsers } from '../../../../api/index';
 import { UserPhoto } from '../../../shared/User';
-import FriendlyTimestamp from '../../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../../shared/timestamp';
 
 import './index.css';
 

@@ -10,7 +10,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { getPosts, removeNotification } from '../../api/index';
 import { AppContext } from '../AppProvider';
 import firebase from '../firebase.js';
-import FriendlyTimestamp from '../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../shared/timestamp';
 import Spinner from '../shared/Spinner';
 import { UserPhoto } from '../shared/User';
 

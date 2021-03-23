@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
-import { yearMonthDay } from '../../shared/FriendlyTimestamp';
+import { yearMonthDay } from '../../shared/timestamp';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
 import { User } from '../../shared/User';

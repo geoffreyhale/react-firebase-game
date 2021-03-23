@@ -8,7 +8,7 @@ import Popover from 'react-bootstrap/Popover';
 import { Link } from 'react-router-dom';
 import { AppContext } from './AppProvider';
 import { getMostRecentModalityPostTimestampForUser } from '../api';
-import FriendlyTimestamp from './shared/FriendlyTimestamp';
+import FriendlyTimestamp from './shared/timestamp';
 import HowToGetPremium from './shared/Premium/HowToGetPremium';
 import Spinner from './shared/Spinner';
 

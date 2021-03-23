@@ -7,7 +7,7 @@ import { getEvent, updateEvent } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import HowToGetPremium from '../../shared/Premium/HowToGetPremium';
 import { UserPhoto } from '../../shared/User';
-import { eventTimestamp } from '../../shared/FriendlyTimestamp';
+import { eventTimestamp } from '../../shared/timestamp';
 
 const FormLabel = ({ children }) => (
   <div className="text-muted small">{children}</div>

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import { AppContext } from '../../AppProvider';
-import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../shared/timestamp';
 import PayPal from './PayPal';
 
 const UserPremiumStatusCard = () => {

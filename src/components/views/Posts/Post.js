@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Dropdown from 'react-bootstrap/Dropdown';
-import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../shared/timestamp';
 import MyDropdownToggle from '../../shared/MyDropdownToggle';
 import NewPostForm from './NewPostForm';
 import { AppContext } from '../../AppProvider';

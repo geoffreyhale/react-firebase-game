@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/card';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Row from 'react-bootstrap/Row';
-import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../shared/timestamp';
 
 export default class Scorekeeper extends React.Component {
   constructor() {

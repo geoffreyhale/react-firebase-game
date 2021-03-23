@@ -13,7 +13,7 @@ import {
 } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import Spinner from '../../shared/Spinner';
-import FriendlyTimestamp from '../../shared/FriendlyTimestamp';
+import FriendlyTimestamp from '../../shared/timestamp';
 import InvitedBy from './InvitedBy';
 
 const InviteCodeNotes = ({ id, notes }) => {
