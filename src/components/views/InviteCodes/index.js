@@ -105,7 +105,6 @@ const InviteCodes = () => {
     <Card className="mt-3">
       <Card.Body>
         <Card.Title>Your Invite Codes</Card.Title>
-        <CreateInviteCodeButton setLoading={setLoading} />
         <Table>
           <thead>
             <tr>
@@ -156,6 +155,7 @@ const InviteCodes = () => {
               ))}
           </tbody>
         </Table>
+        <CreateInviteCodeButton setLoading={setLoading} />
       </Card.Body>
     </Card>
   );
