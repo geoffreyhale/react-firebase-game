@@ -7,7 +7,7 @@ const InvitedBy = () => {
   return (
     <Card className="mt-3">
       <Card.Body>
-        <Card.Title>Invited By You</Card.Title>
+        <Card.Title>Users Joined Via Your Invite Codes</Card.Title>
         <div>
           <small className="text-muted">
             (used one of your invite codes to register)

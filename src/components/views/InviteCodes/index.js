@@ -83,8 +83,8 @@ const InviteCodes = () => {
 
   return (
     <Card className="mt-3">
-      <Card.Header>Invite Codes</Card.Header>
       <Card.Body>
+        <Card.Title>Your Invite Codes</Card.Title>
         <Button
           className="mb-3"
           onClick={() => {
@@ -152,9 +152,12 @@ const InviteCodes = () => {
 };
 
 const InviteCodesPage = () => (
-  <>
-    <InviteCodes />
-    <InvitedBy />
-  </>
+  <Card>
+    <Card.Body>
+      <Card.Title>Invite Codes</Card.Title>
+      <InviteCodes />
+      <InvitedBy />
+    </Card.Body>
+  </Card>
 );
 export default InviteCodesPage;
