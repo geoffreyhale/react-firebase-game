@@ -24,6 +24,10 @@ const InvitedBy = () => {
             {users &&
               Object.values(users)
                 .filter((u) => u.invitedBy === user.uid)
+                .sort(
+                  (a, b) =>
+                    b.joined && a.joined && b.joined.seconds - a.joined.seconds
+                )
                 .map((user) => (
                   <tr key={user.uid}>
                     <td>{user.displayName}</td>
