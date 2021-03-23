@@ -164,13 +164,6 @@ const BetterLandingPageContent = ({ login }) => (
         </LogInButton>
       </LandingCol>
     </Row>
-    {/* <Row>
-      <LandingCol>
-        <Button variant="secondary" as={Link} to="/about">
-          About
-        </Button>
-      </LandingCol>
-    </Row> */}
   </>
 );
 
@@ -184,44 +177,6 @@ const LandingPage = ({ login }) => {
   return (
     <div style={{ backgroundColor: 'white' }}>
       <BetterLandingPageContent login={login} />
-      {/* <Card className="mt-1">
-      <Card.Body
-        style={{
-          paddingBottom: '0.25rem',
-          paddingTop: '0.25rem',
-        }}
-      >
-        <div>
-          <small className="text-muted">
-            <em>
-              New online community that will never sell your data.
-              <br />
-              Join the discussion now for free.
-            </em>
-          </small>
-        </div>
-      </Card.Body>
-    </Card> */}
-      {/* <div className="mt-3">
-      <About />
-    </div>
-    <Row>
-      <Col></Col>
-      <Col sm={8}>
-        <Card className="mt-3">
-          <Card.Body style={{ textAlign: 'center' }}>
-            <LogInButton
-              login={login}
-              style={{ fontSize: '2rem', padding: '1rem' }}
-            >
-              Start Here
-            </LogInButton>
-            <Login403DisallowedUseragent />
-          </Card.Body>
-        </Card>
-      </Col>
-      <Col></Col>
-    </Row> */}
     </div>
   );
 };
