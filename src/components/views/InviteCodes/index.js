@@ -89,16 +89,17 @@ const CreateInviteCodeButton = ({ setLoading }) => {
 };
 
 const InviteCodes = () => {
-  const { user } = useContext(AppContext);
+  const {
+    user: { uid },
+  } = useContext(AppContext);
   const history = useHistory();
   const [inviteCodes, setInviteCodes] = useState({});
   const [loading, setLoading] = useState(false);
-  const { uid } = user;
   useEffect(() => {
     getInviteCodes({ uid }, (inviteCodes) => setInviteCodes(inviteCodes));
   }, []);
 
-  if (!user) return null;
+  if (!uid) return null;
   if (loading) return <Spinner />;
 
   return (
