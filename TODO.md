@@ -11,16 +11,11 @@
 
 ## ...
 
-1. user quantity
-2. user activity
-3. app unique value
-4. sales
+1. user activity quality
+2. clarify needs and app unique value
+3. community growth and sales
 
-# TODO
-
-- wizard trainings recommendation doesn't update itself when you submit a training modality, requires refresh
-
-## Top Tier
+## Tier 1
 
 - fix Google auth from apps like Facebook that use embedded browsers
 - finish database security rules and related tests
@@ -29,9 +24,7 @@
 ## Tier 2
 
 - home is getting slow
-- elevate visibility of modality posts that need votes
-- elevate visibility of unanswered posts
-- invite codes and family-tree displays and stats for top inviters ?
+- family-tree displays and stats for top inviters ?
 - use auth.token.identifier not uid
 - improve visibility of "hot" topics/posts; get as many eyes/additional-activity on the "hot" (replies etc) as possible
 - cross site search
@@ -42,6 +35,7 @@
 
 ## Tier 3
 
+- wizard trainings recommendation doesn't update itself when you submit a training modality, requires refresh
 - use context for room, remove roomHack
 - add (#) count to browser tab
 - accounting tools
