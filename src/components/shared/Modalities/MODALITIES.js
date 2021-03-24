@@ -591,6 +591,10 @@ const MODALITIES = Object.freeze({
     available: true,
     title: 'Mood Journal',
   },
+  whatishealthyrelating: {
+    available: true,
+    title: 'What is Healthy Relating?',
+  },
 });
 
 export default MODALITIES;
