@@ -19,7 +19,6 @@
 
 1. (native app) push notifications
 2. filter posts feeds by: user, tag, content contains
-3. save user preferred feed ?
 
 ## Tier 1
 

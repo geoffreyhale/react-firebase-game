@@ -4,6 +4,11 @@ import { AppContext } from '../../AppProvider';
 import Tag from '../../shared/Tag';
 import { elapsedDuration } from '../../shared/timestamp';
 
+const setFeedPreference = (feed) => {
+  window.localStorage.setItem('feed', feed);
+};
+export const getFeedPreference = () => window.localStorage.getItem('feed');
+
 export const FEED = Object.freeze({
   ALL: 'all',
   FILTER_BY_TAGS: 'postsFilterByTags',
@@ -232,6 +237,7 @@ export const FeedNav = ({
               onClick={() => {
                 setFeed(item.feed);
                 setPostsFilter(item.filters);
+                setFeedPreference(item.feed);
               }}
             >
               {item.title}

@@ -13,6 +13,7 @@ import {
   FEED,
   FeedNav,
   getFeedFilterByTags,
+  getFeedPreference,
   getFollowingFeed,
   getHotFeed,
   getPopularFeed,
@@ -61,6 +62,11 @@ class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
+    const feed = getFeedPreference();
+    if (feed) {
+      this.setState({ feed });
+    }
+
     let postsRef = null;
     if (!this.user().isPremium) {
       postsRef = this.postsRef().orderByChild('room').equalTo('general');
@@ -80,7 +86,6 @@ class Posts extends Component {
           .reduce((res, key) => ((res[key] = posts[key]), res), {});
         this.setState({ feed: FEED.ALL });
       }
-
       this.setState({ posts, loading: false });
     });
   }
@@ -217,23 +222,23 @@ class Posts extends Component {
             <>
               <NewTopLevelPostCard hackRoom={this.props.room.id} />
               <NoLurkerBlock>
-              <FeedNav
-                currentFeed={this.state.feed}
-                setFeed={(feed) => this.setState({ feed: feed })}
-                setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                  this.setState({
-                    postsFilter: {
-                      requiredTags: requiredTags,
-                      forbiddenTagsByMe: forbiddenTagsByMe,
-                    },
-                  })
-                }
-                feedSubtext={feedSubtext}
-              />
-              <PostsFeed
-                posts={posts}
-                isUnseenFeed={this.state.feed === FEED.UNSEEN}
-              />
+                <FeedNav
+                  currentFeed={this.state.feed}
+                  setFeed={(feed) => this.setState({ feed: feed })}
+                  setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                    this.setState({
+                      postsFilter: {
+                        requiredTags: requiredTags,
+                        forbiddenTagsByMe: forbiddenTagsByMe,
+                      },
+                    })
+                  }
+                  feedSubtext={feedSubtext}
+                />
+                <PostsFeed
+                  posts={posts}
+                  isUnseenFeed={this.state.feed === FEED.UNSEEN}
+                />
               </NoLurkerBlock>
             </>
           )}
