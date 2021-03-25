@@ -55,6 +55,16 @@ const SearchFilter = ({ value, setValue }) => (
   </InputGroup>
 );
 
+const filterPosts = (posts = [], filter = '') => {
+  let filteredPosts = posts;
+  if (filter && filter !== '') {
+    filteredPosts = posts.filter(
+      (post) => post.content?.indexOf(filter) !== -1
+    );
+  }
+  return filteredPosts;
+};
+
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;
@@ -81,7 +91,7 @@ class Posts extends Component {
         forbiddenTagsByMe: [],
       },
       newPostsFilter: {
-        content: null,
+        content: '',
       },
     };
   }
@@ -165,16 +175,11 @@ class Posts extends Component {
         }
       }
 
-      let newFilteredPostsArray = filteredPostsArray;
-      if (this.state.newPostsFilter.content !== null) {
-        newFilteredPostsArray = filteredPostsArray.filter(
-          (post) =>
-            post.content.indexOf(this.state.newPostsFilter.content) !== -1
-        );
-      }
-
       const postsTree = postsTreeFromRawPosts({
-        flatPostsArray: newFilteredPostsArray,
+        flatPostsArray: filterPosts(
+          filteredPostsArray,
+          this.state.newPostsFilter.content
+        ),
         users,
       });
       posts = postsTree.posts;
