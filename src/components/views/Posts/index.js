@@ -1,6 +1,10 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
 import firebase from '../../firebase.js';
@@ -34,6 +38,23 @@ const debounce = (func, timeout = 500) => {
     }, timeout);
   };
 };
+
+const SearchFilter = ({ value, setValue }) => (
+  <InputGroup className="mb-3">
+    <InputGroup.Prepend>
+      <InputGroup.Text>
+        <FontAwesomeIcon icon={faSearch} />
+      </InputGroup.Text>
+    </InputGroup.Prepend>
+    <FormControl
+      type="text"
+      value={value}
+      onChange={(e) => debounce(setValue(e.target.value))}
+      placeholder={'post content must contain'}
+    />
+  </InputGroup>
+);
+
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;
@@ -58,6 +79,9 @@ class Posts extends Component {
       postsFilter: {
         requiredTags: [],
         forbiddenTagsByMe: [],
+      },
+      newPostsFilter: {
+        content: null,
       },
     };
   }
@@ -129,11 +153,11 @@ class Posts extends Component {
         }
       );
 
-      let filteredPosts = flatPostsArray;
+      let filteredPostsArray = flatPostsArray;
       if (!isSinglePostPage) {
         if (this.state.feed === FEED.FILTER_BY_TAGS) {
           const { postsFilter } = this.state;
-          [filteredPosts, feedSubtext] = getFeedFilterByTags({
+          [filteredPostsArray, feedSubtext] = getFeedFilterByTags({
             flatPostsArray,
             postsFilter,
             myUserId: this.user().uid,
@@ -141,8 +165,16 @@ class Posts extends Component {
         }
       }
 
+      let newFilteredPostsArray = filteredPostsArray;
+      if (this.state.newPostsFilter.content !== null) {
+        newFilteredPostsArray = filteredPostsArray.filter(
+          (post) =>
+            post.content.indexOf(this.state.newPostsFilter.content) !== -1
+        );
+      }
+
       const postsTree = postsTreeFromRawPosts({
-        flatPostsArray: filteredPosts,
+        flatPostsArray: newFilteredPostsArray,
         users,
       });
       posts = postsTree.posts;
@@ -244,6 +276,19 @@ class Posts extends Component {
                   }
                   feedSubtext={feedSubtext}
                 />
+                <div className="mb-2">
+                  <SearchFilter
+                    value={this.state.newPostsFilter.content}
+                    setValue={(value) => {
+                      this.setState({
+                        newPostsFilter: {
+                          ...this.state.newPostsFilter,
+                          content: value,
+                        },
+                      });
+                    }}
+                  />
+                </div>
                 <PostsFeed
                   posts={posts}
                   isUnseenFeed={this.state.feed === FEED.UNSEEN}
