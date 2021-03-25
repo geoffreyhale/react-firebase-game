@@ -25,6 +25,15 @@ import Modality from '../../shared/Modalities';
 import PostsFeed from '../../shared/PostsFeed';
 import { NoLurkerBlock } from './Lurking';
 
+const debounce = (func, timeout = 500) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
+  };
+};
 const searchTree = ({ postId, post, key = 'childNodes' }) => {
   if (post.id === postId) {
     return post;
