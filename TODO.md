@@ -15,6 +15,12 @@
 2. clarify needs and app unique value
 3. community growth and sales
 
+## Priority Requests
+
+1. (native app) push notifications
+2. filter posts feeds by: user, tag, content contains
+3. save user preferred feed ?
+
 ## Tier 1
 
 - fix Google auth from apps like Facebook that use embedded browsers
@@ -56,9 +62,7 @@
 
 - abstract posts' and collections' functions into models and utils etc
 - replies should be less organized by hot and more by popular
-- sent j a direct link to single post full of comments for her, she didn't know how to see them;; she saw the blue no lurking box and even if she read it there wasn't a clear way to post/reply/rejoin-the-conversation
 - pin|save|favorite posts/conversations/threads
-- showHeaderLinkToParent Card.Header could have more helpful informations
 - show accurate reply count on user profile posts
 - (my) user profile is so slow
 - something to let premium members know all they're getting for their money, maybe like the PremiumSaleCard for premium members somewhere
@@ -71,14 +75,12 @@
 - change post 'userId' to 'uid'
 - change db 'upvote' to 'upvotes'
 - https://www.robinwieruch.de/react-firebase-realtime-database
-- move Tag Stats to home / Posts page
 - develop the end-game, Trust Points or Healthy Relater levels and access to deeper safer rooms for higher safety and vulnerable/charged topics etc
 - tag filtering; presets; digests
 - tag filter digests group similar tags
 - Feature Requests should just be a preset in a whole bunch of tag filtering abilities
 - buggish: Feature Requests feed allows replies now but does't show them
 - lowercase all tags ?
-- save user preferred feed ?
 - character and maybe time to read length indicators maybe on Read More link
 - fix double render (still happening? / use more loading)
 - clean out Posts index
@@ -89,18 +91,13 @@
 - private rooms for conversations, games, etc?
 - picture handling, stop querying google for user photos
 - ability to share pictures
-- view posts feed by filters: user, tag
 - save successful card info (PCI compliance!?)
 
 ## APPS
 
 - daily scorecard app w limited visibility for habits etc and accountability
 - healthy intimacy dating called Tender XD
-- scorekeeper as part of rooms
-- humans game modeling reality, eg mood meter
-- event pages
 - cooperative mind map
 - jom's productivity tracker
 - implement reemind app
-- movies seen w ratings and reviews; books, etc
 - new names networking/contacts/friends utility
