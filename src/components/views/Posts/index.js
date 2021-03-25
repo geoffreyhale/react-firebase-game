@@ -90,9 +90,7 @@ class Posts extends Component {
         requiredTags: [],
         forbiddenTagsByMe: [],
       },
-      newPostsFilter: {
-        content: '',
-      },
+      searchFilterString: '',
     };
   }
 
@@ -178,7 +176,7 @@ class Posts extends Component {
       const postsTree = postsTreeFromRawPosts({
         flatPostsArray: filterPosts(
           filteredPostsArray,
-          this.state.newPostsFilter.content
+          this.state.searchFilterString
         ),
         users,
       });
@@ -283,13 +281,10 @@ class Posts extends Component {
                 />
                 <div className="mb-2">
                   <SearchFilter
-                    value={this.state.newPostsFilter.content}
+                    value={this.state.searchFilterString}
                     setValue={(value) => {
                       this.setState({
-                        newPostsFilter: {
-                          ...this.state.newPostsFilter,
-                          content: value,
-                        },
+                        searchFilterString: value,
                       });
                     }}
                   />
