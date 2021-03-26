@@ -66,9 +66,12 @@ const SearchFilter = ({ doSearch }) => {
 const filterPosts = (posts = [], filter = '') => {
   let filteredPosts = posts;
   if (filter && filter !== '') {
-    filteredPosts = posts.filter(
-      (post) => post.content && post.content.indexOf(filter) !== -1
-    );
+    filteredPosts = posts.filter((post) => {
+      return (
+        (post.content && post.content.indexOf(filter) !== -1) ||
+        (post.userDisplayName && post.userDisplayName.indexOf(filter) !== -1)
+      );
+    });
   }
   return filteredPosts;
 };
