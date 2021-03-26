@@ -4,7 +4,7 @@ import React, { Component, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import FormControl from 'react-bootstrap/FormControl';
+import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
@@ -33,26 +33,33 @@ import { NoLurkerBlock } from './Lurking';
 const SearchFilter = ({ doSearch }) => {
   const [value, setValue] = useState('');
   return (
-    <InputGroup className="mb-3">
-      <InputGroup.Prepend>
-        <InputGroup.Text>
-          <FontAwesomeIcon icon={faSearch} />
-        </InputGroup.Text>
-      </InputGroup.Prepend>
-      <FormControl
-        type="text"
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-        }}
-        placeholder={'post content must contain'}
-      />
-      <InputGroup.Append>
-        <Button variant="outline-secondary" onClick={() => doSearch(value)}>
-          Search
-        </Button>
-      </InputGroup.Append>
-    </InputGroup>
+    <Form
+      onSubmit={(e) => {
+        e.preventDefault();
+        doSearch(value);
+      }}
+    >
+      <InputGroup className="mb-3">
+        <InputGroup.Prepend>
+          <InputGroup.Text>
+            <FontAwesomeIcon icon={faSearch} />
+          </InputGroup.Text>
+        </InputGroup.Prepend>
+        <Form.Control
+          type="text"
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+          placeholder={'post content must contain'}
+        />
+        <InputGroup.Append>
+          <Button variant="outline-secondary" type="submit">
+            Search
+          </Button>
+        </InputGroup.Append>
+      </InputGroup>
+    </Form>
   );
 };
 
