@@ -18,7 +18,6 @@
 ## Priority Requests
 
 1. (native app) push notifications
-2. filter posts feeds by: user, tag, content contains
 
 ## Tier 1
 
