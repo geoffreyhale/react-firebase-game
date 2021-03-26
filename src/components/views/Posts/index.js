@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import FormControl from 'react-bootstrap/FormControl';
@@ -39,21 +40,31 @@ const debounce = (func, timeout = 500) => {
   };
 };
 
-const SearchFilter = ({ value, setValue }) => (
-  <InputGroup className="mb-3">
-    <InputGroup.Prepend>
-      <InputGroup.Text>
-        <FontAwesomeIcon icon={faSearch} />
-      </InputGroup.Text>
-    </InputGroup.Prepend>
-    <FormControl
-      type="text"
-      value={value}
-      onChange={(e) => debounce(setValue(e.target.value))}
-      placeholder={'post content must contain'}
-    />
-  </InputGroup>
-);
+const SearchFilter = ({ doSearch }) => {
+  const [value, setValue] = useState('');
+  return (
+    <InputGroup className="mb-3">
+      <InputGroup.Prepend>
+        <InputGroup.Text>
+          <FontAwesomeIcon icon={faSearch} />
+        </InputGroup.Text>
+      </InputGroup.Prepend>
+      <FormControl
+        type="text"
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+        }}
+        placeholder={'post content must contain'}
+      />
+      <InputGroup.Append>
+        <Button variant="outline-secondary" onClick={() => doSearch(value)}>
+          Search
+        </Button>
+      </InputGroup.Append>
+    </InputGroup>
+  );
+};
 
 const filterPosts = (posts = [], filter = '') => {
   let filteredPosts = posts;
@@ -281,8 +292,7 @@ class Posts extends Component {
                 />
                 <div className="mb-2">
                   <SearchFilter
-                    value={this.state.searchFilterString}
-                    setValue={(value) => {
+                    doSearch={(value) => {
                       this.setState({
                         searchFilterString: value,
                       });
