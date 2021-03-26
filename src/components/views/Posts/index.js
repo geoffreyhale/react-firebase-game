@@ -69,7 +69,11 @@ const filterPosts = (posts = [], filter = '') => {
     filteredPosts = posts.filter((post) => {
       return (
         (post.content && post.content.indexOf(filter) !== -1) ||
-        (post.userDisplayName && post.userDisplayName.indexOf(filter) !== -1)
+        (post.userDisplayName && post.userDisplayName.indexOf(filter) !== -1) ||
+        (post.tags &&
+          Object.values(post.tags).some(
+            (tag) => tag.type.indexOf(filter) !== -1
+          ))
       );
     });
   }
