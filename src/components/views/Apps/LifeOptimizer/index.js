@@ -142,7 +142,7 @@ const EventsTable = ({ events, deleteEvent }) => {
             <tbody>
               {sortedEventsArray.map((event) => (
                 <tr>
-                  <td>{event.date}</td>
+                  <td style={{ whiteSpace: 'nowrap' }}>{event.date}</td>
                   <td>{event.description}</td>
                   <td>
                     <Button
