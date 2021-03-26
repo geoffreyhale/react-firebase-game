@@ -8,24 +8,16 @@ import Table from 'react-bootstrap/Table';
 const EventForm = ({ addEvent }) => {
   const [autofocusRef, setAutofocusRef] = useState(React.createRef());
   const [date, setDate] = useState('');
-  const [feeling, setFeeling] = useState('');
-  const [identity, setIdentity] = useState('');
-  const [name, setName] = useState('');
-  const [time, setTime] = useState('');
-  const [value, setValue] = useState('');
+  const [description, setDescription] = useState('');
   const resetForm = () => {
     setDate('');
-    setFeeling('');
-    setIdentity('');
-    setName('');
-    setTime('');
-    setValue('');
+    setDescription('');
   };
   return (
     <Form
       onSubmit={(e) => {
         e.preventDefault();
-        addEvent({ date, feeling, identity, name, time, value });
+        addEvent({ date, description });
         resetForm();
         autofocusRef.current.focus();
       }}
@@ -33,46 +25,6 @@ const EventForm = ({ addEvent }) => {
       <Card>
         <Card.Body>
           <Card.Title>Add Event</Card.Title>
-          <div>
-            <FormLabel>Name</FormLabel>
-            <Form.Control
-              key="name"
-              ref={autofocusRef}
-              autoFocus={true}
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div>
-            <FormLabel>Feeling</FormLabel>
-            <Form.Control
-              key="feeling"
-              type="text"
-              value={feeling}
-              onChange={(e) => setFeeling(e.target.value)}
-            />
-          </div>
-          <div>
-            <FormLabel>Identity</FormLabel>
-            <Form.Control
-              key="identity"
-              type="text"
-              value={identity}
-              onChange={(e) => setIdentity(e.target.value)}
-            />
-          </div>
-          <div className="mt-2">
-            <FormLabel>
-              Value <small>(-100 to 100)</small>
-            </FormLabel>
-            <Form.Control
-              key="value"
-              type="number"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </div>
           <div className="mt-2">
             <FormLabel>Date</FormLabel>
             <Form.Control
@@ -82,13 +34,15 @@ const EventForm = ({ addEvent }) => {
               onChange={(e) => setDate(e.target.value)}
             />
           </div>
-          <div className="mt-2">
-            <FormLabel>Time</FormLabel>
+          <div>
+            <FormLabel>Description</FormLabel>
             <Form.Control
-              key="time"
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
+              key="name"
+              ref={autofocusRef}
+              autoFocus={true}
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div className="mt-2">
@@ -139,11 +93,7 @@ const EventsTable = ({ events, deleteEvent }) => {
             <thead>
               <tr>
                 <th>Date</th>
-                <th>Time</th>
-                <th>Name</th>
-                <th>Feeling</th>
-                <th>Identity</th>
-                <th>Value</th>
+                <th>Description</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -151,11 +101,7 @@ const EventsTable = ({ events, deleteEvent }) => {
               {sortedEventsArray.map((event) => (
                 <tr>
                   <td>{event.date}</td>
-                  <td>{event.time}</td>
-                  <td>{event.name}</td>
-                  <td>{event.feeling}</td>
-                  <td>{event.identity}</td>
-                  <td>{event.value}</td>
+                  <td>{event.description}</td>
                   <td>
                     <Button
                       variant="link"
@@ -194,7 +140,7 @@ const LifeOptimizer = () => {
           <Card.Body>
             <Card.Title>Life Optimizer</Card.Title>
             <ul>
-              <li>Add potentially repeatable peak experience events.</li>
+              <li>Record peak experience event lessons to grow from.</li>
             </ul>
           </Card.Body>
         </Card>
