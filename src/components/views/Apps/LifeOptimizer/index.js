@@ -1,9 +1,51 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FormLabel from 'react-bootstrap/FormLabel';
 import Table from 'react-bootstrap/Table';
+import { db } from '../../../firebase';
+import { AppContext } from '../../../AppProvider';
+
+const getEvents = ({ uid }, callback) => {
+  const events = {};
+  db.collection('lifeOptimizerUsersData')
+    .doc(uid)
+    .collection('events')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        events[doc.id] = doc.data();
+        events[doc.id].id = doc.id;
+      });
+      callback(events);
+    });
+};
+const upsertEvent = ({ uid, event }, callback) => {
+  const eventRef = db
+    .collection('lifeOptimizerUsersData')
+    .doc(uid)
+    .collection('events')
+    .doc(event.id);
+  db.collection('lifeOptimizerUsersData')
+    .doc(uid)
+    .collection('events')
+    .doc(eventRef.id)
+    .set(event)
+    .then(() => {
+      callback && typeof callback === 'function' && callback(eventRef.id);
+    });
+};
+const apiDeleteEvent = ({ uid, id }, callback) => {
+  db.collection('lifeOptimizerUsersData')
+    .doc(uid)
+    .collection('events')
+    .doc(id)
+    .delete()
+    .then(() => {
+      callback && typeof callback === 'function' && callback();
+    });
+};
 
 const EventForm = ({ addEvent }) => {
   const [autofocusRef, setAutofocusRef] = useState(React.createRef());
@@ -121,18 +163,29 @@ const EventsTable = ({ events, deleteEvent }) => {
 };
 
 const LifeOptimizer = () => {
+  const {
+    user: { uid },
+  } = useContext(AppContext);
   const [events, setEvents] = useState({});
   const addEvent = (event) => {
-    const id = Math.random();
-    setEvents({ ...events, [id]: { ...event, id } });
+    upsertEvent({ uid, event }, (eventId) => {
+      setEvents({ ...events, [eventId]: { ...event, id: eventId } });
+    });
   };
   const deleteEvent = (id) => {
-    const {
-      [id]: {},
-      ...otherEvents
-    } = events;
-    setEvents(otherEvents);
+    apiDeleteEvent({ uid, id }, () => {
+      const {
+        [id]: {},
+        ...otherEvents
+      } = events;
+      setEvents(otherEvents);
+    });
   };
+  useEffect(() => {
+    getEvents({ uid }, (events) => {
+      setEvents(events);
+    });
+  }, []);
   return (
     <div>
       <div className="mt-3">
@@ -140,7 +193,7 @@ const LifeOptimizer = () => {
           <Card.Body>
             <Card.Title>Life Optimizer</Card.Title>
             <ul>
-              <li>Record peak experience event lessons to grow from.</li>
+              <li>Record lessons learned from peak experiences.</li>
             </ul>
           </Card.Body>
         </Card>
@@ -150,15 +203,6 @@ const LifeOptimizer = () => {
       </div>
       <div className="mt-3">
         <EventsTable events={events} deleteEvent={deleteEvent} />
-      </div>
-      <div className="mt-3">
-        <Card>
-          <Card.Body>
-            <Button variant="danger" onClick={() => setEvents({})}>
-              Delete All Events
-            </Button>
-          </Card.Body>
-        </Card>
       </div>
     </div>
   );
