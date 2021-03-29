@@ -76,9 +76,6 @@ const getPosts = ({ roomId, userFeedUid, userIsPremium }, callback) => {
 
   postsRef.on('value', (postsSnapshot) => {
     let posts = postsSnapshot.val();
-    if (userFeedUid) {
-      posts = filterPostsObject(posts, { uid: userFeedUid });
-    }
     posts &&
       Object.entries(posts).forEach(([id, post]) => {
         posts[id] = { ...post, id };
@@ -128,7 +125,9 @@ class Posts extends Component {
         this.setState({ posts, loading: false });
         // TODO won't have to use "all" feed if all other feed types are available on user profile page:
         if (userFeedUid) {
-          this.setState({ feed: FEED.ALL });
+          this.setState({
+            feed: FEED.ALL,
+          });
         }
       }
     );
@@ -174,7 +173,7 @@ class Posts extends Component {
       }
 
       /**
-       * Fitler flat posts for search filter
+       * Filter flat posts for search filter
        */
       const filteredPosts = filterPosts(
         filteredPostsArray,
@@ -227,11 +226,15 @@ class Posts extends Component {
      * Render User Profile feed
      */
     if (this.props.userFeedUid) {
+      const postsTreeForUserFeed = postsTree.filter(
+        (post) => post.userId === this.props.userFeedUid
+      );
+
       return (
         <PostsFeed
-          posts={postsTree}
-          showHeaderLinkToParent={true}
-          hackHideRepliesCount={true}
+          posts={postsTreeForUserFeed}
+          // showHeaderLinkToParent={true}
+          // hackHideRepliesCount={true}
         />
       );
     }
