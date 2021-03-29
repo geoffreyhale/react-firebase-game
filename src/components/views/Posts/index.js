@@ -126,7 +126,7 @@ class Posts extends Component {
         // TODO won't have to use "all" feed if all other feed types are available on user profile page:
         if (userFeedUid) {
           this.setState({
-            feed: FEED.ALL,
+            feed: FEED.RECENT,
           });
         }
       }

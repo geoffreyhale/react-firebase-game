@@ -216,8 +216,8 @@ export const FeedNav = ({
       feed: FEED.FOLLOWING,
     },
     {
-      title: 'All',
-      feed: FEED.ALL,
+      title: 'Recent',
+      feed: FEED.RECENT,
     },
     {
       title: 'Upvotes',
