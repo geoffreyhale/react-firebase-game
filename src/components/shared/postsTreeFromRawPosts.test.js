@@ -4,8 +4,6 @@ describe('postsTreeFromRawPosts', () => {
   it('handles empty objects', () => {
     const flatPostsArray = [];
     const users = {};
-    expect(postsTreeFromRawPosts({ flatPostsArray, users })).toEqual({
-      posts: [],
-    });
+    expect(postsTreeFromRawPosts({ flatPostsArray, users })).toEqual([]);
   });
 });

@@ -166,17 +166,16 @@ class Posts extends Component {
         }
       }
 
-      const postsTree = postsTreeFromRawPosts({
+      posts = postsTreeFromRawPosts({
         flatPostsArray: filterPosts(
           filteredPostsArray,
           this.state.searchFilterString
         ),
         users,
       });
-      posts = postsTree.posts;
 
       if (isSinglePostPage) {
-        post = searchTree({ postId, post: { childNodes: postsTree.posts } });
+        post = searchTree({ postId, post: { childNodes: posts } });
         if (!post) {
           post = null; // not found
         }

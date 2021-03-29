@@ -66,9 +66,7 @@ const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
     (a, b) => b.timestamp - a.timestamp
   );
 
-  return {
-    posts: postsTreeReverseChronological,
-  };
+  return postsTreeReverseChronological;
 };
 
 export default postsTreeFromRawPosts;
