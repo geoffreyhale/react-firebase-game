@@ -26,5 +26,9 @@ service cloud.firestore {
       allow read: if true; //TODO
       allow write: if true; //TODO
     }
+    //TODO tests
+    match /lifeOptimizerUsersData/{userId}/events/{eventId=**} {
+    	allow read, write: if (request.auth.uid == userId);
+    }
   }
 }
