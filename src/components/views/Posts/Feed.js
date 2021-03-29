@@ -203,6 +203,7 @@ export const FeedNav = ({
   setFeed,
   setPostsFilter,
   feedSubtext,
+  hideFeedsByTitle = [],
 }) => {
   const { user } = useContext(AppContext);
   const navItemData = [
@@ -230,20 +231,22 @@ export const FeedNav = ({
   return (
     <div className="mb-3">
       <Nav variant="tabs" className="justify-content-center mt-2">
-        {navItemData.map((item) => (
-          <Nav.Item key={item.title}>
-            <Nav.Link
-              active={currentFeed === item.feed}
-              onClick={() => {
-                setFeed(item.feed);
-                setPostsFilter(item.filters);
-                setFeedPreference(item.feed);
-              }}
-            >
-              {item.title}
-            </Nav.Link>
-          </Nav.Item>
-        ))}
+        {navItemData
+          .filter((item) => !hideFeedsByTitle.includes(item.title))
+          .map((item) => (
+            <Nav.Item key={item.title}>
+              <Nav.Link
+                active={currentFeed === item.feed}
+                onClick={() => {
+                  setFeed(item.feed);
+                  setPostsFilter(item.filters);
+                  setFeedPreference(item.feed);
+                }}
+              >
+                {item.title}
+              </Nav.Link>
+            </Nav.Item>
+          ))}
         {user.admin && (
           <Nav.Item>
             <Nav.Link
