@@ -57,6 +57,11 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
   return null;
 };
 
+const filterPostsObject = (posts = {}, { uid }) =>
+  Object.keys(posts)
+    .filter((key) => posts[key].userId === uid)
+    .reduce((res, key) => ((res[key] = posts[key]), res), {});
+
 const getPosts = ({ roomId, userFeedUid, userIsPremium }, callback) => {
   const firebaseDatabaseRefPosts = firebase.database().ref('posts');
 
@@ -72,9 +77,7 @@ const getPosts = ({ roomId, userFeedUid, userIsPremium }, callback) => {
   postsRef.on('value', (postsSnapshot) => {
     let posts = postsSnapshot.val();
     if (userFeedUid) {
-      posts = Object.keys(posts)
-        .filter((key) => posts[key].userId === userFeedUid)
-        .reduce((res, key) => ((res[key] = posts[key]), res), {});
+      posts = filterPostsObject(posts, { uid: userFeedUid });
     }
     posts &&
       Object.entries(posts).forEach(([id, post]) => {
