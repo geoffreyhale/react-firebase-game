@@ -26,6 +26,8 @@ import PostsFeed from '../../shared/PostsFeed';
 import { NoLurkerBlock } from './Lurking';
 import SearchFilter from './SearchFilter';
 
+const userProfileUnhandledFeedsByTitle = ['Following'];
+
 const filterPosts = (posts = [], filter = '') => {
   let filteredPosts = posts;
   if (filter && filter !== '') {
@@ -107,6 +109,7 @@ class Posts extends Component {
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
 
+  //TODO improve the feed setting, just console log and watch the wonk
   componentDidMount() {
     const feed = getFeedPreference();
     if (feed) {
@@ -233,7 +236,7 @@ class Posts extends Component {
         <NoLurkerBlock>
           <div className="mb-2">
             <FeedNav
-              hideFeedsByTitle={['Following']}
+              hideFeedsByTitle={userProfileUnhandledFeedsByTitle}
               currentFeed={this.state.feed}
               setFeed={(feed) => this.setState({ feed: feed })}
               setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
