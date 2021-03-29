@@ -145,7 +145,7 @@ class Posts extends Component {
     const users = this.users();
     let feedSubtext = null;
     let post = {};
-    let posts = [];
+    let postsTree = [];
 
     if (!users || this.state.loading) {
       return <Spinner size="lg" />;
@@ -166,7 +166,7 @@ class Posts extends Component {
         }
       }
 
-      posts = postsTreeFromRawPosts({
+      postsTree = postsTreeFromRawPosts({
         flatPostsArray: filterPosts(
           filteredPostsArray,
           this.state.searchFilterString
@@ -175,29 +175,29 @@ class Posts extends Component {
       });
 
       if (isSinglePostPage) {
-        post = searchTree({ postId, post: { childNodes: posts } });
+        post = searchTree({ postId, post: { childNodes: postsTree } });
         if (!post) {
           post = null; // not found
         }
       } else {
         if (this.state.feed === FEED.FOLLOWING) {
-          [posts, feedSubtext] = getFollowingFeed({
-            posts,
+          [postsTree, feedSubtext] = getFollowingFeed({
+            posts: postsTree,
             userFollowingUids: this.user().following,
           });
         }
         if (this.state.feed === FEED.UNSEEN) {
-          [posts, feedSubtext] = getUnseenFeed({
+          [postsTree, feedSubtext] = getUnseenFeed({
             flatPostsArray,
-            posts,
+            posts: postsTree,
             userId: this.user().uid,
           });
         }
         if (this.state.feed === FEED.POPULAR) {
-          [posts, feedSubtext] = getPopularFeed({ posts });
+          [postsTree, feedSubtext] = getPopularFeed({ posts: postsTree });
         }
         if (this.state.feed === FEED.HOT) {
-          [posts, feedSubtext] = getHotFeed({ posts });
+          [postsTree, feedSubtext] = getHotFeed({ posts: postsTree });
         }
       }
     }
@@ -205,7 +205,7 @@ class Posts extends Component {
     if (this.props.userFeedUid) {
       return (
         <PostsFeed
-          posts={posts}
+          posts={postsTree}
           showHeaderLinkToParent={true}
           hackHideRepliesCount={true}
         />
@@ -281,7 +281,7 @@ class Posts extends Component {
                   />
                 </div>
                 <PostsFeed
-                  posts={posts}
+                  posts={postsTree}
                   isUnseenFeed={this.state.feed === FEED.UNSEEN}
                 />
               </NoLurkerBlock>
