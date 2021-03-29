@@ -1,11 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import React, { Component, useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import React, { Component } from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import { withRouter } from 'react-router';
 import firebase from '../../firebase.js';
@@ -29,39 +24,7 @@ import Mosaic from '../Community/Mosaic';
 import Modality from '../../shared/Modalities';
 import PostsFeed from '../../shared/PostsFeed';
 import { NoLurkerBlock } from './Lurking';
-
-const SearchFilter = ({ doSearch }) => {
-  const [value, setValue] = useState('');
-  return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-        doSearch(value);
-      }}
-    >
-      <InputGroup className="mb-3">
-        <InputGroup.Prepend>
-          <InputGroup.Text>
-            <FontAwesomeIcon icon={faSearch} />
-          </InputGroup.Text>
-        </InputGroup.Prepend>
-        <Form.Control
-          type="text"
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          placeholder={'post content must contain'}
-        />
-        <InputGroup.Append>
-          <Button variant="outline-secondary" type="submit">
-            Search
-          </Button>
-        </InputGroup.Append>
-      </InputGroup>
-    </Form>
-  );
-};
+import SearchFilter from './SearchFilter';
 
 const filterPosts = (posts = [], filter = '') => {
   let filteredPosts = posts;
