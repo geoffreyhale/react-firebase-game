@@ -223,37 +223,29 @@ class Posts extends Component {
     }
 
     /**
-     * DRY Components
-     */
-    const FeedNavDRY = ({ hideFeedsByTitle = [] }) => (
-      <FeedNav
-        hideFeedsByTitle={hideFeedsByTitle}
-        currentFeed={this.state.feed}
-        setFeed={(feed) => this.setState({ feed: feed })}
-        setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-          this.setState({
-            postsFilter: {
-              requiredTags: requiredTags,
-              forbiddenTagsByMe: forbiddenTagsByMe,
-            },
-          })
-        }
-        feedSubtext={feedSubtext}
-      />
-    );
-
-    /**
      * Render User Profile feed
      */
     if (this.props.userFeedUid) {
       const postsTreeForUserFeed = postsTree.filter(
         (post) => post.userId === this.props.userFeedUid
       );
-
       return (
         //TODO NoLurkerBlock text "You can use the form above to post." doesn't make sense in this context.
         <NoLurkerBlock>
-          <FeedNavDRY hideFeedsByTitle={['Following']} />
+          <FeedNav
+            hideFeedsByTitle={['Following']}
+            currentFeed={this.state.feed}
+            setFeed={(feed) => this.setState({ feed: feed })}
+            setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+              this.setState({
+                postsFilter: {
+                  requiredTags: requiredTags,
+                  forbiddenTagsByMe: forbiddenTagsByMe,
+                },
+              })
+            }
+            feedSubtext={feedSubtext}
+          />
           <PostsFeed
             posts={postsTreeForUserFeed}
             // showHeaderLinkToParent={true}
@@ -312,7 +304,19 @@ class Posts extends Component {
             <>
               <NewTopLevelPostCard hackRoom={this.props.room.id} />
               <NoLurkerBlock>
-                <FeedNavDRY />
+                <FeedNav
+                  currentFeed={this.state.feed}
+                  setFeed={(feed) => this.setState({ feed: feed })}
+                  setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+                    this.setState({
+                      postsFilter: {
+                        requiredTags: requiredTags,
+                        forbiddenTagsByMe: forbiddenTagsByMe,
+                      },
+                    })
+                  }
+                  feedSubtext={feedSubtext}
+                />
                 <div className="mb-2">
                   <SearchFilter
                     doSearch={(value) => {
