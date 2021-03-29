@@ -163,15 +163,17 @@ class UserProfile extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col md={6} className="mb-4">
+            <Col className="col-left mb-4">
               <div className="mb-4">
                 <UserStats uid={user.uid} />
               </div>
               <UserProfileTimes user={user} />
             </Col>
-            <Col md={6}>
+            <Col sm={8} className="col-main">
               {user && user.uid ? (
-                <Posts userFeedUid={user.uid} />
+                <div style={{ clear: 'both' }}>
+                  <Posts userFeedUid={user.uid} />
+                </div>
               ) : (
                 <Spinner size="lg" />
               )}

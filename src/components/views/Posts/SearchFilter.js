@@ -14,7 +14,7 @@ const SearchFilter = ({ doSearch }) => {
         doSearch(value);
       }}
     >
-      <InputGroup className="mb-3">
+      <InputGroup>
         <InputGroup.Prepend>
           <InputGroup.Text>
             <FontAwesomeIcon icon={faSearch} />
