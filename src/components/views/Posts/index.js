@@ -76,6 +76,10 @@ const getPosts = ({ roomId, userFeedUid, userIsPremium }, callback) => {
         .filter((key) => posts[key].userId === userFeedUid)
         .reduce((res, key) => ((res[key] = posts[key]), res), {});
     }
+    posts &&
+      Object.entries(posts).forEach(([id, post]) => {
+        posts[id] = { ...post, id };
+      });
     callback(posts);
   });
 };
@@ -138,23 +142,17 @@ class Posts extends Component {
 
     const postId = this.props.match.params.postId;
     const isSinglePostPage = !!postId;
-
     const users = this.users();
+    let feedSubtext = null;
+    let post = {};
+    let posts = [];
+
     if (!users || this.state.loading) {
       return <Spinner size="lg" />;
     }
 
-    let feedSubtext = null;
-
-    let post = {};
-    let posts = [];
     if (this.state.posts && this.state.posts.length !== 0) {
-      const flatPostsArray = Object.entries(this.state.posts).map(
-        ([id, post]) => {
-          post.id = id;
-          return post;
-        }
-      );
+      const flatPostsArray = Object.values(this.state.posts);
 
       let filteredPostsArray = flatPostsArray;
       if (!isSinglePostPage) {
