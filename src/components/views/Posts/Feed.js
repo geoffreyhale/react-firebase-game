@@ -100,7 +100,7 @@ export const getPopularFeed = ({ posts }) => [
 
 // TODO write tests for this
 export const getFeedFilterByTags = ({
-  flatPostsArray,
+  flatPostsArray = [],
   postsFilter,
   myUserId,
 }) => {

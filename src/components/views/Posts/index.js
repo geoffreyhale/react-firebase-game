@@ -155,6 +155,10 @@ class Posts extends Component {
       const flatPostsArray = Object.values(this.state.posts);
 
       let filteredPostsArray = flatPostsArray;
+
+      /**
+       * Filter flat posts for feed
+       */
       if (!isSinglePostPage) {
         if (this.state.feed === FEED.FILTER_BY_TAGS) {
           const { postsFilter } = this.state;
@@ -166,20 +170,34 @@ class Posts extends Component {
         }
       }
 
+      /**
+       * Fitler flat posts for search filter
+       */
+      const filteredPosts = filterPosts(
+        filteredPostsArray,
+        this.state.searchFilterString
+      );
+
+      /**
+       * Build postsTree
+       */
       postsTree = postsTreeFromRawPosts({
-        flatPostsArray: filterPosts(
-          filteredPostsArray,
-          this.state.searchFilterString
-        ),
+        flatPostsArray: filteredPosts,
         users,
       });
 
       if (isSinglePostPage) {
+        /**
+         * Find single post in postsTree
+         */
         post = searchTree({ postId, post: { childNodes: postsTree } });
         if (!post) {
           post = null; // not found
         }
       } else {
+        /**
+         * Filter postsTree for feed
+         */
         if (this.state.feed === FEED.FOLLOWING) {
           [postsTree, feedSubtext] = getFollowingFeed({
             posts: postsTree,
@@ -202,6 +220,9 @@ class Posts extends Component {
       }
     }
 
+    /**
+     * Render User Profile feed
+     */
     if (this.props.userFeedUid) {
       return (
         <PostsFeed
@@ -212,6 +233,9 @@ class Posts extends Component {
       );
     }
 
+    /**
+     * Return
+     */
     return (
       <Row>
         <Col className="col-left">

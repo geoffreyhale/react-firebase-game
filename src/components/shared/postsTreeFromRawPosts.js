@@ -17,7 +17,7 @@ export const createDataTree = (dataset) => {
 };
 
 //TODO write tests for this function
-const postsTreeFromRawPosts = ({ flatPostsArray, users }) => {
+const postsTreeFromRawPosts = ({ flatPostsArray = [], users = {} }) => {
   const postsByTimestamp = {};
   flatPostsArray.forEach((post) => {
     if (users) {
