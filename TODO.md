@@ -92,6 +92,27 @@
 - ability to share pictures
 - save successful card info (PCI compliance!?)
 
+## Posts
+
+Ideally, posts feeds will load quickly
+but will also have enough data to know
+which posts to load and how to display them.
+This may include data like recency, but also
+roll-up data like how recent was a child post.
+
+1.  Identify correct database for this kinda thing.
+2.  Can do this without some backend or processes?
+3.  Data structures and algorithms.
+4.  How to quickly query and display just enough.
+
+Next most desired feed: "Hot Activity Posts&Replies"
+
+- Based on "hotness" (recency and popularity),
+  show and post _or reply_ higher in the feed.
+  If it's a reply, show the reply and some part of the parents,
+  but definitely not the whole tree.
+  Top-level posts are still the top-level displayed?
+
 ## APPS
 
 - daily scorecard app w limited visibility for habits etc and accountability
