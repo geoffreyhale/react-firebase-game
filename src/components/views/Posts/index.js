@@ -253,6 +253,7 @@ class Posts extends Component {
       return (
         //TODO NoLurkerBlock text "You can use the form above to post." doesn't make sense in this context.
         <NoLurkerBlock>
+          <FeedNavDRY hideFeedsByTitle={['Following']} />
           <PostsFeed
             posts={postsTreeForUserFeed}
             // showHeaderLinkToParent={true}
