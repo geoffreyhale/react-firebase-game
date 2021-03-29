@@ -231,11 +231,14 @@ class Posts extends Component {
       );
 
       return (
-        <PostsFeed
-          posts={postsTreeForUserFeed}
-          // showHeaderLinkToParent={true}
-          // hackHideRepliesCount={true}
-        />
+        //TODO NoLurkerBlock text "You can use the form above to post." doesn't make sense in this context.
+        <NoLurkerBlock>
+          <PostsFeed
+            posts={postsTreeForUserFeed}
+            // showHeaderLinkToParent={true}
+            // hackHideRepliesCount={true}
+          />
+        </NoLurkerBlock>
       );
     }
 
