@@ -26,7 +26,7 @@ const SearchFilter = ({ doSearch }) => {
           onChange={(e) => {
             setValue(e.target.value);
           }}
-          placeholder={'post content must contain'}
+          placeholder={'post content, tags, or user display name must contain'}
         />
         <InputGroup.Append>
           <Button variant="outline-secondary" type="submit">
