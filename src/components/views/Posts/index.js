@@ -110,25 +110,20 @@ class Posts extends Component {
   postsRef = () => this.db().ref('posts');
 
   componentDidMount() {
-    const feed = getFeedPreference() || FEED.HOT;
-    this.setState({ feed });
-
-    const { userFeedUid } = this.props;
-
+    const { room, userFeedUid } = this.props;
+    let feed = getFeedPreference() || FEED.HOT;
     getPosts(
       {
-        roomId: this.props.room?.id,
+        roomId: room?.id,
         userFeedUid,
         userIsPremium: this.user().isPremium,
       },
       (posts) => {
-        this.setState({ posts, loading: false });
         if (userFeedUid && userProfileUnhandledFeedsByTitle.includes(feed)) {
-          // TODO this does not setFeedPreference for user, it's temporary, desirable?
-          this.setState({
-            feed: FEED.RECENT,
-          });
+          // TODO this does not setFeedPreference for user, it's temporary, is okay/desirable?
+          feed = FEED.RECENT;
         }
+        this.setState({ feed, loading: false, posts });
       }
     );
   }
