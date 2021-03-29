@@ -26,7 +26,7 @@ import PostsFeed from '../../shared/PostsFeed';
 import { NoLurkerBlock } from './Lurking';
 import SearchFilter from './SearchFilter';
 
-const userProfileUnhandledFeedsByTitle = ['Following'];
+const userProfileUnhandledFeedsByTitle = ['following'];
 
 const filterPosts = (posts = [], filter = '') => {
   let filteredPosts = posts;
@@ -92,7 +92,7 @@ class Posts extends Component {
     this.state = {
       loading: true,
       posts: {},
-      feed: FEED.HOT,
+      feed: '',
       postsFilter: {
         requiredTags: [],
         forbiddenTagsByMe: [],
@@ -109,12 +109,9 @@ class Posts extends Component {
   db = () => firebase.database();
   postsRef = () => this.db().ref('posts');
 
-  //TODO improve the feed setting, just console log and watch the wonk
   componentDidMount() {
-    const feed = getFeedPreference();
-    if (feed) {
-      this.setState({ feed });
-    }
+    const feed = getFeedPreference() || FEED.HOT;
+    this.setState({ feed });
 
     const { userFeedUid } = this.props;
 
@@ -126,7 +123,8 @@ class Posts extends Component {
       },
       (posts) => {
         this.setState({ posts, loading: false });
-        if (userFeedUid && this.state.feed === 'Following') {
+        if (userFeedUid && userProfileUnhandledFeedsByTitle.includes(feed)) {
+          // TODO this does not setFeedPreference for user, it's temporary, desirable?
           this.setState({
             feed: FEED.RECENT,
           });
