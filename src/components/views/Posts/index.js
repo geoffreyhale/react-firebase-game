@@ -140,7 +140,6 @@ class Posts extends Component {
     const isSinglePostPage = !!postId;
 
     const users = this.users();
-    // TODO fix this will spin erroneously for a room with legitimately 0 posts
     if (!users || this.state.loading) {
       return <Spinner size="lg" />;
     }
