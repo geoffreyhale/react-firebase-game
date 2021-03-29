@@ -106,9 +106,6 @@ class Posts extends Component {
   user = () => this.context.user;
   users = () => this.context.users;
 
-  db = () => firebase.database();
-  postsRef = () => this.db().ref('posts');
-
   componentDidMount() {
     const { room, userFeedUid } = this.props;
     let feed = getFeedPreference() || FEED.HOT;
