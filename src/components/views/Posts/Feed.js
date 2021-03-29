@@ -228,11 +228,14 @@ export const FeedNav = ({
       feed: FEED.UNSEEN,
     },
   ];
+  const re = new RegExp(hideFeedsByTitle.join('|'), 'i');
   return (
     <>
       <Nav variant="tabs" className="justify-content-center">
         {navItemData
-          .filter((item) => !hideFeedsByTitle.includes(item.title))
+          .filter(
+            (item) => hideFeedsByTitle.length === 0 || !re.test(item.title)
+          )
           .map((item) => (
             <Nav.Item key={item.title}>
               <Nav.Link
