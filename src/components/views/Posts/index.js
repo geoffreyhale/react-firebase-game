@@ -223,6 +223,26 @@ class Posts extends Component {
     }
 
     /**
+     * DRY Components
+     */
+    const FeedNavDRY = ({ hideFeedsByTitle = [] }) => (
+      <FeedNav
+        hideFeedsByTitle={hideFeedsByTitle}
+        currentFeed={this.state.feed}
+        setFeed={(feed) => this.setState({ feed: feed })}
+        setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
+          this.setState({
+            postsFilter: {
+              requiredTags: requiredTags,
+              forbiddenTagsByMe: forbiddenTagsByMe,
+            },
+          })
+        }
+        feedSubtext={feedSubtext}
+      />
+    );
+
+    /**
      * Render User Profile feed
      */
     if (this.props.userFeedUid) {
@@ -291,19 +311,7 @@ class Posts extends Component {
             <>
               <NewTopLevelPostCard hackRoom={this.props.room.id} />
               <NoLurkerBlock>
-                <FeedNav
-                  currentFeed={this.state.feed}
-                  setFeed={(feed) => this.setState({ feed: feed })}
-                  setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
-                    this.setState({
-                      postsFilter: {
-                        requiredTags: requiredTags,
-                        forbiddenTagsByMe: forbiddenTagsByMe,
-                      },
-                    })
-                  }
-                  feedSubtext={feedSubtext}
-                />
+                <FeedNavDRY />
                 <div className="mb-2">
                   <SearchFilter
                     doSearch={(value) => {
