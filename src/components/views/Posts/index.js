@@ -248,6 +248,15 @@ class Posts extends Component {
               feedSubtext={feedSubtext}
             />
           </div>
+          <div className="mb-4">
+            <SearchFilter
+              doSearch={(value) => {
+                this.setState({
+                  searchFilterString: value,
+                });
+              }}
+            />
+          </div>
           <PostsFeed
             posts={postsTreeForUserFeed}
             // showHeaderLinkToParent={true}
