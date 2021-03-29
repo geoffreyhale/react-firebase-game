@@ -57,6 +57,29 @@ const searchTree = ({ postId, post, key = 'childNodes' }) => {
   return null;
 };
 
+const getPosts = ({ roomId, userFeedUid, userIsPremium }, callback) => {
+  const firebaseDatabaseRefPosts = firebase.database().ref('posts');
+
+  let postsRef = null;
+  if (!userIsPremium) {
+    postsRef = firebaseDatabaseRefPosts.orderByChild('room').equalTo('general');
+  } else if (userFeedUid || roomId === 'home') {
+    postsRef = firebaseDatabaseRefPosts;
+  } else if (roomId) {
+    postsRef = firebaseDatabaseRefPosts.orderByChild('room').equalTo(roomId);
+  }
+
+  postsRef.on('value', (postsSnapshot) => {
+    let posts = postsSnapshot.val();
+    if (userFeedUid) {
+      posts = Object.keys(posts)
+        .filter((key) => posts[key].userId === userFeedUid)
+        .reduce((res, key) => ((res[key] = posts[key]), res), {});
+    }
+    callback(posts);
+  });
+};
+
 class Posts extends Component {
   constructor() {
     super();
@@ -86,27 +109,22 @@ class Posts extends Component {
       this.setState({ feed });
     }
 
-    let postsRef = null;
-    if (!this.user().isPremium) {
-      postsRef = this.postsRef().orderByChild('room').equalTo('general');
-    } else if (this.props.userFeedUid || this.props.room.id === 'home') {
-      postsRef = this.postsRef();
-    } else if (this.props.room.id) {
-      postsRef = this.postsRef()
-        .orderByChild('room')
-        .equalTo(this.props.room.id);
-    }
-    postsRef.on('value', (postsSnapshot) => {
-      let posts = postsSnapshot.val();
+    const { userFeedUid } = this.props;
 
-      if (this.props.userFeedUid) {
-        posts = Object.keys(posts)
-          .filter((key) => posts[key].userId === this.props.userFeedUid)
-          .reduce((res, key) => ((res[key] = posts[key]), res), {});
-        this.setState({ feed: FEED.ALL });
+    getPosts(
+      {
+        roomId: this.props.room?.id,
+        userFeedUid,
+        userIsPremium: this.user().isPremium,
+      },
+      (posts) => {
+        this.setState({ posts, loading: false });
+        // TODO won't have to use "all" feed if all other feed types are available on user profile page:
+        if (userFeedUid) {
+          this.setState({ feed: FEED.ALL });
+        }
       }
-      this.setState({ posts, loading: false });
-    });
+    );
   }
 
   render() {
