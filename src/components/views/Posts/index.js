@@ -276,7 +276,9 @@ class Posts extends Component {
             <>
               <Card
                 className="mb-3"
-                style={{ backgroundColor: this.props.room.color || 'inherit' }}
+                style={{
+                  backgroundColor: this.props.room.color || 'inherit',
+                }}
               >
                 <Card.Body>
                   <Card.Title>{this.props.room.title}</Card.Title>

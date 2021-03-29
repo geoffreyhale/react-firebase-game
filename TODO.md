@@ -58,7 +58,7 @@
 
 ## Tier 4
 
-- margins between Posts feednav and searchfilter are not obeyed on UserProfile (2021-03-09)
+- margins between Posts feednav and searchfilter are not obeyed on UserProfile (2021-03-09) -- it's because UserProfile is wrapped in Card Card.Body and Posts page is not
 - change post 'userId' to 'uid'
 - abstract posts' and collections' functions into models and utils etc
 - replies should be less organized by hot and more by popular
