@@ -10,7 +10,7 @@ const setFeedPreference = (feed) => {
 export const getFeedPreference = () => window.localStorage.getItem('feed');
 
 export const FEED = Object.freeze({
-  ALL: 'all',
+  RECENT: 'recent',
   FILTER_BY_TAGS: 'postsFilterByTags',
   HOT: 'hot',
   POPULAR: 'popular',
