@@ -7,7 +7,7 @@ const PostsFeed = ({
   showHeaderLinkToParent = false,
   hackHideRepliesCount,
 }) =>
-  Object.entries(posts).map(([key, post]) => {
+  Object.values(posts).map((post) => {
     return (
       <div className="mb-4" key={post.id}>
         <Post
