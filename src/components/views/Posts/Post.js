@@ -305,7 +305,7 @@ const Post = ({
   const replyCount = countAncestors(post) - 1;
   return (
     <Card className="mt-3 post" bg={hackRoom === 'dev' && 'light'}>
-      {showHeaderLinkToParent && (
+      {showHeaderLinkToParent && post.replyToId && (
         <Card.Header>
           {hackRoom && post.replyToId && (
             <Link to={`/r/${hackRoom}/posts/${post.replyToId}`}>
