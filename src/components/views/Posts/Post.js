@@ -275,13 +275,14 @@ const countAncestors = (node) => {
   return thisCount + 1;
 };
 
-const PostCardHeader = ({ room, replyToPostId }) => (
-  <Card.Header>
-    {room && replyToPostId && (
-      <Link to={`/r/${room}/posts/${replyToPostId}`}>&#8598;...</Link>
-    )}
-  </Card.Header>
-);
+const PostCardHeader = ({ replyToPostId, room, showHeaderLinkToParent }) =>
+  showHeaderLinkToParent && replyToPostId ? (
+    <Card.Header>
+      {room && replyToPostId && (
+        <Link to={`/r/${room}/posts/${replyToPostId}`}>&#8598;...</Link>
+      )}
+    </Card.Header>
+  ) : null;
 
 const Post = ({
   post,
@@ -313,9 +314,11 @@ const Post = ({
   const replyCount = countAncestors(post) - 1;
   return (
     <Card className="mt-3 post" bg={hackRoom === 'dev' && 'light'}>
-      {showHeaderLinkToParent && post.replyToId && (
-        <PostCardHeader room={hackRoom} replyToPostId={post.replyToId} />
-      )}
+      <PostCardHeader
+        replyToPostId={post.replyToId}
+        room={hackRoom}
+        showHeaderLinkToParent={showHeaderLinkToParent}
+      />
       <Card.Body>
         <PostCardBodyHeader
           post={post}
