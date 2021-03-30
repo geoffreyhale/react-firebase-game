@@ -275,9 +275,19 @@ const countAncestors = (node) => {
   return thisCount + 1;
 };
 
-const PostCardHeader = ({ replyToPostId, room, showHeaderLinkToParent }) =>
+const PostCardHeader = ({
+  parentPostAuthorUid,
+  replyToPostId,
+  room,
+  showHeaderLinkToParent,
+}) =>
   showHeaderLinkToParent && replyToPostId ? (
-    <Card.Header>
+    <Card.Header className={'p-0'}>
+      {parentPostAuthorUid && (
+        <span className="mr-1">
+          <UserPhoto size={24} uid={parentPostAuthorUid} />
+        </span>
+      )}
       {room && replyToPostId && (
         <Link to={`/r/${room}/posts/${replyToPostId}`}>&#8598;...</Link>
       )}
@@ -292,6 +302,7 @@ const Post = ({
   showHeaderLinkToParent,
   isUnseenFeed,
   hackHideRepliesCount,
+  parentPostAuthorUid = null,
 }) => {
   const [tagFormCollapsed, setTagFormCollapsed] = useState(true);
   const [repliesCollapsed, setRepliesCollapsed] = useState(
@@ -315,6 +326,7 @@ const Post = ({
   return (
     <Card className="mt-3 post" bg={hackRoom === 'dev' && 'light'}>
       <PostCardHeader
+        parentPostAuthorUid={parentPostAuthorUid}
         replyToPostId={post.replyToId}
         room={hackRoom}
         showHeaderLinkToParent={showHeaderLinkToParent}

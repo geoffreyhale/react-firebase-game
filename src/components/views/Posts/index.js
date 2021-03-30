@@ -315,6 +315,7 @@ class Posts extends Component {
         <Col sm={8} className="col-main">
           {isSinglePostPage && (
             <Post
+              //TODO parentPostAuthorUid
               post={post}
               hackIsSinglePostPage={isSinglePostPage}
               hackRoom={this.props.room.id}

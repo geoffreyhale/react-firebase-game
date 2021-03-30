@@ -6,8 +6,10 @@ const PostsFeed = ({
   isUnseenFeed = false,
   showHeaderLinkToParent = false,
   hackHideRepliesCount,
-}) =>
-  Object.values(posts).map((post) => {
+}) => {
+  return Object.values(posts).map((post) => {
+    const parentPostAuthorUid = posts.find((p) => p.id === post.replyToId)
+      ?.userId;
     return (
       <div className="mb-4" key={post.id}>
         <Post
@@ -16,9 +18,11 @@ const PostsFeed = ({
           isUnseenFeed={isUnseenFeed}
           showHeaderLinkToParent={showHeaderLinkToParent}
           hackHideRepliesCount={hackHideRepliesCount}
+          parentPostAuthorUid={parentPostAuthorUid}
         />
       </div>
     );
   });
+};
 
 export default PostsFeed;

@@ -29,6 +29,7 @@ const QueueItem = ({ item }) => {
           data.map((datum) => <QueueBadge key={datum}>{datum}</QueueBadge>)}
         {post && (
           <Post
+            //TODO parentPostAuthorUid
             post={post}
             hackHideRepliesCount={true}
             showHeaderLinkToParent={true}
