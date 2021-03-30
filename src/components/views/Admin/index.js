@@ -16,6 +16,22 @@ import Funnel from './Funnel';
 import { PostsMiniCard, PostsPerDay } from './Posts';
 import { Users, UsersTable } from './Users';
 
+const PremiumUsers = ({ usersArray }) => {
+  return (
+    <>
+      <div>
+        <strong>Uids of Users without Premium</strong>
+      </div>
+      <code>
+        {usersArray
+          .filter((user) => !user.isPremium)
+          .map((user) => '@' + user.uid)
+          .join(' ')}
+      </code>
+    </>
+  );
+};
+
 export default class Admin extends React.Component {
   constructor() {
     super();
@@ -146,6 +162,11 @@ export default class Admin extends React.Component {
                 <Card.Body>
                   <Card.Title>Users</Card.Title>
                   <Users usersArray={usersArray} posts={this.state.posts} />
+                </Card.Body>
+              </Card>
+              <Card className={'mt-3'}>
+                <Card.Body>
+                  <PremiumUsers usersArray={usersArray} />
                 </Card.Body>
               </Card>
               <Card className={'mt-3'}>
