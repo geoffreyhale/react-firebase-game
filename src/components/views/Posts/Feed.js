@@ -10,6 +10,7 @@ const setFeedPreference = (feed) => {
 export const getFeedPreference = () => window.localStorage.getItem('feed');
 
 export const FEED = Object.freeze({
+  ALL_ACTIVITY: 'allActivity',
   RECENT: 'recent',
   FILTER_BY_TAGS: 'postsFilterByTags',
   HOT: 'hot',
@@ -204,6 +205,7 @@ export const FeedNav = ({
   setPostsFilter,
   feedSubtext,
   hideFeedsByTitle = [],
+  userIsPremium = false,
 }) => {
   const { user } = useContext(AppContext);
   const navItemData = [
@@ -227,6 +229,11 @@ export const FeedNav = ({
       title: 'Unseen',
       feed: FEED.UNSEEN,
     },
+    {
+      title: 'All Activity',
+      feed: FEED.ALL_ACTIVITY,
+      requiresPremium: true,
+    },
   ];
   const re = new RegExp(hideFeedsByTitle.join('|'), 'i');
   return (
@@ -236,20 +243,24 @@ export const FeedNav = ({
           .filter(
             (item) => hideFeedsByTitle.length === 0 || !re.test(item.title)
           )
-          .map((item) => (
-            <Nav.Item key={item.title}>
-              <Nav.Link
-                active={currentFeed === item.feed}
-                onClick={() => {
-                  setFeed(item.feed);
-                  setPostsFilter(item.filters);
-                  setFeedPreference(item.feed);
-                }}
-              >
-                {item.title}
-              </Nav.Link>
-            </Nav.Item>
-          ))}
+          .map(
+            (item) =>
+              (!item.requiresPremium ||
+                (item.requiresPremium && userIsPremium)) && (
+                <Nav.Item key={item.title}>
+                  <Nav.Link
+                    active={currentFeed === item.feed}
+                    onClick={() => {
+                      setFeed(item.feed);
+                      setPostsFilter(item.filters);
+                      setFeedPreference(item.feed);
+                    }}
+                  >
+                    {item.title}
+                  </Nav.Link>
+                </Nav.Item>
+              )
+          )}
         {user.admin && (
           <Nav.Item>
             <Nav.Link

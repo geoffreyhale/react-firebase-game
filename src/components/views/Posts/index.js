@@ -120,6 +120,9 @@ class Posts extends Component {
           // TODO this does not setFeedPreference for user, it's temporary, is okay/desirable?
           feed = FEED.RECENT;
         }
+        if (this.props.match.params.postId && feed === FEED.ALL_ACTIVITY) {
+          feed = FEED.RECENT;
+        }
         this.setState({ feed, loading: false, posts });
       }
     );
@@ -140,6 +143,7 @@ class Posts extends Component {
     let feedSubtext = null;
     let post = {};
     let postsTree = [];
+    let displayIsolatedNonTree = false;
 
     if (!users || this.state.loading) {
       return <Spinner size="lg" />;
@@ -173,43 +177,54 @@ class Posts extends Component {
       );
 
       /**
-       * Build postsTree
+       * All Activity feed does not use postTree
        */
-      postsTree = postsTreeFromRawPosts({
-        flatPostsArray: filteredPosts,
-        users,
-      });
-
-      if (isSinglePostPage) {
-        /**
-         * Find single post in postsTree
-         */
-        post = searchTree({ postId, post: { childNodes: postsTree } });
-        if (!post) {
-          post = null; // not found
-        }
+      if (this.state.feed === FEED.ALL_ACTIVITY) {
+        postsTree = filteredPosts.sort((a, b) => b.timestamp - a.timestamp);
+        displayIsolatedNonTree = true;
+        //TODO put this in Feed.js
+        feedSubtext =
+          'All posts and replies, chronologically, and isolated from thread trees';
       } else {
         /**
-         * Filter postsTree for feed
+         * Build postsTree
          */
-        if (this.state.feed === FEED.FOLLOWING) {
-          [postsTree, feedSubtext] = getFollowingFeed({
-            posts: postsTree,
-            userFollowingUids: this.user().following,
-          });
-        }
-        if (this.state.feed === FEED.UNSEEN) {
-          [postsTree, feedSubtext] = getUnseenFeed({
-            flatPostsArray,
-            posts: postsTree,
-            userId: this.user().uid,
-          });
-        }
-        if (this.state.feed === FEED.POPULAR) {
-          [postsTree, feedSubtext] = getPopularFeed({ posts: postsTree });
-        }
-        if (this.state.feed === FEED.HOT) {
-          [postsTree, feedSubtext] = getHotFeed({ posts: postsTree });
+        postsTree = postsTreeFromRawPosts({
+          flatPostsArray: filteredPosts,
+          users,
+        });
+
+        if (isSinglePostPage) {
+          /**
+           * Find single post in postsTree
+           */
+          post = searchTree({ postId, post: { childNodes: postsTree } });
+          if (!post) {
+            post = null; // not found
+          }
+        } else {
+          /**
+           * Filter postsTree for feed
+           */
+          if (this.state.feed === FEED.FOLLOWING) {
+            [postsTree, feedSubtext] = getFollowingFeed({
+              posts: postsTree,
+              userFollowingUids: this.user().following,
+            });
+          }
+          if (this.state.feed === FEED.UNSEEN) {
+            [postsTree, feedSubtext] = getUnseenFeed({
+              flatPostsArray,
+              posts: postsTree,
+              userId: this.user().uid,
+            });
+          }
+          if (this.state.feed === FEED.POPULAR) {
+            [postsTree, feedSubtext] = getPopularFeed({ posts: postsTree });
+          }
+          if (this.state.feed === FEED.HOT) {
+            [postsTree, feedSubtext] = getHotFeed({ posts: postsTree });
+          }
         }
       }
     }
@@ -226,6 +241,7 @@ class Posts extends Component {
         <NoLurkerBlock>
           <div className="mb-2">
             <FeedNav
+              userIsPremium={this.user().isPremium}
               hideFeedsByTitle={userProfileUnhandledFeedsByTitle}
               currentFeed={this.state.feed}
               setFeed={(feed) => this.setState({ feed: feed })}
@@ -251,8 +267,8 @@ class Posts extends Component {
           </div>
           <PostsFeed
             posts={postsTreeForUserFeed}
-            // showHeaderLinkToParent={true}
-            // hackHideRepliesCount={true}
+            showHeaderLinkToParent={displayIsolatedNonTree}
+            hackHideRepliesCount={displayIsolatedNonTree}
           />
         </NoLurkerBlock>
       );
@@ -313,6 +329,7 @@ class Posts extends Component {
               <NoLurkerBlock>
                 <div className="mb-2">
                   <FeedNav
+                    userIsPremium={this.user().isPremium}
                     currentFeed={this.state.feed}
                     setFeed={(feed) => this.setState({ feed: feed })}
                     setPostsFilter={(requiredTags, forbiddenTagsByMe) =>
@@ -338,6 +355,8 @@ class Posts extends Component {
                 <PostsFeed
                   posts={postsTree}
                   isUnseenFeed={this.state.feed === FEED.UNSEEN}
+                  showHeaderLinkToParent={displayIsolatedNonTree}
+                  hackHideRepliesCount={displayIsolatedNonTree}
                 />
               </NoLurkerBlock>
             </>
