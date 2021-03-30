@@ -121,11 +121,16 @@ const PostActionsDropdown = ({ deletePost, editPost }) => {
   );
 };
 
-export const PostCardBodyHeaderRoom = ({ room }) => (
-  <Link to={`/r/${room}`} style={{ color: 'inherit' }}>
-    <strong style={{ fontWeight: 600 }}>{`r/${room}`}</strong>
-  </Link>
-);
+export const PostCardBodyHeaderRoom = ({ room }) =>
+  (room && (
+    <span>
+      {' '}
+      &#8250;{' '}
+      <Link to={`/r/${room}`} style={{ color: 'inherit' }}>
+        <strong style={{ fontWeight: 600 }}>{`r/${room}`}</strong>
+      </Link>
+    </span>
+  ): null);
 
 export const PostCardBodyHeader = ({
   small,
@@ -169,12 +174,7 @@ export const PostCardBodyHeader = ({
             >
               <strong style={{ fontWeight: 600 }}>{displayName}</strong>
             </Link>
-            {hackRoom && !small && (
-              <span>
-                {' '}
-                &#8250; <PostCardBodyHeaderRoom room={hackRoom} />
-              </span>
-            )}
+            {!small && <PostCardBodyHeaderRoom room={hackRoom} />}
           </div>
           {hideActionsAndTimestamp ? null : (
             <div className="small text-muted">
