@@ -16,8 +16,12 @@ const AccountingLink = ({ id }) => (
   </a>
 );
 
+//TODO parseFloat is a bandaid, fix the code should not be setting amount as strings
 const totalAmount = ({ accounting }) =>
-  Object.values(accounting).reduce((totalUsd, a) => totalUsd + a.amount, 0);
+  Object.values(accounting).reduce(
+    (totalUsd, a) => totalUsd + parseFloat(a.amount),
+    0
+  );
 
 export const AccountingMiniCard = ({ accounting, users }) => {
   if (!accounting || typeof accounting !== 'object') {
