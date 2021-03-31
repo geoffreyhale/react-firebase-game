@@ -13,6 +13,7 @@ import IncrementalClickerGame from './views/Games/IncrementalClicker';
 import TicTacToe from './views/Games/TicTacToe';
 import LandingPage from './views/LandingPage';
 import Queues from './views/Queues';
+import Rooms from './views/Rooms';
 import Room from './views/Rooms/Room';
 import Sandbox from './views/Sandbox';
 import Scorekeeper from './views/Scorekeeper';
@@ -66,6 +67,25 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="xBook">
               <Room {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          exact
+          path="/r"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="Rooms | xBook">
+              <Rooms {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          path="/rooms"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="Rooms | xBook">
+              <Rooms {...props} />
             </Page>
           )}
         />,
