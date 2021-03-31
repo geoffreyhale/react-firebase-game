@@ -18,6 +18,11 @@ const AppNav = () => {
         {rooms &&
           Object.values(rooms)
             .filter((room) => !room.hidden && room.id !== 'home')
+            .sort((a, b) =>
+              a.title.localeCompare(b.title, undefined, {
+                ignorePunctuation: true,
+              })
+            )
             .map((room) => (
               <NavDropdown.Item key={room.id}>
                 <Nav.Link as={NavLink} to={room.url} exact={room.id === 'home'}>
