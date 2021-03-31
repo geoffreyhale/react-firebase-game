@@ -13,7 +13,7 @@ const RoomDoesNotExist = () => (
   </Card>
 );
 
-class Rooms extends React.Component {
+class Room extends React.Component {
   constructor() {
     super();
     this.state = { room: null };
@@ -46,4 +46,4 @@ class Rooms extends React.Component {
   }
 }
 
-export default withRouter(Rooms);
+export default withRouter(Room);

@@ -13,7 +13,7 @@ import IncrementalClickerGame from './views/Games/IncrementalClicker';
 import TicTacToe from './views/Games/TicTacToe';
 import LandingPage from './views/LandingPage';
 import Queues from './views/Queues';
-import Rooms from './views/Rooms';
+import Room from './views/Rooms/Room';
 import Sandbox from './views/Sandbox';
 import Scorekeeper from './views/Scorekeeper';
 import Settings from './views/Settings';
@@ -65,7 +65,7 @@ const Routes = ({ login }) => {
           key={location.pathname}
           render={(props) => (
             <Page title="xBook">
-              <Rooms {...props} />
+              <Room {...props} />
             </Page>
           )}
         />,
@@ -75,7 +75,7 @@ const Routes = ({ login }) => {
           key={location.pathname}
           render={(props) => (
             <Page>
-              <Rooms {...props} />
+              <Room {...props} />
             </Page>
           )}
         />,
@@ -86,7 +86,7 @@ const Routes = ({ login }) => {
           render={(props) => (
             //TODO title = post author's display name (like fb) ?
             <Page title="xBook">
-              <Rooms {...props} />
+              <Room {...props} />
             </Page>
           )}
         />,
