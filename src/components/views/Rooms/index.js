@@ -15,6 +15,7 @@ const Rooms = () => {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Requires</th>
               </tr>
             </thead>
             <tbody>
@@ -28,6 +29,17 @@ const Rooms = () => {
                   <tr>
                     <td>
                       <Link to={room.url}>{room.title}</Link>
+                    </td>
+                    <td>
+                      {room.requires?.map((requirement, i, arr) => {
+                        const R =
+                          requirement === 'premium' ? (
+                            <Link to={'/premium'}>{requirement}</Link>
+                          ) : (
+                            requirement
+                          );
+                        return i < arr.length - 1 ? [R, ', '] : R;
+                      })}
                     </td>
                   </tr>
                 ))}
