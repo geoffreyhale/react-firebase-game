@@ -17,7 +17,6 @@ const AppNav = () => {
       <NavDropdown title="">
         {rooms &&
           Object.values(rooms)
-            .filter((room) => !room.hidden && room.id !== 'home')
             .sort((a, b) =>
               a.title.localeCompare(b.title, undefined, {
                 ignorePunctuation: true,
