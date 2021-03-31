@@ -9,7 +9,12 @@ const AppNav = () => {
   const { admin } = user;
   return (
     <Nav className="justify-content-center">
-      <NavDropdown title="Rooms">
+      <Nav.Item>
+        <Nav.Link as={NavLink} to="/rooms" className="pr-0">
+          Rooms
+        </Nav.Link>
+      </Nav.Item>
+      <NavDropdown title="">
         {rooms &&
           Object.values(rooms)
             .filter((room) => !room.hidden && room.id !== 'home')
