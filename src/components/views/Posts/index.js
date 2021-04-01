@@ -197,7 +197,14 @@ class Posts extends Component {
        * All Activity feed does not use postTree
        */
       if (this.state.feed === FEED.ALL_ACTIVITY) {
-        postsTree = filteredPosts.sort((a, b) => b.timestamp - a.timestamp);
+        //TODO there is a lot of unnecessary switching from posts object to array to object to array
+        const postsByTimestampObjectWithUserData = getPostsByTimestampObjectWithUserDataFromPostsArray(
+          filteredPosts,
+          users
+        );
+        postsTree = Object.values(postsByTimestampObjectWithUserData).sort(
+          (a, b) => b.timestamp - a.timestamp
+        );
         displayIsolatedNonTree = true;
         //TODO put this in Feed.js
         feedSubtext =
