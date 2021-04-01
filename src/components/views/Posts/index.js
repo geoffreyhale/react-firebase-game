@@ -28,6 +28,23 @@ import SearchFilter from './SearchFilter';
 
 const userProfileUnhandledFeedsByTitle = ['following'];
 
+const getPostsByTimestampObjectWithUserDataFromPostsArray = (
+  flatPostsArray = [],
+  users = {}
+) => {
+  const postsByTimestamp = {};
+  flatPostsArray.forEach((post) => {
+    if (users) {
+      post.userDisplayName =
+        (users[post.userId] && users[post.userId].displayName) || 'Loading...';
+      post.userPhotoURL =
+        (users[post.userId] && users[post.userId].photoURL) || null;
+    }
+    postsByTimestamp[post.timestamp] = post;
+  });
+  return postsByTimestamp;
+};
+
 const filterPosts = (posts = [], filter = '') => {
   let filteredPosts = posts;
   if (filter && filter !== '') {
