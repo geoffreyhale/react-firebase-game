@@ -13,7 +13,7 @@ const FormLabel = ({ children }) => (
   <div className="text-muted small">{children}</div>
 );
 
-const EventPage = (props) => {
+const Event = ({ id }) => {
   const history = useHistory();
   const { user, users } = useContext(AppContext);
   const [event, setEvent] = useState({});
@@ -23,17 +23,16 @@ const EventPage = (props) => {
   const [description, setDescription] = useState();
   const [uids, setUids] = useState({});
 
-  const { eventId } = props.match.params;
-
   useEffect(() => {
-    getEvent({ eventId }, (event) => {
+    if (!id) return;
+    getEvent({ eventId: id }, (event) => {
       setEvent(event);
       setTitle(event.title);
       setLocation(event.location);
       setDescription(event.description);
       setUids(event.uids || {});
     });
-  }, [eventId]);
+  }, [id]);
 
   if (event.visibility === 'premium' && !user.isPremium) {
     return (
@@ -220,4 +219,6 @@ const EventPage = (props) => {
     </Form>
   );
 };
+
+const EventPage = (props) => <Event id={props.match.params.eventId} />;
 export default withRouter(EventPage);
