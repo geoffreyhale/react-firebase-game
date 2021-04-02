@@ -89,6 +89,7 @@ export const Event = ({ id }) => {
                   label="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  autoFocus={true}
                 />
               </>
             ) : (
@@ -179,7 +180,6 @@ export const Event = ({ id }) => {
                   rows={12}
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  autoFocus={true}
                 />
               </>
             ) : (
