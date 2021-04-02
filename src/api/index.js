@@ -98,6 +98,17 @@ export const getEvent = ({ eventId }, callback) => {
       }
     });
 };
+//TODO works for create. does this work for update?
+export const upsertEvent = (event, callback) => {
+  const eventRef = db.collection('events').doc(event.id);
+  db.collection('events')
+    .doc(eventRef.id)
+    .set(event, { merge: true })
+    .then(() => {
+      console.log(eventRef.id);
+      callback && typeof callback === 'function' && callback(eventRef.id);
+    });
+};
 export const updateEvent = (
   id,
   { description, location, title, uids },
