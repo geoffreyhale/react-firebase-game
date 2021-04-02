@@ -24,7 +24,10 @@ export const Event = ({ id }) => {
   const [uids, setUids] = useState({});
 
   useEffect(() => {
-    if (!id) return;
+    if (!id) {
+      setEditMode(true);
+      return;
+    }
     getEvent({ eventId: id }, (event) => {
       setEvent(event);
       setTitle(event.title);
