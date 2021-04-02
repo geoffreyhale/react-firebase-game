@@ -20,6 +20,7 @@ service cloud.firestore {
     match /events/{eventId} {
       allow read: if true;
       allow write: if request.auth.uid == resource.data.uid
+      allow create: if request.auth != null; //TODO tests
     }
     //TODO tests
     match /inviteCodes/{inviteCodeId} {

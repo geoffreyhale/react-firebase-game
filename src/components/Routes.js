@@ -7,6 +7,7 @@ import Admin from './views/Admin';
 import Community from './views/Community';
 import Donate from './views/Donate';
 import Events from './views/Events';
+import NewEvent from './views/Events/NewEvent';
 import EventPage from './views/Events/EventPage';
 import Chess from './views/Games/Chess';
 import IncrementalClickerGame from './views/Games/IncrementalClicker';
@@ -154,6 +155,16 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="Events | xBook">
               <Events {...props} />
+            </Page>
+          )}
+        />,
+        <Route
+          exact
+          path="/events/new"
+          key={location.pathname}
+          render={(props) => (
+            <Page title="New Event | xBook">
+              <NewEvent {...props} />
             </Page>
           )}
         />,

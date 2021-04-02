@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { useHistory, withRouter } from 'react-router';
-import { getEvent, updateEvent } from '../../../api';
+import { getEvent, updateEvent, upsertEvent } from '../../../api';
 import { AppContext } from '../../AppProvider';
 import HowToGetPremium from '../../shared/Premium/HowToGetPremium';
 import { UserPhoto } from '../../shared/User';
@@ -13,7 +13,7 @@ const FormLabel = ({ children }) => (
   <div className="text-muted small">{children}</div>
 );
 
-const Event = ({ id }) => {
+export const Event = ({ id }) => {
   const history = useHistory();
   const { user, users } = useContext(AppContext);
   const [event, setEvent] = useState({});
@@ -44,23 +44,31 @@ const Event = ({ id }) => {
     );
   }
 
-  if (!event.id) {
-    return null;
-  }
+  let onSubmit = event.id
+    ? (e) => {
+        e.preventDefault();
+        //TODO should be able to use same upsert for onSubmit here
+        updateEvent(event.id, { description, location, title, uids }, () => {
+          history.go(0);
+        });
+      }
+    : (e) => {
+        e.preventDefault();
+        //TODO should be able to just use state.event here
+        upsertEvent(
+          { description, location, title, uids, uid: user.uid },
+          (id) => {
+            history.push(`/events/${id}`);
+          }
+        );
+      };
 
   // if (!Object.keys(event.uids).includes(user.uid) && event.uid !== user.uid) {
   //   return 'Private Event';
   // }
 
   return (
-    <Form
-      onSubmit={(e) => {
-        e.preventDefault();
-        updateEvent(event.id, { description, location, title, uids }, () => {
-          history.go(0);
-        });
-      }}
-    >
+    <Form onSubmit={onSubmit}>
       <Card>
         <Card.Body>
           <div>
@@ -182,7 +190,7 @@ const Event = ({ id }) => {
             )}
           </div>
 
-          {user.uid === event.uid && !editMode && (
+          {(user.uid === event.uid || !event.id) && !editMode && (
             <>
               <hr />
               <Button variant="link" onClick={() => setEditMode(!editMode)}>
