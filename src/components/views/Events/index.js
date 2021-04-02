@@ -1,10 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import { useHistory } from 'react-router-dom';
 import { getEvents } from '../../../api';
 import { eventTimestamp } from '../../shared/timestamp';
 import Spinner from '../../shared/Spinner';
+import { AppContext } from '../../AppProvider';
+
+const NewEventButton = () => {
+  const { user } = useContext(AppContext);
+  const history = useHistory();
+
+  //TODO also allow premium users when everything's cleaned up and ready
+  if (!user.admin) return null;
+
+  return (
+    <Button onClick={() => history.push('/events/new')}>
+      Create New Event
+    </Button>
+  );
+};
 
 const EventsPage = () => {
   const history = useHistory();
@@ -24,6 +40,7 @@ const EventsPage = () => {
     <Card>
       <Card.Body>
         <Card.Title>Events</Card.Title>
+        <NewEventButton />
         <Table hover>
           <thead>
             <tr>
