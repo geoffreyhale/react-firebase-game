@@ -109,19 +109,10 @@ export const upsertEvent = (event, callback) => {
       callback && typeof callback === 'function' && callback(eventRef.id);
     });
 };
-export const updateEvent = (
-  id,
-  { description, location, title, uids },
-  callback
-) => {
+export const updateEvent = (id, event, callback) => {
   db.collection('events')
     .doc(id)
-    .update({
-      description,
-      location,
-      title,
-      uids,
-    })
+    .update(event)
     .then(() => {
       callback && typeof callback === 'function' && callback();
     });
