@@ -11,7 +11,6 @@ import { eventTimestamp } from '../../shared/timestamp';
 
 /**
  * TODO
- * dates and times
  * visbility
  * invitations
  * posting
@@ -129,9 +128,45 @@ export const Event = ({ id }) => {
                       })
                     }
                   />
+                  <FormLabel>Start Time</FormLabel>
+                  <Form.Control
+                    type="time"
+                    value={event.startTime}
+                    onChange={(e) =>
+                      setEvent({
+                        ...event,
+                        startTime: e.target.value,
+                      })
+                    }
+                  />
+                  <FormLabel>End Date</FormLabel>
+                  <Form.Control
+                    type="date"
+                    value={event.endDate}
+                    onChange={(e) =>
+                      setEvent({
+                        ...event,
+                        endDate: e.target.value,
+                      })
+                    }
+                  />
+                  <FormLabel>End Time</FormLabel>
+                  <Form.Control
+                    type="time"
+                    value={event.endTime}
+                    onChange={(e) =>
+                      setEvent({
+                        ...event,
+                        endTime: e.target.value,
+                      })
+                    }
+                  />
                 </>
               ) : (
-                <small className="text-muted">{event.startDate}</small>
+                <small className="text-muted">
+                  {event.startDate} {event.startTime} - {event.endDate}{' '}
+                  {event.endTime}
+                </small>
               )}
             </div>
           </div>
