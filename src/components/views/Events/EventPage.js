@@ -85,7 +85,7 @@ export const Event = ({ id }) => {
             </div>
             {editMode ? (
               <>
-                <FormLabel>Title</FormLabel>
+                <FormLabel>Event Name</FormLabel>
                 <Form.Control
                   type="text"
                   label="title"
