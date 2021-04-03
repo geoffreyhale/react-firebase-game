@@ -9,6 +9,17 @@ import HowToGetPremium from '../../shared/Premium/HowToGetPremium';
 import { UserPhoto } from '../../shared/User';
 import { eventTimestamp } from '../../shared/timestamp';
 
+/**
+ * TODO
+ * handle all fields with single useState
+ * dates and times
+ * visbility
+ * invitations
+ * posting
+ * og tags for page title when sharing via sms
+ * change property name "title" to "name"
+ */
+
 const FormLabel = ({ children }) => (
   <div className="text-muted small">{children}</div>
 );
