@@ -115,6 +115,25 @@ export const Event = ({ id }) => {
                 <small className="text-muted">{event.location}</small>
               )}
             </div>
+            <div>
+              {editMode ? (
+                <>
+                  <FormLabel>Start Date</FormLabel>
+                  <Form.Control
+                    type="date"
+                    value={event.startDate}
+                    onChange={(e) =>
+                      setEvent({
+                        ...event,
+                        startDate: e.target.value,
+                      })
+                    }
+                  />
+                </>
+              ) : (
+                <small className="text-muted">{event.startDate}</small>
+              )}
+            </div>
           </div>
           <div
             className="mt-3"
