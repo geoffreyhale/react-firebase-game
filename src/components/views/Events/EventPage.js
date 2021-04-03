@@ -11,7 +11,6 @@ import { eventTimestamp } from '../../shared/timestamp';
 
 /**
  * TODO
- * handle all fields with single useState
  * dates and times
  * visbility
  * invitations
@@ -29,22 +28,15 @@ export const Event = ({ id }) => {
   const { user, users } = useContext(AppContext);
   const [event, setEvent] = useState({});
   const [editMode, setEditMode] = useState(false);
-  const [title, setTitle] = useState();
-  const [location, setLocation] = useState();
-  const [description, setDescription] = useState();
-  const [uids, setUids] = useState({});
 
   useEffect(() => {
     if (!id) {
+      setEvent({ uid: user.uid });
       setEditMode(true);
       return;
     }
     getEvent({ eventId: id }, (event) => {
       setEvent(event);
-      setTitle(event.title);
-      setLocation(event.location);
-      setDescription(event.description);
-      setUids(event.uids || {});
     });
   }, [id]);
 
@@ -62,24 +54,23 @@ export const Event = ({ id }) => {
     ? (e) => {
         e.preventDefault();
         //TODO should be able to use same upsert for onSubmit here
-        updateEvent(event.id, { description, location, title, uids }, () => {
+        updateEvent(event.id, event, () => {
           history.go(0);
         });
       }
     : (e) => {
         e.preventDefault();
         //TODO should be able to just use state.event here
-        upsertEvent(
-          { description, location, title, uids, uid: user.uid },
-          (id) => {
-            history.push(`/events/${id}`);
-          }
-        );
+        upsertEvent(event, (id) => {
+          history.push(`/events/${id}`);
+        });
       };
 
   // if (!Object.keys(event.uids).includes(user.uid) && event.uid !== user.uid) {
   //   return 'Private Event';
   // }
+
+  const { uids } = event;
 
   return (
     <Form onSubmit={onSubmit}>
@@ -98,8 +89,10 @@ export const Event = ({ id }) => {
                 <Form.Control
                   type="text"
                   label="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  value={event.title}
+                  onChange={(e) =>
+                    setEvent({ ...event, title: e.target.value })
+                  }
                   autoFocus={true}
                 />
               </>
@@ -112,8 +105,10 @@ export const Event = ({ id }) => {
                   <FormLabel>Location</FormLabel>
                   <Form.Control
                     type="text"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
+                    value={event.location}
+                    onChange={(e) =>
+                      setEvent({ ...event, location: e.target.value })
+                    }
                   />
                 </>
               ) : (
@@ -137,7 +132,7 @@ export const Event = ({ id }) => {
                       onClick={() => {
                         const newUids = Object.assign({}, uids);
                         delete newUids[uid];
-                        setUids(newUids);
+                        setEvent({ ...event, uids: newUids });
                       }}
                       key={uid}
                     >
@@ -159,7 +154,7 @@ export const Event = ({ id }) => {
                       onClick={() => {
                         const newUids = Object.assign({}, uids);
                         newUids[user.uid] = true;
-                        setUids(newUids);
+                        setEvent({ ...event, uids: newUids });
                       }}
                       key={user.uid}
                     >
@@ -174,9 +169,9 @@ export const Event = ({ id }) => {
             ) : (
               <>
                 <UserPhoto uid={event.uid} showNameTitle={true} />
-                {event.uids &&
-                  typeof event.uids === 'object' &&
-                  Object.keys(event.uids).map((uid) => (
+                {uids &&
+                  typeof uids === 'object' &&
+                  Object.keys(uids).map((uid) => (
                     <UserPhoto key={uid} uid={uid} showNameTitle={true} />
                   ))}
               </>
@@ -189,8 +184,10 @@ export const Event = ({ id }) => {
                 <Form.Control
                   as="textarea"
                   rows={12}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  value={event.description}
+                  onChange={(e) =>
+                    setEvent({ ...event, description: e.target.value })
+                  }
                 />
               </>
             ) : (
@@ -224,11 +221,7 @@ export const Event = ({ id }) => {
                   variant="danger"
                   type="button"
                   onClick={() => {
-                    setEditMode(false);
-                    setTitle(event.title);
-                    setLocation(event.location);
-                    setDescription(event.description);
-                    setUids(event.uids || {});
+                    history.go(0);
                   }}
                 >
                   Cancel
