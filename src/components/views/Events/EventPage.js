@@ -154,6 +154,7 @@ export const Event = ({ id }) => {
                       })
                     }
                   />
+                  {/* TODO doesn't handle timezones nor db sort/filter */}
                   <FormLabel>End Date</FormLabel>
                   <Form.Control
                     type="date"
@@ -165,6 +166,7 @@ export const Event = ({ id }) => {
                       })
                     }
                   />
+                  {/* TODO doesn't handle timezones nor db sort/filter */}
                   <FormLabel>End Time</FormLabel>
                   <Form.Control
                     type="time"

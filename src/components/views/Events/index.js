@@ -40,7 +40,9 @@ const EventsPage = () => {
     <Card>
       <Card.Body>
         <Card.Title>Events</Card.Title>
-        <NewEventButton />
+        <div className="mb-3">
+          <NewEventButton />
+        </div>
         <Table hover>
           <thead>
             <tr>
@@ -53,6 +55,7 @@ const EventsPage = () => {
           <tbody>
             {events &&
               Object.values(events)
+                // TODO make this work for all time fields, cleanup db
                 .sort((a, b) => {
                   return a.start?.seconds - b.start?.seconds;
                 })
