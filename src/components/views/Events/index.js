@@ -44,8 +44,8 @@ const EventsPage = () => {
         <Table hover>
           <thead>
             <tr>
-              <th>Start Time</th>
-              <th>Title</th>
+              <th>Date Time</th>
+              <th>Event Name</th>
               <th>Location</th>
               <th>Visibility</th>
             </tr>
@@ -61,7 +61,13 @@ const EventsPage = () => {
                   return (
                     <tr onClick={() => history.push(url)}>
                       <td>
-                        {event.start && eventTimestamp(event.start.seconds)}
+                        {(event.start &&
+                          eventTimestamp(event.start.seconds)) || (
+                          <>
+                            {event.startDate} {event.startTime} -{' '}
+                            {event.endDate} {event.endTime}
+                          </>
+                        )}
                       </td>
                       <td>
                         {/* TODO bug: click text link, click back, url changes to events but page doesn't */}
