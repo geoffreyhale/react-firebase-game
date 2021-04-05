@@ -8,6 +8,7 @@ import { AppContext } from '../../AppProvider';
 import HowToGetPremium from '../../shared/Premium/HowToGetPremium';
 import { UserPhoto } from '../../shared/User';
 import { eventTimestamp } from '../../shared/timestamp';
+import Spinner from '../../shared/Spinner';
 
 /**
  * TODO
@@ -36,19 +37,24 @@ export const Event = ({ id }) => {
   const { user, users } = useContext(AppContext);
   const [event, setEvent] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!id && user.uid) {
       setEvent({ uid: user.uid, visibility: VISIBILITY.PUBLIC });
       setEditMode(true);
+      setLoading(false);
       return;
     }
     getEvent({ eventId: id }, (event) => {
       setEvent(event);
+      setLoading(false);
     });
   }, [id]);
 
-  //TODO loading
+  if (loading) {
+    return <Spinner />;
+  }
 
   if (event.visibility === VISIBILITY.LOGGED_IN && !user) {
     return <div>Please log in to see event details.</div>;
