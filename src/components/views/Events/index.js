@@ -47,6 +47,7 @@ const EventsPage = () => {
               <th>Start Time</th>
               <th>Title</th>
               <th>Location</th>
+              <th>Visibility</th>
             </tr>
           </thead>
           <tbody>
@@ -68,6 +69,7 @@ const EventsPage = () => {
                         <strong>{event.title}</strong>
                       </td>
                       <td>{event.location}</td>
+                      <td>{event.visibility}</td>
                     </tr>
                   );
                 })}
