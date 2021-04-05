@@ -60,6 +60,15 @@ const Routes = ({ login }) => {
           )}
         />
       )}
+      <Route
+        path="/events/:eventId"
+        key={location.pathname}
+        render={(props) => (
+          <Page title="Event | xBook">
+            <EventPage {...props} />
+          </Page>
+        )}
+      />
       {user && [
         <Route
           exact
@@ -158,6 +167,7 @@ const Routes = ({ login }) => {
             </Page>
           )}
         />,
+        ,
         <Route
           exact
           path="/events/new"
@@ -165,15 +175,6 @@ const Routes = ({ login }) => {
           render={(props) => (
             <Page title="New Event | xBook">
               <NewEvent {...props} />
-            </Page>
-          )}
-        />,
-        <Route
-          path="/events/:eventId"
-          key={location.pathname}
-          render={(props) => (
-            <Page title="Event | xBook">
-              <EventPage {...props} />
             </Page>
           )}
         />,

@@ -18,6 +18,15 @@ import { eventTimestamp } from '../../shared/timestamp';
  * change property name "title" to "name"
  */
 
+//TODO handle events w INVISIBILITY.LOGGED_IN, INVISIBILITY.INVITED, INVISIBILITY.UNLISTED
+const VISIBILITY = Object.freeze({
+  PUBLIC: 'public', // Anyone on or off xBook
+  // LOGGED_IN: 'logged_in', // Registered members logged in to xBook
+  PREMIUM: 'premium', // Premium members of xBook
+  // INVITED: 'invited', // Only people who are invited
+  // UNLISTED: 'unlisted', //maybe orthogonal
+});
+
 const FormLabel = ({ children }) => (
   <div className="text-muted small">{children}</div>
 );
@@ -29,8 +38,8 @@ export const Event = ({ id }) => {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    if (!id) {
-      setEvent({ uid: user.uid });
+    if (!id && user.uid) {
+      setEvent({ uid: user.uid, visibility: VISIBILITY.PUBLIC });
       setEditMode(true);
       return;
     }
@@ -39,7 +48,13 @@ export const Event = ({ id }) => {
     });
   }, [id]);
 
-  if (event.visibility === 'premium' && !user.isPremium) {
+  //TODO loading
+
+  if (event.visibility === VISIBILITY.LOGGED_IN && !user) {
+    return <div>Please log in to see event details.</div>;
+  }
+
+  if (event.visibility === VISIBILITY.PREMIUM && !user.isPremium) {
     return (
       <div>
         This is a premium event.
@@ -255,7 +270,7 @@ export const Event = ({ id }) => {
             )}
           </div>
 
-          {(user.uid === event.uid || !event.id) && !editMode && (
+          {((user && user.uid === event.uid) || !event.id) && !editMode && (
             <>
               <hr />
               <Button variant="link" onClick={() => setEditMode(!editMode)}>
